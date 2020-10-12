@@ -1,0 +1,15 @@
+{
+  "Logout": "Logout",
+  "Registrieren": "Sign up",
+  "Login": "Sign in",
+  "Manuskript erstellen": "Create manuscript",
+  "Sprache": "Language",
+  "Lade Daten": "Loading Data",
+  "Nutzername": "Username",
+  "Passwort": "Password",
+  "Passwort wiederholen": "Repeat password",
+  "Name": "Name",
+  "E-Mail": "E-Mail",
+  "Affiliation": "Affiliation",
+  "Nutzer {{who}} wurde erfolgreich registriert": "User {{who}} was successfully signed up"
+}

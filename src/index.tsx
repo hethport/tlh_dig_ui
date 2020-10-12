@@ -8,8 +8,9 @@ import * as serviceWorker from './serviceWorker';
 import i18n from "i18next";
 import {I18nextProvider, initReactI18next} from "react-i18next";
 
-import de from './locales/locale_de.json';
-import en from './locales/locale_en.json';
+import common_de from './locales/de/common.json';
+import common_en from './locales/en/common.json';
+
 import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
 
 // noinspection JSIgnoredPromiseFromCall
@@ -17,8 +18,8 @@ i18n
     .use(initReactI18next)
     .init({
         resources: {
-            de,
-            en
+            de: {common: common_de},
+            en: {common: common_en}
         },
         lng: 'de',
         fallbackLng: 'de',

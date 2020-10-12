@@ -3,6 +3,7 @@ import {Link, Route, Switch} from 'react-router-dom';
 import {createManuscriptUrl, homeUrl, loginUrl, registerUrl} from './urls';
 import {Home} from './Home';
 import {RegisterForm} from './RegisterForm';
+import {LoginForm} from './LoginForm';
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 
@@ -26,21 +27,6 @@ export function App() {
         console.error('TODO: logout!');
     }
 
-    let loginOutFunctions;
-
-    if (user) {
-        loginOutFunctions =
-            <div className="buttons">
-                <button onClick={logout} className="button is-light">{t('Logout')}<code> {user.name}</code></button>
-            </div>;
-    } else {
-        loginOutFunctions =
-            <div className="buttons">
-                <Link className="button is-light" to={registerUrl}>{t('Registrieren')}</Link>
-                <Link className="button is-light" to={loginUrl}>{t('Login')}</Link>
-            </div>;
-    }
-
     return (
         <>
             <nav className="navbar is-dark">
@@ -58,18 +44,30 @@ export function App() {
                             <div className="navbar-link">{t('Sprache')}</div>
                             <div className="navbar-dropdown">
                                 {languages.map((lang) =>
-                                    <a className="navbar-item" key={lang} href=""
-                                       onClick={() => i18next.changeLanguage(lang)}>{lang}</a>
+                                    <div className="navbar-item" key={lang}
+                                         onClick={() => i18next.changeLanguage(lang)}>{lang}</div>
                                 )}
                             </div>
                         </div>
-                        <div className="navbar-item">{loginOutFunctions}</div>
+                        <div className="navbar-item">
+                            {user
+                                ? <div className="buttons">
+                                    <button className="button is-light"
+                                            onClick={logout}>{t('Logout')}<code> {user.name}</code></button>
+                                </div>
+                                : <div className="buttons">
+                                    <Link className="button is-light" to={registerUrl}>{t('Registrieren')}</Link>
+                                    <Link className="button is-light" to={loginUrl}>{t('Login')}</Link>
+                                </div>
+                            }
+                        </div>
                     </div>
                 </div>
             </nav>
             <Switch>
                 <Route path={homeUrl} exact component={Home}/>
                 <Route path={registerUrl} component={RegisterForm}/>
+                <Route path={loginUrl} component={LoginForm}/>
             </Switch>
         </>
     );
