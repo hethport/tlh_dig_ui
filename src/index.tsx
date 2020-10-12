@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import {render} from 'react-dom';
 import './index.sass';
 import {App} from './App';
 import {BrowserRouter as Router} from "react-router-dom";
@@ -10,6 +10,7 @@ import {I18nextProvider, initReactI18next} from "react-i18next";
 
 import de from './locales/locale_de.json';
 import en from './locales/locale_en.json';
+import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
 
 // noinspection JSIgnoredPromiseFromCall
 i18n
@@ -26,12 +27,19 @@ i18n
         }
     });
 
-ReactDOM.render(
+const apolloClient = new ApolloClient({
+    uri: '/tlh_dig/graphql.php',
+    cache: new InMemoryCache()
+});
+
+render(
     <React.StrictMode>
         <I18nextProvider i18n={i18n}>
-            <Router>
-                <App/>
-            </Router>
+            <ApolloProvider client={apolloClient}>
+                <Router>
+                    <App/>
+                </Router>
+            </ApolloProvider>
         </I18nextProvider>
     </React.StrictMode>,
     document.getElementById('root')
