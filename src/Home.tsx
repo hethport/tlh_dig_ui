@@ -1,29 +1,10 @@
 import React from 'react';
-import {gql, useQuery} from "@apollo/client";
 import {useTranslation} from "react-i18next";
-
-const IndexQuery = gql`
-query IndexQuery {
-    allManuscripts {
-        mainIdentifier {
-            type
-            identifier
-        }
-    }
-}`;
-
-interface Response {
-    allManuscripts: {
-        mainIdentifier: {
-            type: any;
-            identifier: string;
-        };
-    }[];
-}
+import {useIndexQuery} from './generated/graphql';
 
 export function Home() {
     const {t} = useTranslation('common');
-    const {loading, error, data} = useQuery<Response>(IndexQuery);
+    const {loading, error, data} = useIndexQuery();
 
     if (loading) {
         return (

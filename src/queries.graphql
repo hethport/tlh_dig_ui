@@ -1,0 +1,8 @@
+query Index {
+    allManuscripts {
+        mainIdentifier {
+            type
+            identifier
+        }
+    }
+}
