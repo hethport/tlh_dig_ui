@@ -9,9 +9,10 @@ interface Props {
     label: string;
     errors: string | undefined;
     touched: boolean | undefined;
+    autoFocus?: boolean;
 }
 
-export function BulmaField({id, type, initialValue, label, errors, touched}: Props) {
+export function BulmaField({id, type, initialValue, label, errors, touched, autoFocus}: Props) {
     return <div className="field">
         <label htmlFor="password" className="label">{label}:</label>
         <div className="control">
@@ -27,6 +28,7 @@ export function BulmaField({id, type, initialValue, label, errors, touched}: Pro
                         'is-danger': touched && errors
                     })
                 }
+                autoFocus={!!autoFocus}
             />
             {errors && <p className="help is-danger">{errors}</p>}
         </div>

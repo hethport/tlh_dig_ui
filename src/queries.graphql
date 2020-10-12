@@ -1,3 +1,5 @@
+# /
+
 query Index {
     allManuscripts {
         mainIdentifier {
@@ -7,6 +9,23 @@ query Index {
     }
 }
 
+# /register
+
 mutation Register($userInput: UserInput!) {
     register(userInput: $userInput)
+}
+
+# /login
+
+fragment LoggedInUser on LoggedInUser {
+    username
+    name
+    jwt
+    affiliation
+}
+
+mutation Login($username: String!, $password: String!) {
+    login(username: $username, password: $password) {
+        ...LoggedInUser
+    }
 }

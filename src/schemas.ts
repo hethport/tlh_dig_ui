@@ -1,5 +1,5 @@
 import {object as yupObject, string as yupString} from "yup";
-import {UserInput} from "./generated/graphql";
+import {LoginMutationVariables, UserInput} from "./generated/graphql";
 
 export const registerSchema = yupObject<UserInput>().shape({
     username: yupString()
@@ -22,3 +22,14 @@ export const registerSchema = yupObject<UserInput>().shape({
     affiliation: yupString()
         .notRequired()
 });
+
+export const loginSchema = yupObject<LoginMutationVariables>().shape({
+    username: yupString()
+        .min(4)
+        .max(50)
+        .required(),
+    password: yupString()
+        .min(4)
+        .max(50)
+        .required()
+})
