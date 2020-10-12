@@ -1,14 +1,40 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import './index.sass';
+import {App} from './App';
+import {BrowserRouter as Router} from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
 
+import i18n from "i18next";
+import {I18nextProvider, initReactI18next} from "react-i18next";
+
+import de from './locales/locale_de.json';
+import en from './locales/locale_en.json';
+
+// noinspection JSIgnoredPromiseFromCall
+i18n
+    .use(initReactI18next)
+    .init({
+        resources: {
+            de,
+            en
+        },
+        lng: 'de',
+        fallbackLng: 'de',
+        interpolation: {
+            escapeValue: false
+        }
+    });
+
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+    <React.StrictMode>
+        <I18nextProvider i18n={i18n}>
+            <Router>
+                <App/>
+            </Router>
+        </I18nextProvider>
+    </React.StrictMode>,
+    document.getElementById('root')
 );
 
 // If you want your app to work offline and load faster, you can change

@@ -1,0 +1,9 @@
+{
+  "common": {
+    "Login": "Login",
+    "Registrieren": "Registrieren",
+    "Logout": "Logout",
+    "Sprache": "Sprache",
+    "Manuskript erstellen": "Manuskript erstellen"
+  }
+}
