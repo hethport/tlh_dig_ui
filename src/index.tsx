@@ -28,7 +28,8 @@ i18n
     });
 
 const apolloClient = new ApolloClient({
-    uri: '/tlh_dig/graphql.php',
+    // TODO: remove http://localhost:8066
+    uri: 'http://localhost:8066/tlh_dig/graphql.php',
     cache: new InMemoryCache()
 });
 
