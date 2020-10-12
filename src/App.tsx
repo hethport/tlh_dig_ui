@@ -10,11 +10,16 @@ interface User {
     name: string;
 }
 
+function getUser(): User | undefined {
+    return undefined; //{name: 'user1'};
+}
+
 export function App() {
 
     const {t} = useTranslation('common');
 
-    const user: User | undefined = {name: 'user1'};
+    const user: User | undefined = getUser();
+
     const languages: string[] = ["de", "en"];
 
     function logout(): void {
