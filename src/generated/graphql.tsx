@@ -135,18 +135,9 @@ export type ManuscriptIdentifierInput = {
   identifier: Scalars['String'];
 };
 
-export type IndexQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type IndexQuery = (
-  { __typename?: 'Query' }
-  & { allManuscripts: Array<(
-    { __typename?: 'ManuscriptMetaData' }
-    & { mainIdentifier: (
-      { __typename?: 'ManuscriptIdentifier' }
-      & Pick<ManuscriptIdentifier, 'type' | 'identifier'>
-    ) }
-  )> }
+export type ManuscriptIdentifierFragment = (
+  { __typename?: 'ManuscriptIdentifier' }
+  & Pick<ManuscriptIdentifier, 'type' | 'identifier'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -178,6 +169,103 @@ export type LoginMutation = (
   )> }
 );
 
+export type ManuscriptBasicDataFragment = (
+  { __typename?: 'ManuscriptMetaData' }
+  & Pick<ManuscriptMetaData, 'status'>
+  & { mainIdentifier: (
+    { __typename?: 'ManuscriptIdentifier' }
+    & ManuscriptIdentifierFragment
+  ) }
+);
+
+export type IndexQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type IndexQuery = (
+  { __typename?: 'Query' }
+  & { allManuscripts: Array<(
+    { __typename?: 'ManuscriptMetaData' }
+    & ManuscriptBasicDataFragment
+  )> }
+);
+
+export type CreateManuscriptMutationVariables = Exact<{
+  jwt: Scalars['String'];
+  manuscriptMetaData?: Maybe<ManuscriptMetaDataInput>;
+}>;
+
+
+export type CreateManuscriptMutation = (
+  { __typename?: 'Mutation' }
+  & { me?: Maybe<(
+    { __typename?: 'LoggedInUserMutations' }
+    & Pick<LoggedInUserMutations, 'createManuscript'>
+  )> }
+);
+
+export type ManuscriptMetaDataFragment = (
+  { __typename?: 'ManuscriptMetaData' }
+  & Pick<ManuscriptMetaData, 'bibliography' | 'cthClassification' | 'palaeographicClassification' | 'palaeographicClassificationSure' | 'provenance' | 'creatorUsername' | 'pictureUrls'>
+  & { mainIdentifier: (
+    { __typename?: 'ManuscriptIdentifier' }
+    & ManuscriptIdentifierFragment
+  ), otherIdentifiers: Array<(
+    { __typename?: 'ManuscriptIdentifier' }
+    & ManuscriptIdentifierFragment
+  )> }
+);
+
+export type ManuscriptQueryVariables = Exact<{
+  mainIdentifier: Scalars['String'];
+}>;
+
+
+export type ManuscriptQuery = (
+  { __typename?: 'Query' }
+  & { manuscript?: Maybe<(
+    { __typename?: 'ManuscriptMetaData' }
+    & ManuscriptMetaDataFragment
+  )> }
+);
+
+export type ManuscriptIdentWithCreatorFragment = (
+  { __typename?: 'ManuscriptMetaData' }
+  & Pick<ManuscriptMetaData, 'pictureUrls' | 'creatorUsername'>
+  & { mainIdentifier: (
+    { __typename?: 'ManuscriptIdentifier' }
+    & ManuscriptIdentifierFragment
+  ) }
+);
+
+export type UploadPicturesQueryVariables = Exact<{
+  mainIdentifier: Scalars['String'];
+}>;
+
+
+export type UploadPicturesQuery = (
+  { __typename?: 'Query' }
+  & { manuscript?: Maybe<(
+    { __typename?: 'ManuscriptMetaData' }
+    & ManuscriptIdentWithCreatorFragment
+  )> }
+);
+
+export type TransliterationInputQueryVariables = Exact<{
+  mainIdentifier: Scalars['String'];
+}>;
+
+
+export type TransliterationInputQuery = (
+  { __typename?: 'Query' }
+  & { manuscript?: Maybe<(
+    { __typename?: 'ManuscriptMetaData' }
+    & { mainIdentifier: (
+      { __typename?: 'ManuscriptIdentifier' }
+      & ManuscriptIdentifierFragment
+    ) }
+  )> }
+);
+
 export const LoggedInUserFragmentDoc = gql`
     fragment LoggedInUser on LoggedInUser {
   username
@@ -186,41 +274,46 @@ export const LoggedInUserFragmentDoc = gql`
   affiliation
 }
     `;
-export const IndexDocument = gql`
-    query Index {
-  allManuscripts {
-    mainIdentifier {
-      type
-      identifier
-    }
-  }
+export const ManuscriptIdentifierFragmentDoc = gql`
+    fragment ManuscriptIdentifier on ManuscriptIdentifier {
+  type
+  identifier
 }
     `;
-
-/**
- * __useIndexQuery__
- *
- * To run a query within a React component, call `useIndexQuery` and pass it any options that fit your needs.
- * When your component renders, `useIndexQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useIndexQuery({
- *   variables: {
- *   },
- * });
- */
-export function useIndexQuery(baseOptions?: Apollo.QueryHookOptions<IndexQuery, IndexQueryVariables>) {
-        return Apollo.useQuery<IndexQuery, IndexQueryVariables>(IndexDocument, baseOptions);
-      }
-export function useIndexLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IndexQuery, IndexQueryVariables>) {
-          return Apollo.useLazyQuery<IndexQuery, IndexQueryVariables>(IndexDocument, baseOptions);
-        }
-export type IndexQueryHookResult = ReturnType<typeof useIndexQuery>;
-export type IndexLazyQueryHookResult = ReturnType<typeof useIndexLazyQuery>;
-export type IndexQueryResult = Apollo.QueryResult<IndexQuery, IndexQueryVariables>;
+export const ManuscriptBasicDataFragmentDoc = gql`
+    fragment ManuscriptBasicData on ManuscriptMetaData {
+  mainIdentifier {
+    ...ManuscriptIdentifier
+  }
+  status
+}
+    ${ManuscriptIdentifierFragmentDoc}`;
+export const ManuscriptMetaDataFragmentDoc = gql`
+    fragment ManuscriptMetaData on ManuscriptMetaData {
+  mainIdentifier {
+    ...ManuscriptIdentifier
+  }
+  otherIdentifiers {
+    ...ManuscriptIdentifier
+  }
+  bibliography
+  cthClassification
+  palaeographicClassification
+  palaeographicClassificationSure
+  provenance
+  creatorUsername
+  pictureUrls
+}
+    ${ManuscriptIdentifierFragmentDoc}`;
+export const ManuscriptIdentWithCreatorFragmentDoc = gql`
+    fragment ManuscriptIdentWithCreator on ManuscriptMetaData {
+  mainIdentifier {
+    ...ManuscriptIdentifier
+  }
+  pictureUrls
+  creatorUsername
+}
+    ${ManuscriptIdentifierFragmentDoc}`;
 export const RegisterDocument = gql`
     mutation Register($userInput: UserInput!) {
   register(userInput: $userInput)
@@ -284,6 +377,172 @@ export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginM
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
+export const IndexDocument = gql`
+    query Index {
+  allManuscripts {
+    ...ManuscriptBasicData
+  }
+}
+    ${ManuscriptBasicDataFragmentDoc}`;
+
+/**
+ * __useIndexQuery__
+ *
+ * To run a query within a React component, call `useIndexQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIndexQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useIndexQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useIndexQuery(baseOptions?: Apollo.QueryHookOptions<IndexQuery, IndexQueryVariables>) {
+        return Apollo.useQuery<IndexQuery, IndexQueryVariables>(IndexDocument, baseOptions);
+      }
+export function useIndexLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IndexQuery, IndexQueryVariables>) {
+          return Apollo.useLazyQuery<IndexQuery, IndexQueryVariables>(IndexDocument, baseOptions);
+        }
+export type IndexQueryHookResult = ReturnType<typeof useIndexQuery>;
+export type IndexLazyQueryHookResult = ReturnType<typeof useIndexLazyQuery>;
+export type IndexQueryResult = Apollo.QueryResult<IndexQuery, IndexQueryVariables>;
+export const CreateManuscriptDocument = gql`
+    mutation CreateManuscript($jwt: String!, $manuscriptMetaData: ManuscriptMetaDataInput) {
+  me(jwt: $jwt) {
+    createManuscript(values: $manuscriptMetaData)
+  }
+}
+    `;
+export type CreateManuscriptMutationFn = Apollo.MutationFunction<CreateManuscriptMutation, CreateManuscriptMutationVariables>;
+
+/**
+ * __useCreateManuscriptMutation__
+ *
+ * To run a mutation, you first call `useCreateManuscriptMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateManuscriptMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createManuscriptMutation, { data, loading, error }] = useCreateManuscriptMutation({
+ *   variables: {
+ *      jwt: // value for 'jwt'
+ *      manuscriptMetaData: // value for 'manuscriptMetaData'
+ *   },
+ * });
+ */
+export function useCreateManuscriptMutation(baseOptions?: Apollo.MutationHookOptions<CreateManuscriptMutation, CreateManuscriptMutationVariables>) {
+        return Apollo.useMutation<CreateManuscriptMutation, CreateManuscriptMutationVariables>(CreateManuscriptDocument, baseOptions);
+      }
+export type CreateManuscriptMutationHookResult = ReturnType<typeof useCreateManuscriptMutation>;
+export type CreateManuscriptMutationResult = Apollo.MutationResult<CreateManuscriptMutation>;
+export type CreateManuscriptMutationOptions = Apollo.BaseMutationOptions<CreateManuscriptMutation, CreateManuscriptMutationVariables>;
+export const ManuscriptDocument = gql`
+    query Manuscript($mainIdentifier: String!) {
+  manuscript(mainIdentifier: $mainIdentifier) {
+    ...ManuscriptMetaData
+  }
+}
+    ${ManuscriptMetaDataFragmentDoc}`;
+
+/**
+ * __useManuscriptQuery__
+ *
+ * To run a query within a React component, call `useManuscriptQuery` and pass it any options that fit your needs.
+ * When your component renders, `useManuscriptQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useManuscriptQuery({
+ *   variables: {
+ *      mainIdentifier: // value for 'mainIdentifier'
+ *   },
+ * });
+ */
+export function useManuscriptQuery(baseOptions?: Apollo.QueryHookOptions<ManuscriptQuery, ManuscriptQueryVariables>) {
+        return Apollo.useQuery<ManuscriptQuery, ManuscriptQueryVariables>(ManuscriptDocument, baseOptions);
+      }
+export function useManuscriptLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ManuscriptQuery, ManuscriptQueryVariables>) {
+          return Apollo.useLazyQuery<ManuscriptQuery, ManuscriptQueryVariables>(ManuscriptDocument, baseOptions);
+        }
+export type ManuscriptQueryHookResult = ReturnType<typeof useManuscriptQuery>;
+export type ManuscriptLazyQueryHookResult = ReturnType<typeof useManuscriptLazyQuery>;
+export type ManuscriptQueryResult = Apollo.QueryResult<ManuscriptQuery, ManuscriptQueryVariables>;
+export const UploadPicturesDocument = gql`
+    query UploadPictures($mainIdentifier: String!) {
+  manuscript(mainIdentifier: $mainIdentifier) {
+    ...ManuscriptIdentWithCreator
+  }
+}
+    ${ManuscriptIdentWithCreatorFragmentDoc}`;
+
+/**
+ * __useUploadPicturesQuery__
+ *
+ * To run a query within a React component, call `useUploadPicturesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUploadPicturesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUploadPicturesQuery({
+ *   variables: {
+ *      mainIdentifier: // value for 'mainIdentifier'
+ *   },
+ * });
+ */
+export function useUploadPicturesQuery(baseOptions?: Apollo.QueryHookOptions<UploadPicturesQuery, UploadPicturesQueryVariables>) {
+        return Apollo.useQuery<UploadPicturesQuery, UploadPicturesQueryVariables>(UploadPicturesDocument, baseOptions);
+      }
+export function useUploadPicturesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UploadPicturesQuery, UploadPicturesQueryVariables>) {
+          return Apollo.useLazyQuery<UploadPicturesQuery, UploadPicturesQueryVariables>(UploadPicturesDocument, baseOptions);
+        }
+export type UploadPicturesQueryHookResult = ReturnType<typeof useUploadPicturesQuery>;
+export type UploadPicturesLazyQueryHookResult = ReturnType<typeof useUploadPicturesLazyQuery>;
+export type UploadPicturesQueryResult = Apollo.QueryResult<UploadPicturesQuery, UploadPicturesQueryVariables>;
+export const TransliterationInputDocument = gql`
+    query TransliterationInput($mainIdentifier: String!) {
+  manuscript(mainIdentifier: $mainIdentifier) {
+    mainIdentifier {
+      ...ManuscriptIdentifier
+    }
+  }
+}
+    ${ManuscriptIdentifierFragmentDoc}`;
+
+/**
+ * __useTransliterationInputQuery__
+ *
+ * To run a query within a React component, call `useTransliterationInputQuery` and pass it any options that fit your needs.
+ * When your component renders, `useTransliterationInputQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useTransliterationInputQuery({
+ *   variables: {
+ *      mainIdentifier: // value for 'mainIdentifier'
+ *   },
+ * });
+ */
+export function useTransliterationInputQuery(baseOptions?: Apollo.QueryHookOptions<TransliterationInputQuery, TransliterationInputQueryVariables>) {
+        return Apollo.useQuery<TransliterationInputQuery, TransliterationInputQueryVariables>(TransliterationInputDocument, baseOptions);
+      }
+export function useTransliterationInputLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TransliterationInputQuery, TransliterationInputQueryVariables>) {
+          return Apollo.useLazyQuery<TransliterationInputQuery, TransliterationInputQueryVariables>(TransliterationInputDocument, baseOptions);
+        }
+export type TransliterationInputQueryHookResult = ReturnType<typeof useTransliterationInputQuery>;
+export type TransliterationInputLazyQueryHookResult = ReturnType<typeof useTransliterationInputLazyQuery>;
+export type TransliterationInputQueryResult = Apollo.QueryResult<TransliterationInputQuery, TransliterationInputQueryVariables>;
 
       export interface IntrospectionResultData {
         __schema: {

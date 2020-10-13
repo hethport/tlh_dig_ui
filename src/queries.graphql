@@ -1,22 +1,15 @@
-# /
-
-query Index {
-    allManuscripts {
-        mainIdentifier {
-            type
-            identifier
-        }
-    }
+# Common fragments
+fragment ManuscriptIdentifier on ManuscriptIdentifier {
+    type
+    identifier
 }
 
 # /register
-
 mutation Register($userInput: UserInput!) {
     register(userInput: $userInput)
 }
 
 # /login
-
 fragment LoggedInUser on LoggedInUser {
     username
     name
@@ -27,5 +20,74 @@ fragment LoggedInUser on LoggedInUser {
 mutation Login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
         ...LoggedInUser
+    }
+}
+
+# /
+fragment ManuscriptBasicData on ManuscriptMetaData {
+    mainIdentifier {
+        ...ManuscriptIdentifier
+    }
+    status
+}
+
+query Index {
+    allManuscripts {
+        ...ManuscriptBasicData
+    }
+}
+
+# /createManuscript
+mutation CreateManuscript($jwt: String!, $manuscriptMetaData : ManuscriptMetaDataInput) {
+    me(jwt: $jwt) {
+        createManuscript(values: $manuscriptMetaData)
+    }
+}
+
+
+# /manuscripts/:id
+fragment ManuscriptMetaData on ManuscriptMetaData {
+    mainIdentifier {
+        ...ManuscriptIdentifier
+    }
+    otherIdentifiers {
+        ...ManuscriptIdentifier
+    }
+    bibliography
+    cthClassification
+    palaeographicClassification
+    palaeographicClassificationSure
+    provenance
+    creatorUsername
+    pictureUrls
+}
+
+query Manuscript($mainIdentifier: String!) {
+    manuscript(mainIdentifier: $mainIdentifier) {
+        ...ManuscriptMetaData
+    }
+}
+
+# /manuscripts/:id/uploadPictures
+fragment ManuscriptIdentWithCreator on ManuscriptMetaData {
+    mainIdentifier {
+        ...ManuscriptIdentifier
+    }
+    pictureUrls
+    creatorUsername
+}
+
+query UploadPictures($mainIdentifier: String!) {
+    manuscript(mainIdentifier: $mainIdentifier) {
+        ...ManuscriptIdentWithCreator
+    }
+}
+
+# /manuscript/:id/transliterationInput
+query TransliterationInput($mainIdentifier: String!) {
+    manuscript(mainIdentifier: $mainIdentifier) {
+        mainIdentifier {
+            ...ManuscriptIdentifier
+        }
     }
 }

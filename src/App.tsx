@@ -2,12 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Link, Route, Switch, useHistory} from 'react-router-dom';
 import {createManuscriptUrl, homeUrl, loginUrl, registerUrl} from './urls';
 import {Home} from './Home';
-import {RegisterForm} from './RegisterForm';
-import {LoginForm} from './LoginForm';
+import {RegisterForm} from './forms/RegisterForm';
+import {LoginForm} from './forms/LoginForm';
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import {LoggedInUserFragment} from "./generated/graphql";
 import {authenticationService} from "./_services/authentication.service";
+import {CreateManuscriptForm} from "./forms/CreateManuscriptForm";
 
 interface State {
     currentUser: LoggedInUserFragment | null;
@@ -74,6 +75,7 @@ export function App() {
                 <Route path={homeUrl} exact component={Home}/>
                 <Route path={registerUrl} component={RegisterForm}/>
                 <Route path={loginUrl} component={LoginForm}/>
+                <Route path={createManuscriptUrl} component={CreateManuscriptForm}/>
             </Switch>
         </>
     );

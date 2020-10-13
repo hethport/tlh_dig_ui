@@ -1,15 +1,24 @@
 {
+  "Manuskript erstellen": "Create manuscript",
+  "Sprache": "Language",
   "Logout": "Logout",
   "Registrieren": "Sign up",
   "Login": "Sign in",
-  "Manuskript erstellen": "Create manuscript",
-  "Sprache": "Language",
-  "Lade Daten": "Loading Data",
+  "Paläographische Klassifikation": "Palaeographic classification",
+  "Gesichert": "Sure",
+  "Nicht gesichert": "Not sure",
+  "Provenienz": "Provenance",
+  "Vorschlag CTH-Klassifikation": "Proposed CTH classification",
+  "Bibliographie": "Bibliography",
+  "Manuskript {{which}} wurde erfolgreich erstellt": "Manuscript {{which}} was successfully created",
   "Nutzername": "Username",
   "Passwort": "Password",
+  "Hauptidentifikator": "Main identifier",
+  "Identifikator": "Identifier",
   "Passwort wiederholen": "Repeat password",
   "Name": "Name",
   "E-Mail": "E-Mail",
   "Affiliation": "Affiliation",
-  "Nutzer {{who}} wurde erfolgreich registriert": "User {{who}} was successfully signed up"
+  "Nutzer {{who}} wurde erfolgreich registriert": "User {{who}} was successfully signed up",
+  "Lade Daten": "Loading Data"
 }
