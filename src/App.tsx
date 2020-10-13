@@ -1,30 +1,36 @@
-import React from 'react';
-import {Link, Route, Switch} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {Link, Route, Switch, useHistory} from 'react-router-dom';
 import {createManuscriptUrl, homeUrl, loginUrl, registerUrl} from './urls';
 import {Home} from './Home';
 import {RegisterForm} from './RegisterForm';
 import {LoginForm} from './LoginForm';
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
+import {LoggedInUserFragment} from "./generated/graphql";
+import {authenticationService} from "./_services/authentication.service";
 
-interface User {
-    name: string;
-}
-
-function getUser(): User | undefined {
-    return undefined; //{name: 'user1'};
+interface State {
+    currentUser: LoggedInUserFragment | null;
 }
 
 export function App() {
 
+    const [state, setState] = useState<State>({currentUser: null})
     const {t} = useTranslation('common');
+    const history = useHistory();
 
-    const user: User | undefined = getUser();
+    useEffect(() => {
+        authenticationService.currentUser
+            .subscribe((currentUser) => setState({currentUser}))
+    }, []);
+
+    const user: LoggedInUserFragment | null = state.currentUser;
 
     const languages: string[] = ["de", "en"];
 
-    function logout(): void {
-        console.error('TODO: logout!');
+    function logout() {
+        authenticationService.logout();
+        history.push(loginUrl);
     }
 
     return (
