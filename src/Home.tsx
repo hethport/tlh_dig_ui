@@ -2,7 +2,7 @@ import React from 'react';
 import {useTranslation} from "react-i18next";
 import {useIndexQuery} from './generated/graphql';
 import classnames from 'classnames';
-import {manuscriptUrl} from './urls';
+import {myManuscriptUrl} from './urls';
 import {Link} from 'react-router-dom';
 
 export function Home() {
@@ -36,7 +36,7 @@ export function Home() {
                     {data.allManuscripts.map((d) =>
                         <tr key={d.mainIdentifier.identifier}>
                             <td>
-                                <Link to={manuscriptUrl(d.mainIdentifier.identifier)}>
+                                <Link to={myManuscriptUrl.url({mainIdentifier: d.mainIdentifier.identifier})}>
                                     {d.mainIdentifier.identifier} ({d.mainIdentifier.type})
                                 </Link>
                             </td>

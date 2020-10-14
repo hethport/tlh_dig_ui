@@ -12,6 +12,7 @@ import common_de from './locales/de/common.json';
 import common_en from './locales/en/common.json';
 
 import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import {serverUrl} from "./urls";
 
 // noinspection JSIgnoredPromiseFromCall
 i18n
@@ -29,8 +30,8 @@ i18n
     });
 
 const apolloClient = new ApolloClient({
-    // TODO: remove http://localhost:8066
-    uri: 'http://localhost:8066/tlh_dig/graphql.php',
+    // TODO: remove serverUrl!
+    uri: `${serverUrl}/graphql.php`,
     cache: new InMemoryCache()
 });
 

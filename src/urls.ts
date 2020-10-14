@@ -1,3 +1,5 @@
+export const serverUrl = 'http://localhost:8066/tlh_dig'
+
 export const homeUrl = '/';
 
 export const createManuscriptUrl = '/createManuscript';
@@ -6,18 +8,14 @@ export const registerUrl = '/registerForm';
 export const loginUrl = '/login';
 
 
-export interface ManuscriptUrlParams {
-    mainIdentifier: string;
-}
-
-export function manuscriptUrl(manuscriptId: string): string {
-    return `/manuscript/${manuscriptId}`;
-}
-
-
 interface MyUrl<T> {
     pattern: string;
     url: (params: T) => string;
+}
+
+
+export interface ManuscriptUrlParams {
+    mainIdentifier: string;
 }
 
 export const myManuscriptUrl: MyUrl<ManuscriptUrlParams> = {

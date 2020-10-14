@@ -34,35 +34,3 @@ export function BulmaFieldWithLabel({id, type, initialValue, label, errors, touc
         </div>
     );
 }
-
-// Select
-
-export interface SelectOption {
-    value: string;
-    description: string;
-}
-
-interface SelectProps extends BaseInputProps {
-    initialValue?: string;
-    isFullwidth?: boolean;
-    options: SelectOption[];
-}
-
-export function BulmaSelect({id, isFullwidth, options, errors, touched}: SelectProps): JSX.Element {
-
-    const classes = classnames('select', {
-        'is-fullwidth': isFullwidth,
-        'is-success': touched && !errors,
-        'is-danger': touched && errors
-    });
-
-    return (
-        <div className={classes}>
-            <Field as="select" id={id} name={id}>
-                {options.map((opt) =>
-                    <option key={opt.value.toString()} value={opt.value.toString()}>{opt.description}</option>
-                )}
-            </Field>
-        </div>
-    );
-}

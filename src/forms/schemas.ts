@@ -15,12 +15,6 @@ import {
     UserInput
 } from "../generated/graphql";
 
-/**
- * @deprecated
- */
-export const palaeoClasses: PalaeographicClassification[] = Object.keys(PalaeographicClassification)
-    .map((pc) => PalaeographicClassification[pc as keyof typeof PalaeographicClassification]);
-
 export const registerSchema = yupObject<UserInput>().shape({
     // TODO: test password === passwordRepeat
     username: yupString()
