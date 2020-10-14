@@ -1,12 +1,13 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {
+    ManuscriptIdentifierInput,
     ManuscriptIdentifierType,
     ManuscriptMetaDataInput,
     PalaeographicClassification,
     useCreateManuscriptMutation
 } from "../generated/graphql";
-import {ErrorMessage, Field, Form, Formik} from "formik";
+import {ErrorMessage, Field, FieldArray, FieldArrayRenderProps, Form, Formik, FormikErrors} from "formik";
 import {manuscriptSchema, palaeoClasses} from './schemas';
 import classnames from "classnames";
 import {ManuscriptIdInputField} from './ManuscriptIdInputField';
@@ -17,7 +18,14 @@ import {BulmaFieldWithLabel, BulmaSelect, SelectOption} from "./BulmaFields";
 
 const palaeoClassOptions: SelectOption[] = palaeoClasses.map((pc) => {
     return {value: pc, description: pc};
-})
+});
+
+function newManuscriptIdentifier(): ManuscriptIdentifierInput {
+    return {
+        identifier: '',
+        identifierType: ManuscriptIdentifierType.CollectionNumber
+    };
+}
 
 export function CreateManuscriptForm() {
 
@@ -31,7 +39,8 @@ export function CreateManuscriptForm() {
     }
 
     const initialValues: ManuscriptMetaDataInput = {
-        mainIdentifier: {identifier: '', identifierType: ManuscriptIdentifierType.CollectionNumber},
+        mainIdentifier: newManuscriptIdentifier(),
+        otherIdentifiers: [],
         palaeographicClassification: PalaeographicClassification.Unclassified,
         palaeographicClassificationSure: false,
     }
@@ -55,16 +64,47 @@ export function CreateManuscriptForm() {
 
                 {({initialValues, errors, touched, isSubmitting, setFieldValue, values}) =>
                     <Form>
-                        <ManuscriptIdInputField
-                            mainId="mainIdentifier" initialValue={initialValues.mainIdentifier}
-                            errors={errors.mainIdentifier} touched={touched.mainIdentifier}/>
+                        <div className="field">
+                            <label className="label">{t('Hauptidentifikator')}</label>
+                            <div className="control">
+                                <ManuscriptIdInputField mainId="mainIdentifier" value={values.mainIdentifier}
+                                                        errors={errors.mainIdentifier}
+                                                        touched={touched.mainIdentifier}/>
+                            </div>
+                        </div>
+
+                        <FieldArray name="otherIdentifiers" render={(arrayHelpers: FieldArrayRenderProps) => {
+                            return (
+                                <>
+                                    <div className="field">
+                                        <label className="label">{t('Andere Identifikatoren')}:</label>
+                                        <div>
+                                            {values.otherIdentifiers!.map((otherIdentifier: ManuscriptIdentifierInput, index: number) =>
+                                                <ManuscriptIdInputField
+                                                    mainId={`otherIdentifiers.${index}`} key={index}
+                                                    value={otherIdentifier}
+                                                    deleteFunc={() => arrayHelpers.remove(index)}
+                                                    errors={errors.otherIdentifiers ? errors.otherIdentifiers[index] as FormikErrors<ManuscriptIdentifierInput> : undefined}
+                                                    touched={touched.otherIdentifiers ? touched.otherIdentifiers[index] : undefined}/>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div className="field">
+                                        <button className="button is-link" type="button"
+                                                onClick={() => arrayHelpers.push(newManuscriptIdentifier())}>+
+                                        </button>
+                                    </div>
+                                </>
+                            );
+                        }
+                        }/>
 
                         <div className="field">
                             <label className="label">{t('Paläographische Klassifikation')}:</label>
                             <div className="field has-addons">
                                 <div className="control is-expanded">
-                                    <BulmaSelect id="palaeographicClassification"
-                                                 isFullwidth={true}
+                                    <BulmaSelect id="palaeographicClassification" isFullwidth={true}
                                                  options={palaeoClassOptions}
                                                  errors={errors.palaeographicClassification}
                                                  touched={touched.palaeographicClassification}/>
@@ -100,11 +140,9 @@ export function CreateManuscriptForm() {
                             </div>
                         </div>
 
-                        {data?.me?.createManuscript &&
-                        <div className="notification is-success has-text-centered">
+                        {data?.me?.createManuscript && <div className="notification is-success has-text-centered">
                             {t('Manuskript {{which}} wurde erfolgreich erstellt.', {which: data.me.createManuscript})}
-                        </div>
-                        }
+                        </div>}
 
                         <div className="field">
                             <button type="submit" disabled={isSubmitting || !!data?.me?.createManuscript}

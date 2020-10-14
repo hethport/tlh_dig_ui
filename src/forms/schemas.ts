@@ -1,8 +1,8 @@
 import {
     array as yupArray,
-    number as yupNumber,
     boolean as yupBoolean,
     mixed as yupMixed,
+    number as yupNumber,
     object as yupObject,
     string as yupString
 } from "yup";
@@ -15,11 +15,11 @@ import {
     UserInput
 } from "../generated/graphql";
 
+/**
+ * @deprecated
+ */
 export const palaeoClasses: PalaeographicClassification[] = Object.keys(PalaeographicClassification)
     .map((pc) => PalaeographicClassification[pc as keyof typeof PalaeographicClassification]);
-
-export const manuscriptIdentifierTypes: ManuscriptIdentifierType[] = Object.keys(ManuscriptIdentifierType)
-    .map((mi) => ManuscriptIdentifierType[mi as keyof typeof ManuscriptIdentifierType])
 
 export const registerSchema = yupObject<UserInput>().shape({
     // TODO: test password === passwordRepeat

@@ -122,7 +122,7 @@ export type LoggedInUserMutationsCreateManuscriptArgs = {
 
 export type ManuscriptMetaDataInput = {
   mainIdentifier: ManuscriptIdentifierInput;
-  otherIdentifiers?: Maybe<Array<Maybe<ManuscriptIdentifierInput>>>;
+  otherIdentifiers: Array<ManuscriptIdentifierInput>;
   palaeographicClassification: PalaeographicClassification;
   palaeographicClassificationSure: Scalars['Boolean'];
   provenance?: Maybe<Scalars['String']>;

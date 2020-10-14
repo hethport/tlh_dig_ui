@@ -17,26 +17,18 @@ interface InputProps extends BaseInputProps {
     autoFocus?: boolean;
 }
 
-export function BulmaField({id, type, initialValue, label, errors, touched, autoFocus}: InputProps): JSX.Element {
-
+export function BulmaFieldWithLabel({id, type, initialValue, label, errors, touched, autoFocus}: InputProps): JSX.Element {
     const classes = classnames("input", {
         'is-success': touched && !errors,
         'is-danger': touched && errors
     });
 
     return (
-        <Field type={type ? type : 'text'} id={id} name={id} value={initialValue || undefined} placeholder={label}
-               autoFocus={!!autoFocus} className={classes}/>
-    );
-}
-
-export function BulmaFieldWithLabel({id, type, initialValue, label, errors, touched, autoFocus}: InputProps): JSX.Element {
-    return (
         <div className="field">
             <label htmlFor="password" className="label">{label}:</label>
             <div className="control">
-                <BulmaField id={id} label={label} errors={errors} touched={touched} initialValue={initialValue}
-                            type={type} autoFocus={autoFocus}/>
+                <Field type={type || 'text'} id={id} name={id} value={initialValue || undefined}
+                       placeholder={label} autoFocus={!!autoFocus} className={classes}/>
                 <ErrorMessage name={id}>{msg => <p className="help is-danger">{msg}</p>}</ErrorMessage>
             </div>
         </div>
@@ -58,7 +50,11 @@ interface SelectProps extends BaseInputProps {
 
 export function BulmaSelect({id, isFullwidth, options, errors, touched}: SelectProps): JSX.Element {
 
-    const classes = classnames('select', {'is-fullwidth': isFullwidth});
+    const classes = classnames('select', {
+        'is-fullwidth': isFullwidth,
+        'is-success': touched && !errors,
+        'is-danger': touched && errors
+    });
 
     return (
         <div className={classes}>
