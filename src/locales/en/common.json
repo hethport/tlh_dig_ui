@@ -24,5 +24,16 @@
   "E-Mail": "E-Mail",
   "Affiliation": "Affiliation",
   "Nutzer {{who}} wurde erfolgreich registriert": "User {{who}} was successfully signed up",
-  "Lade Daten": "Loading Data"
+  "Lade Daten": "Loading Data",
+  "Status": "State",
+  "Manuskripte": "Manuscripts",
+  "Konnte Manuskript mit ID {{mainIdentifier}} nicht finden": "Could not find manuscript with id {{mainIdentifier}}",
+  "Keine weiteren Identfikatoren gefunden": "No other identifiers found",
+  "Bisher wurden keine Bilder hochgeladen": "No pictures were uploaded yet",
+  "Manuskript {{which}}": "Manuscript {{which}}",
+  "Weitere Identifikatoren": "Other identifiers",
+  "Weiteren Identifikator erstellen": "Create other identifier",
+  "Daten": "Data",
+  "Bilder": "Pictures",
+  "Bilder hochladen": "Uplaod pictures"
 }

@@ -24,5 +24,16 @@
   "E-Mail": "E-Mail",
   "Affiliation": "Affiliation",
   "Nutzer {{who}} wurde erfolgreich registriert": "Nutzer {{who}} wurde erfolgreich registriert",
-  "Lade Daten": "Lade Daten"
+  "Lade Daten": "Lade Daten",
+  "Status": "Status",
+  "Manuskripte": "Manuskripte",
+  "Konnte Manuskript mit ID {{mainIdentifier}} nicht finden": "Konnte Manuskript mit ID {{mainIdentifier}} nicht finden",
+  "Keine weiteren Identfikatoren gefunden": "Keine weiteren Identfikatoren gefunden",
+  "Bisher wurden keine Bilder hochgeladen": "Bisher wurden keine Bilder hochgeladen",
+  "Manuskript {{which}}": "Manuskript {{which}}",
+  "Weitere Identifikatoren": "Weitere Identifikatoren",
+  "Weiteren Identifikator erstellen": "Weiteren Identifikator erstellen",
+  "Daten": "Daten",
+  "Bilder": "Bilder",
+  "Bilder hochladen": "Bilder hochladen"
 }
