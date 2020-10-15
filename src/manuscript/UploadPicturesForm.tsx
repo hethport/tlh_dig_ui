@@ -104,9 +104,13 @@ export function UploadPicturesForm({manuscript}: IProps): JSX.Element {
             </div>
         </div>
 
-        {renderPicturesBlock(
-            manuscript.pictureUrls, t('Noch keine Bilder hochgeladen'),
-            (pictureName: string) => `${serverUrl}/uploads/${manuscript.mainIdentifier.identifier}/${pictureName}`
-        )}
+        <section>
+            <h2 className="subtitle is-3 has-text-centered">{t('Vorhandene Bilder')}</h2>
+
+            {renderPicturesBlock(
+                manuscript.pictureUrls, t('Noch keine Bilder hochgeladen'),
+                (pictureName: string) => `${serverUrl}/uploads/${manuscript.mainIdentifier.identifier}/${pictureName}`
+            )}
+        </section>
     </>;
 }
