@@ -87,7 +87,7 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
     }
 
     return (
-        <div className="container">
+        <>
             <h1 className="title is-3 has-text-centered">
                 {t('Manuskript {{mainIdentifier}}', {mainIdentifier: manuscript.mainIdentifier.identifier})}: {t('Eingabe der Transliteration')}
             </h1>
@@ -108,6 +108,6 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
                     {state.transliterationOutput && renderTransliterationLineResult(state.transliterationOutput)}
                 </div>
             </div>
-        </div>
+        </>
     );
 }
