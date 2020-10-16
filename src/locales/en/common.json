@@ -50,5 +50,6 @@
   "Manuskript {{mainIdentifier}}": "Manuscript {{mainIdentifier}}",
   "Eingabe der Transliteration": "Transliteration input",
   "Hochladen": "Upload",
-  "Vorhandene Bilder": "Existing pictures"
+  "Vorhandene Bilder": "Existing pictures",
+  "Die Url <code>{{url}}</code> konnte nicht gefunden": ""
 }

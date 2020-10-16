@@ -50,5 +50,6 @@
   "Manuskript {{mainIdentifier}}": "Manuskript {{mainIdentifier}}",
   "Eingabe der Transliteration": "Eingabe der Transliteration",
   "Hochladen": "Hochladen",
-  "Vorhandene Bilder": "Vorhandene Bilder"
+  "Vorhandene Bilder": "Vorhandene Bilder",
+  "Die Url <code>{{url}}</code> konnte nicht gefunden": ""
 }

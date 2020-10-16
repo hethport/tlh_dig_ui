@@ -7,6 +7,7 @@ export const createManuscriptUrl = '/createManuscript';
 export const registerUrl = '/registerForm';
 export const loginUrl = '/login';
 
+export const editXmlUrl = '/editXml';
 
 interface MyUrl<T> {
     pattern: string;
