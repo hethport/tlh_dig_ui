@@ -1,47 +1,34 @@
 import React, {useState} from 'react';
+import {MyXmlAttribute, MyXmlElementNode, MyXmlNode, readXmlFile} from "../xmlStuff/xmlModel";
 
 interface IState {
   selectedFile?: File;
-  readDocument?: XMLDocument;
+  readDocument?: MyXmlNode;
 }
 
-function readXmlFile(file: File): Promise<XMLDocument> {
-  const fileReader = new FileReader();
-
-  return new Promise<Document>((resolve, reject) => {
-
-    fileReader.onload = ((event) => {
-      const fileContent = event.target!.result as string;
-
-      const xmlContent: XMLDocument = new DOMParser().parseFromString(fileContent, 'application/xml');
-
-      resolve(xmlContent);
-    });
-
-    fileReader.onerror = (event) => {
-      fileReader.abort();
-      reject(event.target!.error);
-    }
-
-    fileReader.readAsText(file);
-  });
-}
-
-function renderNode(node: Node): JSX.Element | string {
-  console.info(node);
-  if (node instanceof Attr) {
-    return <span>{node.name}="{node.value}"</span>
-  } else if (node instanceof CharacterData) {
-    return <span>{node.data}</span>;
-  } else if (node instanceof Document) {
-    const children = Array.from(node.childNodes);
-    return <>
-      {children.map((childNode, index) => <span key={index}>{renderNode(childNode)}</span>)}
-    </>
-  } else if (node instanceof Element) {
-    return <span>&lt;{node.tagName}&gt;</span>
+function renderAttributes(attributes: MyXmlAttribute[]): string | null {
+  if (attributes.length === 0) {
+    return null;
   } else {
-    return <span>{JSON.stringify(node, null, 2)}</span>
+    return ' ' + attributes.map((attr) => `${attr.key}="${attr.value}"`).join(' ');
+  }
+}
+
+function renderNode(node: MyXmlNode): JSX.Element | string {
+  if (node instanceof MyXmlElementNode) {
+    const children = Array.from(node.childNodes);
+
+    const renderedAttributes = renderAttributes(node.attributes);
+
+    return <>
+      <button className="button">&lt;{node.tagName}{renderedAttributes}&gt;</button>
+      {children.map((childNode, index) =>
+        <span key={index}>{renderNode(childNode)}</span>
+      )}
+      <button className="button is-static">&lt;/{node.tagName}&gt;</button>
+    </>;
+  } else {
+    return node.content;
   }
 }
 
@@ -62,8 +49,6 @@ export function EditXml(): JSX.Element {
     }
 
     const readDocument = await readXmlFile(state.selectedFile);
-
-    console.info(readDocument);
 
     setState(() => {
       return {readDocument}
