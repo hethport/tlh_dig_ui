@@ -10,7 +10,7 @@ import {LoggedInUserFragment} from "./generated/graphql";
 import {authenticationService} from "./_services/authentication.service";
 import {CreateManuscriptForm} from "./forms/CreateManuscriptForm";
 import {Manuscript} from "./Manuscript";
-import {EditXml} from './manuscript/EditXml';
+import {XmlEditor} from './xmlEditor/XmlEditor';
 import {NotFound} from './NotFound';
 
 interface State {
@@ -80,7 +80,7 @@ export function App() {
         <Route path={loginUrl} component={LoginForm}/>
         <Route path={createManuscriptUrl} component={CreateManuscriptForm}/>
         <Route path={myManuscriptUrl.pattern} component={Manuscript}/>
-        <Route path={editXmlUrl} component={EditXml}/>
+        <Route path={editXmlUrl} component={XmlEditor}/>
         <Route path="/" component={NotFound}/>
       </Switch>
     </>
