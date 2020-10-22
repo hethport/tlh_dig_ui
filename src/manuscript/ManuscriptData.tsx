@@ -37,7 +37,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
     const createdByUser: boolean = !!(authenticationService.currentUserValue) &&
         authenticationService.currentUserValue.username === manuscript.creatorUsername;
 
-    return <>
+    return <div className="container">
         <h1 className="title is-3 has-text-centered">
             {t('Manuskript {{which}}', {which: manuscript.mainIdentifier.identifier})}
         </h1>
@@ -102,5 +102,5 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
                 {t('Transliteration erstellen')}
             </Link>}
         </section>
-    </>
+    </div>
 }

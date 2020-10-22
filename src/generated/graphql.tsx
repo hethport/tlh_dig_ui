@@ -171,7 +171,7 @@ export type LoginMutation = (
 
 export type ManuscriptBasicDataFragment = (
   { __typename?: 'ManuscriptMetaData' }
-  & Pick<ManuscriptMetaData, 'status'>
+  & Pick<ManuscriptMetaData, 'status' | 'creatorUsername'>
   & { mainIdentifier: (
     { __typename?: 'ManuscriptIdentifier' }
     & ManuscriptIdentifierFragment
@@ -286,6 +286,7 @@ export const ManuscriptBasicDataFragmentDoc = gql`
     ...ManuscriptIdentifier
   }
   status
+  creatorUsername
 }
     ${ManuscriptIdentifierFragmentDoc}`;
 export const ManuscriptMetaDataFragmentDoc = gql`

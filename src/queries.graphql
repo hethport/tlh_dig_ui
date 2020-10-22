@@ -1,93 +1,94 @@
 # Common fragments
 fragment ManuscriptIdentifier on ManuscriptIdentifier {
-    type
-    identifier
+  type
+  identifier
 }
 
 # /register
 mutation Register($userInput: UserInput!) {
-    register(userInput: $userInput)
+  register(userInput: $userInput)
 }
 
 # /login
 fragment LoggedInUser on LoggedInUser {
-    username
-    name
-    jwt
-    affiliation
+  username
+  name
+  jwt
+  affiliation
 }
 
 mutation Login($username: String!, $password: String!) {
-    login(username: $username, password: $password) {
-        ...LoggedInUser
-    }
+  login(username: $username, password: $password) {
+    ...LoggedInUser
+  }
 }
 
 # /
 fragment ManuscriptBasicData on ManuscriptMetaData {
-    mainIdentifier {
-        ...ManuscriptIdentifier
-    }
-    status
+  mainIdentifier {
+    ...ManuscriptIdentifier
+  }
+  status
+  creatorUsername
 }
 
 query Index {
-    allManuscripts {
-        ...ManuscriptBasicData
-    }
+  allManuscripts {
+    ...ManuscriptBasicData
+  }
 }
 
 # /createManuscript
 mutation CreateManuscript($jwt: String!, $manuscriptMetaData : ManuscriptMetaDataInput) {
-    me(jwt: $jwt) {
-        createManuscript(values: $manuscriptMetaData)
-    }
+  me(jwt: $jwt) {
+    createManuscript(values: $manuscriptMetaData)
+  }
 }
 
 
 # /manuscripts/:id
 fragment ManuscriptMetaData on ManuscriptMetaData {
-    mainIdentifier {
-        ...ManuscriptIdentifier
-    }
-    otherIdentifiers {
-        ...ManuscriptIdentifier
-    }
-    bibliography
-    cthClassification
-    palaeographicClassification
-    palaeographicClassificationSure
-    provenance
-    creatorUsername
-    pictureUrls
+  mainIdentifier {
+    ...ManuscriptIdentifier
+  }
+  otherIdentifiers {
+    ...ManuscriptIdentifier
+  }
+  bibliography
+  cthClassification
+  palaeographicClassification
+  palaeographicClassificationSure
+  provenance
+  creatorUsername
+  pictureUrls
 }
 
 query Manuscript($mainIdentifier: String!) {
-    manuscript(mainIdentifier: $mainIdentifier) {
-        ...ManuscriptMetaData
-    }
+  manuscript(mainIdentifier: $mainIdentifier) {
+    ...ManuscriptMetaData
+  }
 }
 
 # /manuscripts/:id/uploadPictures
 fragment ManuscriptIdentWithCreator on ManuscriptMetaData {
-    mainIdentifier {
-        ...ManuscriptIdentifier
-    }
-    pictureUrls
-    creatorUsername
+  mainIdentifier {
+    ...ManuscriptIdentifier
+  }
+  pictureUrls
+  creatorUsername
 }
 
 query UploadPictures($mainIdentifier: String!) {
-    manuscript(mainIdentifier: $mainIdentifier) {
-        ...ManuscriptIdentWithCreator
-    }
+  manuscript(mainIdentifier: $mainIdentifier) {
+    ...ManuscriptIdentWithCreator
+  }
 }
 
 # /manuscript/:id/transliterationInput
 query TransliterationInput($mainIdentifier: String!) {
-    manuscript(mainIdentifier: $mainIdentifier) {
-        mainIdentifier {
-            ...ManuscriptIdentifier
-        }
+  manuscript(mainIdentifier: $mainIdentifier) {
+    mainIdentifier {
+      ...ManuscriptIdentifier
     }
+  }
 }

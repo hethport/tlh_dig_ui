@@ -1,7 +1,7 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {useIndexQuery} from './generated/graphql';
-import classnames from 'classnames';
+import classNames from 'classnames';
 import {myManuscriptUrl} from './urls';
 import {Link} from 'react-router-dom';
 
@@ -11,8 +11,9 @@ export function Home(): JSX.Element {
 
   let content: JSX.Element;
 
+
   if (!data) {
-    const notificationClassNames = classnames("notification", "has-text-centered", {
+    const notificationClassNames = classNames("notification", "has-text-centered", {
       'is-primary': loading,
       'is-warning': error
     });
@@ -30,6 +31,7 @@ export function Home(): JSX.Element {
           <tr>
             <th>{t('Hauptidentifikator')}</th>
             <th>{t('Status')}</th>
+            <th>{t('Ersteller')}</th>
           </tr>
         </thead>
         <tbody>
@@ -41,6 +43,7 @@ export function Home(): JSX.Element {
                 </Link>
               </td>
               <td>{d.status}</td>
+              <td>{d.creatorUsername}</td>
             </tr>
           )}
         </tbody>
