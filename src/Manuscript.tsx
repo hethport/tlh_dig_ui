@@ -1,56 +1,74 @@
 import React from 'react';
-import {useManuscriptQuery} from "./generated/graphql";
+import {ManuscriptMetaDataFragment, useManuscriptQuery} from "./generated/graphql";
 import {useTranslation} from "react-i18next";
-import classnames from 'classnames';
-import {Route, Switch, useRouteMatch} from 'react-router-dom';
-import {ManuscriptUrlParams} from "./urls";
+import classNames from 'classnames';
+import {Link, Redirect, Route, Switch, useLocation, useRouteMatch} from 'react-router-dom';
+import {homeUrl, ManuscriptUrlParams} from "./urls";
 import {ManuscriptData} from "./manuscript/ManuscriptData";
 import {UploadPicturesForm} from "./manuscript/UploadPicturesForm";
 import {TransliterationInput} from "./manuscript/TransliterationInput";
 
 export function Manuscript(): JSX.Element {
 
-    const match = useRouteMatch<ManuscriptUrlParams>();
+  const match = useRouteMatch<ManuscriptUrlParams>();
+  const completeUrl = useLocation().pathname;
 
-    const {t} = useTranslation('common');
-    const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier: match.params.mainIdentifier}});
+  if (completeUrl.indexOf(match.url) !== 0) {
+    // TODO: this should never happen!
+    throw new Error('TODO!')
+  }
 
-    let content: JSX.Element;
+  const child = completeUrl.slice(match.url.length);
 
-    if (!data) {
-        const classes = classnames("notification", "has-text-centered", {'is-info': loading, 'is-warning': error});
+  const {t} = useTranslation('common');
+  const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier: match.params.mainIdentifier}});
 
-        content = (
-            <div className={classes}>
-                {loading && <span>{t('Lade Daten')}...</span>}
-                {error && <span>{error}</span>}
-            </div>
-        );
-    } else if (!data.manuscript) {
-        content = (
-            <div className="notification is-danger has-text-centered">
-                {t('Konnte Manuskript mit ID {{mainIdentifier}} nicht finden', {mainIdentifier: match.params.mainIdentifier})}!
-            </div>
-        );
-    } else {
-        const manuscript = data.manuscript;
+  if (!data) {
+    // Loading or error
+    const classes = classNames("notification", "has-text-centered", {'is-info': loading, 'is-warning': error});
 
-        content = <div className="container">
-            <Switch>
-                <Route exact path={`${match.url}`}>
-                    <ManuscriptData manuscript={manuscript}/>
-                </Route>
-                <Route path={`${match.url}/uploadPictures`}>
-                    <UploadPicturesForm manuscript={manuscript}/>
-                </Route>
-                <Route path={`${match.url}/transliterationInput`}>
-                    <TransliterationInput manuscript={manuscript}/>
-                </Route>
-            </Switch>
+    return <div className="container">
+      <div className={classes}>
+        {loading && <span>{t('Lade Daten')}...</span>}
+        {error && <span>{error}</span>}
+      </div>
+    </div>;
+  } else if (!data.manuscript) {
+    // No manuscript found -> redirect to index page
+    return <Redirect to={homeUrl}/>
+  } else {
+    const header = t('Manuskript {{which}}', {which: data.manuscript.mainIdentifier.identifier});
+
+    const childRoutes: [string, string, (m: ManuscriptMetaDataFragment) => JSX.Element][] = [
+      ['/data', t('Daten'), (m) => <ManuscriptData manuscript={m}/>],
+      ['/uploadPictures', t('Bilder'), (m) => <UploadPicturesForm manuscript={m}/>],
+      ['/transliterationInput', t('Transliteration eingeben'), (m) => <TransliterationInput manuscript={m}/>]
+    ];
+
+    const fragment: ManuscriptMetaDataFragment = data.manuscript;
+
+    return <>
+      <div className="container">
+        <div className="tabs is-centered mb-3">
+          <ul>
+            {childRoutes.map(([childRoute, name, _]) => {
+              const isActive = child === childRoute;
+
+              return <li key={childRoute} className={classNames({'is-active': isActive})}>
+                <Link to={`${match.url}${childRoute}`}>{isActive ? (header + ': ') : ''}{name}</Link>
+              </li>;
+            })}
+          </ul>
         </div>
-    }
+      </div>
 
-    return (
-        <div className="container">{content}</div>
-    );
+      <Switch>
+        {childRoutes.map(([childRoute, _, renderFunc]) =>
+          <Route key={childRoute} path={`${match.url}${childRoute}`}>
+            {renderFunc(fragment)}
+          </Route>
+        )}
+      </Switch>
+    </>;
+  }
 }

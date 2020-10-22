@@ -1,8 +1,8 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {useIndexQuery} from './generated/graphql';
-import classnames from 'classnames';
-import {myManuscriptUrl} from './urls';
+import classNames from 'classnames';
+import {manuscriptDataUrl} from './urls';
 import {Link} from 'react-router-dom';
 
 export function Home(): JSX.Element {
@@ -11,8 +11,9 @@ export function Home(): JSX.Element {
 
   let content: JSX.Element;
 
+
   if (!data) {
-    const notificationClassNames = classnames("notification", "has-text-centered", {
+    const notificationClassNames = classNames("notification", "has-text-centered", {
       'is-primary': loading,
       'is-warning': error
     });
@@ -30,19 +31,19 @@ export function Home(): JSX.Element {
           <tr>
             <th>{t('Hauptidentifikator')}</th>
             <th>{t('Status')}</th>
+            <th>{t('Ersteller')}</th>
           </tr>
         </thead>
         <tbody>
-          {data.allManuscripts.map((d) =>
-            <tr key={d.mainIdentifier.identifier}>
-              <td>
-                <Link to={myManuscriptUrl.url({mainIdentifier: d.mainIdentifier.identifier})}>
-                  {d.mainIdentifier.identifier} ({d.mainIdentifier.type})
-                </Link>
-              </td>
-              <td>{d.status}</td>
-            </tr>
-          )}
+          {data.allManuscripts.map((d) => <tr key={d.mainIdentifier.identifier}>
+            <td>
+              <Link to={manuscriptDataUrl.buildAbsoluteUrl({mainIdentifier: d.mainIdentifier.identifier})}>
+                {d.mainIdentifier.identifier} ({d.mainIdentifier.type})
+              </Link>
+            </td>
+            <td>{d.status}</td>
+            <td>{d.creatorUsername}</td>
+          </tr>)}
         </tbody>
       </table>
     );
