@@ -2,7 +2,7 @@ import React from 'react';
 import {useTranslation} from "react-i18next";
 import {useIndexQuery} from './generated/graphql';
 import classNames from 'classnames';
-import {myManuscriptUrl} from './urls';
+import {manuscriptDataUrl} from './urls';
 import {Link} from 'react-router-dom';
 
 export function Home(): JSX.Element {
@@ -35,17 +35,15 @@ export function Home(): JSX.Element {
           </tr>
         </thead>
         <tbody>
-          {data.allManuscripts.map((d) =>
-            <tr key={d.mainIdentifier.identifier}>
-              <td>
-                <Link to={myManuscriptUrl.url({mainIdentifier: d.mainIdentifier.identifier})}>
-                  {d.mainIdentifier.identifier} ({d.mainIdentifier.type})
-                </Link>
-              </td>
-              <td>{d.status}</td>
-              <td>{d.creatorUsername}</td>
-            </tr>
-          )}
+          {data.allManuscripts.map((d) => <tr key={d.mainIdentifier.identifier}>
+            <td>
+              <Link to={manuscriptDataUrl.buildAbsoluteUrl({mainIdentifier: d.mainIdentifier.identifier})}>
+                {d.mainIdentifier.identifier} ({d.mainIdentifier.type})
+              </Link>
+            </td>
+            <td>{d.status}</td>
+            <td>{d.creatorUsername}</td>
+          </tr>)}
         </tbody>
       </table>
     );

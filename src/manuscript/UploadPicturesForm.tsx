@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useTranslation} from "react-i18next";
-import {serverUrl} from "../urls";
+import {manuscriptPictureUrl, serverUrl} from "../urls";
 import {IProps} from "./ManuscriptHelpers";
 
 
@@ -20,27 +20,23 @@ interface FileUploadFailure {
 type UploadResponse = FileUploadSuccess | FileUploadFailure;
 
 
-function renderPicturesBlock(pictures: string[], noPicsFoundMessage: string, completePictureUrl: (picName: string) => string): JSX.Element {
-  if (pictures.length > 0) {
-    return (
-      <div className="columns">
-        {pictures.map((pictureUrl) =>
-          <div key={pictureUrl} className="column is-one-quarter">
-            <div className="card">
-              <div className="card-image">
-                <figure className="image">
-                  <img src={completePictureUrl(pictureUrl)} alt={pictureUrl}/>
-                </figure>
-              </div>
-              <div className="card-content">{pictureUrl}</div>
+function renderPicturesBlock(pictures: string[], completePictureUrl: (picName: string) => string): JSX.Element {
+  return (
+    <div className="columns">
+      {pictures.map((pictureUrl) =>
+        <div key={pictureUrl} className="column is-one-quarter">
+          <div className="card">
+            <div className="card-image">
+              <figure className="image">
+                <img src={completePictureUrl(pictureUrl)} alt={pictureUrl}/>
+              </figure>
             </div>
+            <div className="card-content">{pictureUrl}</div>
           </div>
-        )}
-      </div>
-    );
-  } else {
-    return <div className="notification is-info has-text-centered">{noPicsFoundMessage}.</div>
-  }
+        </div>
+      )}
+    </div>
+  );
 }
 
 
@@ -90,10 +86,23 @@ export function UploadPicturesForm({manuscript}: IProps): JSX.Element {
     }
   }
 
+
+  function pictureUrl(pictureName: string): string {
+    return manuscriptPictureUrl.buildAbsoluteUrl({
+      mainIdentifier: manuscript.mainIdentifier.identifier,
+      pictureUrl: pictureName
+    }, true);
+  }
+
   return <div className="container">
-    <h1 className="title is-3 has-text-centered">
-      {t('Manuskript {{which}}', {which: manuscript.mainIdentifier.identifier})}: {t('Bilder hochladen')}
-    </h1>
+    <h2 className="subtitle is-3 has-text-centered">{t('Bilder')}</h2>
+
+    <div className="my-3">
+      {manuscript.pictureUrls.length > 0
+        ? renderPicturesBlock(manuscript.pictureUrls, pictureUrl)
+        : <div className="notification is-info has-text-centered">{t('Noch keine Bilder hochgeladen')}.</div>
+      }
+    </div>
 
     <div className="field has-addons">
       <div className="control is-expanded">
@@ -104,13 +113,5 @@ export function UploadPicturesForm({manuscript}: IProps): JSX.Element {
       </div>
     </div>
 
-    <section>
-      <h2 className="subtitle is-3 has-text-centered">{t('Vorhandene Bilder')}</h2>
-
-      {renderPicturesBlock(
-        manuscript.pictureUrls, t('Noch keine Bilder hochgeladen'),
-        (pictureName: string) => `${serverUrl}/uploads/${manuscript.mainIdentifier.identifier}/${pictureName}`
-      )}
-    </section>
   </div>;
 }

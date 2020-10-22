@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Link, Route, Switch, useHistory} from 'react-router-dom';
-import {createManuscriptUrl, editXmlUrl, homeUrl, loginUrl, myManuscriptUrl, registerUrl} from './urls';
+import {createManuscriptUrl, editXmlUrl, homeUrl, loginUrl, manuscriptBaseUrl, registerUrl} from './urls';
 import {Home} from './Home';
 import {RegisterForm} from './forms/RegisterForm';
 import {LoginForm} from './forms/LoginForm';
@@ -79,7 +79,7 @@ export function App() {
         <Route path={registerUrl} component={RegisterForm}/>
         <Route path={loginUrl} component={LoginForm}/>
         <Route path={createManuscriptUrl} component={CreateManuscriptForm}/>
-        <Route path={myManuscriptUrl.pattern} component={Manuscript}/>
+        <Route path={manuscriptBaseUrl.buildAbsolutePattern()} component={Manuscript}/>
         <Route path={editXmlUrl} component={EditXml}/>
         <Route path="/" component={NotFound}/>
       </Switch>
