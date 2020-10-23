@@ -24,7 +24,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
                 <table className="table is-fullwidth">
                     <tbody>
                         <tr>
-                            <th>Weitere Identifikatoren</th>
+                            <th>{t('Weitere Identifikatoren')}</th>
                             <td>
                                 {manuscript.otherIdentifiers.length === 0
                                     ? <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>
@@ -36,7 +36,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
                             </td>
                         </tr>
                         <tr>
-                            <th>Bilder</th>
+                            <th>{t('Bilder')}</th>
                             <td>
                                 {manuscript.pictureUrls.length === 0
                                     ? <span className="is-italic">{t('Es wurden noch keine Bilder hochgeladen')}.</span>
