@@ -1,0 +1,9 @@
+{
+  "Konnte Manuskript mit ID {{mainIdentifier}} nicht finden": "Could not find manuscript with id {{mainIdentifier}}",
+  "Weitere Identifikatoren": "Other identifiers",
+  "Weiteren Identifikator erstellen": "Create other identifier",
+  "Bilder hochladen": "Uplaod pictures",
+  "Manuskript {{mainIdentifier}}": "Manuscript {{mainIdentifier}}",
+  "Vorhandene Bilder": "Existing pictures",
+  "Die Url <code>{{url}}</code> konnte nicht gefunden": ""
+}

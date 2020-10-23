@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {createRef, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {manuscriptPictureUrl, serverUrl} from "../urls";
 import {IProps} from "./ManuscriptHelpers";
@@ -51,6 +51,8 @@ export function UploadPicturesForm({manuscript}: IProps): JSX.Element {
     allPictures: [...manuscript.pictureUrls]
   });
 
+  const fileUploadRef = createRef<HTMLInputElement>();
+
   function selectFile(fileList: FileList | null): void {
     if (fileList && fileList.length > 0) {
       setState((currentState) => {
@@ -73,7 +75,7 @@ export function UploadPicturesForm({manuscript}: IProps): JSX.Element {
             setState((currentState) => {
               return {
                 selectedFile: null,
-                allPictures: [...currentState.allPictures, response.fileName]
+                allPictures: currentState.allPictures.concat([response.fileName])
               };
             });
           } else {
@@ -99,17 +101,17 @@ export function UploadPicturesForm({manuscript}: IProps): JSX.Element {
 
     <div className="my-3">
       {manuscript.pictureUrls.length > 0
-        ? renderPicturesBlock(manuscript.pictureUrls, pictureUrl)
+        ? renderPicturesBlock(state.allPictures, pictureUrl)
         : <div className="notification is-info has-text-centered">{t('Noch keine Bilder hochgeladen')}.</div>
       }
     </div>
 
     <div className="field has-addons">
       <div className="control is-expanded">
-        <input type="file" className="input" onChange={(event) => selectFile(event.target.files)}/>
+        <input type="file" className="input" onChange={(event) => selectFile(event.target.files)} ref={fileUploadRef}/>
       </div>
       <div className="control">
-        <button className="button is-link" onClick={() => performUpload()}>{t('Hochladen')}</button>
+        <button className="button is-link" onClick={performUpload}>{t('Hochladen')}</button>
       </div>
     </div>
 
