@@ -7,66 +7,73 @@ import {manuscriptTransliterationInputUrl} from "../urls";
 
 export function ManuscriptData({manuscript}: IProps): JSX.Element {
 
-  const {t} = useTranslation('common');
+    const {t} = useTranslation('common');
 
-  const createdByUser: boolean = !!(authenticationService.currentUserValue) &&
-    authenticationService.currentUserValue.username === manuscript.creatorUsername;
+    const createdByUser: boolean = !!(authenticationService.currentUserValue) &&
+        authenticationService.currentUserValue.username === manuscript.creatorUsername;
 
-  const transliterationInputUrl = manuscriptTransliterationInputUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
+    const transliterationInputUrl = manuscriptTransliterationInputUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
 
-  return (
-    <div className="container">
-      <h2 className="subtitle is-3 has-text-centered">{t('Allgemeine Daten')}</h2>
+    return (
+        <div className="container">
+            <h2 className="subtitle is-3 has-text-centered">{t('Allgemeine Daten')}</h2>
 
-      <div className="columns">
-        <div className="column">
-          <h2 className="subtitle is-4">{t('Daten')}</h2>
+            <div>
+                <h2 className="subtitle is-4">{t('Daten')}</h2>
 
-          <table className="table is-fullwidth">
-            <tbody>
-              <tr>
-                <th>{t('Paläographische Klassifikation')}</th>
-                <td>{manuscript.palaeographicClassification}{manuscript.palaeographicClassificationSure ? '' : '?'}</td>
-              </tr>
-              <tr>
-                <th>{t('Vorschlag CTH-Klassifikation')}</th>
-                <td>{manuscript.cthClassification || '--'}</td>
-              </tr>
-              <tr>
-                <th>{t('Provenienz')}</th>
-                <td>{manuscript.provenance || '--'}</td>
-              </tr>
-              <tr>
-                <th>{t('Bibliographie')}</th>
-                <td>{manuscript.bibliography || '--'}</td>
-              </tr>
-            </tbody>
-          </table>
+                <table className="table is-fullwidth">
+                    <tbody>
+                        <tr>
+                            <th>{t('Weitere Identifikatoren')}</th>
+                            <td>
+                                {manuscript.otherIdentifiers.length === 0
+                                    ? <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>
+                                    : <div className="content">
+                                        <ul>
+                                            {manuscript.otherIdentifiers.map((oi) => <li>{oi}</li>)}
+                                        </ul>
+                                    </div>}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{t('Bilder')}</th>
+                            <td>
+                                {manuscript.pictureUrls.length === 0
+                                    ? <span className="is-italic">{t('Es wurden noch keine Bilder hochgeladen')}.</span>
+                                    : <div className="content">
+                                        <ul>
+                                            {manuscript.pictureUrls.map((pu) => <li>{pu}</li>)}
+                                        </ul>
+                                    </div>}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{t('Paläographische Klassifikation')}</th>
+                            <td>{manuscript.palaeographicClassification}{manuscript.palaeographicClassificationSure ? '' : '?'}</td>
+                        </tr>
+                        <tr>
+                            <th>{t('Vorschlag CTH-Klassifikation')}</th>
+                            <td>{manuscript.cthClassification || '--'}</td>
+                        </tr>
+                        <tr>
+                            <th>{t('Provenienz')}</th>
+                            <td>{manuscript.provenance || '--'}</td>
+                        </tr>
+                        <tr>
+                            <th>{t('Bibliographie')}</th>
+                            <td>{manuscript.bibliography || '--'}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <section>
+                <h2 className="subtitle is-4">{t('Transliteration')}</h2>
+
+                {createdByUser && <Link className="button is-link is-fullwidth" to={transliterationInputUrl}>
+                    {t('Transliteration erstellen')}
+                </Link>}
+            </section>
         </div>
-
-        <div className="column">
-          <h2 className="subtitle is-4">{t('Weitere Identifikatoren')}</h2>
-
-          {manuscript.otherIdentifiers.length > 0
-            ? manuscript.otherIdentifiers.map((otherIdentifier) => <span>{otherIdentifier}</span>)
-            : <div className="notification is-info has-text-centered">
-              {t('Keine weiteren Identfikatoren gefunden')}.
-            </div>}
-
-          {createdByUser &&
-          <button className="button is-static is-fullwidth" type="button" title="Not yet implemented...">
-            {t('Weiteren Identifikator erstellen')}
-          </button>}
-        </div>
-      </div>
-
-      <section>
-        <h2 className="subtitle is-4">{t('Transliteration')}</h2>
-
-        {createdByUser && <Link className="button is-link is-fullwidth" to={transliterationInputUrl}>
-          {t('Transliteration erstellen')}
-        </Link>}
-      </section>
-    </div>
-  );
+    );
 }
