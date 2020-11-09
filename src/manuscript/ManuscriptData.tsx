@@ -13,7 +13,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
 
     const activeUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
-    const createdByUser: boolean = !!(activeUser) && activeUser.username === manuscript.creatorUsername;
+    const createdByUser: boolean = !!activeUser && activeUser.username === manuscript.creatorUsername;
 
     const transliterationInputUrl = manuscriptTransliterationInputUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
 
@@ -21,7 +21,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
         <div className="container">
             <h2 className="subtitle is-3 has-text-centered">{t('Allgemeine Daten')}</h2>
 
-            <div>
+            <div className="my-3">
                 <h2 className="subtitle is-4">{t('Daten')}</h2>
 
                 <table className="table is-fullwidth">
@@ -33,7 +33,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
                                     ? <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>
                                     : <div className="content">
                                         <ul>
-                                            {manuscript.otherIdentifiers.map((oi) => <li>{oi}</li>)}
+                                            {manuscript.otherIdentifiers.map((oi) => <li key={oi.identifier}>{oi}</li>)}
                                         </ul>
                                     </div>}
                             </td>
@@ -45,7 +45,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
                                     ? <span className="is-italic">{t('Es wurden noch keine Bilder hochgeladen')}.</span>
                                     : <div className="content">
                                         <ul>
-                                            {manuscript.pictureUrls.map((pu) => <li>{pu}</li>)}
+                                            {manuscript.pictureUrls.map((pu) => <li key={pu}>{pu}</li>)}
                                         </ul>
                                     </div>}
                             </td>
@@ -70,13 +70,13 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
                 </table>
             </div>
 
-            <section>
+            <div className="my-3">
                 <h2 className="subtitle is-4">{t('Transliteration')}</h2>
 
                 {createdByUser && <Link className="button is-link is-fullwidth" to={transliterationInputUrl}>
                     {t('Transliteration erstellen')}
                 </Link>}
-            </section>
+            </div>
         </div>
     );
 }
