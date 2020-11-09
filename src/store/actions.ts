@@ -26,4 +26,9 @@ export function userLoggedOutAction(): UserLoggedOutAction {
 
 // all actions
 
-export type StoreAction = UserLoggedInAction | UserLoggedOutAction;
+const reduxActionType = '@@redux'
+
+interface InitAction extends Action<typeof reduxActionType> {
+}
+
+export type StoreAction = UserLoggedInAction | UserLoggedOutAction | InitAction;
