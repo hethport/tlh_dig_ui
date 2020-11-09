@@ -1,6 +1,19 @@
-import {Akadogramm, Determinativ, Hittite, Sumerogramm, Supplemented, TransliterationLine, UnCertain} from "./model";
+import {TransliterationLine} from "./model";
 import {transliteration} from './parser';
+import {Akkadogramm} from "../model/akkadogramm";
+import {Sumerogramm} from "../model/sumerogramm";
+import {Determinativ} from "../model/determinativ";
+import {
+    DeletionEnd as de,
+    DeletionStart as ds,
+    LesionEnd as le,
+    LesionStart as ls,
+    RasureEnd as re,
+    RasureStart as rs
+} from "../model/damages";
+import {UnsureCorrection as uc} from "../model/corrections";
 
+/*
 const x = `
 $ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fundort Büyükkale, westliche Befestigungsmauer, Schutt der Altgrabungen Planquadrat 338/348; 8,99-2,85; –-–; Niveau 1104,71 • Fund-Nr. 19-5000-5004 • Maße 62 x 45 x 22 mm
 1' # [(x)] x ⸢zi⸣ x [
@@ -16,28 +29,32 @@ $ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fund
 11' # [x (x)]-ri-⸢ia⸣-[ ¬¬¬
 12' # [x x] x [
 `
+ */
 
 describe('test', () => {
     it('should parse hittite', () => {
         expect(transliteration.hittite.tryParse('het'))
-            .toEqual(Hittite('het'));
+            .toEqual('het');
         expect(transliteration.hittite.tryParse('tén'))
-            .toEqual(Hittite('tén'));
+            .toEqual('tén');
     });
 
     it('should parse akadogramms', () => {
-        expect(transliteration.akadogramm.tryParse('_ABC'))
-            .toEqual(Akadogramm('ABC'));
+        expect(transliteration.akkadogramm.tryParse('_ABC'))
+            .toEqual(new Akkadogramm('ABC'));
+
+        expect(transliteration.akkadogramm.tryParse('-ABC'))
+            .toEqual(new Akkadogramm('ABC'));
     });
 
     it('should parse sumerogramms', () => {
         expect(transliteration.sumerogramm.tryParse('ABC'))
-            .toEqual(Sumerogramm('ABC'));
+            .toEqual(new Sumerogramm('ABC'));
     });
 
     it('should parse determinatives', () => {
         expect(transliteration.determinativ.tryParse('°ABC°'))
-            .toEqual(Determinativ('ABC'));
+            .toEqual(new Determinativ('ABC'));
     });
 
     it('should parse lines', () => {
@@ -46,36 +63,31 @@ describe('test', () => {
         expect(parser.tryParse("1' # [(x)] x ⸢zi⸣ x ["))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 1, isAbsolute: false},
-                content: [
-                    Hittite('[(x)]'),
-                    Hittite('x'),
-                    Hittite('⸢zi⸣'),
-                    Hittite('x'),
-                    Hittite('[')
-                ]
+                content: [ds, ls, 'x', le, de, 'x', rs, 'zi', re, 'x', ds]
             });
 
         expect(parser.tryParse("2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri"))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 2, isAbsolute: false},
-                content: [
-                    Supplemented(UnCertain(Sumerogramm('DUMU'))),
-                    UnCertain(Sumerogramm('.MUNUS')),
-                    Hittite('-ma'), Hittite('e-ša-⸢a⸣-[ri')
-                ]
+                content: [ds, new Sumerogramm('DUMU'), uc, de, new Sumerogramm('.MUNUS'), uc, '-ma', 'e-ša-', rs, 'a', re, '-', ds, 'ri']
             });
 
         expect(parser.tryParse("3' # az-zi-ik-ki-it-[tén"))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 3, isAbsolute: false},
-                content: [Hittite('az-zi-ik-ki-it-[tén')]
+                content: ['az-zi-ik-ki-it-', ds, 'tén']
             });
 
         expect(parser.tryParse("4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬"))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 4, isAbsolute: false},
-                content: [
-                    Hittite('nu'), Hittite('ḫu-u-ma-an'), Hittite('az-[zi-ik-ki-'), Hittite('¬¬¬')]
+                content: ['nu', 'ḫu-u-ma-an', 'az-', ds, 'zi-ik-ki-', '¬¬¬']
+            });
+
+        expect(parser.tryParse("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
+            .toEqual<TransliterationLine>({
+                lineNumber: {number: 10, isAbsolute: false},
+                content: [ds, 'x-x', de, '-', new Sumerogramm('TE'), new Determinativ('MEŠ'), rs, 'e', re, '-', ds]
             });
     });
 });

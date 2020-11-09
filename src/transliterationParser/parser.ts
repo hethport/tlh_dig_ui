@@ -1,47 +1,34 @@
-import {
-    Akadogramm,
-    Determinativ,
-    Hittite,
-    LineNumber,
-    StringTransliterationLineContent,
-    Sumerogramm,
-    SupplementContent,
-    Supplemented,
-    TransliterationLine,
-    TransliterationLineContent,
-    UnCertain
-} from "./model";
+import {LineNumber, TransliterationLine, TransliterationLineContent} from "./model";
+import {akadogrammRegex, Akkadogramm} from "../model/akkadogramm";
 import {alt, createLanguage, digits, optWhitespace, regexp, seq, seqObj, string, TypedLanguage} from "parsimmon";
+import {Sumerogramm, sumerogrammRegex} from "../model/sumerogramm";
+import {Determinativ, determinativRegex} from "../model/determinativ";
+import {allDamages, Damages} from "../model/damages";
+import {allCorrections, Corrections} from "../model/corrections";
 
-const hittiteRegex = /[\p{Ll}[\]()⸢⸣¬-]+/u;
-const akadogrammRegex = /_(\p{Lu})+/u;
-const sumerogrammRegex = /[.\p{Lu}]+/u;
-const determinativRegex = /°(\p{Lu}+)°/u;
+
+const hittiteRegex = /[\p{Ll}¬-]+/u;
 
 type LanguageSpec = {
     // Helpers
     number: number,
-    leftSquareBracket: string,
-    rightSquareBracket: string,
     poundSign: string;
-    questionMark: string,
+
+    // Damages
+    damages: Damages,
+
+    // Corrections
+    corrections: Corrections,
 
     // Line number
     lineNumberNotAbsolute: string,
     lineNumber: LineNumber,
 
     // String contents
-    hittite: Hittite;
-    akadogramm: Akadogramm;
+    hittite: string;
+    akkadogramm: Akkadogramm;
     sumerogramm: Sumerogramm;
     determinativ: Determinativ,
-
-    stringLineContent: StringTransliterationLineContent,
-
-    // Other contents
-    supplementContent: SupplementContent,
-    supplemented: Supplemented,
-    uncertain: UnCertain,
 
     singleContent: TransliterationLineContent;
 
@@ -54,9 +41,12 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     // Helpers
     number: () => digits.map(parseInt),
     poundSign: () => string('#'),
-    leftSquareBracket: () => string('['),
-    rightSquareBracket: () => string(']'),
-    questionMark: () => string('?'),
+
+    // Damages
+    damages: () => alt(...allDamages.map((d) => string(d.symbol).result(d))),
+
+    // Corrections
+    corrections: () => alt(...allCorrections.map((c) => string(c.symbol).result(c))),
 
     // Line number
     lineNumberNotAbsolute: () => string('\''),
@@ -66,34 +56,22 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
         }),
 
     // String content
-    hittite: () => regexp(hittiteRegex)
-        .map((result) => Hittite(result)),
+    hittite: () => regexp(hittiteRegex),
 
-    akadogramm: () => regexp(akadogrammRegex)
-        .map((result) => Akadogramm(result.substring(1))),
+    akkadogramm: () => regexp(akadogrammRegex)
+        .map((result) => new Akkadogramm(result.substring(1))),
 
     sumerogramm: () => regexp(sumerogrammRegex)
-        .map((result) => Sumerogramm(result)),
+        .map((result) => new Sumerogramm(result)),
 
     determinativ: () => regexp(determinativRegex, 1)
-        .map((result) => Determinativ(result)),
+        .map((result) => new Determinativ(result)),
 
-    stringLineContent: r => alt(r.hittite, r.akadogramm, r.sumerogramm, r.determinativ),
+    singleContent: (r) => alt(r.hittite, r.akkadogramm, r.sumerogramm, r.determinativ, r.damages, r.corrections),
 
-    // Other contents
-    uncertain: r => seq(r.stringLineContent, r.questionMark)
-        .map(([content, _]) => UnCertain(content)),
+    completeContent: (r) => r.singleContent.sepBy(optWhitespace),
 
-    supplementContent: r => alt(r.uncertain, r.stringLineContent),
-
-    supplemented: r => r.supplementContent.wrap(r.leftSquareBracket, r.rightSquareBracket)
-        .map((content) => Supplemented(content)),
-
-    singleContent: r => alt(r.supplemented, r.uncertain, r.stringLineContent),
-
-    completeContent: r => r.singleContent.sepBy(optWhitespace),
-
-    transliterationLine: r => seqObj(
+    transliterationLine: (r) => seqObj(
         ["lineNumber", r.lineNumber],
         optWhitespace,
         r.poundSign,

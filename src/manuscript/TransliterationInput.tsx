@@ -4,6 +4,9 @@ import {IProps} from "./ManuscriptHelpers";
 import {TransliterationLine, TransliterationLineContent} from "../transliterationParser/model";
 import {parseTransliterationLine} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
+import {Sumerogramm} from "../model/sumerogramm";
+import {Akkadogramm} from "../model/akkadogramm";
+import {Determinativ} from "../model/determinativ";
 
 const defaultText = `$ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fundort Büyükkale, westliche Befestigungsmauer, Schutt der Altgrabungen Planquadrat 338/348; 8,99-2,85; –-–; Niveau 1104,71 • Fund-Nr. 19-5000-5004 • Maße 62 x 45 x 22 mm
 1' # [(x)] x ⸢zi⸣ x [
@@ -31,22 +34,18 @@ interface IState {
 }
 
 function renderTransliterationLineContent(content: TransliterationLineContent): JSX.Element {
-    if (content.type === 'Supplemented') {
-        const childContent = renderTransliterationLineContent(content.content);
-        return <span>[{childContent}]</span>;
-    } else if (content.type === 'UnCertain') {
-        const childContent = renderTransliterationLineContent(content.content);
-        return <span>{childContent}<span className="superscript">?</span></span>;
+    if (typeof content === 'string') {
+        return <span className="hittite">{content}</span>;
+    } else if (content instanceof Akkadogramm) {
+        return <span className="akadogramm">{content.content}</span>;
+    } else if (content instanceof Sumerogramm) {
+        return <span className="sumerogramm">{content.content}</span>;
+    } else if (content instanceof Determinativ) {
+        return <span className="determinativ">{content.content}</span>;
+    } else if (content.type === 'Correction') {
+        return <sup className="correction">{content.symbol}</sup>;
     } else {
-        if (content.type === 'Hittite') {
-            return <span className="hittite">{content.content}</span>;
-        } else if (content.type === 'Akadogramm') {
-            return <span className="akadogramm">{content.content}</span>;
-        } else if (content.type === 'Sumerogramm') {
-            return <span className="sumerogramm">{content.content}</span>;
-        } else {
-            return <span className="determinativ">{content.content}</span>;
-        }
+        return <span>{content.symbol}</span>;
     }
 }
 
