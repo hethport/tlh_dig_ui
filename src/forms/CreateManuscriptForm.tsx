@@ -1,6 +1,7 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {
+    LoggedInUserFragment,
     ManuscriptIdentifierInput,
     ManuscriptIdentifierType,
     ManuscriptMetaDataInput,
@@ -11,10 +12,11 @@ import {ErrorMessage, Field, FieldArray, FieldArrayRenderProps, Form, Formik, Fo
 import {manuscriptSchema} from './schemas';
 import classnames from "classnames";
 import {ManuscriptIdInputField} from './ManuscriptIdInputField';
-import {authenticationService} from "../_services/authentication.service";
 import {loginUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
 import {BulmaFieldWithLabel} from "./BulmaFields";
+import {useSelector} from "react-redux";
+import {activeUserSelector} from "../store/store";
 
 function newManuscriptIdentifier(): ManuscriptIdentifierInput {
     return {
@@ -28,7 +30,7 @@ export function CreateManuscriptForm() {
     const {t} = useTranslation('common');
     const [createManuscript, {data}] = useCreateManuscriptMutation();
 
-    const currentUser = authenticationService.currentUserValue;
+    const currentUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
     if (!currentUser) {
         return <Redirect to={loginUrl}/>

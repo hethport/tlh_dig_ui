@@ -1,33 +1,37 @@
-import React from 'react';
+import React, {Dispatch} from 'react';
 import {LoginMutationVariables, useLoginMutation} from "../generated/graphql";
 import {useTranslation} from "react-i18next";
 import {Form, Formik} from 'formik';
 import {BulmaFieldWithLabel} from "./BulmaFields";
 import {loginSchema} from './schemas';
 import classnames from "classnames";
-import {authenticationService} from "../_services/authentication.service";
 import {homeUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
+import {useDispatch, useSelector} from "react-redux";
+import {StoreAction, userLoggedInAction} from "../store/actions";
+import {activeUserSelector} from "../store/store";
 
 export function LoginForm() {
 
     const {t} = useTranslation('common');
     const [login, {data}] = useLoginMutation();
+    const dispatch = useDispatch<Dispatch<StoreAction>>();
+
+    const activeUser = useSelector(activeUserSelector);
+    if (activeUser) {
+        return <Redirect to={homeUrl}/>;
+    }
 
     const initialValues: LoginMutationVariables = {
         username: '',
         password: ''
     }
 
-    if (authenticationService.currentUserValue) {
-        return <Redirect to={homeUrl}/>;
-    }
-
     function handleSubmit(values: LoginMutationVariables, setSubmitting: (isSubmitting: boolean) => void): void {
         login({variables: values})
             .then(({data}) => {
                 if (data && data.login) {
-                    authenticationService.activateLogin(data.login)
+                    dispatch(userLoggedInAction(data.login));
                 }
             })
             .catch((e) => console.error(e));

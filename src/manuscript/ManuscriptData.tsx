@@ -1,16 +1,19 @@
 import React from 'react';
-import {authenticationService} from "../_services/authentication.service";
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {IProps} from "./ManuscriptHelpers";
 import {manuscriptTransliterationInputUrl} from "../urls";
+import {LoggedInUserFragment} from "../generated/graphql";
+import {useSelector} from "react-redux";
+import {activeUserSelector} from "../store/store";
 
 export function ManuscriptData({manuscript}: IProps): JSX.Element {
 
     const {t} = useTranslation('common');
 
-    const createdByUser: boolean = !!(authenticationService.currentUserValue) &&
-        authenticationService.currentUserValue.username === manuscript.creatorUsername;
+    const activeUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
+
+    const createdByUser: boolean = !!(activeUser) && activeUser.username === manuscript.creatorUsername;
 
     const transliterationInputUrl = manuscriptTransliterationInputUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
 

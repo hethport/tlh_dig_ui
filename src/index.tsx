@@ -4,15 +4,16 @@ import './index.sass';
 import {App} from './App';
 import {BrowserRouter as Router} from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
-
+import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import {serverUrl} from "./urls";
+import {Provider} from 'react-redux';
+import {store} from "./store/store";
 import i18n from "i18next";
 import {I18nextProvider, initReactI18next} from "react-i18next";
 
 import common_de from './locales/de/common.json';
 import common_en from './locales/en/common.json';
 
-import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
-import {serverUrl} from "./urls";
 
 // noinspection JSIgnoredPromiseFromCall
 i18n
@@ -39,9 +40,11 @@ render(
     <React.StrictMode>
         <I18nextProvider i18n={i18n}>
             <ApolloProvider client={apolloClient}>
-                <Router>
-                    <App/>
-                </Router>
+                <Provider store={store}>
+                    <Router>
+                        <App/>
+                    </Router>
+                </Provider>
             </ApolloProvider>
         </I18nextProvider>
     </React.StrictMode>,

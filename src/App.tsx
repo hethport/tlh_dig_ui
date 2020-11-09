@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Dispatch} from 'react';
 import {Link, Route, Switch, useHistory} from 'react-router-dom';
 import {createManuscriptUrl, homeUrl, loginUrl, manuscriptBaseUrl, registerUrl} from './urls';
 import {Home} from './Home';
@@ -7,32 +7,27 @@ import {LoginForm} from './forms/LoginForm';
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import {LoggedInUserFragment} from "./generated/graphql";
-import {authenticationService} from "./_services/authentication.service";
 import {CreateManuscriptForm} from "./forms/CreateManuscriptForm";
 import {Manuscript} from "./Manuscript";
 import {NotFound} from './NotFound';
+import {useDispatch, useSelector} from "react-redux";
+import {activeUserSelector} from "./store/store";
+import {StoreAction, userLoggedOutAction} from "./store/actions";
 
-interface State {
-    currentUser: LoggedInUserFragment | null;
-}
 
-export function App() {
+const languages: string[] = ["de", "en"];
 
-    const [state, setState] = useState<State>({currentUser: null})
+export function App(): JSX.Element {
+
     const {t} = useTranslation('common');
     const history = useHistory();
+    const dispatch = useDispatch<Dispatch<StoreAction>>();
 
-    useEffect(() => {
-        authenticationService.currentUser
-            .subscribe((currentUser) => setState({currentUser}))
-    }, []);
+    const user: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
-    const user: LoggedInUserFragment | null = state.currentUser;
-
-    const languages: string[] = ["de", "en"];
 
     function logout() {
-        authenticationService.logout();
+        dispatch(userLoggedOutAction());
         history.push(loginUrl);
     }
 
