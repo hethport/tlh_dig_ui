@@ -7,11 +7,3 @@ export interface JsonFormat<T extends JsonInterface, U> {
 
     fromJson(t: T): U;
 }
-
-export interface HasSimtexStyleName {
-    styleName(): string;
-}
-
-export interface HasSimtexHotkey {
-    simtexHotkey(): string;
-}

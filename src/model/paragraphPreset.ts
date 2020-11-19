@@ -1,5 +1,5 @@
 import {Akkadian, Hattic, Hittite, Hurrian, Languages, Luwian, Palaian, Sumerian} from "./languages";
-import {HasSimtexHotkey, HasSimtexStyleName, JsonFormat} from "./basics";
+import {JsonFormat} from "./basics";
 
 
 export const TextualSourceParagraphPreset = {type: 'TextualSourceParagraphPreset', styleName: 'AO:Manuscripts'};
@@ -11,16 +11,8 @@ interface ILanguageParagraphPreset {
     language: Languages;
 }
 
-export class LanguageParagraphPreset implements HasSimtexHotkey, HasSimtexStyleName {
+export class LanguageParagraphPreset {
     constructor(public readonly language: Languages) {
-    }
-
-    simtexHotkey(): string {
-        return `@${this.language.substr(0, 3)}`;
-    }
-
-    styleName(): string {
-        return `AO:Textline-${this.language.substr(0, 3)}`;
     }
 }
 

@@ -1,4 +1,4 @@
-import {HasSimtexStyleName, JsonFormat} from "./basics";
+import {JsonFormat} from "./basics";
 
 interface IMaterLectionis {
     type: 'MaterLectionis';
@@ -8,12 +8,8 @@ interface IMaterLectionis {
 /**
  * vor und nach der Mater Lectionis (Kleinbuchstaben markiert durch ° … °; davor oder dahinter jeweils ein Spatium oder Bindestrich)
  */
-export class MaterLectionis implements HasSimtexStyleName {
+export class MaterLectionis {
     constructor(public readonly content: string) {
-    }
-
-    styleName(): string {
-        return 'AO:MaterLect';
     }
 }
 

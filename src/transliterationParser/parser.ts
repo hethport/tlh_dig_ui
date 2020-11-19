@@ -59,13 +59,13 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     hittite: () => regexp(hittiteRegex),
 
     akkadogramm: () => regexp(akadogrammRegex)
-        .map((result) => new Akkadogramm(result.substring(1))),
+        .map((result) => Akkadogramm(result.substring(1))),
 
     sumerogramm: () => regexp(sumerogrammRegex)
-        .map((result) => new Sumerogramm(result)),
+        .map((result) => Sumerogramm(result)),
 
     determinativ: () => regexp(determinativRegex, 1)
-        .map((result) => new Determinativ(result)),
+        .map((result) => Determinativ(result)),
 
     singleContent: (r) => alt(r.hittite, r.akkadogramm, r.sumerogramm, r.determinativ, r.damages, r.corrections),
 

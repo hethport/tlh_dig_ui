@@ -1,22 +1,15 @@
 import {Akkadian, Hattic, Hittite, Hurrian, Languages, Luwian, Palaian, Sumerian} from "./languages";
-import {HasSimtexHotkey, HasSimtexStyleName, JsonFormat} from "./basics";
+import {JsonFormat} from "./basics";
 
 interface ILanguageCharacterPreset {
     type: 'LanguageCharacterPreset';
     language: Languages;
 }
 
-export class LanguageCharacterPreset implements HasSimtexStyleName, HasSimtexHotkey {
+export class LanguageCharacterPreset {
     constructor(public readonly language: Languages) {
     }
 
-    styleName(): string {
-        return `AO:${this.language}`;
-    }
-
-    simtexHotkey(): string {
-        return `@${this.language.substr(0, 1)}`;
-    }
 }
 
 export const hittiteCharacterPreset = new LanguageCharacterPreset(Hittite);
@@ -40,12 +33,11 @@ export const languageCharacterPresetFormat: JsonFormat<ILanguageCharacterPreset,
 
 export interface NumeralCharacterPreset {
     type: 'NumeralCharacterPreset';
-    styleName: 'AO:Numeral';
     content: string;
 }
 
 export function NumeralCharacterPreset(content: string): NumeralCharacterPreset {
-    return {type: 'NumeralCharacterPreset', styleName: 'AO:Numeral', content};
+    return {type: 'NumeralCharacterPreset', content};
 }
 
 // complete definition

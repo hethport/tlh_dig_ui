@@ -4,9 +4,9 @@ import {IProps} from "./ManuscriptHelpers";
 import {TransliterationLine, TransliterationLineContent} from "../transliterationParser/model";
 import {parseTransliterationLine} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
-import {Sumerogramm} from "../model/sumerogramm";
-import {Akkadogramm} from "../model/akkadogramm";
-import {Determinativ} from "../model/determinativ";
+// import {Sumerogramm} from "../model/sumerogramm";
+// import {Akkadogramm} from "../model/akkadogramm";
+// import {Determinativ} from "../model/determinativ";
 
 const defaultText = `$ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fundort Büyükkale, westliche Befestigungsmauer, Schutt der Altgrabungen Planquadrat 338/348; 8,99-2,85; –-–; Niveau 1104,71 • Fund-Nr. 19-5000-5004 • Maße 62 x 45 x 22 mm
 1' # [(x)] x ⸢zi⸣ x [
@@ -36,11 +36,11 @@ interface IState {
 function renderTransliterationLineContent(content: TransliterationLineContent): JSX.Element {
     if (typeof content === 'string') {
         return <span className="hittite">{content}</span>;
-    } else if (content instanceof Akkadogramm) {
+    } else if (content.type === 'Akkadogramm') {
         return <span className="akadogramm">{content.content}</span>;
-    } else if (content instanceof Sumerogramm) {
+    } else if (content.type === 'Sumerogramm') {
         return <span className="sumerogramm">{content.content}</span>;
-    } else if (content instanceof Determinativ) {
+    } else if (content.type === 'Determinativ') {
         return <span className="determinativ">{content.content}</span>;
     } else if (content.type === 'Correction') {
         return <sup className="correction">{content.symbol}</sup>;
@@ -56,7 +56,7 @@ function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX
                 <tr key={lineNumber}>
                     {result
                         ? <>
-                            <td className="has-text-right">
+                            <td className="has-text-centered">
                                 {result.lineNumber.number}{result.lineNumber.isAbsolute ? '' : '\''}&nbsp;#&nbsp;
                             </td>
                             <td>
@@ -80,12 +80,16 @@ export function TransliterationInput({manuscript: _manuscript}: IProps): JSX.Ele
     const textAreaRef = createRef<HTMLTextAreaElement>();
 
     function updateTransliteration(): void {
-        setState(() => {
-            return {
-                transliterationOutput: textAreaRef.current!.value.split('\n')
+        setState((state) => {
+            if (textAreaRef.current) {
+                const transliterationOutput = textAreaRef.current.value.split('\n')
                     .map((line, index) => {
                         return {lineNumber: index, line, result: parseTransliterationLine(line)};
-                    })
+                    });
+
+                return {...state, transliterationOutput};
+            } else {
+                return {...state, transliterationOutput: []};
             }
         });
     }

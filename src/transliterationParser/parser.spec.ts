@@ -8,10 +8,8 @@ import {
     DeletionStart as ds,
     LesionEnd as le,
     LesionStart as ls,
-    RasureEnd as re,
-    RasureStart as rs,
-    UnknownBracketStart as us,
-    UnknownBracketEnd as ue
+    UnknownBracketEnd as ue,
+    UnknownBracketStart as us
 } from "../model/damages";
 import {UnsureCorrection as uc} from "../model/corrections";
 
@@ -43,20 +41,20 @@ describe('test', () => {
 
     it('should parse akadogramms', () => {
         expect(transliteration.akkadogramm.tryParse('_ABC'))
-            .toEqual(new Akkadogramm('ABC'));
+            .toEqual(Akkadogramm('ABC'));
 
         expect(transliteration.akkadogramm.tryParse('-ABC'))
-            .toEqual(new Akkadogramm('ABC'));
+            .toEqual(Akkadogramm('ABC'));
     });
 
     it('should parse sumerogramms', () => {
         expect(transliteration.sumerogramm.tryParse('ABC'))
-            .toEqual(new Sumerogramm('ABC'));
+            .toEqual(Sumerogramm('ABC'));
     });
 
     it('should parse determinatives', () => {
         expect(transliteration.determinativ.tryParse('°ABC°'))
-            .toEqual(new Determinativ('ABC'));
+            .toEqual(Determinativ('ABC'));
     });
 
     it('should parse lines', () => {
@@ -71,7 +69,7 @@ describe('test', () => {
         expect(parser.tryParse("2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri"))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 2, isAbsolute: false},
-                content: [ds, new Sumerogramm('DUMU'), uc, de, new Sumerogramm('.MUNUS'), uc, '-ma', 'e-ša-', ls, 'a', le, '-', ds, 'ri']
+                content: [ds, Sumerogramm('DUMU'), uc, de, Sumerogramm('.MUNUS'), uc, '-ma', 'e-ša-', ls, 'a', le, '-', ds, 'ri']
             });
 
         expect(parser.tryParse("3' # az-zi-ik-ki-it-[tén"))
@@ -95,7 +93,7 @@ describe('test', () => {
         expect(parser.tryParse("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 10, isAbsolute: false},
-                content: [ds, 'x-x', de, '-', new Sumerogramm('TE'), new Determinativ('MEŠ'), ls, 'e', le, '-', ds]
+                content: [ds, 'x-x', de, '-', Sumerogramm('TE'), Determinativ('MEŠ'), ls, 'e', le, '-', ds]
             });
     });
 });
