@@ -1,6 +1,17 @@
 import {TransliterationLineParseResult} from "./model";
 import {akadogrammRegex, Akkadogramm} from "../model/akkadogramm";
-import {alt, createLanguage, digits, optWhitespace, regexp, seq, seqObj, string, TypedLanguage} from "parsimmon";
+import {
+    alt,
+    createLanguage,
+    digits,
+    optWhitespace,
+    regexp,
+    sepBy1,
+    seq,
+    seqObj,
+    string,
+    TypedLanguage
+} from "parsimmon";
 import {Sumerogramm, sumerogrammRegex} from "../model/sumerogramm";
 import {Determinativ, determinativRegex} from "../model/determinativ";
 import {allDamages, Damages} from "../model/damages";
@@ -13,6 +24,13 @@ import {
     subscriptNumeralContentRegex
 } from "../model/numeralContent";
 import {TransliterationLine, TransliterationLineContent} from "../model/transliterationLine";
+import {
+    InventoryNumberIdentifier,
+    ManuscriptIdentifierLine,
+    ManuscriptIdentifierLineContent,
+    manuscriptIdentifierRegex,
+    TextPublicationIdentifier
+} from "../model/manuscriptIdentifierLine";
 
 
 const hittiteRegex = /[\p{Ll}-]+/u;
@@ -37,6 +55,13 @@ type LanguageSpec = {
     completeContent: TransliterationLineContent[];
 
     transliterationLine: TransliterationLine;
+
+    // Manuscript identifiers
+    manuscriptIdentifierLineContent: ManuscriptIdentifierLineContent;
+    // textPublicationIdentifier: TextPublicationIdentifier;
+    // inventoryNumberIdentifier: InventoryNumberIdentifier;
+
+    manuscriptIdentifierLine: ManuscriptIdentifierLine;
 }
 
 export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<LanguageSpec>({
@@ -80,7 +105,22 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
         string('#'),
         optWhitespace,
         ['content', r.completeContent]
-    )
+    ),
+
+    // Manuscript identifiers
+    manuscriptIdentifierLineContent: () => seq(alt(string("&"), string('#')), optWhitespace, regexp(manuscriptIdentifierRegex))
+        .map(([mod, _ws, identifier]) => mod === '&' ? TextPublicationIdentifier(identifier) : InventoryNumberIdentifier(identifier)),
+
+    /*
+    textPublicationIdentifier: () => seq(string("&"), optWhitespace, regexp(manuscriptIdentifierRegex))
+        .map(([_amp, _ws, identifier]) => TextPublicationIdentifier(identifier)),
+
+    inventoryNumberIdentifier: () => seq(string('#'), optWhitespace, regexp(manuscriptIdentifierRegex))
+        .map(([_amp, _ws, identifier]) => InventoryNumberIdentifier(identifier)),
+     */
+
+    manuscriptIdentifierLine: (r) => sepBy1(r.manuscriptIdentifierLineContent, optWhitespace)
+        .map((result) => ManuscriptIdentifierLine(result))
 });
 
 export function parseTransliterationLine(line: string): TransliterationLineParseResult {
