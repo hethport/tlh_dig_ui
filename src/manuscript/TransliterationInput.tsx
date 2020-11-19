@@ -123,9 +123,8 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
                     </div>
 
                     <div className="field">
-                        <button type="button" onClick={updateTransliteration}
-                                className="button is-link is-fullwidth">
-                            {t('Transliteration auswerten!')}
+                        <button type="button" onClick={updateTransliteration} className="button is-link is-fullwidth">
+                            {t('Transliteration auswerten')}!
                         </button>
                     </div>
                 </div>
