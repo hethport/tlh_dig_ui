@@ -1,5 +1,5 @@
 interface IDamage {
-    type: 'Deletion' | 'Lesion' | 'Rasure' | 'Surplus' | 'Supplement';
+    type: 'Deletion' | 'Lesion' | 'Rasure' | 'Surplus' | 'Supplement' | 'UnknownDamage';
     position: 'Start' | 'End';
     symbol: string;
 }
@@ -19,16 +19,21 @@ export const SurplusEnd: IDamage = {type: 'Surplus', position: 'End', symbol: '�
 export const SupplementStart: IDamage = {type: 'Supplement', position: 'Start', symbol: '〈'};
 export const SupplementEnd: IDamage = {type: 'Supplement', position: 'End', symbol: '〉'};
 
+export const UnknownBracketStart: IDamage = {type: 'UnknownDamage', position: 'Start', symbol: '('};
+export const UnknownBracketEnd: IDamage = {type: 'UnknownDamage', position: 'End', symbol: ')'};
+
 export const allDamages = [
     DeletionStart, DeletionEnd,
     LesionStart, LesionEnd,
     RasureStart, RasureEnd,
     SurplusStart, SurplusEnd,
-    SupplementStart, SupplementEnd
+    SupplementStart, SupplementEnd,
+    UnknownBracketStart, UnknownBracketEnd
 ];
 
 export type Damages = typeof DeletionStart | typeof DeletionEnd
     | typeof LesionStart | typeof LesionEnd
     | typeof RasureStart | typeof RasureEnd
     | typeof SurplusStart | typeof SurplusEnd
-    | typeof SupplementStart | typeof SupplementStart;
+    | typeof SupplementStart | typeof SupplementStart
+    | typeof UnknownBracketStart | typeof UnknownBracketEnd;

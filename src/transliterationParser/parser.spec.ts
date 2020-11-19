@@ -9,7 +9,9 @@ import {
     LesionEnd as le,
     LesionStart as ls,
     RasureEnd as re,
-    RasureStart as rs
+    RasureStart as rs,
+    UnknownBracketStart as us,
+    UnknownBracketEnd as ue
 } from "../model/damages";
 import {UnsureCorrection as uc} from "../model/corrections";
 
@@ -63,13 +65,13 @@ describe('test', () => {
         expect(parser.tryParse("1' # [(x)] x ⸢zi⸣ x ["))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 1, isAbsolute: false},
-                content: [ds, ls, 'x', le, de, 'x', rs, 'zi', re, 'x', ds]
+                content: [ds, us, 'x', ue, de, 'x', ls, 'zi', le, 'x', ds]
             });
 
         expect(parser.tryParse("2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri"))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 2, isAbsolute: false},
-                content: [ds, new Sumerogramm('DUMU'), uc, de, new Sumerogramm('.MUNUS'), uc, '-ma', 'e-ša-', rs, 'a', re, '-', ds, 'ri']
+                content: [ds, new Sumerogramm('DUMU'), uc, de, new Sumerogramm('.MUNUS'), uc, '-ma', 'e-ša-', ls, 'a', le, '-', ds, 'ri']
             });
 
         expect(parser.tryParse("3' # az-zi-ik-ki-it-[tén"))
@@ -84,10 +86,16 @@ describe('test', () => {
                 content: ['nu', 'ḫu-u-ma-an', 'az-', ds, 'zi-ik-ki-', '¬¬¬']
             });
 
+        expect(parser.tryParse("9' # [nu-u]š-ši im-ma(-)["))
+            .toEqual<TransliterationLine>({
+                lineNumber: {number: 9, isAbsolute: false},
+                content: [ds, 'nu-u', de, 'š-ši', 'im-ma', us, '-', ue, ds]
+            })
+
         expect(parser.tryParse("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 10, isAbsolute: false},
-                content: [ds, 'x-x', de, '-', new Sumerogramm('TE'), new Determinativ('MEŠ'), rs, 'e', re, '-', ds]
+                content: [ds, 'x-x', de, '-', new Sumerogramm('TE'), new Determinativ('MEŠ'), ls, 'e', le, '-', ds]
             });
     });
 });
