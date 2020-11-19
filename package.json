@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "tlh_dig_model": "file:./tlh_dig_model",
     "@apollo/client": "^3.2.3",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
@@ -47,7 +46,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "graphql-generate": "graphql-codegen --config codegen.yml"
+    "graphql-generate": "graphql-codegen --config codegen.yml",
+    "i18n": "i18next"
   },
   "eslintConfig": {
     "extends": "react-app"
