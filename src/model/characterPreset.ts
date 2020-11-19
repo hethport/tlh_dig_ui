@@ -28,16 +28,3 @@ export const languageCharacterPresetFormat: JsonFormat<ILanguageCharacterPreset,
         return {type: 'LanguageCharacterPreset', language: u.language};
     }
 }
-
-// Other character presets
-
-export interface NumeralCharacterPreset {
-    type: 'NumeralCharacterPreset';
-    content: string;
-}
-
-export function NumeralCharacterPreset(content: string): NumeralCharacterPreset {
-    return {type: 'NumeralCharacterPreset', content};
-}
-
-// complete definition

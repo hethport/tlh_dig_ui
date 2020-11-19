@@ -1,6 +1,6 @@
 interface ICorrection {
     type: 'Correction';
-    subType: 'UnsureCorrection' | 'MaybeUnsureCorrection' | 'SureCorrection' | 'SicCorrection';
+    subType: 'UnsureCorrection' | 'MaybeUnsureCorrection' | 'SureCorrection' | 'SicCorrection' | 'Ellipsis' | 'ParagraphEnd';
     symbol: string;
 }
 
@@ -13,10 +13,18 @@ export const SureCorrection: ICorrection = {type: 'Correction', subType: 'SureCo
 export const SicCorrection: ICorrection = {type: 'Correction', subType: 'SicCorrection', symbol: 'sic'};
 
 
-export const allCorrections = [UnsureCorrection, MaybeUnsureCorrection, SureCorrection, SicCorrection];
+export const Ellipsis: ICorrection = {type: 'Correction', subType: 'Ellipsis', symbol: '…'};
+
+
+export const ParagraphEnd: ICorrection = {type: 'Correction', subType: 'ParagraphEnd', symbol: '¬¬¬'};
+
+
+export const allCorrections = [UnsureCorrection, MaybeUnsureCorrection, SureCorrection, SicCorrection, Ellipsis, ParagraphEnd];
 
 export type Corrections =
     typeof UnsureCorrection
     | typeof MaybeUnsureCorrection
     | typeof SureCorrection
-    | typeof SicCorrection;
+    | typeof SicCorrection
+    | typeof Ellipsis
+    | typeof ParagraphEnd;

@@ -1,4 +1,4 @@
-export const akadogrammRegex = /[_-](\p{Lu})+/u;
+export const akadogrammRegex = /[_-]([\p{Lu}-])+/u;
 
 /**
  * automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht

@@ -1,4 +1,4 @@
-export const determinativRegex = /°(\p{Lu}+)°/u;
+export const determinativRegex = /°([\p{Lu}.]+)°/u;
 
 /**
  * - automatisch für Großbuchstaben markiert durch ° … ° (davor oder dahinter jeweils ein Spatium oder Bindestrich)

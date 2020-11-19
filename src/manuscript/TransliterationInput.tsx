@@ -1,13 +1,14 @@
 import React, {createRef, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {IProps} from "./ManuscriptHelpers";
-import {TransliterationLine, TransliterationLineContent} from "../transliterationParser/model";
+import {TransliterationLineContent} from '../model/transliterationLine';
 import {parseTransliterationLine} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
+import {TransliterationLineParseResult} from '../transliterationParser/model';
 
 const defaultText = `$ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fundort Büyükkale, westliche Befestigungsmauer, Schutt der Altgrabungen Planquadrat 338/348; 8,99-2,85; –-–; Niveau 1104,71 • Fund-Nr. 19-5000-5004 • Maße 62 x 45 x 22 mm
 1' # [(x)] x ⸢zi⸣ x [
@@ -24,10 +25,8 @@ const defaultText = `$ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • D
 12' # [x x] x [`
 
 
-interface TransliterationLineResult {
-    lineNumber: number;
-    line: string;
-    result?: TransliterationLine;
+interface TransliterationLineResult extends TransliterationLineParseResult {
+    lineIndex: number;
 }
 
 interface IState {
@@ -45,6 +44,10 @@ function renderTransliterationLineContent(content: TransliterationLineContent): 
         return <span className="determinativ">{content.content}</span>;
     } else if (content.type === 'Correction') {
         return <sup className="correction">{content.symbol}</sup>;
+    } else if (content.type === 'NumeralContent') {
+        return <span>{content.number}</span>;
+    } else if (content.type === 'SubscriptNumeralContent') {
+        return <sub>{content.number}</sub>
     } else {
         return <span>{content.symbol}</span>;
     }
@@ -52,26 +55,26 @@ function renderTransliterationLineContent(content: TransliterationLineContent): 
 
 function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX.Element {
     const maxLineNumber: number = tlrs
-        .map((tlr) => tlr.lineNumber)
+        .flatMap((tlr) => tlr.result ? [tlr.result.lineNumber] : [])
         .reduce((a, b) => a > b ? a : b);
 
     const maxLength = Math.ceil(Math.log10(maxLineNumber));
 
     return (
         <pre>
-            {tlrs.map(({lineNumber, line, result}) => {
+            {tlrs.map(({lineIndex, line, result}) => {
                     if (result) {
-                        const ln = result.lineNumber.number.toString().padStart(maxLength, ' ');
+                        const ln = result.lineNumber.toString().padStart(maxLength, ' ');
 
-                        return <p key={lineNumber}>
-                            {ln}{result.lineNumber.isAbsolute ? '' : '\''}&nbsp;#&nbsp;
+                        return <p key={lineIndex}>
+                            {ln}{result.isAbsolute ? '' : '\''}&nbsp;#&nbsp;
                             {result.content.map((content, index) =>
                                 <span key={index}>{renderTransliterationLineContent(content)}</span>
                             )}
                         </p>
                     } else {
                         const display = line.length > 100 ? line.substr(0, 100) + '...' : line;
-                        return <p key={lineNumber} className="has-text-danger">{display}</p>
+                        return <p key={lineIndex} className="has-text-danger">{display}</p>
                     }
                 }
             )}
@@ -96,8 +99,8 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
             const transliterationOutput = textAreaRef.current
                 ? textAreaRef.current.value
                     .split('\n')
-                    .map<TransliterationLineResult>((line, index) => {
-                        return {lineNumber: index, line, result: parseTransliterationLine(line)};
+                    .map<TransliterationLineResult>((line, lineIndex) => {
+                        return {...parseTransliterationLine(line), lineIndex};
                     })
                 : [];
 
