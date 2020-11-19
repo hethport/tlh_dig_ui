@@ -4,6 +4,10 @@ import {IProps} from "./ManuscriptHelpers";
 import {TransliterationLine, TransliterationLineContent} from "../transliterationParser/model";
 import {parseTransliterationLine} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
+import {useSelector} from "react-redux";
+import {activeUserSelector} from "../store/store";
+import {manuscriptDataUrl} from "../urls";
+import {Redirect} from 'react-router-dom';
 
 const defaultText = `$ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fundort Büyükkale, westliche Befestigungsmauer, Schutt der Altgrabungen Planquadrat 338/348; 8,99-2,85; –-–; Niveau 1104,71 • Fund-Nr. 19-5000-5004 • Maße 62 x 45 x 22 mm
 1' # [(x)] x ⸢zi⸣ x [
@@ -75,12 +79,17 @@ function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX
     );
 }
 
-export function TransliterationInput({manuscript: _manuscript}: IProps): JSX.Element {
+export function TransliterationInput({manuscript}: IProps): JSX.Element {
 
     const {t} = useTranslation('common');
     const [state, setState] = useState<IState>({})
-
+    const currentUser = useSelector(activeUserSelector);
     const textAreaRef = createRef<HTMLTextAreaElement>();
+
+    if (!currentUser || currentUser.username !== manuscript.creatorUsername) {
+        const url = manuscriptDataUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
+        return <Redirect to={url}/>;
+    }
 
     function updateTransliteration(): void {
         setState((state) => {
