@@ -10,10 +10,6 @@ import {allCorrections, Corrections} from "../model/corrections";
 const hittiteRegex = /[\p{Ll}¬-]+/u;
 
 type LanguageSpec = {
-    // Helpers
-    number: number,
-    poundSign: string;
-
     // Damages
     damages: Damages,
 
@@ -21,7 +17,6 @@ type LanguageSpec = {
     corrections: Corrections,
 
     // Line number
-    lineNumberNotAbsolute: string,
     lineNumber: LineNumber,
 
     // String contents
@@ -38,24 +33,15 @@ type LanguageSpec = {
 }
 
 export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<LanguageSpec>({
-    // Helpers
-    number: () => digits.map(parseInt),
-    poundSign: () => string('#'),
-
-    // Damages
     damages: () => alt(...allDamages.map((d) => string(d.symbol).result(d))),
 
-    // Corrections
     corrections: () => alt(...allCorrections.map((c) => string(c.symbol).result(c))),
 
-    // Line number
-    lineNumberNotAbsolute: () => string('\''),
-    lineNumber: r => seq(r.number, r.lineNumberNotAbsolute.times(0, 1))
-        .map(([number, todo]) => {
-            return {number, isAbsolute: todo.length === 0};
+    lineNumber: () => seq(digits, string('\'').times(0, 1))
+        .map(([numberStr, todo]) => {
+            return {number: parseInt(numberStr), isAbsolute: todo.length === 0};
         }),
 
-    // String content
     hittite: () => regexp(hittiteRegex),
 
     akkadogramm: () => regexp(akadogrammRegex)
@@ -69,12 +55,16 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
 
     singleContent: (r) => alt(r.hittite, r.akkadogramm, r.sumerogramm, r.determinativ, r.damages, r.corrections),
 
-    completeContent: (r) => r.singleContent.sepBy(optWhitespace),
+    completeContent: (r) => seq(r.singleContent, seq(optWhitespace, r.singleContent).many())
+        .map(([tlc, last]) => [
+                tlc, ...last.flatMap(([maybeWhiteSpace, otherTlc]) => maybeWhiteSpace.length === 0 ? [otherTlc] : [maybeWhiteSpace, otherTlc])
+            ]
+        ),
 
     transliterationLine: (r) => seqObj(
         ["lineNumber", r.lineNumber],
         optWhitespace,
-        r.poundSign,
+        string('#'),
         optWhitespace,
         ["content", r.completeContent]
     )

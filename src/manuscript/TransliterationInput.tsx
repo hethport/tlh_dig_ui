@@ -4,9 +4,6 @@ import {IProps} from "./ManuscriptHelpers";
 import {TransliterationLine, TransliterationLineContent} from "../transliterationParser/model";
 import {parseTransliterationLine} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
-// import {Sumerogramm} from "../model/sumerogramm";
-// import {Akkadogramm} from "../model/akkadogramm";
-// import {Determinativ} from "../model/determinativ";
 
 const defaultText = `$ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fundort Büyükkale, westliche Befestigungsmauer, Schutt der Altgrabungen Planquadrat 338/348; 8,99-2,85; –-–; Niveau 1104,71 • Fund-Nr. 19-5000-5004 • Maße 62 x 45 x 22 mm
 1' # [(x)] x ⸢zi⸣ x [
@@ -50,26 +47,32 @@ function renderTransliterationLineContent(content: TransliterationLineContent): 
 }
 
 function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX.Element {
-    return <table>
-        <tbody>
-            {tlrs.map(({lineNumber, line, result}) =>
-                <tr key={lineNumber}>
-                    {result
-                        ? <>
-                            <td className="has-text-centered">
-                                {result.lineNumber.number}{result.lineNumber.isAbsolute ? '' : '\''}&nbsp;#&nbsp;
-                            </td>
-                            <td>
-                                {result.content.map((content, index) =>
-                                    <span key={index}>{renderTransliterationLineContent(content)}&nbsp;</span>
-                                )}
-                            </td>
-                        </>
-                        : <td colSpan={2} className="has-text-danger">{line}</td>}
-                </tr>
+    const maxLineNumber: number = tlrs
+        .map((tlr) => tlr.lineNumber)
+        .reduce((a, b) => a > b ? a : b);
+
+    const maxLength = Math.ceil(Math.log10(maxLineNumber));
+
+    return (
+        <pre>
+            {tlrs.map(({lineNumber, line, result}) => {
+                    if (result) {
+                        const ln = result.lineNumber.number.toString().padStart(maxLength, ' ');
+
+                        return <p key={lineNumber}>
+                            {ln}{result.lineNumber.isAbsolute ? '' : '\''}&nbsp;#&nbsp;
+                            {result.content.map((content, index) =>
+                                <span key={index}>{renderTransliterationLineContent(content)}</span>
+                            )}
+                        </p>
+                    } else {
+                        const display = line.length > 100 ? line.substr(0, 100) + '...' : line;
+                        return <p key={lineNumber} className="has-text-danger">{display}</p>
+                    }
+                }
             )}
-        </tbody>
-    </table>
+        </pre>
+    );
 }
 
 export function TransliterationInput({manuscript: _manuscript}: IProps): JSX.Element {
@@ -81,16 +84,15 @@ export function TransliterationInput({manuscript: _manuscript}: IProps): JSX.Ele
 
     function updateTransliteration(): void {
         setState((state) => {
-            if (textAreaRef.current) {
-                const transliterationOutput = textAreaRef.current.value.split('\n')
-                    .map((line, index) => {
+            const transliterationOutput = textAreaRef.current
+                ? textAreaRef.current.value
+                    .split('\n')
+                    .map<TransliterationLineResult>((line, index) => {
                         return {lineNumber: index, line, result: parseTransliterationLine(line)};
-                    });
+                    })
+                : [];
 
-                return {...state, transliterationOutput};
-            } else {
-                return {...state, transliterationOutput: []};
-            }
+            return {...state, transliterationOutput};
         });
     }
 
@@ -106,14 +108,16 @@ export function TransliterationInput({manuscript: _manuscript}: IProps): JSX.Ele
                         <div className="control">
                             {/* TODO: remove default text! */}
                             <textarea className="textarea" id="transliteration" placeholder={t('Transliteration')}
-                                      rows={20}
-                                      onChange={updateTransliteration} defaultValue={defaultText} ref={textAreaRef}/>
-
-                            <button type="button" onClick={updateTransliteration}
-                                    className="button is-link is-fullwidth">
-                                {t('Transliteration auswerten!')}
-                            </button>
+                                      rows={20} onChange={updateTransliteration} defaultValue={defaultText}
+                                      ref={textAreaRef}/>
                         </div>
+                    </div>
+
+                    <div className="field">
+                        <button type="button" onClick={updateTransliteration}
+                                className="button is-link is-fullwidth">
+                            {t('Transliteration auswerten!')}
+                        </button>
                     </div>
                 </div>
 

@@ -63,13 +63,13 @@ describe('test', () => {
         expect(parser.tryParse("1' # [(x)] x ⸢zi⸣ x ["))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 1, isAbsolute: false},
-                content: [ds, us, 'x', ue, de, 'x', ls, 'zi', le, 'x', ds]
+                content: [ds, us, 'x', ue, de, ' ', 'x', ' ', ls, 'zi', le, ' ', 'x', ' ', ds]
             });
 
         expect(parser.tryParse("2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri"))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 2, isAbsolute: false},
-                content: [ds, Sumerogramm('DUMU'), uc, de, Sumerogramm('.MUNUS'), uc, '-ma', 'e-ša-', ls, 'a', le, '-', ds, 'ri']
+                content: [ds, Sumerogramm('DUMU'), uc, de, Sumerogramm('.MUNUS'), uc, '-ma', ' ', 'e-ša-', ls, 'a', le, '-', ds, 'ri']
             });
 
         expect(parser.tryParse("3' # az-zi-ik-ki-it-[tén"))
@@ -81,19 +81,19 @@ describe('test', () => {
         expect(parser.tryParse("4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬"))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 4, isAbsolute: false},
-                content: ['nu', 'ḫu-u-ma-an', 'az-', ds, 'zi-ik-ki-', '¬¬¬']
+                content: ['nu', ' ', 'ḫu-u-ma-an', ' ', 'az-', ds, 'zi-ik-ki-', ' ', '¬¬¬']
             });
 
         expect(parser.tryParse("9' # [nu-u]š-ši im-ma(-)["))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 9, isAbsolute: false},
-                content: [ds, 'nu-u', de, 'š-ši', 'im-ma', us, '-', ue, ds]
+                content: [ds, 'nu-u', de, 'š-ši', ' ', 'im-ma', us, '-', ue, ds]
             })
 
         expect(parser.tryParse("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
             .toEqual<TransliterationLine>({
                 lineNumber: {number: 10, isAbsolute: false},
-                content: [ds, 'x-x', de, '-', Sumerogramm('TE'), Determinativ('MEŠ'), ls, 'e', le, '-', ds]
+                content: [ds, 'x-x', de, '-', Sumerogramm('TE'), Determinativ('MEŠ'), ' ', ls, 'e', le, '-', ds]
             });
     });
 });
