@@ -2,13 +2,12 @@ import React, {createRef, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {IProps} from "./ManuscriptHelpers";
 import {TransliterationTextLineContent} from '../model/transliterationTextLine';
-import {parseTransliterationLine} from "../transliterationParser/parser"
+import {parseTransliterationLine, TransliterationLineParseResult} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
-import {TransliterationLineParseResult} from '../transliterationParser/model';
 
 const defaultText = `1' # [(x)] x ⸢zi⸣ x [
 2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri

@@ -1,4 +1,3 @@
-import {TransliterationLineParseResult} from "./model";
 import {akadogrammRegex, Akkadogramm} from "../model/akkadogramm";
 import {alt, createLanguage, digits, optWhitespace, regexp, seq, seqObj, string, TypedLanguage} from "parsimmon";
 import {Sumerogramm, sumerogrammRegex} from "../model/sumerogramm";
@@ -14,6 +13,11 @@ import {
 } from "../model/numeralContent";
 import {TransliterationTextLine, TransliterationTextLineContent} from "../model/transliterationTextLine";
 
+
+export interface TransliterationLineParseResult {
+    line: string;
+    result?: TransliterationTextLine;
+}
 
 const hittiteRegex = /[\p{Ll}-]+/u;
 
