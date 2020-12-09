@@ -1,0 +1,155 @@
+# This file was generated based on ".graphqlconfig". Do not edit manually.
+
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+type LoggedInUser {
+  affiliation: String
+  jwt: String!
+  name: String!
+  username: String!
+}
+
+type LoggedInUserMutations {
+  createManuscript(values: ManuscriptMetaDataInput): String
+  manuscript(id: Int): ManuscriptMutations
+}
+
+type ManuscriptIdentifier {
+  identifier: String!
+  type: ManuscriptIdentifierType!
+}
+
+type ManuscriptMetaData {
+  bibliography: String
+  creatorUsername: String!
+  cthClassification: Int
+  mainIdentifier: ManuscriptIdentifier!
+  otherIdentifiers: [ManuscriptIdentifier!]!
+  palaeographicClassification: PalaeographicClassification!
+  palaeographicClassificationSure: Boolean!
+  pictureUrls: [String!]!
+  provenance: String
+  status: ManuscriptStatus
+}
+
+type ManuscriptMutations {
+  updateTransliteration(values: [TransliterationTextLineInput!]!): String
+}
+
+type Mutation {
+  login(password: String!, username: String!): LoggedInUser
+  me(jwt: String!): LoggedInUserMutations
+  register(userInput: UserInput!): String
+}
+
+type Query {
+  allManuscripts: [ManuscriptMetaData!]!
+  manuscript(mainIdentifier: String!): ManuscriptMetaData
+}
+
+enum CorrectionType {
+  Ellipsis
+  MaybeUnsureCorrection
+  ParagraphEnd
+  SicCorrection
+  SureCorrection
+  UnsureCorrection
+}
+
+enum DamagePositionEnum {
+  End
+  Start
+}
+
+enum DamageTypeEnum {
+  Deletion
+  Lesion
+  Rasure
+  Supplement
+  Surplus
+  UnknownDamage
+}
+
+enum ManuscriptIdentifierType {
+  CollectionNumber
+  ExcavationNumber
+  PublicationShortReference
+}
+
+enum ManuscriptStatus {
+  Approved
+  Created
+  ExecutiveReviewMerged
+  ExecutiveReviewed
+  InCreation
+  ReviewMerged
+  Reviewed
+}
+
+enum PalaeographicClassification {
+  AssyroMittanianScript
+  LateNewScript
+  MiddleAssyrianScript
+  MiddleBabylonianScript
+  MiddleScript
+  NewScript
+  OldAssyrianScript
+  OldScript
+  Unclassified
+}
+
+enum StringContentTypeEnum {
+  Akadogramm
+  Determinativ
+  MaterLectionis
+  Sumerogramm
+}
+
+input DamageInput {
+  position: DamagePositionEnum!
+  type: DamageTypeEnum!
+}
+
+input ManuscriptIdentifierInput {
+  identifier: String!
+  identifierType: ManuscriptIdentifierType!
+}
+
+input ManuscriptMetaDataInput {
+  bibliography: String
+  cthClassification: Int
+  mainIdentifier: ManuscriptIdentifierInput!
+  otherIdentifiers: [ManuscriptIdentifierInput!]!
+  palaeographicClassification: PalaeographicClassification!
+  palaeographicClassificationSure: Boolean!
+  provenance: String
+}
+
+input StringContentInput {
+  content: String!
+  type: StringContentTypeEnum!
+}
+
+input TransliterationTextLineContentUnion {
+  correctionContent: CorrectionType
+  damageContent: DamageInput
+  stringContent: StringContentInput
+}
+
+input TransliterationTextLineInput {
+  content: [TransliterationTextLineContentUnion!]!
+  isAbsolute: Boolean!
+  lineNumber: Int!
+}
+
+input UserInput {
+  affiliation: String
+  email: String!
+  name: String!
+  password: String!
+  passwordRepeat: String!
+  username: String!
+}

@@ -1,21 +1,10 @@
-import {NumeralContent, SubscriptNumeralContent} from "./numeralContent";
-import {Akkadogramm} from "./akkadogramm";
-import {Sumerogramm} from "./sumerogramm";
-import {Determinativ} from "./determinativ";
+import {StringContent} from './stringContent';
 import {Damages} from "./damages";
 import {Corrections} from "./corrections";
+import {NumeralContent} from "./numeralContent";
 
 
-export type TransliterationTextLineContent =
-    string
-    | SubscriptNumeralContent
-    | NumeralContent
-    | Akkadogramm
-    | Sumerogramm
-    | Determinativ
-    | Damages
-    | Corrections;
-
+export type TransliterationTextLineContent = string | StringContent | NumeralContent | Damages | Corrections;
 
 export interface TransliterationTextLine {
     lineNumber: number;

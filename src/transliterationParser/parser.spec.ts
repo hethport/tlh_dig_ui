@@ -1,5 +1,4 @@
-import {parseTransliterationLine} from './parser';
-import {TransliterationLineParseResult} from "./model";
+import {parseTransliterationLine, TransliterationLineParseResult} from './parser';
 import {TransliterationTextLine as tl} from '../model/transliterationTextLine';
 import {
     DeletionEnd as de,
@@ -15,7 +14,7 @@ import {Sumerogramm as sg} from "../model/sumerogramm";
 import {Akkadogramm as ag} from "../model/akkadogramm";
 import {Determinativ as dt} from "../model/determinativ";
 import {Ellipsis as el, ParagraphEnd as pe, UnsureCorrection as uc} from '../model/corrections';
-import {NumeralContent as nc, SubscriptNumeralContent as snc} from "../model/numeralContent";
+import {NumeralContent as nc} from "../model/numeralContent";
 
 const awaited: TransliterationLineParseResult[] = [
     {
@@ -85,7 +84,7 @@ const awaited: TransliterationLineParseResult[] = [
     },
     {
         line: "5' # [ … ] ⸢6⸣ NINDA.GUR₄.RA°ḪI.A° ki-an-da",
-        result: tl(5, [ds, ' ', el, ' ', de, ' ', ls, nc(6), le, ' ', sg('NINDA.GUR'), snc(4), sg('.RA'), dt('ḪI.A'), ' ', 'ki-an-da'])
+        result: tl(5, [ds, ' ', el, ' ', de, ' ', ls, nc(6), le, ' ', sg('NINDA.GUR'), nc(4, true), sg('.RA'), dt('ḪI.A'), ' ', 'ki-an-da'])
     },
     {
         line: "6' # [ … -t]i-ia še-er pé-ra-an da-a-i ¬¬¬",
@@ -113,7 +112,7 @@ const awaited: TransliterationLineParseResult[] = [
     },
     {
         line: "12' # [ … °LÚ°ALAM.Z]U₉",
-        result: tl(12, [ds, ' ', el, ' ', dt('LÚ'), sg('ALAM.Z'), de, sg('U'), snc(9)])
+        result: tl(12, [ds, ' ', el, ' ', dt('LÚ'), sg('ALAM.Z'), de, sg('U'), nc(9, true)])
     },
     {
         line: "13' # [ … -z]i ¬¬¬",
@@ -135,7 +134,7 @@ const awaited: TransliterationLineParseResult[] = [
     },
     {
         line: "5' # °LÚ°SAGI.A 1 NINDA.G[UR₄.RA _EM-ṢA]",
-        result: tl(5, [dt('LÚ'), sg('SAGI.A'), ' ', nc(1), ' ', sg('NINDA.G'), ds, sg('UR'), snc(4), sg('.RA'), ' ', ag('EM-ṢA'), de])
+        result: tl(5, [dt('LÚ'), sg('SAGI.A'), ' ', nc(1), ' ', sg('NINDA.G'), ds, sg('UR'), nc(4, true), sg('.RA'), ' ', ag('EM-ṢA'), de])
     },
     {
         line: "6' # LUGAL-i pa-a-i LUGAL-u[š pár-ši-ia] ¬¬¬",
@@ -163,7 +162,7 @@ const awaited: TransliterationLineParseResult[] = [
     },
     {
         line: "12' # °LÚ°SAGI.A [1 NINDA.GUR₄.RA EM-ṢA]",
-        result: tl(12, [dt('LÚ'), sg('SAGI.A'), ' ', ds, nc(1), ' ', sg('NINDA.GUR'), snc(4), sg('.RA'), ' ', sg('EM'), '-', sg('ṢA'), de])
+        result: tl(12, [dt('LÚ'), sg('SAGI.A'), ' ', ds, nc(1), ' ', sg('NINDA.GUR'), nc(4, true), sg('.RA'), ' ', sg('EM'), '-', sg('ṢA'), de])
     },
     {
         line: "13' # LUGAL-i pa-a-i [LUGAL-uš pár-ši-ia] ¬¬¬",
@@ -196,7 +195,7 @@ const awaited: TransliterationLineParseResult[] = [
     {line: "6 # ITI 1°KAM° | ku-zal-li | li-mu-um"},
     {
         line: "7 # am-ri-iš₈-tár DUMU ma-num-ba-lúm-a-šùr",
-        result: tl(7, ['am-ri-iš', snc(8), '-tár', ' ', sg('DUMU'), ' ', 'ma-num-ba-lúm-a-šùr'], true)
+        result: tl(7, ['am-ri-iš', nc(8, true), '-tár', ' ', sg('DUMU'), ' ', 'ma-num-ba-lúm-a-šùr'], true)
     },
     {line: "8 # i-na ṭup-pì-kà | a-šùr-mu-da-mì-i[q]"},
     {line: "9 # DUMU sá-ak-lá-nim | ⸢ú e⸣-dí-na-a"},

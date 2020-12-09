@@ -8,6 +8,7 @@ import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
+import {StringContentTypeEnum} from "../generated/graphql";
 
 const defaultText = `1' # [(x)] x ⸢zi⸣ x [
 2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri
@@ -34,18 +35,19 @@ interface IState {
 function renderTransliterationLineContent(content: TransliterationTextLineContent): JSX.Element {
     if (typeof content === 'string') {
         return <span className="hittite">{content}</span>;
-    } else if (content.type === 'Akkadogramm') {
+    } else if (content.type === StringContentTypeEnum.Akadogramm) {
         return <span className="akadogramm">{content.content}</span>;
-    } else if (content.type === 'Sumerogramm') {
-        return <span className="sumerogramm">{content.content}</span>;
-    } else if (content.type === 'Determinativ') {
+    } else if (content.type === StringContentTypeEnum.Determinativ) {
         return <span className="determinativ">{content.content}</span>;
+    } else if (content.type === StringContentTypeEnum.MaterLectionis) {
+        //TODO: class!
+        return <span>{content.content}</span>;
+    } else if (content.type === StringContentTypeEnum.Sumerogramm) {
+        return <span className="sumerogramm">{content.content}</span>;
     } else if (content.type === 'Correction') {
         return <sup className="correction">{content.symbol}</sup>;
     } else if (content.type === 'NumeralContent') {
-        return <span>{content.number}</span>;
-    } else if (content.type === 'SubscriptNumeralContent') {
-        return <sub>{content.number}</sub>
+        return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
     } else {
         return <span>{content.symbol}</span>;
     }

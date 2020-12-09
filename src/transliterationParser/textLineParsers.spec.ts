@@ -2,7 +2,7 @@ import {transliteration} from './parser';
 import {Akkadogramm as ag} from "../model/akkadogramm";
 import {Sumerogramm as sg} from "../model/sumerogramm";
 import {Determinativ as dt} from "../model/determinativ";
-import {NumeralContent as nc, SubscriptNumeralContent as snc} from "../model/numeralContent";
+import {NumeralContent as nc} from "../model/numeralContent";
 import {
     DeletionEnd as de,
     DeletionStart as ds,
@@ -108,7 +108,7 @@ describe('test', () => {
             .toEqual<TransliterationTextLine>({
                 lineNumber: 5,
                 isAbsolute: false,
-                content: [ds, ' ', el, ' ', de, ' ', ls, nc(6), le, ' ', sg('NINDA.GUR'), snc(4), sg('.RA'), dt('ḪI.A'), ' ', 'ki-an-da']
+                content: [ds, ' ', el, ' ', de, ' ', ls, nc(6), le, ' ', sg('NINDA.GUR'), nc(4,true), sg('.RA'), dt('ḪI.A'), ' ', 'ki-an-da']
             });
 
         expect(parser.tryParse("9' # pár-aš-na-a-u-<aš>-kán °LÚ°SAG[I.A ¬¬¬"))

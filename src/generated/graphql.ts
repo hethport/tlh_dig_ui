@@ -113,11 +113,17 @@ export type LoggedInUser = {
 export type LoggedInUserMutations = {
   __typename?: 'LoggedInUserMutations';
   createManuscript?: Maybe<Scalars['String']>;
+  manuscript?: Maybe<ManuscriptMutations>;
 };
 
 
 export type LoggedInUserMutationsCreateManuscriptArgs = {
   values?: Maybe<ManuscriptMetaDataInput>;
+};
+
+
+export type LoggedInUserMutationsManuscriptArgs = {
+  id?: Maybe<Scalars['Int']>;
 };
 
 export type ManuscriptMetaDataInput = {
@@ -134,6 +140,68 @@ export type ManuscriptIdentifierInput = {
   identifierType: ManuscriptIdentifierType;
   identifier: Scalars['String'];
 };
+
+export type ManuscriptMutations = {
+  __typename?: 'ManuscriptMutations';
+  updateTransliteration?: Maybe<Scalars['String']>;
+};
+
+
+export type ManuscriptMutationsUpdateTransliterationArgs = {
+  values: Array<TransliterationTextLineInput>;
+};
+
+export type TransliterationTextLineInput = {
+  lineNumber: Scalars['Int'];
+  isAbsolute: Scalars['Boolean'];
+  content: Array<TransliterationTextLineContentUnion>;
+};
+
+export type TransliterationTextLineContentUnion = {
+  stringContent?: Maybe<StringContentInput>;
+  damageContent?: Maybe<DamageInput>;
+  correctionContent?: Maybe<CorrectionType>;
+};
+
+export type StringContentInput = {
+  type: StringContentTypeEnum;
+  content: Scalars['String'];
+};
+
+export enum StringContentTypeEnum {
+  Akadogramm = 'Akadogramm',
+  Determinativ = 'Determinativ',
+  MaterLectionis = 'MaterLectionis',
+  Sumerogramm = 'Sumerogramm'
+}
+
+export type DamageInput = {
+  type: DamageTypeEnum;
+  position: DamagePositionEnum;
+};
+
+export enum DamageTypeEnum {
+  Deletion = 'Deletion',
+  Lesion = 'Lesion',
+  Rasure = 'Rasure',
+  Surplus = 'Surplus',
+  Supplement = 'Supplement',
+  UnknownDamage = 'UnknownDamage'
+}
+
+export enum DamagePositionEnum {
+  Start = 'Start',
+  End = 'End'
+}
+
+export enum CorrectionType {
+  UnsureCorrection = 'UnsureCorrection',
+  MaybeUnsureCorrection = 'MaybeUnsureCorrection',
+  SureCorrection = 'SureCorrection',
+  SicCorrection = 'SicCorrection',
+  Ellipsis = 'Ellipsis',
+  ParagraphEnd = 'ParagraphEnd'
+}
 
 export type ManuscriptIdentifierFragment = (
   { __typename?: 'ManuscriptIdentifier' }

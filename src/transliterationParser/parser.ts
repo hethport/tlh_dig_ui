@@ -1,17 +1,16 @@
-import {akadogrammRegex, Akkadogramm} from "../model/akkadogramm";
 import {alt, createLanguage, digits, optWhitespace, regexp, seq, seqObj, string, TypedLanguage} from "parsimmon";
-import {Sumerogramm, sumerogrammRegex} from "../model/sumerogramm";
-import {Determinativ, determinativRegex} from "../model/determinativ";
 import {allDamages, Damages} from "../model/damages";
 import {allCorrections, Corrections} from "../model/corrections";
-import {
-    NumeralContent,
-    numeralContentRegex,
-    SubscriptNumberContentFromString,
-    SubscriptNumeralContent,
-    subscriptNumeralContentRegex
-} from "../model/numeralContent";
+import {NumeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
 import {TransliterationTextLine, TransliterationTextLineContent} from "../model/transliterationTextLine";
+import {
+    akadogrammRegex,
+    Akkadogramm,
+    Determinativ,
+    determinativRegex,
+    Sumerogramm,
+    sumerogrammRegex
+} from "../model/stringContent";
 
 
 export interface TransliterationLineParseResult {
@@ -34,7 +33,7 @@ type LanguageSpec = {
     determinativ: Determinativ,
 
     numeralContent: NumeralContent,
-    subscriptNumeralContent: SubscriptNumeralContent,
+    subscriptNumeralContent: NumeralContent,
 
 
     singleContent: TransliterationTextLineContent;
@@ -53,10 +52,10 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     corrections: () => alt(...allCorrections.map((c) => string(c.symbol).result(c))),
 
     numeralContent: () => regexp(numeralContentRegex)
-        .map((result) => NumeralContent(parseInt(result))),
+        .map((result) => NumeralContent(result, false)),
 
     subscriptNumeralContent: () => regexp(subscriptNumeralContentRegex)
-        .map((result) => SubscriptNumberContentFromString(result)),
+        .map((result) => NumeralContent(result, true)),
 
     hittite: () => regexp(hittiteRegex),
 
