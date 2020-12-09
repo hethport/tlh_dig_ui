@@ -762,11 +762,11 @@
             "description": null,
             "args": [
               {
-                "name": "id",
+                "name": "mainIdentifier",
                 "description": null,
                 "type": {
                   "kind": "SCALAR",
-                  "name": "Int",
+                  "name": "String",
                   "ofType": null
                 },
                 "defaultValue": null

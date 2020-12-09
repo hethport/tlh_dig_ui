@@ -8,7 +8,11 @@ import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
-import {StringContentTypeEnum} from "../generated/graphql";
+import {
+    NewTransliterationInputMutationVariables,
+    StringContentTypeEnum,
+    useNewTransliterationInputMutation
+} from "../generated/graphql";
 
 const defaultText = `1' # [(x)] x ⸢zi⸣ x [
 2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri
@@ -89,6 +93,8 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
     const currentUser = useSelector(activeUserSelector);
     const textAreaRef = createRef<HTMLTextAreaElement>();
 
+    const [createTransliteration] = useNewTransliterationInputMutation();
+
     if (!currentUser || currentUser.username !== manuscript.creatorUsername) {
         const url = manuscriptDataUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
         return <Redirect to={url}/>;
@@ -106,6 +112,14 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
 
             return {...state, transliterationOutput};
         });
+    }
+
+    function uploadTransliteration(): void {
+       const toUpload: NewTransliterationInputMutationVariables = {
+           jwt: '',
+           mainIdentifier: '',
+           values: []
+       }
     }
 
     return (

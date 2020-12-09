@@ -123,7 +123,7 @@ export type LoggedInUserMutationsCreateManuscriptArgs = {
 
 
 export type LoggedInUserMutationsManuscriptArgs = {
-  id?: Maybe<Scalars['Int']>;
+  mainIdentifier?: Maybe<Scalars['String']>;
 };
 
 export type ManuscriptMetaDataInput = {
@@ -331,6 +331,24 @@ export type TransliterationInputQuery = (
       { __typename?: 'ManuscriptIdentifier' }
       & ManuscriptIdentifierFragment
     ) }
+  )> }
+);
+
+export type NewTransliterationInputMutationVariables = Exact<{
+  jwt: Scalars['String'];
+  mainIdentifier: Scalars['String'];
+  values: Array<TransliterationTextLineInput>;
+}>;
+
+
+export type NewTransliterationInputMutation = (
+  { __typename?: 'Mutation' }
+  & { me?: Maybe<(
+    { __typename?: 'LoggedInUserMutations' }
+    & { manuscript?: Maybe<(
+      { __typename?: 'ManuscriptMutations' }
+      & Pick<ManuscriptMutations, 'updateTransliteration'>
+    )> }
   )> }
 );
 
@@ -612,6 +630,42 @@ export function useTransliterationInputLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type TransliterationInputQueryHookResult = ReturnType<typeof useTransliterationInputQuery>;
 export type TransliterationInputLazyQueryHookResult = ReturnType<typeof useTransliterationInputLazyQuery>;
 export type TransliterationInputQueryResult = Apollo.QueryResult<TransliterationInputQuery, TransliterationInputQueryVariables>;
+export const NewTransliterationInputDocument = gql`
+    mutation NewTransliterationInput($jwt: String!, $mainIdentifier: String!, $values: [TransliterationTextLineInput!]!) {
+  me(jwt: $jwt) {
+    manuscript(mainIdentifier: $mainIdentifier) {
+      updateTransliteration(values: $values)
+    }
+  }
+}
+    `;
+export type NewTransliterationInputMutationFn = Apollo.MutationFunction<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>;
+
+/**
+ * __useNewTransliterationInputMutation__
+ *
+ * To run a mutation, you first call `useNewTransliterationInputMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useNewTransliterationInputMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [newTransliterationInputMutation, { data, loading, error }] = useNewTransliterationInputMutation({
+ *   variables: {
+ *      jwt: // value for 'jwt'
+ *      mainIdentifier: // value for 'mainIdentifier'
+ *      values: // value for 'values'
+ *   },
+ * });
+ */
+export function useNewTransliterationInputMutation(baseOptions?: Apollo.MutationHookOptions<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>) {
+        return Apollo.useMutation<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>(NewTransliterationInputDocument, baseOptions);
+      }
+export type NewTransliterationInputMutationHookResult = ReturnType<typeof useNewTransliterationInputMutation>;
+export type NewTransliterationInputMutationResult = Apollo.MutationResult<NewTransliterationInputMutation>;
+export type NewTransliterationInputMutationOptions = Apollo.BaseMutationOptions<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>;
 
       export interface IntrospectionResultData {
         __schema: {

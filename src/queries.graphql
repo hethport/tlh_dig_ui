@@ -92,3 +92,11 @@ query TransliterationInput($mainIdentifier: String!) {
     }
   }
 }
+
+mutation NewTransliterationInput($jwt: String!, $mainIdentifier: String!, $values: [TransliterationTextLineInput!]!) {
+  me(jwt: $jwt) {
+    manuscript(mainIdentifier: $mainIdentifier) {
+      updateTransliteration(values: $values)
+    }
+  }
+}

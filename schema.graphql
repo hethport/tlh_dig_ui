@@ -14,7 +14,7 @@ type LoggedInUser {
 
 type LoggedInUserMutations {
   createManuscript(values: ManuscriptMetaDataInput): String
-  manuscript(id: Int): ManuscriptMutations
+  manuscript(mainIdentifier: String): ManuscriptMutations
 }
 
 type ManuscriptIdentifier {
