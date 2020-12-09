@@ -1,6 +1,6 @@
 import {parseTransliterationLine} from './parser';
 import {TransliterationLineParseResult} from "./model";
-import {TransliterationLine as tl} from '../model/transliterationLine';
+import {TransliterationTextLine as tl} from '../model/transliterationTextLine';
 import {
     DeletionEnd as de,
     DeletionStart as ds,
@@ -18,7 +18,6 @@ import {Ellipsis as el, ParagraphEnd as pe, UnsureCorrection as uc} from '../mod
 import {NumeralContent as nc, SubscriptNumeralContent as snc} from "../model/numeralContent";
 
 const awaited: TransliterationLineParseResult[] = [
-    {line: '$ Bo 2019/1 # KBo 71.91'},
     {
         line: "1' # [(x)] x ⸢zi⸣ x [",
         result: tl(1, [ds, us, 'x', ue, de, ' ', 'x', ' ', ls, 'zi', le, ' ', 'x', ' ', ds])
@@ -188,15 +187,33 @@ const awaited: TransliterationLineParseResult[] = [
     {line: "%Vs."},
     {
         line: "1 # a-na ša ki-ma | i-a-tí | ù! ku-li",
-        result: tl(1, ['a-na ša ki-ma', ' ', '|', ' ', 'i-a-tí', ' ', '|', ' ', 'ù', '!', ' ', 'ku-li'], true)
+        /*        result: tl(1, ['a-na', ' ', 'ša', ' ', 'ki-ma', ' ', '|', ' ', 'i-a-tí', ' ', '|', ' ', 'ù', '!', ' ', 'ku-li'], true)*/
     },
     {line: "2 # a-na ku-li | qí-bi₄-ma | um-ma"},
     {line: "3 # a-šùr-e-na-ma 2 MA.NA 2 ⅔ GÍN"},
     {line: "4 # KÙ.BABBAR | ša li-bi₄-kà | ša a-na MU 1.[ŠÈ]"},
     {line: "5 # ša-qá-lìm | qá-bi₄-a-tí-ni"},
     {line: "6 # ITI 1°KAM° | ku-zal-li | li-mu-um"},
-    {line: "7 # am-ri-iš₈-tár DUMU ma-num-ba-lúm-a-šùr"},
-    {line: "8 # i-na ṭup-pì-kà | a-šùr-mu-da-mì-i[q]"}, {line: "9 # DUMU sá-ak-lá-nim | ⸢ú e⸣-dí-na-a"}, {line: "10 # [DU]MU a-a-a | kà-an-ku-ni 1 GÍN KÙ.BABBAR"}, {line: "11 # lá tù-qá-ri-ba-am"}, {line: "12 # i-na °d°UTU-ši na-áš-pì-ir-⸢tí⸣"}, {line: "%u. Rd."}, {line: "13 # ta-ša-me-{Rasur}⸢ú⸣"}, {line: "14 # x x x x x ["}, {line: "$ Bo 2019/6 # KBo 71.93"}, {line: "@Hit"}, {line: "1' # [ … ] x ["}, {line: "2' # [ … ] x x ["}, {line: "3' # [ … ] É x ["}, {line: "4' # [ … ] ⸢É⸣.GAL ["}, {line: "5' # [ … n]u DUMU-li ["}, {line: "6' # [ … ] x x ["}
+    {
+        line: "7 # am-ri-iš₈-tár DUMU ma-num-ba-lúm-a-šùr",
+        result: tl(7, ['am-ri-iš', snc(8), '-tár', ' ', sg('DUMU'), ' ', 'ma-num-ba-lúm-a-šùr'], true)
+    },
+    {line: "8 # i-na ṭup-pì-kà | a-šùr-mu-da-mì-i[q]"},
+    {line: "9 # DUMU sá-ak-lá-nim | ⸢ú e⸣-dí-na-a"},
+    {line: "10 # [DU]MU a-a-a | kà-an-ku-ni 1 GÍN KÙ.BABBAR"},
+    {line: "11 # lá tù-qá-ri-ba-am"},
+    {line: "12 # i-na °d°UTU-ši na-áš-pì-ir-⸢tí⸣"},
+    {line: "%u. Rd."},
+    {line: "13 # ta-ša-me-{Rasur}⸢ú⸣"},
+    {line: "14 # x x x x x ["},
+    {line: "$ Bo 2019/6 # KBo 71.93"},
+    {line: "@Hit"},
+    {line: "1' # [ … ] x ["},
+    {line: "2' # [ … ] x x ["},
+    {line: "3' # [ … ] É x ["},
+    {line: "4' # [ … ] ⸢É⸣.GAL ["},
+    {line: "5' # [ … n]u DUMU-li ["},
+    {line: "6' # [ … ] x x ["}
 ]
 
 describe('The transliteration parser', () => {

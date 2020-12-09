@@ -1,7 +1,7 @@
-import {TransliterationLine} from "../model/transliterationLine";
+import {TransliterationTextLine} from "../model/transliterationTextLine";
 
 
 export interface TransliterationLineParseResult {
     line: string;
-    result?: TransliterationLine;
+    result?: TransliterationTextLine;
 }

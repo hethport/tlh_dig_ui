@@ -1,5 +1,7 @@
-export const manuscriptIdentifierRegex = /[\w.]*/u;
+export const manuscriptIdentifierRegex = /[\w./ ]*/u;
 
+export const textPublicationIdentifierStartChar = '$';
+export const inventoryNumberIdentifierStartRegex = /[&#]/;
 
 export interface TextPublicationIdentifier {
     type: 'TextPublicationIdentifier';
@@ -12,12 +14,12 @@ export function TextPublicationIdentifier(identifier: string): TextPublicationId
 
 
 export interface InventoryNumberIdentifier {
-    type: 'InventoryNumberIdentifer';
+    type: 'InventoryNumberIdentifier';
     identifier: string;
 }
 
 export function InventoryNumberIdentifier(identifier: string): InventoryNumberIdentifier {
-    return {type: 'InventoryNumberIdentifer', identifier}
+    return {type: 'InventoryNumberIdentifier', identifier}
 }
 
 

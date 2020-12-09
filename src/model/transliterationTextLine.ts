@@ -6,7 +6,7 @@ import {Damages} from "./damages";
 import {Corrections} from "./corrections";
 
 
-export type TransliterationLineContent =
+export type TransliterationTextLineContent =
     string
     | SubscriptNumeralContent
     | NumeralContent
@@ -17,12 +17,12 @@ export type TransliterationLineContent =
     | Corrections;
 
 
-export interface TransliterationLine {
+export interface TransliterationTextLine {
     lineNumber: number;
     isAbsolute: boolean;
-    content: TransliterationLineContent[];
+    content: TransliterationTextLineContent[];
 }
 
-export function TransliterationLine(lineNumber: number, content: TransliterationLineContent[], isAbsolute: boolean = false): TransliterationLine {
+export function TransliterationTextLine(lineNumber: number, content: TransliterationTextLineContent[], isAbsolute: boolean = false): TransliterationTextLine {
     return {lineNumber, isAbsolute, content};
 }

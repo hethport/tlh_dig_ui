@@ -1,7 +1,7 @@
 import React, {createRef, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {IProps} from "./ManuscriptHelpers";
-import {TransliterationLineContent} from '../model/transliterationLine';
+import {TransliterationTextLineContent} from '../model/transliterationTextLine';
 import {parseTransliterationLine} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
 import {useSelector} from "react-redux";
@@ -10,8 +10,7 @@ import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
 import {TransliterationLineParseResult} from '../transliterationParser/model';
 
-const defaultText = `$ Bo 2019/1 # KBo 71.91 • Datierung jh. • CTH 470 • Duplikate – • Fundort Büyükkale, westliche Befestigungsmauer, Schutt der Altgrabungen Planquadrat 338/348; 8,99-2,85; –-–; Niveau 1104,71 • Fund-Nr. 19-5000-5004 • Maße 62 x 45 x 22 mm
-1' # [(x)] x ⸢zi⸣ x [
+const defaultText = `1' # [(x)] x ⸢zi⸣ x [
 2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri
 3' # az-zi-ik-ki-it-[tén
 4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬
@@ -33,7 +32,7 @@ interface IState {
     transliterationOutput?: TransliterationLineResult[];
 }
 
-function renderTransliterationLineContent(content: TransliterationLineContent): JSX.Element {
+function renderTransliterationLineContent(content: TransliterationTextLineContent): JSX.Element {
     if (typeof content === 'string') {
         return <span className="hittite">{content}</span>;
     } else if (content.type === 'Akkadogramm') {
