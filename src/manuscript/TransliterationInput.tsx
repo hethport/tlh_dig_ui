@@ -71,7 +71,7 @@ function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX
                         const ln = result.lineNumber.toString().padStart(maxLength, ' ');
 
                         return <p key={lineIndex}>
-                            {ln}{result.isAbsolute ? '' : '\''}&nbsp;#&nbsp;
+                            <sup>{ln}{result.isAbsolute ? '' : '\''}</sup>&nbsp;
                             {result.content.map((content, index) =>
                                 <span key={index}>{renderTransliterationLineContent(content)}</span>
                             )}
