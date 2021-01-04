@@ -2,6 +2,7 @@
   "name": "tlh_dig_react",
   "version": "0.1.0",
   "private": true,
+  "homepage": "./",
   "dependencies": {
     "@apollo/client": "^3.2.3",
     "@testing-library/jest-dom": "^4.2.4",

@@ -41,7 +41,7 @@ render(
         <I18nextProvider i18n={i18n}>
             <ApolloProvider client={apolloClient}>
                 <Provider store={store}>
-                    <Router>
+                    <Router basename="/tlh_dig/public">
                         <App/>
                     </Router>
                 </Provider>
