@@ -8,11 +8,7 @@ import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
-import {
-    NewTransliterationInputMutationVariables,
-    StringContentTypeEnum,
-    useNewTransliterationInputMutation
-} from "../generated/graphql";
+import {StringContentTypeEnum} from "../generated/graphql";
 
 const defaultText = `1' # [(x)] x ⸢zi⸣ x [
 2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri
@@ -93,7 +89,7 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
     const currentUser = useSelector(activeUserSelector);
     const textAreaRef = createRef<HTMLTextAreaElement>();
 
-    const [createTransliteration] = useNewTransliterationInputMutation();
+    // const [createTransliteration] = useNewTransliterationInputMutation();
 
     if (!currentUser || currentUser.username !== manuscript.creatorUsername) {
         const url = manuscriptDataUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
@@ -114,23 +110,31 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
         });
     }
 
+    /*
     function uploadTransliteration(): void {
-       const toUpload: NewTransliterationInputMutationVariables = {
-           jwt: '',
-           mainIdentifier: '',
-           values: []
-       }
+        const toUpload: NewTransliterationInputMutationVariables = {
+            jwt: '',
+            mainIdentifier: '',
+            values: []
+        }
+    }
+     */
+
+    function exportAsXml(): void {
+        console.info('TODO: export as xml...');
     }
 
     return (
         <div className="container is-fluid">
-            <h2 className="subtitle is-3 has-text-centered">{t('Eingabe der Transliteration')}</h2>
+            <h1 className="subtitle is-3 has-text-centered">{t('Eingabe der Transliteration')}</h1>
 
             <div className="columns">
+
                 <div className="column">
+
+                    <h2 className="subtitle is-4 has-text-centered">{t('Transliteration')}:</h2>
+
                     <div className="field">
-                        <label htmlFor="transliteration"
-                               className="label has-text-centered">{t('Transliteration')}:</label>
                         <div className="control">
                             {/* TODO: remove default text! */}
                             <textarea className="textarea" id="transliteration" placeholder={t('Transliteration')}
@@ -140,6 +144,7 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
                     </div>
 
                     <div className="field">
+
                         <button type="button" onClick={updateTransliteration} className="button is-link is-fullwidth">
                             {t('Transliteration auswerten')}!
                         </button>
@@ -147,8 +152,20 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
                 </div>
 
                 <div className="column">
-                    {state.transliterationOutput && renderTransliterationLineResult(state.transliterationOutput)}
+                    <h2 className="subtitle is-4 has-text-centered">{t('parse_result')}</h2>
+
+                    {state.transliterationOutput && <div>
+                        <div className="field">
+                            {renderTransliterationLineResult(state.transliterationOutput)}
+                        </div>
+
+                        <div className="field">
+                            <button type="button" className="button is-link is-fullwidth"
+                                    onClick={exportAsXml}>{t('xml_export')}</button>
+                        </div>
+                    </div>}
                 </div>
+
             </div>
         </div>
     );
