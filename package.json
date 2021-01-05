@@ -44,7 +44,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "react-scripts build && rm -rf ../html/tlh_dig/public/* && touch ../html/tlh_dig/public/.gitkeep && cp -r build/* ../html/tlh_dig/public",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "graphql-generate": "graphql-codegen --config codegen.yml",
