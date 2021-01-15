@@ -30,31 +30,54 @@ interface TransliterationLineResult extends TransliterationLineParseResult {
 
 interface IState {
     transliterationOutput?: TransliterationLineResult[];
+    xmlOutput?: string;
 }
 
-function renderTransliterationLineContent(content: TransliterationWordContent): JSX.Element {
+
+function xmlify(content: TransliterationWordContent): string {
     if (typeof content === 'string') {
-        return <span className="hittite">{content}</span>;
+        return content;
     } else if (content.type === StringContentTypeEnum.Akadogramm) {
-        return <span className="akadogramm">{content.content}</span>;
+        return `<ag>${content.content}</ag>`;
+    } else if (content.type === StringContentTypeEnum.Sumerogramm) {
+        return `<sg>${content.content}</sg>`;
+    } else if (content.type === StringContentTypeEnum.MaterLectionis) {
+        return `<ml>${content.content}</ml>`;
     } else if (content.type === StringContentTypeEnum.Determinativ) {
-        return <span className="determinativ">{content.content}</span>;
+        return `<dt>${content.content}</dt>`;
+    } else if (content.type === 'Correction') {
+        return '<todo/>';
+    } else if (content.type === 'NumeralContent') {
+        return `<nc>${content.content}</nc>`;
+    } else {
+        return content.node;
+    }
+}
+
+
+function renderTransliterationLineContent(content: TransliterationWordContent, index: number): JSX.Element {
+    if (typeof content === 'string') {
+        return <span key={index} className="hittite">{content}</span>;
+    } else if (content.type === StringContentTypeEnum.Akadogramm) {
+        return <span key={index} className="akadogramm">{content.content}</span>;
+    } else if (content.type === StringContentTypeEnum.Determinativ) {
+        return <span key={index} className="determinativ">{content.content}</span>;
     } else if (content.type === StringContentTypeEnum.MaterLectionis) {
         //TODO: class!
-        return <span>{content.content}</span>;
+        return <span key={index}>{content.content}</span>;
     } else if (content.type === StringContentTypeEnum.Sumerogramm) {
-        return <span className="sumerogramm">{content.content}</span>;
+        return <span key={index} className="sumerogramm">{content.content}</span>;
     } else if (content.type === 'Correction') {
-        return <sup className="correction">{content.symbol}</sup>;
+        return <sup key={index} className="correction">{content.symbol}</sup>;
     } else if (content.type === 'NumeralContent') {
         return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
     } else {
-        return <span>{content.symbol}</span>;
+        return <span key={index}>{content.symbol}</span>;
     }
 }
 
 function renderTransliterationWord({content}: TransliterationWord): JSX.Element {
-    return <span>{content.map(renderTransliterationLineContent)}</span>;
+    return <span>{content.map(renderTransliterationLineContent)}&nbsp;</span>;
 }
 
 function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX.Element {
@@ -126,6 +149,20 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
 
     function exportAsXml(): void {
         console.info('TODO: export as xml...');
+
+        if (!state.transliterationOutput) {
+            return;
+        }
+
+        let xmlOutput = state.transliterationOutput.map((line) => {
+            return line.result ?
+                line.result.content.map((word) => `<w>${word.content.map(xmlify).join('')}</w>`).join(' ')
+                : '';
+        }).join('\n');
+
+        setState((state) => {
+            return {xmlOutput, ...state};
+        });
     }
 
     return (
@@ -167,6 +204,10 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
                             <button type="button" className="button is-link is-fullwidth"
                                     onClick={exportAsXml}>{t('xml_export')}</button>
                         </div>
+
+                        {state.xmlOutput && <div className="field">
+                            <pre>{state.xmlOutput}</pre>
+                        </div>}
                     </div>}
                 </div>
 
