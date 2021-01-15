@@ -1,7 +1,7 @@
 import React, {createRef, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {IProps} from "./ManuscriptHelpers";
-import {TransliterationTextLineContent} from '../model/transliterationTextLine';
+import {TransliterationWord, TransliterationWordContent} from '../model/transliterationTextLine';
 import {parseTransliterationLine, TransliterationLineParseResult} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
 import {useSelector} from "react-redux";
@@ -32,7 +32,7 @@ interface IState {
     transliterationOutput?: TransliterationLineResult[];
 }
 
-function renderTransliterationLineContent(content: TransliterationTextLineContent): JSX.Element {
+function renderTransliterationLineContent(content: TransliterationWordContent): JSX.Element {
     if (typeof content === 'string') {
         return <span className="hittite">{content}</span>;
     } else if (content.type === StringContentTypeEnum.Akadogramm) {
@@ -53,6 +53,10 @@ function renderTransliterationLineContent(content: TransliterationTextLineConten
     }
 }
 
+function renderTransliterationWord({content}: TransliterationWord): JSX.Element {
+    return <span>{content.map(renderTransliterationLineContent)}</span>;
+}
+
 function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX.Element {
     const maxLineNumber: number = tlrs
         .flatMap((tlr) => tlr.result ? [tlr.result.lineNumber] : [])
@@ -69,7 +73,7 @@ function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX
                         return <p key={lineIndex}>
                             <sup>{ln}{result.isAbsolute ? '' : '\''}</sup>&nbsp;
                             {result.content.map((content, index) =>
-                                <span key={index}>{renderTransliterationLineContent(content)}</span>
+                                <span key={index}>{renderTransliterationWord(content)}</span>
                             )}
                         </p>
                     } else {

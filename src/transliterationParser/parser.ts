@@ -1,8 +1,23 @@
-import {alt, createLanguage, digits, optWhitespace, regexp, seq, seqObj, string, TypedLanguage} from "parsimmon";
+import {
+    alt,
+    createLanguage,
+    digits,
+    optWhitespace,
+    regexp,
+    seq,
+    seqObj,
+    string,
+    TypedLanguage,
+    whitespace
+} from "parsimmon";
 import {allDamages, Damages} from "../model/damages";
 import {allCorrections, Corrections} from "../model/corrections";
 import {NumeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
-import {TransliterationTextLine, TransliterationTextLineContent} from "../model/transliterationTextLine";
+import {
+    TransliterationTextLine,
+    TransliterationWord,
+    TransliterationWordContent
+} from "../model/transliterationTextLine";
 import {
     akadogrammRegex,
     Akkadogramm,
@@ -36,8 +51,9 @@ type LanguageSpec = {
     subscriptNumeralContent: NumeralContent,
 
 
-    singleContent: TransliterationTextLineContent;
-    completeContent: TransliterationTextLineContent[];
+    singleContent: TransliterationWordContent;
+
+    transliterationWord: TransliterationWord,
 
     transliterationTextLine: TransliterationTextLine;
 }
@@ -55,7 +71,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
         .map((result) => NumeralContent(result, false)),
 
     subscriptNumeralContent: () => regexp(subscriptNumeralContentRegex)
-        .map((result) => NumeralContent(result, true)),
+        .map((result) => NumeralContent((result.codePointAt(0)! % 10).toString(), true)),
 
     hittite: () => regexp(hittiteRegex),
 
@@ -70,11 +86,10 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
 
     singleContent: r => alt(r.damages, r.corrections, r.subscriptNumeralContent, r.numeralContent, r.hittite, r.akkadogramm, r.sumerogramm, r.determinativ),
 
-    completeContent: r => seq(r.singleContent, seq(optWhitespace, r.singleContent).many())
-        .map(([tlc, last]) => [
-                tlc, ...last.flatMap(([maybeWhiteSpace, otherTlc]) => maybeWhiteSpace.length === 0 ? [otherTlc] : [maybeWhiteSpace, otherTlc])
-            ]
-        ),
+    transliterationWord: r => r.singleContent.atLeast(1)
+        .map<TransliterationWord>((content: TransliterationWordContent[]) => {
+            return {content};
+        }),
 
     transliterationTextLine: r => seqObj(
         ['lineNumber', digits.map(parseInt)],
@@ -82,7 +97,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
         optWhitespace,
         string('#'),
         optWhitespace,
-        ['content', r.completeContent]
+        ['content', r.transliterationWord.sepBy(whitespace)]
     )
 });
 

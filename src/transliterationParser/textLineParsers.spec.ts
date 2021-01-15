@@ -1,7 +1,5 @@
 import {transliteration} from './parser';
-import {Akkadogramm as ag} from "../model/akkadogramm";
-import {Sumerogramm as sg} from "../model/sumerogramm";
-import {Determinativ as dt} from "../model/determinativ";
+import {Akkadogramm as ag, Determinativ as dt, Sumerogramm as sg} from "../model/stringContent";
 import {NumeralContent as nc} from "../model/numeralContent";
 import {
     DeletionEnd as de,
@@ -14,7 +12,7 @@ import {
     UnknownBracketStart as us
 } from "../model/damages";
 import {Ellipsis as el, ParagraphEnd as pe, UnsureCorrection as uc} from "../model/corrections";
-import {TransliterationTextLine} from "../model/transliterationTextLine";
+import {TransliterationTextLine, transliterationWord as w} from "../model/transliterationTextLine";
 
 describe('test', () => {
     it('should parse hittite', () => {
@@ -49,50 +47,50 @@ describe('test', () => {
             .toEqual<TransliterationTextLine>({
                 lineNumber: 1,
                 isAbsolute: false,
-                content: [ds, us, 'x', ue, de, ' ', 'x', ' ', ls, 'zi', le, ' ', 'x', ' ', ds]
+                content: [w(ds, us, 'x', ue, de), w('x'), w(ls, 'zi', le), w('x'), w(ds)]
             });
 
         expect(parser.tryParse("2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri"))
             .toEqual<TransliterationTextLine>({
                 lineNumber: 2,
                 isAbsolute: false,
-                content: [ds, sg('DUMU'), uc, de, sg('.MUNUS'), uc, '-ma', ' ', 'e-ša-', ls, 'a', le, '-', ds, 'ri']
+                content: [w(ds, sg('DUMU'), uc, de, sg('.MUNUS'), uc, '-ma'), w('e-ša-', ls, 'a', le, '-', ds, 'ri')]
             });
 
         expect(parser.tryParse("3' # az-zi-ik-ki-it-[tén"))
             .toEqual<TransliterationTextLine>({
-                lineNumber: 3, isAbsolute: false, content: ['az-zi-ik-ki-it-', ds, 'tén']
+                lineNumber: 3, isAbsolute: false, content: [w('az-zi-ik-ki-it-', ds, 'tén')]
             });
 
         expect(parser.tryParse("4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬"))
             .toEqual<TransliterationTextLine>({
                 lineNumber: 4,
                 isAbsolute: false,
-                content: ['nu', ' ', 'ḫu-u-ma-an', ' ', 'az-', ds, 'zi-ik-ki-', ' ', pe]
+                content: [w('nu'), w('ḫu-u-ma-an'), w('az-', ds, 'zi-ik-ki-'), w(pe)]
             });
 
         expect(parser.tryParse("9' # [nu-u]š-ši im-ma(-)["))
             .toEqual<TransliterationTextLine>({
-                lineNumber: 9, isAbsolute: false, content: [ds, 'nu-u', de, 'š-ši', ' ', 'im-ma', us, '-', ue, ds]
+                lineNumber: 9, isAbsolute: false, content: [w(ds, 'nu-u', de, 'š-ši'), w('im-ma', us, '-', ue, ds)]
             })
 
         expect(parser.tryParse("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
             .toEqual<TransliterationTextLine>({
                 lineNumber: 10,
                 isAbsolute: false,
-                content: [ds, 'x-x', de, '-', sg('TE'), dt('MEŠ'), ' ', ls, 'e', le, '-', ds]
+                content: [w(ds, 'x-x', de, '-', sg('TE'), dt('MEŠ')), w(ls, 'e', le, '-', ds)]
             });
 
         expect(parser.tryParse("1' # [ … ] x ¬¬¬"))
             .toEqual<TransliterationTextLine>({
-                lineNumber: 1, isAbsolute: false, content: [ds, ' ', el, ' ', de, ' ', 'x', ' ', pe]
+                lineNumber: 1, isAbsolute: false, content: [w(ds), w(el), w(de), w('x'), w(pe)]
             });
 
         expect(parser.tryParse("2' # [ … °MUNUS.MEŠ°zi-i]n-tu-ḫi-e-eš"))
             .toEqual<TransliterationTextLine>({
                 lineNumber: 2,
                 isAbsolute: false,
-                content: [ds, ' ', el, ' ', dt('MUNUS.MEŠ'), 'zi-i', de, 'n-tu-ḫi-e-eš']
+                content: [w(ds), w(el), w(dt('MUNUS.MEŠ'), 'zi-i', de, 'n-tu-ḫi-e-eš')]
             });
 
         // TODO: enable!
@@ -108,14 +106,14 @@ describe('test', () => {
             .toEqual<TransliterationTextLine>({
                 lineNumber: 5,
                 isAbsolute: false,
-                content: [ds, ' ', el, ' ', de, ' ', ls, nc(6), le, ' ', sg('NINDA.GUR'), nc(4,true), sg('.RA'), dt('ḪI.A'), ' ', 'ki-an-da']
+                content: [w(ds), w(el), w(de), w(ls, nc('6'), le), w(sg('NINDA.GUR'), nc('4', true), sg('.RA'), dt('ḪI.A')), w('ki-an-da')]
             });
 
         expect(parser.tryParse("9' # pár-aš-na-a-u-<aš>-kán °LÚ°SAG[I.A ¬¬¬"))
             .toEqual<TransliterationTextLine>({
                 lineNumber: 9,
                 isAbsolute: false,
-                content: ['pár-aš-na-a-u-', supS, 'aš', supE, '-kán', ' ', dt('LÚ'), sg('SAG'), ds, sg('I.A'), ' ', pe]
+                content: [w('pár-aš-na-a-u-', supS, 'aš', supE, '-kán'), w(dt('LÚ'), sg('SAG'), ds, sg('I.A')), w(pe)]
             });
     });
 });
