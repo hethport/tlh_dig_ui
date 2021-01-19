@@ -2,6 +2,8 @@ import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
+export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
+export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -346,7 +348,7 @@ export type TransliterationInputQuery = (
 export type NewTransliterationInputMutationVariables = Exact<{
   jwt: Scalars['String'];
   mainIdentifier: Scalars['String'];
-  values: Array<TransliterationTextLineInput>;
+  values: Array<TransliterationTextLineInput> | TransliterationTextLineInput;
 }>;
 
 
@@ -562,7 +564,7 @@ export const ManuscriptDocument = gql`
  *   },
  * });
  */
-export function useManuscriptQuery(baseOptions?: Apollo.QueryHookOptions<ManuscriptQuery, ManuscriptQueryVariables>) {
+export function useManuscriptQuery(baseOptions: Apollo.QueryHookOptions<ManuscriptQuery, ManuscriptQueryVariables>) {
         return Apollo.useQuery<ManuscriptQuery, ManuscriptQueryVariables>(ManuscriptDocument, baseOptions);
       }
 export function useManuscriptLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ManuscriptQuery, ManuscriptQueryVariables>) {
@@ -595,7 +597,7 @@ export const UploadPicturesDocument = gql`
  *   },
  * });
  */
-export function useUploadPicturesQuery(baseOptions?: Apollo.QueryHookOptions<UploadPicturesQuery, UploadPicturesQueryVariables>) {
+export function useUploadPicturesQuery(baseOptions: Apollo.QueryHookOptions<UploadPicturesQuery, UploadPicturesQueryVariables>) {
         return Apollo.useQuery<UploadPicturesQuery, UploadPicturesQueryVariables>(UploadPicturesDocument, baseOptions);
       }
 export function useUploadPicturesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UploadPicturesQuery, UploadPicturesQueryVariables>) {
@@ -630,7 +632,7 @@ export const TransliterationInputDocument = gql`
  *   },
  * });
  */
-export function useTransliterationInputQuery(baseOptions?: Apollo.QueryHookOptions<TransliterationInputQuery, TransliterationInputQueryVariables>) {
+export function useTransliterationInputQuery(baseOptions: Apollo.QueryHookOptions<TransliterationInputQuery, TransliterationInputQueryVariables>) {
         return Apollo.useQuery<TransliterationInputQuery, TransliterationInputQueryVariables>(TransliterationInputDocument, baseOptions);
       }
 export function useTransliterationInputLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<TransliterationInputQuery, TransliterationInputQueryVariables>) {
@@ -675,22 +677,3 @@ export function useNewTransliterationInputMutation(baseOptions?: Apollo.Mutation
 export type NewTransliterationInputMutationHookResult = ReturnType<typeof useNewTransliterationInputMutation>;
 export type NewTransliterationInputMutationResult = Apollo.MutationResult<NewTransliterationInputMutation>;
 export type NewTransliterationInputMutationOptions = Apollo.BaseMutationOptions<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>;
-
-      export interface IntrospectionResultData {
-        __schema: {
-          types: {
-            kind: string;
-            name: string;
-            possibleTypes: {
-              name: string;
-            }[];
-          }[];
-        };
-      }
-      const result: IntrospectionResultData = {
-  "__schema": {
-    "types": []
-  }
-};
-      export default result;
-    
