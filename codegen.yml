@@ -8,6 +8,7 @@ generates:
       - "typescript-operations"
       - "typescript-react-apollo"
       - "fragment-matcher"
-  ./graphql.schema.json:
+
+  ./schema.graphql:
     plugins:
-      - "introspection"
+      - "schema-ast"

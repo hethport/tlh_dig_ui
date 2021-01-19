@@ -203,6 +203,15 @@ export enum CorrectionType {
   ParagraphEnd = 'ParagraphEnd'
 }
 
+export enum ManuscriptSide {
+  Front = 'Front',
+  Back = 'Back',
+  LeftEdge = 'LeftEdge',
+  RightEdge = 'RightEdge',
+  UpperEdge = 'UpperEdge',
+  LowerEdge = 'LowerEdge'
+}
+
 export type ManuscriptIdentifierFragment = (
   { __typename?: 'ManuscriptIdentifier' }
   & Pick<ManuscriptIdentifier, 'type' | 'identifier'>

@@ -1,15 +1,4 @@
-import {
-    alt,
-    createLanguage,
-    digits,
-    optWhitespace,
-    regexp,
-    seq,
-    seqObj,
-    string,
-    TypedLanguage,
-    whitespace
-} from "parsimmon";
+import {alt, createLanguage, digits, optWhitespace, regexp, seq, string, TypedLanguage, whitespace} from "parsimmon";
 import {allDamages, Damages} from "../model/damages";
 import {allCorrections, Corrections} from "../model/corrections";
 import {NumeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
@@ -87,18 +76,16 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     singleContent: r => alt(r.damages, r.corrections, r.subscriptNumeralContent, r.numeralContent, r.hittite, r.akkadogramm, r.sumerogramm, r.determinativ),
 
     transliterationWord: r => r.singleContent.atLeast(1)
-        .map<TransliterationWord>((content: TransliterationWordContent[]) => {
-            return {content};
-        }),
+        .map((content: TransliterationWordContent[]) => new TransliterationWord(content)),
 
-    transliterationTextLine: r => seqObj(
-        ['lineNumber', digits.map(parseInt)],
-        ['isAbsolute', string("'").times(0, 1).map((res) => res.length === 0)],
+    transliterationTextLine: r => seq(
+        digits.map(parseInt),
+        string("'").times(0, 1).map((res) => res.length === 0),
         optWhitespace,
         string('#'),
         optWhitespace,
-        ['content', r.transliterationWord.sepBy(whitespace)]
-    )
+        r.transliterationWord.sepBy(whitespace)
+    ).map(([number, isAbsolute, ows1, _hash, _ows2, content]) => new TransliterationTextLine(number, isAbsolute, content))
 });
 
 export function parseTransliterationLine(line: string): TransliterationLineParseResult {

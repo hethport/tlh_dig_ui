@@ -1,15 +1,74 @@
-# This file was generated based on ".graphqlconfig". Do not edit manually.
+type Query {
+  allManuscripts: [ManuscriptMetaData!]!
+  manuscript(mainIdentifier: String!): ManuscriptMetaData
+}
 
-schema {
-  query: Query
-  mutation: Mutation
+type ManuscriptMetaData {
+  mainIdentifier: ManuscriptIdentifier!
+  provenance: String
+  cthClassification: Int
+  bibliography: String
+  creatorUsername: String!
+  palaeographicClassification: PalaeographicClassification!
+  palaeographicClassificationSure: Boolean!
+  status: ManuscriptStatus
+  otherIdentifiers: [ManuscriptIdentifier!]!
+  pictureUrls: [String!]!
+}
+
+type ManuscriptIdentifier {
+  type: ManuscriptIdentifierType!
+  identifier: String!
+}
+
+enum ManuscriptIdentifierType {
+  ExcavationNumber
+  CollectionNumber
+  PublicationShortReference
+}
+
+enum PalaeographicClassification {
+  OldScript
+  MiddleScript
+  NewScript
+  LateNewScript
+  OldAssyrianScript
+  MiddleAssyrianScript
+  MiddleBabylonianScript
+  AssyroMittanianScript
+  Unclassified
+}
+
+enum ManuscriptStatus {
+  InCreation
+  Created
+  Reviewed
+  ReviewMerged
+  ExecutiveReviewed
+  ExecutiveReviewMerged
+  Approved
+}
+
+type Mutation {
+  register(userInput: UserInput!): String
+  login(username: String!, password: String!): LoggedInUser
+  me(jwt: String!): LoggedInUserMutations
+}
+
+input UserInput {
+  username: String!
+  password: String!
+  passwordRepeat: String!
+  name: String!
+  affiliation: String
+  email: String!
 }
 
 type LoggedInUser {
+  username: String!
+  name: String!
   affiliation: String
   jwt: String!
-  name: String!
-  username: String!
 }
 
 type LoggedInUserMutations {
@@ -17,88 +76,40 @@ type LoggedInUserMutations {
   manuscript(mainIdentifier: String): ManuscriptMutations
 }
 
-type ManuscriptIdentifier {
-  identifier: String!
-  type: ManuscriptIdentifierType!
-}
-
-type ManuscriptMetaData {
-  bibliography: String
-  creatorUsername: String!
-  cthClassification: Int
-  mainIdentifier: ManuscriptIdentifier!
-  otherIdentifiers: [ManuscriptIdentifier!]!
+input ManuscriptMetaDataInput {
+  mainIdentifier: ManuscriptIdentifierInput!
+  otherIdentifiers: [ManuscriptIdentifierInput!]!
   palaeographicClassification: PalaeographicClassification!
   palaeographicClassificationSure: Boolean!
-  pictureUrls: [String!]!
   provenance: String
-  status: ManuscriptStatus
+  cthClassification: Int
+  bibliography: String
+}
+
+input ManuscriptIdentifierInput {
+  identifierType: ManuscriptIdentifierType!
+  identifier: String!
 }
 
 type ManuscriptMutations {
   updateTransliteration(values: [TransliterationTextLineInput!]!): String
 }
 
-type Mutation {
-  login(password: String!, username: String!): LoggedInUser
-  me(jwt: String!): LoggedInUserMutations
-  register(userInput: UserInput!): String
+input TransliterationTextLineInput {
+  lineNumber: Int!
+  isAbsolute: Boolean!
+  content: [TransliterationTextLineContentUnion!]!
 }
 
-type Query {
-  allManuscripts: [ManuscriptMetaData!]!
-  manuscript(mainIdentifier: String!): ManuscriptMetaData
+input TransliterationTextLineContentUnion {
+  stringContent: StringContentInput
+  damageContent: DamageInput
+  correctionContent: CorrectionType
 }
 
-enum CorrectionType {
-  Ellipsis
-  MaybeUnsureCorrection
-  ParagraphEnd
-  SicCorrection
-  SureCorrection
-  UnsureCorrection
-}
-
-enum DamagePositionEnum {
-  End
-  Start
-}
-
-enum DamageTypeEnum {
-  Deletion
-  Lesion
-  Rasure
-  Supplement
-  Surplus
-  UnknownDamage
-}
-
-enum ManuscriptIdentifierType {
-  CollectionNumber
-  ExcavationNumber
-  PublicationShortReference
-}
-
-enum ManuscriptStatus {
-  Approved
-  Created
-  ExecutiveReviewMerged
-  ExecutiveReviewed
-  InCreation
-  ReviewMerged
-  Reviewed
-}
-
-enum PalaeographicClassification {
-  AssyroMittanianScript
-  LateNewScript
-  MiddleAssyrianScript
-  MiddleBabylonianScript
-  MiddleScript
-  NewScript
-  OldAssyrianScript
-  OldScript
-  Unclassified
+input StringContentInput {
+  type: StringContentTypeEnum!
+  content: String!
 }
 
 enum StringContentTypeEnum {
@@ -109,47 +120,38 @@ enum StringContentTypeEnum {
 }
 
 input DamageInput {
-  position: DamagePositionEnum!
   type: DamageTypeEnum!
+  position: DamagePositionEnum!
 }
 
-input ManuscriptIdentifierInput {
-  identifier: String!
-  identifierType: ManuscriptIdentifierType!
+enum DamageTypeEnum {
+  Deletion
+  Lesion
+  Rasure
+  Surplus
+  Supplement
+  UnknownDamage
 }
 
-input ManuscriptMetaDataInput {
-  bibliography: String
-  cthClassification: Int
-  mainIdentifier: ManuscriptIdentifierInput!
-  otherIdentifiers: [ManuscriptIdentifierInput!]!
-  palaeographicClassification: PalaeographicClassification!
-  palaeographicClassificationSure: Boolean!
-  provenance: String
+enum DamagePositionEnum {
+  Start
+  End
 }
 
-input StringContentInput {
-  content: String!
-  type: StringContentTypeEnum!
+enum CorrectionType {
+  UnsureCorrection
+  MaybeUnsureCorrection
+  SureCorrection
+  SicCorrection
+  Ellipsis
+  ParagraphEnd
 }
 
-input TransliterationTextLineContentUnion {
-  correctionContent: CorrectionType
-  damageContent: DamageInput
-  stringContent: StringContentInput
-}
-
-input TransliterationTextLineInput {
-  content: [TransliterationTextLineContentUnion!]!
-  isAbsolute: Boolean!
-  lineNumber: Int!
-}
-
-input UserInput {
-  affiliation: String
-  email: String!
-  name: String!
-  password: String!
-  passwordRepeat: String!
-  username: String!
+enum ManuscriptSide {
+  Front
+  Back
+  LeftEdge
+  RightEdge
+  UpperEdge
+  LowerEdge
 }

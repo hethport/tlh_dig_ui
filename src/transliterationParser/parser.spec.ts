@@ -1,5 +1,5 @@
 import {parseTransliterationLine, TransliterationLineParseResult} from './parser';
-import {TransliterationTextLine as tl, transliterationWord as w} from '../model/transliterationTextLine';
+import {transliterationTextLine as tl, transliterationWord as w} from '../model/transliterationTextLine';
 import {
     DeletionEnd as de,
     DeletionStart as ds,

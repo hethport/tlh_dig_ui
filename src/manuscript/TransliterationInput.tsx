@@ -8,7 +8,7 @@ import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
-import {StringContentTypeEnum} from "../generated/graphql";
+import {ManuscriptSide, StringContentTypeEnum} from "../generated/graphql";
 
 const defaultText = `1' # [(x)] x ⸢zi⸣ x [
 2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri
@@ -30,28 +30,6 @@ interface TransliterationLineResult extends TransliterationLineParseResult {
 
 interface IState {
     transliterationOutput?: TransliterationLineResult[];
-    xmlOutput?: string;
-}
-
-
-function xmlify(content: TransliterationWordContent): string {
-    if (typeof content === 'string') {
-        return content;
-    } else if (content.type === StringContentTypeEnum.Akadogramm) {
-        return `<ag>${content.content}</ag>`;
-    } else if (content.type === StringContentTypeEnum.Sumerogramm) {
-        return `<sg>${content.content}</sg>`;
-    } else if (content.type === StringContentTypeEnum.MaterLectionis) {
-        return `<ml>${content.content}</ml>`;
-    } else if (content.type === StringContentTypeEnum.Determinativ) {
-        return `<dt>${content.content}</dt>`;
-    } else if (content.type === 'Correction') {
-        return '<todo/>';
-    } else if (content.type === 'NumeralContent') {
-        return `<nc>${content.content}</nc>`;
-    } else {
-        return content.node;
-    }
 }
 
 
@@ -109,14 +87,26 @@ function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX
     );
 }
 
+function saveBlob(content: string, fileName: string): void {
+    let a = document.createElement("a");
+    document.body.appendChild(a);
+    a.hidden = true;
+
+    const file = new Blob([content]);
+
+    const url = window.URL.createObjectURL(file);
+    a.href = url;
+    a.download = fileName;
+    a.click();
+    window.URL.revokeObjectURL(url);
+}
+
 export function TransliterationInput({manuscript}: IProps): JSX.Element {
 
     const {t} = useTranslation('common');
     const [state, setState] = useState<IState>({})
     const currentUser = useSelector(activeUserSelector);
     const textAreaRef = createRef<HTMLTextAreaElement>();
-
-    // const [createTransliteration] = useNewTransliterationInputMutation();
 
     if (!currentUser || currentUser.username !== manuscript.creatorUsername) {
         const url = manuscriptDataUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
@@ -137,32 +127,21 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
         });
     }
 
-    /*
-    function uploadTransliteration(): void {
-        const toUpload: NewTransliterationInputMutationVariables = {
-            jwt: '',
-            mainIdentifier: '',
-            values: []
-        }
-    }
-     */
-
     function exportAsXml(): void {
-        console.info('TODO: export as xml...');
-
         if (!state.transliterationOutput) {
             return;
         }
 
-        let xmlOutput = state.transliterationOutput.map((line) => {
-            return line.result ?
-                line.result.content.map((word) => `<w>${word.content.map(xmlify).join('')}</w>`).join(' ')
-                : '';
-        }).join('\n');
+        // FIXME: get ManuscriptSide!
+        const xmlLinesOuptut = state.transliterationOutput
+            .map((line) => line.result ? line.result.xmlify(manuscript.mainIdentifier.identifier, ManuscriptSide.Front) : '')
+            .join('\n\n\n');
 
-        setState((state) => {
-            return {xmlOutput, ...state};
-        });
+        const xmlOutput = `<AOxml>
+${xmlLinesOuptut}
+</AOxml>`;
+
+        saveBlob(xmlOutput, manuscript.mainIdentifier.identifier + '.xml');
     }
 
     return (
@@ -204,10 +183,6 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
                             <button type="button" className="button is-link is-fullwidth"
                                     onClick={exportAsXml}>{t('xml_export')}</button>
                         </div>
-
-                        {state.xmlOutput && <div className="field">
-                            <pre>{state.xmlOutput}</pre>
-                        </div>}
                     </div>}
                 </div>
 

@@ -25,13 +25,13 @@ export const LesionStart: IDamage = {
     type: DamageTypeEnum.Lesion,
     position: DamagePositionEnum.Start,
     symbol: '⸢',
-    node: '<les_in/>'
+    node: '<laes_in/>'
 };
 export const LesionEnd: IDamage = {
     type: DamageTypeEnum.Lesion,
     position: DamagePositionEnum.End,
     symbol: '⸣',
-    node: '<les_fin/>'
+    node: '<laes_fin/>'
 };
 
 export const RasureStart: IDamage = {
