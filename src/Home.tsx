@@ -21,7 +21,7 @@ export function Home(): JSX.Element {
     content = (
       <div className={notificationClassNames}>
         {loading && <span>{t('Lade Daten')}...</span>}
-        {error && <span>{error}</span>}
+        {error && <span>{error.message}</span>}
       </div>
     );
   } else {
