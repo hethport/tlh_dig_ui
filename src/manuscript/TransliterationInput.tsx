@@ -10,20 +10,6 @@ import {manuscriptDataUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
 import {ManuscriptSide, StringContentTypeEnum} from "../generated/graphql";
 
-const defaultText = `1' # [(x)] x ⸢zi⸣ x [
-2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri
-3' # az-zi-ik-ki-it-[tén
-4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬
-5' # [k]u-it-ma-an-aš-ma x [
-6' # [n]a-aš-kán GIŠ.NÁ [
-7' # [nu-u]š-ši ša-aš-t[a-
-8' # [da?]-⸢a?⸣ nu-uš-ši x [
-9' # [nu-u]š-ši im-ma(-)[
-10' # [x-x]-TE°MEŠ° ⸢e⸣-[
-11' # [x (x)]-ri-⸢ia⸣-[ ¬¬¬
-12' # [x x] x [`
-
-
 interface TransliterationLineResult extends TransliterationLineParseResult {
     lineIndex: number;
 }
@@ -31,7 +17,6 @@ interface TransliterationLineResult extends TransliterationLineParseResult {
 interface IState {
     transliterationOutput?: TransliterationLineResult[];
 }
-
 
 function renderTransliterationLineContent(content: TransliterationWordContent, index: number): JSX.Element {
     if (typeof content === 'string') {
@@ -61,7 +46,7 @@ function renderTransliterationWord({content}: TransliterationWord): JSX.Element 
 function renderTransliterationLineResult(tlrs: TransliterationLineResult[]): JSX.Element {
     const maxLineNumber: number = tlrs
         .flatMap((tlr) => tlr.result ? [tlr.result.lineNumber] : [])
-        .reduce((a, b) => a > b ? a : b);
+        .reduce((a, b) => a > b ? a : b, 0);
 
     const maxLength = Math.ceil(Math.log10(maxLineNumber));
 
@@ -151,23 +136,14 @@ ${xmlLinesOuptut}
             <div className="columns">
 
                 <div className="column">
-
                     <h2 className="subtitle is-4 has-text-centered">{t('Transliteration')}:</h2>
 
                     <div className="field">
                         <div className="control">
                             {/* TODO: remove default text! */}
                             <textarea className="textarea" id="transliteration" placeholder={t('Transliteration')}
-                                      rows={20} onChange={updateTransliteration} defaultValue={defaultText}
-                                      ref={textAreaRef}/>
+                                      rows={20} onChange={updateTransliteration} ref={textAreaRef}/>
                         </div>
-                    </div>
-
-                    <div className="field">
-
-                        <button type="button" onClick={updateTransliteration} className="button is-link is-fullwidth">
-                            {t('Transliteration auswerten')}!
-                        </button>
                     </div>
                 </div>
 
