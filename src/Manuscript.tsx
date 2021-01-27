@@ -26,7 +26,7 @@ export function Manuscript(): JSX.Element {
 
     const mainIdentifier = decodeURIComponent(params.mainIdentifier);
 
-    const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier}, fetchPolicy: "no-cache"});
+    const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier}, fetchPolicy: 'no-cache'});
 
     if (!data) {
         // Loading or error
@@ -35,7 +35,7 @@ export function Manuscript(): JSX.Element {
         return <div className="container">
             <div className={classes}>
                 {loading && <span>{t('Lade Daten')}...</span>}
-                {error && <span>{error}</span>}
+                {error && <span>{error.message}</span>}
             </div>
         </div>;
 

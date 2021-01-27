@@ -7,7 +7,7 @@ import classNames from 'classnames';
 export function Home(): JSX.Element {
 
     const {t} = useTranslation('common');
-    const {loading, error, data} = useIndexQuery();
+    const {loading, error, data} = useIndexQuery({fetchPolicy: 'no-cache'});
 
     function renderContent(): JSX.Element {
         if (!data) {
