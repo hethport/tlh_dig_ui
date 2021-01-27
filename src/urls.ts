@@ -12,8 +12,8 @@ export const loginUrl = '/login';
 export const editXmlUrl = '/xmlEditor';
 
 
-interface MyUrlParam<T> {
-    name: keyof T;
+interface MyUrlParam<Params extends { [K in keyof Params]?: string } = {}> {
+    name: keyof Params;
 }
 
 class MyNewUrl<T extends U, U = T> {
@@ -27,20 +27,6 @@ class MyNewUrl<T extends U, U = T> {
         return '/' + this.parts
             .map((part) => (typeof part === 'string') ? part : `:${part.name}`)
             .join('/')
-    }
-
-    buildAbsoluteUrl(params: T, withServerUrl: boolean = false): string {
-        const parts = this.parts
-            .map((part) => (typeof part === 'string') ? encodeURIComponent(part) : params[part.name])
-            .join('/');
-
-        const base = withServerUrl ? serverUrl : '';
-
-        const x = base + (this.baseUrl ? this.baseUrl.buildAbsoluteUrl(params) : '') + '/' + parts;
-
-        console.info(x);
-
-        return x;
     }
 }
 

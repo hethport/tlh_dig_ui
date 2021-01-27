@@ -2,7 +2,6 @@ import React from 'react';
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
 import {IProps} from "./ManuscriptHelpers";
-import {manuscriptTransliterationInputUrl} from "../urls";
 import {LoggedInUserFragment} from "../generated/graphql";
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
@@ -14,8 +13,6 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
     const activeUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
     const createdByUser: boolean = !!activeUser && activeUser.username === manuscript.creatorUsername;
-
-    const transliterationInputUrl = manuscriptTransliterationInputUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
 
     return (
         <div className="container">
@@ -73,7 +70,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
             <div className="my-3">
                 <h2 className="subtitle is-4">{t('Transliteration')}</h2>
 
-                {createdByUser && <Link className="button is-link is-fullwidth" to={transliterationInputUrl}>
+                {createdByUser && <Link className="button is-link is-fullwidth" to={'./transliterationInput'}>
                     {t('Transliteration erstellen')}
                 </Link>}
             </div>

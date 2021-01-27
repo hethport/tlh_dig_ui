@@ -6,7 +6,7 @@ import {parseTransliterationLine, TransliterationLineParseResult} from "../trans
 import './TransliterationInput.sass';
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
-import {manuscriptDataUrl} from "../urls";
+import {homeUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
 import {ManuscriptSide, StringContentTypeEnum} from "../generated/graphql";
 
@@ -94,8 +94,7 @@ export function TransliterationInput({manuscript}: IProps): JSX.Element {
     const textAreaRef = createRef<HTMLTextAreaElement>();
 
     if (!currentUser || currentUser.username !== manuscript.creatorUsername) {
-        const url = manuscriptDataUrl.buildAbsoluteUrl({mainIdentifier: manuscript.mainIdentifier.identifier});
-        return <Redirect to={url}/>;
+        return <Redirect to={homeUrl}/>;
     }
 
     function updateTransliteration(): void {

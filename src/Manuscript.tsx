@@ -24,10 +24,9 @@ export function Manuscript(): JSX.Element {
     const child = useLocation().pathname.slice(url.length);
     const currentUser = useSelector(activeUserSelector);
 
-    console.info(params.mainIdentifier);
-    console.info(encodeURI('ABC 1/3'));
+    const mainIdentifier = decodeURIComponent(params.mainIdentifier);
 
-    const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier: params.mainIdentifier}});
+    const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier}, fetchPolicy: "no-cache"});
 
     if (!data) {
         // Loading or error
