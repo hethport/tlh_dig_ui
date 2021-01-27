@@ -20,11 +20,14 @@ interface SubRouteConfig {
 export function Manuscript(): JSX.Element {
 
     const {t} = useTranslation('common');
-    const match = useRouteMatch<ManuscriptUrlParams>();
-    const child = useLocation().pathname.slice(match.url.length);
+    const {url, params} = useRouteMatch<ManuscriptUrlParams>();
+    const child = useLocation().pathname.slice(url.length);
     const currentUser = useSelector(activeUserSelector);
 
-    const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier: match.params.mainIdentifier}});
+    console.info(params.mainIdentifier);
+    console.info(encodeURI('ABC 1/3'));
+
+    const {loading, error, data} = useManuscriptQuery({variables: {mainIdentifier: params.mainIdentifier}});
 
     if (!data) {
         // Loading or error
@@ -36,9 +39,11 @@ export function Manuscript(): JSX.Element {
                 {error && <span>{error}</span>}
             </div>
         </div>;
+
     } else if (!data.manuscript) {
         // No manuscript found -> redirect to index page
         return <Redirect to={homeUrl}/>
+
     } else {
         const header = t('Manuskript {{which}}', {which: data.manuscript.mainIdentifier.identifier});
 
@@ -65,8 +70,9 @@ export function Manuscript(): JSX.Element {
                                 const isActive = child === childRoute;
 
                                 return <li key={childRoute} className={classNames({'is-active': isActive})}>
-                                    <Link
-                                        to={`${match.url}${childRoute}`}>{isActive ? (header + ': ') : ''}{name}</Link>
+                                    <Link to={`${url}${childRoute}`}>
+                                        {isActive ? (header + ': ') : ''}{name}
+                                    </Link>
                                 </li>;
                             })}
                     </ul>
@@ -77,7 +83,7 @@ export function Manuscript(): JSX.Element {
                 {childRoutes
                     .filter((cr) => !cr.hide)
                     .map(({childRoute, renderFunc}) =>
-                        <Route key={childRoute} path={`${match.url}${childRoute}`}>
+                        <Route key={childRoute} path={`${url}${childRoute}`}>
                             {renderFunc(fragment)}
                         </Route>
                     )}

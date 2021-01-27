@@ -32,8 +32,12 @@ export function CreateManuscriptForm() {
 
     const currentUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
+    const createdManuscript: string | null | undefined = data?.me?.createManuscript;
+
     if (!currentUser) {
         return <Redirect to={loginUrl}/>
+    } else if (!!createdManuscript) {
+        return <Redirect to={`manuscripts/${encodeURI(createdManuscript)}/data`}/>
     }
 
     const initialValues: ManuscriptMetaDataInput = {
@@ -173,12 +177,12 @@ export function CreateManuscriptForm() {
                                 </div>
                             </div>
 
-                            {data?.me?.createManuscript && <div className="notification is-success has-text-centered">
-                                {t('Manuskript {{which}} wurde erfolgreich erstellt.', {which: data.me.createManuscript})}
+                            {!!createdManuscript && <div className="notification is-success has-text-centered">
+                                {t('Manuskript {{which}} wurde erfolgreich erstellt.', {which: createdManuscript})}
                             </div>}
 
                             <div className="field">
-                                <button type="submit" disabled={isSubmitting || !!data?.me?.createManuscript}
+                                <button type="submit" disabled={isSubmitting || !!createdManuscript}
                                         className={classnames("button", "is-link", "is-fullwidth", {'is-loading': isSubmitting})}>
                                     {t('Manuskript erstellen')}
                                 </button>

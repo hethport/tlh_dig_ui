@@ -16,7 +16,7 @@ interface MyUrlParam<T> {
     name: keyof T;
 }
 
-export class MyNewUrl<T extends U, U = T> {
+class MyNewUrl<T extends U, U = T> {
     constructor(
         private parts: (MyUrlParam<T> | string)[],
         private baseUrl?: MyNewUrl<U>
@@ -31,12 +31,16 @@ export class MyNewUrl<T extends U, U = T> {
 
     buildAbsoluteUrl(params: T, withServerUrl: boolean = false): string {
         const parts = this.parts
-            .map((part) => (typeof part === 'string') ? part : params[part.name])
+            .map((part) => (typeof part === 'string') ? encodeURIComponent(part) : params[part.name])
             .join('/');
 
         const base = withServerUrl ? serverUrl : '';
 
-        return base + (this.baseUrl ? this.baseUrl.buildAbsoluteUrl(params) : '') + '/' + parts;
+        const x = base + (this.baseUrl ? this.baseUrl.buildAbsoluteUrl(params) : '') + '/' + parts;
+
+        console.info(x);
+
+        return x;
     }
 }
 
