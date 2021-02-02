@@ -1,6 +1,6 @@
 import {transliteration} from './parser';
-import {Akkadogramm as ag, Determinativ as dt, Sumerogramm as sg} from "../model/stringContent";
-import {NumeralContent as nc} from "../model/numeralContent";
+import {akkadogramm as ag, determinativ as dt, sumerogramm as sg} from "../model/stringContent";
+import {numeralContent as nc} from "../model/numeralContent";
 import {
     DeletionEnd as de,
     DeletionStart as ds,

@@ -1,7 +1,7 @@
 import {alt, createLanguage, digits, optWhitespace, regexp, seq, string, TypedLanguage, whitespace} from "parsimmon";
 import {allDamages, Damages} from "../model/damages";
 import {allCorrections, Corrections} from "../model/corrections";
-import {NumeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
+import {NumeralContent, numeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
 import {
     TransliterationTextLine,
     TransliterationWord,
@@ -10,9 +10,12 @@ import {
 import {
     akadogrammRegex,
     Akkadogramm,
+    akkadogramm,
     Determinativ,
+    determinativ,
     determinativRegex,
     Sumerogramm,
+    sumerogramm,
     sumerogrammRegex
 } from "../model/stringContent";
 
@@ -57,21 +60,21 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     corrections: () => alt(...allCorrections.map((c) => string(c.symbol).result(c))),
 
     numeralContent: () => regexp(numeralContentRegex)
-        .map((result) => NumeralContent(result, false)),
+        .map((result) => numeralContent(result, false)),
 
     subscriptNumeralContent: () => regexp(subscriptNumeralContentRegex)
-        .map((result) => NumeralContent((result.codePointAt(0)! % 10).toString(), true)),
+        .map((result) => numeralContent((result.codePointAt(0)! % 10).toString(), true)),
 
     hittite: () => regexp(hittiteRegex),
 
     akkadogramm: () => regexp(akadogrammRegex)
-        .map((result) => Akkadogramm(result.substring(1))),
+        .map((result) => akkadogramm(result.substring(1))),
 
     sumerogramm: () => regexp(sumerogrammRegex)
-        .map((result) => Sumerogramm(result)),
+        .map((result) => sumerogramm(result)),
 
     determinativ: () => regexp(determinativRegex, 1)
-        .map((result) => Determinativ(result)),
+        .map((result) => determinativ(result)),
 
     singleContent: r => alt(r.damages, r.corrections, r.subscriptNumeralContent, r.numeralContent, r.hittite, r.akkadogramm, r.sumerogramm, r.determinativ),
 

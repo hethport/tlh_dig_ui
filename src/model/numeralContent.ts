@@ -7,6 +7,6 @@ export interface NumeralContent {
     content: string;
 }
 
-export function NumeralContent(content: string, isSubscript: boolean = false): NumeralContent {
+export function numeralContent(content: string, isSubscript: boolean = false): NumeralContent {
     return {type: 'NumeralContent', content, isSubscript};
 }

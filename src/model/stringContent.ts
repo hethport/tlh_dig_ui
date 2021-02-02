@@ -14,7 +14,7 @@ export interface Akkadogramm {
     content: string,
 }
 
-export function Akkadogramm(content: string): Akkadogramm {
+export function akkadogramm(content: string): Akkadogramm {
     return {type: StringContentTypeEnum.Akadogramm, content};
 }
 
@@ -31,7 +31,7 @@ export interface Determinativ {
     content: string
 }
 
-export function Determinativ(content: string): Determinativ {
+export function determinativ(content: string): Determinativ {
     return {type: StringContentTypeEnum.Determinativ, content};
 }
 
@@ -45,7 +45,7 @@ export interface MaterLectionis {
     content: string;
 }
 
-export function MaterLectionis(content: string): MaterLectionis {
+export function materLectionis(content: string): MaterLectionis {
     return {type: StringContentTypeEnum.MaterLectionis, content};
 }
 
@@ -63,7 +63,7 @@ export interface Sumerogramm {
     content: string
 }
 
-export function Sumerogramm(content: string): Sumerogramm {
+export function sumerogramm(content: string): Sumerogramm {
     return {type: StringContentTypeEnum.Sumerogramm, content};
 }
 

@@ -10,9 +10,9 @@ import {
     UnknownBracketEnd as ue,
     UnknownBracketStart as us
 } from "../model/damages";
-import {Akkadogramm as ag, Determinativ as dt, Sumerogramm as sg} from "../model/stringContent";
+import {akkadogramm as ag, determinativ as dt, sumerogramm as sg} from "../model/stringContent";
 import {Ellipsis as el, ParagraphEnd as pe, UnsureCorrection as uc} from '../model/corrections';
-import {NumeralContent as nc} from "../model/numeralContent";
+import {numeralContent as nc} from "../model/numeralContent";
 
 const awaited: TransliterationLineParseResult[] = [
     {

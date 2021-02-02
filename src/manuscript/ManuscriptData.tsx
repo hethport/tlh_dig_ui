@@ -14,6 +14,20 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
 
     const createdByUser: boolean = !!activeUser && activeUser.username === manuscript.creatorUsername;
 
+    function renderOtherIdentifiers(): JSX.Element {
+        if (manuscript.otherIdentifiers.length === 0) {
+            return <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>;
+        } else {
+            return <div className="content">
+                <ul>
+                    {manuscript.otherIdentifiers.map(({identifier, type}) =>
+                        <li key={identifier}>{identifier} ({type})</li>
+                    )}
+                </ul>
+            </div>
+        }
+    }
+
     return (
         <div className="container">
             <h2 className="subtitle is-3 has-text-centered">{t('Allgemeine Daten')}</h2>
@@ -25,15 +39,7 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
                     <tbody>
                         <tr>
                             <th>{t('Weitere Identifikatoren')}</th>
-                            <td>
-                                {manuscript.otherIdentifiers.length === 0
-                                    ? <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>
-                                    : <div className="content">
-                                        <ul>
-                                            {manuscript.otherIdentifiers.map((oi) => <li key={oi.identifier}>{oi}</li>)}
-                                        </ul>
-                                    </div>}
-                            </td>
+                            <td>{renderOtherIdentifiers()}</td>
                         </tr>
                         <tr>
                             <th>{t('Bilder')}</th>
