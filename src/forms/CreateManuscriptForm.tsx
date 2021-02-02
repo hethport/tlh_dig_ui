@@ -37,7 +37,7 @@ export function CreateManuscriptForm() {
     if (!currentUser) {
         return <Redirect to={loginUrl}/>
     } else if (!!createdManuscript) {
-        return <Redirect to={`manuscripts/${encodeURI(createdManuscript)}/data`}/>
+        return <Redirect to={`./manuscripts/${encodeURIComponent(createdManuscript)}/data`}/>
     }
 
     const initialValues: ManuscriptMetaDataInput = {
