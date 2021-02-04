@@ -3,69 +3,59 @@ import {TransliterationWordContent} from "./transliterationTextLine";
 
 interface IDamage {
     type: DamageTypeEnum;
-    symbol: string;
+    /**
+     * @deprecated
+     */
     regex?: RegExp;
 }
 
 export const DeletionStart: IDamage = {
     type: DamageTypeEnum.DeletionStart,
-    symbol: '[',
 };
 
 export const DeletionEnd: IDamage = {
     type: DamageTypeEnum.DeletionEnd,
-    symbol: ']',
 };
 
 export const LesionStart: IDamage = {
-    type: DamageTypeEnum.LesionStart,
-    symbol: '⸢',
+    type: DamageTypeEnum.LesionStart
 };
 export const LesionEnd: IDamage = {
-    type: DamageTypeEnum.LesionEnd,
-    symbol: '⸣',
+    type: DamageTypeEnum.LesionEnd
 };
 
 export const RasureStart: IDamage = {
     type: DamageTypeEnum.RasureStart,
-    symbol: '*',
 };
 
 export const RasureEnd: IDamage = {
     type: DamageTypeEnum.RasureEnd,
-    symbol: '*',
 };
 
 export const SurplusStart: IDamage = {
     type: DamageTypeEnum.SurplusStart,
-    symbol: '〈〈',
     regex: /[〈<]{2}/
 };
 
 export const SurplusEnd: IDamage = {
     type: DamageTypeEnum.SurplusEnd,
-    symbol: '〉〉',
     regex: /[〉>]{2}/
 };
 
 export const SupplementStart: IDamage = {
     type: DamageTypeEnum.SupplementStart,
-    symbol: '〈',
     regex: /[〈<]/
 };
 export const SupplementEnd: IDamage = {
     type: DamageTypeEnum.SupplementEnd,
-    symbol: '〉',
     regex: /[〉>]/
 };
 
 export const UnknownBracketStart: IDamage = {
-    type: DamageTypeEnum.UnknownDamageStart,
-    symbol: '(',
+    type: DamageTypeEnum.UnknownDamageStart
 };
 export const UnknownBracketEnd: IDamage = {
-    type: DamageTypeEnum.UnknownDamageEnd,
-    symbol: ')'
+    type: DamageTypeEnum.UnknownDamageEnd
 };
 
 export const allDamages: Damages[] = [
@@ -103,6 +93,34 @@ export function xmlifyDamage(damageType: DamageTypeEnum): string {
             return '<ub_fin/>';
         case DamageTypeEnum.UnknownDamageStart:
             return '<ub_in/>';
+    }
+}
+
+export function getSymbolForDamageType(damageType: DamageTypeEnum): string {
+    switch (damageType) {
+        case DamageTypeEnum.DeletionEnd:
+            return ']';
+        case DamageTypeEnum.DeletionStart:
+            return '[';
+        case DamageTypeEnum.LesionEnd:
+            return '⸣';
+        case DamageTypeEnum.LesionStart:
+            return '⸢';
+        case DamageTypeEnum.RasureEnd:
+        case DamageTypeEnum.RasureStart:
+            return '*';
+        case DamageTypeEnum.SupplementEnd:
+            return '〉';
+        case DamageTypeEnum.SupplementStart:
+            return '〈';
+        case DamageTypeEnum.SurplusEnd:
+            return '〉〉';
+        case DamageTypeEnum.SurplusStart:
+            return '〈〈';
+        case DamageTypeEnum.UnknownDamageEnd:
+            return '(';
+        case DamageTypeEnum.UnknownDamageStart:
+            return ')';
     }
 }
 

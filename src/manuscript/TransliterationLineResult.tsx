@@ -12,7 +12,7 @@ import {useTranslation} from "react-i18next";
 import {TransliterationLineParseResult} from "../transliterationParser/parser";
 import {classForStringContentType, isStringContentInput} from "../model/stringContent";
 import {isCorrection, symbolForCorrection} from "../model/corrections";
-import {isDamage} from "../model/damages";
+import {getSymbolForDamageType, isDamage} from "../model/damages";
 
 interface IProps {
     mainIdentifier: string;
@@ -25,7 +25,7 @@ function renderTransliterationLineContent(content: TransliterationWordContent): 
     } else if (isCorrection(content)) {
         return <sup className="correction">{symbolForCorrection(content)}</sup>;
     } else if (isDamage(content)) {
-        return <span>{content.symbol}</span>;
+        return <span>{getSymbolForDamageType(content.type)}</span>;
     } else {
         return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
     }

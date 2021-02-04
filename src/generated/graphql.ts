@@ -333,6 +333,29 @@ export type CreateManuscriptMutation = (
   )> }
 );
 
+type TransliterationWordContent_StringContent_Fragment = (
+  { __typename?: 'StringContent' }
+  & Pick<StringContent, 'content'>
+  & { stringContentType: StringContent['type'] }
+);
+
+type TransliterationWordContent_DamageContent_Fragment = (
+  { __typename?: 'DamageContent' }
+  & { damageType: DamageContent['type'] }
+);
+
+type TransliterationWordContent_CorrectionContent_Fragment = (
+  { __typename?: 'CorrectionContent' }
+  & { correctionType: CorrectionContent['type'] }
+);
+
+type TransliterationWordContent_NumeralContent_Fragment = (
+  { __typename?: 'NumeralContent' }
+  & Pick<NumeralContent, 'content' | 'isSubscript'>
+);
+
+export type TransliterationWordContentFragment = TransliterationWordContent_StringContent_Fragment | TransliterationWordContent_DamageContent_Fragment | TransliterationWordContent_CorrectionContent_Fragment | TransliterationWordContent_NumeralContent_Fragment;
+
 export type TransliterationLineFragment = (
   { __typename?: 'TransliterationLine' }
   & Pick<TransliterationLine, 'lineIndex' | 'transliterationLineInput'>
@@ -343,17 +366,16 @@ export type TransliterationLineFragment = (
       { __typename?: 'TransliterationWord' }
       & { content: Array<(
         { __typename?: 'StringContent' }
-        & Pick<StringContent, 'content'>
-        & { stringContentType: StringContent['type'] }
+        & TransliterationWordContent_StringContent_Fragment
       ) | (
         { __typename?: 'DamageContent' }
-        & { damageType: DamageContent['type'] }
+        & TransliterationWordContent_DamageContent_Fragment
       ) | (
         { __typename?: 'CorrectionContent' }
-        & { correctionType: CorrectionContent['type'] }
+        & TransliterationWordContent_CorrectionContent_Fragment
       ) | (
         { __typename?: 'NumeralContent' }
-        & Pick<NumeralContent, 'content' | 'isSubscript'>
+        & TransliterationWordContent_NumeralContent_Fragment
       )> }
     )> }
   )> }
@@ -465,6 +487,24 @@ export const ManuscriptBasicDataFragmentDoc = gql`
   creatorUsername
 }
     ${ManuscriptIdentifierFragmentDoc}`;
+export const TransliterationWordContentFragmentDoc = gql`
+    fragment TransliterationWordContent on TransliterationWordContentUnion {
+  ... on CorrectionContent {
+    correctionType: type
+  }
+  ... on DamageContent {
+    damageType: type
+  }
+  ... on StringContent {
+    stringContentType: type
+    content
+  }
+  ... on NumeralContent {
+    content
+    isSubscript
+  }
+}
+    `;
 export const TransliterationLineFragmentDoc = gql`
     fragment TransliterationLine on TransliterationLine {
   lineIndex
@@ -474,25 +514,12 @@ export const TransliterationLineFragmentDoc = gql`
     lineNumber
     words {
       content {
-        ... on CorrectionContent {
-          correctionType: type
-        }
-        ... on DamageContent {
-          damageType: type
-        }
-        ... on StringContent {
-          stringContentType: type
-          content
-        }
-        ... on NumeralContent {
-          content
-          isSubscript
-        }
+        ...TransliterationWordContent
       }
     }
   }
 }
-    `;
+    ${TransliterationWordContentFragmentDoc}`;
 export const ManuscriptMetaDataFragmentDoc = gql`
     fragment ManuscriptMetaData on ManuscriptMetaData {
   mainIdentifier {

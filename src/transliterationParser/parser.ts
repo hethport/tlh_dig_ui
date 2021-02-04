@@ -1,5 +1,5 @@
 import {alt, createLanguage, digits, optWhitespace, regexp, seq, string, TypedLanguage, whitespace} from "parsimmon";
-import {allDamages, Damages} from "../model/damages";
+import {allDamages, Damages, getSymbolForDamageType} from "../model/damages";
 import {allCorrections, symbolForCorrection} from "../model/corrections";
 import {numeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
 import {
@@ -50,7 +50,7 @@ type LanguageSpec = {
 export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<LanguageSpec>({
     damages: () => alt(
         ...allDamages.map(
-            (d) => (d.regex ? regexp(d.regex) : string(d.symbol)).result(d)
+            (d) => (d.regex ? regexp(d.regex) : string(getSymbolForDamageType(d.type))).result(d)
         )
     ),
 

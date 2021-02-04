@@ -48,6 +48,24 @@ mutation CreateManuscript($manuscriptMetaData : ManuscriptMetaDataInput) {
 
 # /manuscripts/:id
 
+fragment TransliterationWordContent on TransliterationWordContentUnion {
+
+  ... on CorrectionContent {
+    correctionType: type
+  }
+  ... on DamageContent {
+    damageType: type
+  }
+  ... on StringContent {
+    stringContentType: type
+    content
+  }
+  ... on NumeralContent {
+    content
+    isSubscript
+  }
+}
+
 fragment TransliterationLine on TransliterationLine {
   lineIndex
   transliterationLineInput
@@ -56,20 +74,7 @@ fragment TransliterationLine on TransliterationLine {
     lineNumber
     words {
       content {
-        ... on CorrectionContent {
-          correctionType: type
-        }
-        ... on DamageContent {
-          damageType: type
-        }
-        ... on StringContent {
-          stringContentType: type
-          content
-        }
-        ... on NumeralContent {
-          content
-          isSubscript
-        }
+        ...TransliterationWordContent
       }
     }
   }
