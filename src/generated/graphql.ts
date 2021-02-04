@@ -36,6 +36,7 @@ export type ManuscriptMetaData = {
   status?: Maybe<ManuscriptStatus>;
   otherIdentifiers: Array<ManuscriptIdentifier>;
   pictureUrls: Array<Scalars['String']>;
+  transliterationResult?: Maybe<Array<TransliterationLine>>;
 };
 
 export type ManuscriptIdentifier = {
@@ -72,6 +73,81 @@ export enum ManuscriptStatus {
   Approved = 'Approved'
 }
 
+export type TransliterationLine = {
+  __typename?: 'TransliterationLine';
+  lineIndex: Scalars['Int'];
+  transliterationLineInput: Scalars['String'];
+  result?: Maybe<TransliterationLineResult>;
+};
+
+export type TransliterationLineResult = {
+  __typename?: 'TransliterationLineResult';
+  lineNumber: Scalars['Int'];
+  isAbsolute: Scalars['Boolean'];
+  words: Array<TransliterationWord>;
+};
+
+export type TransliterationWord = {
+  __typename?: 'TransliterationWord';
+  content: Array<TransliterationWordContentUnion>;
+};
+
+export type TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent;
+
+export type StringContent = {
+  __typename?: 'StringContent';
+  type: StringContentTypeEnum;
+  content: Scalars['String'];
+};
+
+export enum StringContentTypeEnum {
+  Hittite = 'Hittite',
+  Akadogramm = 'Akadogramm',
+  Determinativ = 'Determinativ',
+  MaterLectionis = 'MaterLectionis',
+  Sumerogramm = 'Sumerogramm'
+}
+
+export type DamageContent = {
+  __typename?: 'DamageContent';
+  type: DamageTypeEnum;
+};
+
+export enum DamageTypeEnum {
+  DeletionStart = 'DeletionStart',
+  DeletionEnd = 'DeletionEnd',
+  LesionStart = 'LesionStart',
+  LesionEnd = 'LesionEnd',
+  RasureStart = 'RasureStart',
+  RasureEnd = 'RasureEnd',
+  SurplusStart = 'SurplusStart',
+  SurplusEnd = 'SurplusEnd',
+  SupplementStart = 'SupplementStart',
+  SupplementEnd = 'SupplementEnd',
+  UnknownDamageStart = 'UnknownDamageStart',
+  UnknownDamageEnd = 'UnknownDamageEnd'
+}
+
+export type CorrectionContent = {
+  __typename?: 'CorrectionContent';
+  type: CorrectionType;
+};
+
+export enum CorrectionType {
+  UnsureCorrection = 'UnsureCorrection',
+  MaybeUnsureCorrection = 'MaybeUnsureCorrection',
+  SureCorrection = 'SureCorrection',
+  SicCorrection = 'SicCorrection',
+  Ellipsis = 'Ellipsis',
+  ParagraphEnd = 'ParagraphEnd'
+}
+
+export type NumeralContent = {
+  __typename?: 'NumeralContent';
+  isSubscript: Scalars['Boolean'];
+  content: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   register?: Maybe<Scalars['String']>;
@@ -88,11 +164,6 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   username: Scalars['String'];
   password: Scalars['String'];
-};
-
-
-export type MutationMeArgs = {
-  jwt: Scalars['String'];
 };
 
 export type UserInput = {
@@ -125,7 +196,7 @@ export type LoggedInUserMutationsCreateManuscriptArgs = {
 
 
 export type LoggedInUserMutationsManuscriptArgs = {
-  mainIdentifier?: Maybe<Scalars['String']>;
+  mainIdentifier: Scalars['String'];
 };
 
 export type ManuscriptMetaDataInput = {
@@ -145,23 +216,34 @@ export type ManuscriptIdentifierInput = {
 
 export type ManuscriptMutations = {
   __typename?: 'ManuscriptMutations';
-  updateTransliteration?: Maybe<Scalars['String']>;
+  updateTransliteration: Scalars['Boolean'];
 };
 
 
 export type ManuscriptMutationsUpdateTransliterationArgs = {
-  values: Array<TransliterationTextLineInput>;
+  values: Array<TransliterationLineInput>;
 };
 
-export type TransliterationTextLineInput = {
+export type TransliterationLineInput = {
+  lineIndex: Scalars['Int'];
+  transliterationLineInput: Scalars['String'];
+  result?: Maybe<TransliterationLineResultInput>;
+};
+
+export type TransliterationLineResultInput = {
   lineNumber: Scalars['Int'];
   isAbsolute: Scalars['Boolean'];
-  content: Array<TransliterationTextLineContentUnion>;
+  words: Array<TransliterationWordInput>;
 };
 
-export type TransliterationTextLineContentUnion = {
+export type TransliterationWordInput = {
+  content: Array<Maybe<TransliterationWordContentInputUnion>>;
+};
+
+export type TransliterationWordContentInputUnion = {
   stringContent?: Maybe<StringContentInput>;
-  damageContent?: Maybe<DamageInput>;
+  numeralContent?: Maybe<NumeralContentInput>;
+  damageContent?: Maybe<DamageTypeEnum>;
   correctionContent?: Maybe<CorrectionType>;
 };
 
@@ -170,40 +252,10 @@ export type StringContentInput = {
   content: Scalars['String'];
 };
 
-export enum StringContentTypeEnum {
-  Akadogramm = 'Akadogramm',
-  Determinativ = 'Determinativ',
-  MaterLectionis = 'MaterLectionis',
-  Sumerogramm = 'Sumerogramm'
-}
-
-export type DamageInput = {
-  type: DamageTypeEnum;
-  position: DamagePositionEnum;
+export type NumeralContentInput = {
+  isSubscript: Scalars['Boolean'];
+  content: Scalars['String'];
 };
-
-export enum DamageTypeEnum {
-  Deletion = 'Deletion',
-  Lesion = 'Lesion',
-  Rasure = 'Rasure',
-  Surplus = 'Surplus',
-  Supplement = 'Supplement',
-  UnknownDamage = 'UnknownDamage'
-}
-
-export enum DamagePositionEnum {
-  Start = 'Start',
-  End = 'End'
-}
-
-export enum CorrectionType {
-  UnsureCorrection = 'UnsureCorrection',
-  MaybeUnsureCorrection = 'MaybeUnsureCorrection',
-  SureCorrection = 'SureCorrection',
-  SicCorrection = 'SicCorrection',
-  Ellipsis = 'Ellipsis',
-  ParagraphEnd = 'ParagraphEnd'
-}
 
 export enum ManuscriptSide {
   Front = 'Front',
@@ -269,7 +321,6 @@ export type IndexQuery = (
 );
 
 export type CreateManuscriptMutationVariables = Exact<{
-  jwt: Scalars['String'];
   manuscriptMetaData?: Maybe<ManuscriptMetaDataInput>;
 }>;
 
@@ -282,6 +333,32 @@ export type CreateManuscriptMutation = (
   )> }
 );
 
+export type TransliterationLineFragment = (
+  { __typename?: 'TransliterationLine' }
+  & Pick<TransliterationLine, 'lineIndex' | 'transliterationLineInput'>
+  & { result?: Maybe<(
+    { __typename?: 'TransliterationLineResult' }
+    & Pick<TransliterationLineResult, 'isAbsolute' | 'lineNumber'>
+    & { words: Array<(
+      { __typename?: 'TransliterationWord' }
+      & { content: Array<(
+        { __typename?: 'StringContent' }
+        & Pick<StringContent, 'content'>
+        & { stringContentType: StringContent['type'] }
+      ) | (
+        { __typename?: 'DamageContent' }
+        & { damageType: DamageContent['type'] }
+      ) | (
+        { __typename?: 'CorrectionContent' }
+        & { correctionType: CorrectionContent['type'] }
+      ) | (
+        { __typename?: 'NumeralContent' }
+        & Pick<NumeralContent, 'content' | 'isSubscript'>
+      )> }
+    )> }
+  )> }
+);
+
 export type ManuscriptMetaDataFragment = (
   { __typename?: 'ManuscriptMetaData' }
   & Pick<ManuscriptMetaData, 'bibliography' | 'cthClassification' | 'palaeographicClassification' | 'palaeographicClassificationSure' | 'provenance' | 'creatorUsername' | 'pictureUrls'>
@@ -291,7 +368,10 @@ export type ManuscriptMetaDataFragment = (
   ), otherIdentifiers: Array<(
     { __typename?: 'ManuscriptIdentifier' }
     & ManuscriptIdentifierFragment
-  )> }
+  )>, transliterationResult?: Maybe<Array<(
+    { __typename?: 'TransliterationLine' }
+    & TransliterationLineFragment
+  )>> }
 );
 
 export type ManuscriptQueryVariables = Exact<{
@@ -345,14 +425,13 @@ export type TransliterationInputQuery = (
   )> }
 );
 
-export type NewTransliterationInputMutationVariables = Exact<{
-  jwt: Scalars['String'];
+export type UploadTransliterationMutationVariables = Exact<{
   mainIdentifier: Scalars['String'];
-  values: Array<TransliterationTextLineInput> | TransliterationTextLineInput;
+  values: Array<TransliterationLineInput> | TransliterationLineInput;
 }>;
 
 
-export type NewTransliterationInputMutation = (
+export type UploadTransliterationMutation = (
   { __typename?: 'Mutation' }
   & { me?: Maybe<(
     { __typename?: 'LoggedInUserMutations' }
@@ -386,6 +465,34 @@ export const ManuscriptBasicDataFragmentDoc = gql`
   creatorUsername
 }
     ${ManuscriptIdentifierFragmentDoc}`;
+export const TransliterationLineFragmentDoc = gql`
+    fragment TransliterationLine on TransliterationLine {
+  lineIndex
+  transliterationLineInput
+  result {
+    isAbsolute
+    lineNumber
+    words {
+      content {
+        ... on CorrectionContent {
+          correctionType: type
+        }
+        ... on DamageContent {
+          damageType: type
+        }
+        ... on StringContent {
+          stringContentType: type
+          content
+        }
+        ... on NumeralContent {
+          content
+          isSubscript
+        }
+      }
+    }
+  }
+}
+    `;
 export const ManuscriptMetaDataFragmentDoc = gql`
     fragment ManuscriptMetaData on ManuscriptMetaData {
   mainIdentifier {
@@ -401,8 +508,12 @@ export const ManuscriptMetaDataFragmentDoc = gql`
   provenance
   creatorUsername
   pictureUrls
+  transliterationResult {
+    ...TransliterationLine
+  }
 }
-    ${ManuscriptIdentifierFragmentDoc}`;
+    ${ManuscriptIdentifierFragmentDoc}
+${TransliterationLineFragmentDoc}`;
 export const ManuscriptIdentWithCreatorFragmentDoc = gql`
     fragment ManuscriptIdentWithCreator on ManuscriptMetaData {
   mainIdentifier {
@@ -508,8 +619,8 @@ export type IndexQueryHookResult = ReturnType<typeof useIndexQuery>;
 export type IndexLazyQueryHookResult = ReturnType<typeof useIndexLazyQuery>;
 export type IndexQueryResult = Apollo.QueryResult<IndexQuery, IndexQueryVariables>;
 export const CreateManuscriptDocument = gql`
-    mutation CreateManuscript($jwt: String!, $manuscriptMetaData: ManuscriptMetaDataInput) {
-  me(jwt: $jwt) {
+    mutation CreateManuscript($manuscriptMetaData: ManuscriptMetaDataInput) {
+  me {
     createManuscript(values: $manuscriptMetaData)
   }
 }
@@ -529,7 +640,6 @@ export type CreateManuscriptMutationFn = Apollo.MutationFunction<CreateManuscrip
  * @example
  * const [createManuscriptMutation, { data, loading, error }] = useCreateManuscriptMutation({
  *   variables: {
- *      jwt: // value for 'jwt'
  *      manuscriptMetaData: // value for 'manuscriptMetaData'
  *   },
  * });
@@ -641,39 +751,38 @@ export function useTransliterationInputLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type TransliterationInputQueryHookResult = ReturnType<typeof useTransliterationInputQuery>;
 export type TransliterationInputLazyQueryHookResult = ReturnType<typeof useTransliterationInputLazyQuery>;
 export type TransliterationInputQueryResult = Apollo.QueryResult<TransliterationInputQuery, TransliterationInputQueryVariables>;
-export const NewTransliterationInputDocument = gql`
-    mutation NewTransliterationInput($jwt: String!, $mainIdentifier: String!, $values: [TransliterationTextLineInput!]!) {
-  me(jwt: $jwt) {
+export const UploadTransliterationDocument = gql`
+    mutation uploadTransliteration($mainIdentifier: String!, $values: [TransliterationLineInput!]!) {
+  me {
     manuscript(mainIdentifier: $mainIdentifier) {
       updateTransliteration(values: $values)
     }
   }
 }
     `;
-export type NewTransliterationInputMutationFn = Apollo.MutationFunction<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>;
+export type UploadTransliterationMutationFn = Apollo.MutationFunction<UploadTransliterationMutation, UploadTransliterationMutationVariables>;
 
 /**
- * __useNewTransliterationInputMutation__
+ * __useUploadTransliterationMutation__
  *
- * To run a mutation, you first call `useNewTransliterationInputMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useNewTransliterationInputMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUploadTransliterationMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUploadTransliterationMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [newTransliterationInputMutation, { data, loading, error }] = useNewTransliterationInputMutation({
+ * const [uploadTransliterationMutation, { data, loading, error }] = useUploadTransliterationMutation({
  *   variables: {
- *      jwt: // value for 'jwt'
  *      mainIdentifier: // value for 'mainIdentifier'
  *      values: // value for 'values'
  *   },
  * });
  */
-export function useNewTransliterationInputMutation(baseOptions?: Apollo.MutationHookOptions<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>) {
-        return Apollo.useMutation<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>(NewTransliterationInputDocument, baseOptions);
+export function useUploadTransliterationMutation(baseOptions?: Apollo.MutationHookOptions<UploadTransliterationMutation, UploadTransliterationMutationVariables>) {
+        return Apollo.useMutation<UploadTransliterationMutation, UploadTransliterationMutationVariables>(UploadTransliterationDocument, baseOptions);
       }
-export type NewTransliterationInputMutationHookResult = ReturnType<typeof useNewTransliterationInputMutation>;
-export type NewTransliterationInputMutationResult = Apollo.MutationResult<NewTransliterationInputMutation>;
-export type NewTransliterationInputMutationOptions = Apollo.BaseMutationOptions<NewTransliterationInputMutation, NewTransliterationInputMutationVariables>;
+export type UploadTransliterationMutationHookResult = ReturnType<typeof useUploadTransliterationMutation>;
+export type UploadTransliterationMutationResult = Apollo.MutationResult<UploadTransliterationMutation>;
+export type UploadTransliterationMutationOptions = Apollo.BaseMutationOptions<UploadTransliterationMutation, UploadTransliterationMutationVariables>;

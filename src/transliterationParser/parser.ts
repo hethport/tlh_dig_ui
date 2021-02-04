@@ -1,7 +1,7 @@
 import {alt, createLanguage, digits, optWhitespace, regexp, seq, string, TypedLanguage, whitespace} from "parsimmon";
 import {allDamages, Damages} from "../model/damages";
-import {allCorrections, Corrections} from "../model/corrections";
-import {NumeralContent, numeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
+import {allCorrections, symbolForCorrection} from "../model/corrections";
+import {numeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
 import {
     TransliterationTextLine,
     TransliterationWord,
@@ -9,43 +9,40 @@ import {
 } from "../model/transliterationTextLine";
 import {
     akadogrammRegex,
-    Akkadogramm,
     akkadogramm,
-    Determinativ,
     determinativ,
     determinativRegex,
-    Sumerogramm,
+    hittite,
     sumerogramm,
     sumerogrammRegex
 } from "../model/stringContent";
+import {CorrectionType, NumeralContentInput, StringContentInput} from "../generated/graphql";
 
 
 export interface TransliterationLineParseResult {
-    line: string;
+    transliterationLineInput: string;
     result?: TransliterationTextLine;
 }
 
 const hittiteRegex = /[\p{Ll}-]+/u;
 
 type LanguageSpec = {
-    // Line number
-
     // String contents
-    damages: Damages,
-    corrections: Corrections,
+    damages: Damages;
+    corrections: CorrectionType;
 
-    hittite: string;
-    akkadogramm: Akkadogramm;
-    sumerogramm: Sumerogramm;
-    determinativ: Determinativ,
+    hittite: StringContentInput;
+    akkadogramm: StringContentInput;
+    sumerogramm: StringContentInput;
+    determinativ: StringContentInput;
 
-    numeralContent: NumeralContent,
-    subscriptNumeralContent: NumeralContent,
+    numeralContent: NumeralContentInput;
+    subscriptNumeralContent: NumeralContentInput;
 
 
     singleContent: TransliterationWordContent;
 
-    transliterationWord: TransliterationWord,
+    transliterationWord: TransliterationWord;
 
     transliterationTextLine: TransliterationTextLine;
 }
@@ -57,7 +54,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
         )
     ),
 
-    corrections: () => alt(...allCorrections.map((c) => string(c.symbol).result(c))),
+    corrections: () => alt(...allCorrections.map((c) => string(symbolForCorrection(c)).result(c))),
 
     numeralContent: () => regexp(numeralContentRegex)
         .map((result) => numeralContent(result, false)),
@@ -65,7 +62,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     subscriptNumeralContent: () => regexp(subscriptNumeralContentRegex)
         .map((result) => numeralContent((result.codePointAt(0)! % 10).toString(), true)),
 
-    hittite: () => regexp(hittiteRegex),
+    hittite: () => regexp(hittiteRegex).map((result) => hittite(result)),
 
     akkadogramm: () => regexp(akadogrammRegex)
         .map((result) => akkadogramm(result.substring(1))),
@@ -91,7 +88,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     ).map(([number, isAbsolute, ows1, _hash, _ows2, content]) => new TransliterationTextLine(number, isAbsolute, content))
 });
 
-export function parseTransliterationLine(line: string): TransliterationLineParseResult {
-    const parsed = transliteration.transliterationTextLine.parse(line);
-    return parsed.status ? {line, result: parsed.value} : {line};
+export function parseTransliterationLine(transliterationLineInput: string): TransliterationLineParseResult {
+    const parsed = transliteration.transliterationTextLine.parse(transliterationLineInput);
+    return parsed.status ? {transliterationLineInput, result: parsed.value} : {transliterationLineInput};
 }

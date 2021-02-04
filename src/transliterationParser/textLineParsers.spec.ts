@@ -1,5 +1,5 @@
 import {transliteration} from './parser';
-import {akkadogramm as ag, determinativ as dt, sumerogramm as sg} from "../model/stringContent";
+import {akkadogramm as ag, determinativ as dt, hittite as ht, sumerogramm as sg} from "../model/stringContent";
 import {numeralContent as nc} from "../model/numeralContent";
 import {
     DeletionEnd as de,
@@ -11,15 +11,19 @@ import {
     UnknownBracketEnd as ue,
     UnknownBracketStart as us
 } from "../model/damages";
-import {Ellipsis as el, ParagraphEnd as pe, UnsureCorrection as uc} from "../model/corrections";
 import {transliterationTextLine as tl, transliterationWord as w} from "../model/transliterationTextLine";
+import {CorrectionType} from "../generated/graphql";
+
+const el = CorrectionType.Ellipsis;
+const pe = CorrectionType.ParagraphEnd;
+const uc = CorrectionType.UnsureCorrection;
 
 describe('test', () => {
     it('should parse hittite', () => {
         expect(transliteration.hittite.tryParse('het'))
-            .toEqual('het');
+            .toEqual(ht('het'));
         expect(transliteration.hittite.tryParse('tén'))
-            .toEqual('tén');
+            .toEqual(ht('tén'));
     });
 
     it('should parse akadogramms', () => {
@@ -44,28 +48,28 @@ describe('test', () => {
         const parser = transliteration.transliterationTextLine;
 
         expect(parser.tryParse("1' # [(x)] x ⸢zi⸣ x ["))
-            .toEqual(tl(1, [w(ds, us, 'x', ue, de), w('x'), w(ls, 'zi', le), w('x'), w(ds)]));
+            .toEqual(tl(1, [w(ds, us, ht('x'), ue, de), w(ht('x')), w(ls, ht('zi'), le), w(ht('x')), w(ds)]));
 
         expect(parser.tryParse("2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri"))
-            .toEqual(tl(2, [w(ds, sg('DUMU'), uc, de, sg('.MUNUS'), uc, '-ma'), w('e-ša-', ls, 'a', le, '-', ds, 'ri')]));
+            .toEqual(tl(2, [w(ds, sg('DUMU'), uc, de, sg('.MUNUS'), uc, ht('-ma')), w(ht('e-ša-'), ls, ht('a'), le, ht('-'), ds, ht('ri'))]));
 
         expect(parser.tryParse("3' # az-zi-ik-ki-it-[tén"))
-            .toEqual(tl(3, [w('az-zi-ik-ki-it-', ds, 'tén')]));
+            .toEqual(tl(3, [w(ht('az-zi-ik-ki-it-'), ds, ht('tén'))]));
 
         expect(parser.tryParse("4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬"))
-            .toEqual(tl(4, [w('nu'), w('ḫu-u-ma-an'), w('az-', ds, 'zi-ik-ki-'), w(pe)]));
+            .toEqual(tl(4, [w(ht('nu')), w(ht('ḫu-u-ma-an')), w(ht('az-'), ds, ht('zi-ik-ki-')), w(pe)]));
 
         expect(parser.tryParse("9' # [nu-u]š-ši im-ma(-)["))
-            .toEqual(tl(9, [w(ds, 'nu-u', de, 'š-ši'), w('im-ma', us, '-', ue, ds)]));
+            .toEqual(tl(9, [w(ds, ht('nu-u'), de, ht('š-ši')), w(ht('im-ma'), us, ht('-'), ue, ds)]));
 
         expect(parser.tryParse("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
-            .toEqual(tl(10, [w(ds, 'x-x', de, '-', sg('TE'), dt('MEŠ')), w(ls, 'e', le, '-', ds)]));
+            .toEqual(tl(10, [w(ds, ht('x-x'), de, ht('-'), sg('TE'), dt('MEŠ')), w(ls, ht('e'), le, ht('-'), ds)]));
 
         expect(parser.tryParse("1' # [ … ] x ¬¬¬"))
-            .toEqual(tl(1, [w(ds), w(el), w(de), w('x'), w(pe)]));
+            .toEqual(tl(1, [w(ds), w(el), w(de), w(ht('x')), w(pe)]));
 
         expect(parser.tryParse("2' # [ … °MUNUS.MEŠ°zi-i]n-tu-ḫi-e-eš"))
-            .toEqual(tl(2, [w(ds), w(el), w(dt('MUNUS.MEŠ'), 'zi-i', de, 'n-tu-ḫi-e-eš')]));
+            .toEqual(tl(2, [w(ds), w(el), w(dt('MUNUS.MEŠ'), ht('zi-i'), de, ht('n-tu-ḫi-e-eš'))]));
 
         // TODO: enable!
         /*
@@ -77,9 +81,9 @@ describe('test', () => {
          */
 
         expect(parser.tryParse("5' # [ … ] ⸢6⸣ NINDA.GUR₄.RA°ḪI.A° ki-an-da"))
-            .toEqual(tl(5, [w(ds), w(el), w(de), w(ls, nc('6'), le), w(sg('NINDA.GUR'), nc('4', true), sg('.RA'), dt('ḪI.A')), w('ki-an-da')]));
+            .toEqual(tl(5, [w(ds), w(el), w(de), w(ls, nc('6'), le), w(sg('NINDA.GUR'), nc('4', true), sg('.RA'), dt('ḪI.A')), w(ht('ki-an-da'))]));
 
         expect(parser.tryParse("9' # pár-aš-na-a-u-<aš>-kán °LÚ°SAG[I.A ¬¬¬"))
-            .toEqual(tl(9, [w('pár-aš-na-a-u-', supS, 'aš', supE, '-kán'), w(dt('LÚ'), sg('SAG'), ds, sg('I.A')), w(pe)]));
+            .toEqual(tl(9, [w(ht('pár-aš-na-a-u-'), supS, ht('aš'), supE, ht('-kán')), w(dt('LÚ'), sg('SAG'), ds, sg('I.A')), w(pe)]));
     });
 });

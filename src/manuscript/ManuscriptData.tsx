@@ -76,6 +76,9 @@ export function ManuscriptData({manuscript}: IProps): JSX.Element {
             <div className="my-3">
                 <h2 className="subtitle is-4">{t('Transliteration')}</h2>
 
+                {manuscript.transliterationResult &&
+                <pre>{JSON.stringify(manuscript.transliterationResult, null, 2)}</pre>}
+
                 {createdByUser && <Link className="button is-link is-fullwidth" to={'./transliterationInput'}>
                     {t('Transliteration erstellen')}
                 </Link>}

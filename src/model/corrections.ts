@@ -1,40 +1,37 @@
 import {CorrectionType} from '../generated/graphql';
+import {TransliterationWordContent} from "./transliterationTextLine";
 
-interface ICorrection {
-    type: 'Correction';
-    subType: CorrectionType;
-    symbol: string;
+export function symbolForCorrection(correctionType: CorrectionType): string {
+    switch (correctionType) {
+        case CorrectionType.Ellipsis:
+            return '…';
+        case CorrectionType.MaybeUnsureCorrection:
+            return '(?)';
+        case CorrectionType.ParagraphEnd:
+            return '¬¬¬';
+        case CorrectionType.SicCorrection:
+            return 'sic';
+        case CorrectionType.SureCorrection:
+            return '!';
+        case CorrectionType.UnsureCorrection:
+            return '?';
+    }
 }
 
-export const UnsureCorrection: ICorrection = {
-    type: 'Correction',
-    subType: CorrectionType.UnsureCorrection,
-    symbol: '?'
-};
+export function isCorrection(twc: TransliterationWordContent): twc is CorrectionType {
+    return twc === CorrectionType.Ellipsis ||
+        twc === CorrectionType.MaybeUnsureCorrection ||
+        twc === CorrectionType.ParagraphEnd ||
+        twc === CorrectionType.SicCorrection ||
+        twc === CorrectionType.SureCorrection ||
+        twc === CorrectionType.UnsureCorrection;
+}
 
-export const MaybeUnsureCorrection: ICorrection = {
-    type: 'Correction',
-    subType: CorrectionType.MaybeUnsureCorrection,
-    symbol: '(?)'
-};
-
-export const SureCorrection: ICorrection = {type: 'Correction', subType: CorrectionType.SureCorrection, symbol: '!'};
-
-export const SicCorrection: ICorrection = {type: 'Correction', subType: CorrectionType.SicCorrection, symbol: 'sic'};
-
-
-export const Ellipsis: ICorrection = {type: 'Correction', subType: CorrectionType.Ellipsis, symbol: '…'};
-
-
-export const ParagraphEnd: ICorrection = {type: 'Correction', subType: CorrectionType.ParagraphEnd, symbol: '¬¬¬'};
-
-
-export const allCorrections = [UnsureCorrection, MaybeUnsureCorrection, SureCorrection, SicCorrection, Ellipsis, ParagraphEnd];
-
-export type Corrections =
-    typeof UnsureCorrection
-    | typeof MaybeUnsureCorrection
-    | typeof SureCorrection
-    | typeof SicCorrection
-    | typeof Ellipsis
-    | typeof ParagraphEnd;
+export const allCorrections = [
+    CorrectionType.UnsureCorrection,
+    CorrectionType.MaybeUnsureCorrection,
+    CorrectionType.SureCorrection,
+    CorrectionType.SicCorrection,
+    CorrectionType.Ellipsis,
+    CorrectionType.ParagraphEnd
+];

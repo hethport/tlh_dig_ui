@@ -39,14 +39,42 @@ query Index {
 }
 
 # /createManuscript
-mutation CreateManuscript($jwt: String!, $manuscriptMetaData : ManuscriptMetaDataInput) {
-  me(jwt: $jwt) {
+mutation CreateManuscript($manuscriptMetaData : ManuscriptMetaDataInput) {
+  me {
     createManuscript(values: $manuscriptMetaData)
   }
 }
 
 
 # /manuscripts/:id
+
+fragment TransliterationLine on TransliterationLine {
+  lineIndex
+  transliterationLineInput
+  result {
+    isAbsolute
+    lineNumber
+    words {
+      content {
+        ... on CorrectionContent {
+          correctionType: type
+        }
+        ... on DamageContent {
+          damageType: type
+        }
+        ... on StringContent {
+          stringContentType: type
+          content
+        }
+        ... on NumeralContent {
+          content
+          isSubscript
+        }
+      }
+    }
+  }
+}
+
 fragment ManuscriptMetaData on ManuscriptMetaData {
   mainIdentifier {
     ...ManuscriptIdentifier
@@ -61,6 +89,9 @@ fragment ManuscriptMetaData on ManuscriptMetaData {
   provenance
   creatorUsername
   pictureUrls
+  transliterationResult {
+    ...TransliterationLine
+  }
 }
 
 query Manuscript($mainIdentifier: String!) {
@@ -70,6 +101,7 @@ query Manuscript($mainIdentifier: String!) {
 }
 
 # /manuscripts/:id/uploadPictures
+
 fragment ManuscriptIdentWithCreator on ManuscriptMetaData {
   mainIdentifier {
     ...ManuscriptIdentifier
@@ -85,6 +117,7 @@ query UploadPictures($mainIdentifier: String!) {
 }
 
 # /manuscript/:id/transliterationInput
+
 query TransliterationInput($mainIdentifier: String!) {
   manuscript(mainIdentifier: $mainIdentifier) {
     mainIdentifier {
@@ -93,8 +126,8 @@ query TransliterationInput($mainIdentifier: String!) {
   }
 }
 
-mutation NewTransliterationInput($jwt: String!, $mainIdentifier: String!, $values: [TransliterationTextLineInput!]!) {
-  me(jwt: $jwt) {
+mutation uploadTransliteration($mainIdentifier: String!, $values: [TransliterationLineInput!]!) {
+  me {
     manuscript(mainIdentifier: $mainIdentifier) {
       updateTransliteration(values: $values)
     }

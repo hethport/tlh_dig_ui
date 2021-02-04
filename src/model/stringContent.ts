@@ -1,77 +1,91 @@
-import {StringContentTypeEnum} from "../generated/graphql";
-
-
-// Akadogramm
+import {StringContentInput, StringContentTypeEnum} from "../generated/graphql";
+import {TransliterationWordContent} from "./transliterationTextLine";
 
 /**
- * automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht
+ * Hittite
+ */
+export function hittite(content: string): StringContentInput {
+    return {type: StringContentTypeEnum.Hittite, content};
+}
+
+/**
+ * Akadogramm: automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht
  */
 export const akadogrammRegex = /[_-]([\p{Lu}-])+/u;
 
-
-export interface Akkadogramm {
-    type: StringContentTypeEnum.Akadogramm,
-    content: string,
-}
-
-export function akkadogramm(content: string): Akkadogramm {
+export function akkadogramm(content: string): StringContentInput {
     return {type: StringContentTypeEnum.Akadogramm, content};
 }
 
-// Determinativ
-
 /**
+ * Determinativ:
  * - automatisch für Großbuchstaben markiert durch ° … ° (davor oder dahinter jeweils ein Spatium oder Bindestrich)
  * - bei mehreren Determinativen nacheinander Doppelsetzung (°°.°°)
  */
 export const determinativRegex = /°([\p{Lu}.]+)°/u;
 
-export interface Determinativ {
-    type: StringContentTypeEnum.Determinativ,
-    content: string
-}
-
-export function determinativ(content: string): Determinativ {
+export function determinativ(content: string): StringContentInput {
     return {type: StringContentTypeEnum.Determinativ, content};
 }
 
-// Mater lectionis
-
 /**
+ * Mater lectionis:
  * vor und nach der Mater Lectionis (Kleinbuchstaben markiert durch ° … °; davor oder dahinter jeweils ein Spatium oder Bindestrich)
  */
-export interface MaterLectionis {
-    type: StringContentTypeEnum.MaterLectionis;
-    content: string;
-}
-
-export function materLectionis(content: string): MaterLectionis {
+export function materLectionis(content: string): StringContentInput {
     return {type: StringContentTypeEnum.MaterLectionis, content};
 }
 
-
-// Sumerogramm
-
 /**
+ * Sumerogramm:
  * - automatisch für Versalien
  * - im Wortinnern durch vorausgehendes `--` markiert
  */
 export const sumerogrammRegex = /[.\p{Lu}]+/u;
 
-export interface Sumerogramm {
-    type: StringContentTypeEnum.Sumerogramm,
-    content: string
+export function sumerogramm(content: string): StringContentInput {
+    return {type: StringContentTypeEnum.Sumerogramm, content};
 }
 
-export function sumerogramm(content: string): Sumerogramm {
-    return {type: StringContentTypeEnum.Sumerogramm, content};
+// CSS class
+
+export function classForStringContentType(stringContentType: StringContentTypeEnum): string {
+    switch (stringContentType) {
+        case StringContentTypeEnum.Hittite:
+            return 'hittite';
+        case StringContentTypeEnum.Akadogramm:
+            return 'akadogramm';
+        case StringContentTypeEnum.Determinativ:
+            return 'determinativ';
+        case StringContentTypeEnum.MaterLectionis:
+            return 'materLectionis';
+        case StringContentTypeEnum.Sumerogramm:
+            return 'sumerogramm';
+    }
 }
 
 // String content
 
-export interface NewStringContent {
-    type: StringContentTypeEnum,
-    content: string,
+export function isStringContentInput(twc: TransliterationWordContent): twc is StringContentInput {
+    return typeof (twc) !== 'string' && 'type' in twc && (
+        twc.type === StringContentTypeEnum.Hittite ||
+        twc.type === StringContentTypeEnum.Determinativ ||
+        twc.type === StringContentTypeEnum.MaterLectionis ||
+        twc.type === StringContentTypeEnum.Akadogramm ||
+        twc.type === StringContentTypeEnum.Sumerogramm);
 }
 
-export type StringContent = Akkadogramm | Determinativ | MaterLectionis | Sumerogramm;
+export function xmlifyStringContentInput(sci: StringContentInput): string {
+    switch (sci.type) {
+        case StringContentTypeEnum.Hittite:
+            return sci.content;
+        case StringContentTypeEnum.Akadogramm:
+            return `<aGr>${sci.content}</aGr>`;
+        case StringContentTypeEnum.Sumerogramm:
+            return `<sGr>${sci.content}</sGr>`;
+        case StringContentTypeEnum.MaterLectionis:
+            return `<ml>${sci.content}</ml>`;
+        case StringContentTypeEnum.Determinativ:
+            return `<dt>${sci.content}</dt>`;
+    }
+}

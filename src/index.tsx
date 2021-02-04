@@ -4,7 +4,7 @@ import './index.sass';
 import {App} from './App';
 import {BrowserRouter as Router} from "react-router-dom";
 import * as serviceWorker from './serviceWorker';
-import {ApolloClient, ApolloProvider, InMemoryCache} from "@apollo/client";
+import {ApolloClient, ApolloLink, ApolloProvider, concat, HttpLink, InMemoryCache} from "@apollo/client";
 import {serverUrl} from "./urls";
 import {Provider} from 'react-redux';
 import {store} from "./store/store";
@@ -30,10 +30,27 @@ i18n
         }
     });
 
+
+const apolloAuthMiddleware = new ApolloLink((operation, forward) => {
+    operation.setContext({
+        headers: {
+            Authorization: store.getState().currentUser?.jwt || null
+        }
+    });
+
+    return forward(operation);
+});
+
+
 const apolloClient = new ApolloClient({
     // TODO: remove serverUrl!
-    uri: `${serverUrl}/graphql.php`,
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    link: concat(apolloAuthMiddleware, new HttpLink({uri: `${serverUrl}/graphql.php`})),
+    defaultOptions: {
+        query: {fetchPolicy: 'no-cache'},
+        watchQuery: {fetchPolicy: 'no-cache'},
+        mutate: {fetchPolicy: 'no-cache'}
+    }
 });
 
 render(

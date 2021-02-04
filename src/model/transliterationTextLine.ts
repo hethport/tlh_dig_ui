@@ -1,44 +1,29 @@
-import {StringContent} from './stringContent';
-import {Damages} from "./damages";
-import {Corrections} from "./corrections";
-import {NumeralContent} from "./numeralContent";
-import {ManuscriptSide, StringContentTypeEnum} from "../generated/graphql";
+import {isStringContentInput, xmlifyStringContentInput} from './stringContent';
+import {Damages, isDamage, xmlifyDamage} from "./damages";
+import {CorrectionType, ManuscriptSide, NumeralContentInput, StringContentInput} from "../generated/graphql";
+import {isCorrection} from "./corrections";
 
 
-export type TransliterationWordContent = string | StringContent | NumeralContent | Damages | Corrections;
+export type TransliterationWordContent = StringContentInput | NumeralContentInput | Damages | CorrectionType;
 
 
 function xmlify(content: TransliterationWordContent): string {
-    if (typeof content === 'string') {
-        return content;
-    } else if (content.type === StringContentTypeEnum.Akadogramm) {
-        return `<aGr>${content.content}</aGr>`;
-    } else if (content.type === StringContentTypeEnum.Sumerogramm) {
-        return `<sGr>${content.content}</sGr>`;
-    } else if (content.type === StringContentTypeEnum.MaterLectionis) {
-        return `<ml>${content.content}</ml>`;
-    } else if (content.type === StringContentTypeEnum.Determinativ) {
-        return `<dt>${content.content}</dt>`;
-    } else if (content.type === 'Correction') {
+    if (isStringContentInput(content)) {
+        return xmlifyStringContentInput(content);
+    } else if (isCorrection(content)) {
         return '<todo/>';
-    } else if (content.type === 'NumeralContent') {
-        return `<nc>${content.content}</nc>`;
+    } else if (isDamage(content)) {
+        return xmlifyDamage(content.type);
     } else {
-        return content.node;
+        return `<nc>${content.content}</nc>`;
     }
 }
 
 function getContent(twc: TransliterationWordContent): string {
     if (typeof twc === 'string') {
         return twc;
-    } else if (twc.type === StringContentTypeEnum.Akadogramm) {
+    } else if (isStringContentInput(twc)) {
         return twc.content;
-    } else if (twc.type === StringContentTypeEnum.Determinativ) {
-        return twc.content;
-    } else if (twc.type === StringContentTypeEnum.Sumerogramm) {
-        return twc.content
-    } else if (twc.type === StringContentTypeEnum.MaterLectionis) {
-        return '';
     } else {
         // FIXME: implement!
         return '';
@@ -63,16 +48,16 @@ function getNameForManuscriptSide(side: ManuscriptSide): string {
 }
 
 export class TransliterationWord {
-    constructor(public content: TransliterationWordContent[]) {
+    constructor(public contents: TransliterationWordContent[]) {
     }
 
     private getTranscription(): string {
-        return this.content.map((twc) => getContent(twc)).join('');
+        return this.contents.map((twc) => getContent(twc)).join('');
     }
 
     xmlify(): string {
         return `<w trans="${this.getTranscription()}" mrp0sel="   "
-  >${this.content.map(xmlify).join('')}</w>`;
+  >${this.contents.map(xmlify).join('')}</w>`;
     }
 }
 

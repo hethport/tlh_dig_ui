@@ -48,7 +48,7 @@ export function CreateManuscriptForm() {
     }
 
     function handleSubmit(manuscriptMetaData: ManuscriptMetaDataInput, setSubmitting: (isSubmitting: boolean) => void): void {
-        createManuscript({variables: {jwt: currentUser!.jwt, manuscriptMetaData}})
+        createManuscript({variables: {manuscriptMetaData}})
             .catch((e) => console.error(e));
 
         setSubmitting(false);

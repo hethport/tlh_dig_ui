@@ -1,96 +1,74 @@
-import {DamagePositionEnum, DamageTypeEnum} from "../generated/graphql";
+import {DamageTypeEnum} from "../generated/graphql";
+import {TransliterationWordContent} from "./transliterationTextLine";
 
 interface IDamage {
     type: DamageTypeEnum;
-    position: DamagePositionEnum;
     symbol: string;
-    node: string;
     regex?: RegExp;
 }
 
 export const DeletionStart: IDamage = {
-    type: DamageTypeEnum.Deletion,
-    position: DamagePositionEnum.Start,
+    type: DamageTypeEnum.DeletionStart,
     symbol: '[',
-    node: '<del_in/>'
 };
+
 export const DeletionEnd: IDamage = {
-    type: DamageTypeEnum.Deletion,
-    position: DamagePositionEnum.End,
+    type: DamageTypeEnum.DeletionEnd,
     symbol: ']',
-    node: '<del_fin/>'
 };
 
 export const LesionStart: IDamage = {
-    type: DamageTypeEnum.Lesion,
-    position: DamagePositionEnum.Start,
+    type: DamageTypeEnum.LesionStart,
     symbol: '⸢',
-    node: '<laes_in/>'
 };
 export const LesionEnd: IDamage = {
-    type: DamageTypeEnum.Lesion,
-    position: DamagePositionEnum.End,
+    type: DamageTypeEnum.LesionEnd,
     symbol: '⸣',
-    node: '<laes_fin/>'
 };
 
 export const RasureStart: IDamage = {
-    type: DamageTypeEnum.Rasure,
-    position: DamagePositionEnum.Start,
+    type: DamageTypeEnum.RasureStart,
     symbol: '*',
-    node: '<ras_in/>'
 };
+
 export const RasureEnd: IDamage = {
-    type: DamageTypeEnum.Rasure,
-    position: DamagePositionEnum.End,
+    type: DamageTypeEnum.RasureEnd,
     symbol: '*',
-    node: '<ras_fin/>'
 };
 
 export const SurplusStart: IDamage = {
-    type: DamageTypeEnum.Surplus,
-    position: DamagePositionEnum.Start,
+    type: DamageTypeEnum.SurplusStart,
     symbol: '〈〈',
-    node: '<sur_in/>',
     regex: /[〈<]{2}/
 };
+
 export const SurplusEnd: IDamage = {
-    type: DamageTypeEnum.Surplus,
-    position: DamagePositionEnum.End,
+    type: DamageTypeEnum.SurplusEnd,
     symbol: '〉〉',
-    node: '<sur_fin/>',
     regex: /[〉>]{2}/
 };
 
 export const SupplementStart: IDamage = {
-    type: DamageTypeEnum.Supplement,
-    position: DamagePositionEnum.Start,
+    type: DamageTypeEnum.SupplementStart,
     symbol: '〈',
-    node: '<sup_in/>',
     regex: /[〈<]/
 };
 export const SupplementEnd: IDamage = {
-    type: DamageTypeEnum.Supplement,
-    position: DamagePositionEnum.End,
+    type: DamageTypeEnum.SupplementEnd,
     symbol: '〉',
-    node: '<sup_fin/>',
     regex: /[〉>]/
 };
 
 export const UnknownBracketStart: IDamage = {
-    type: DamageTypeEnum.UnknownDamage,
-    position: DamagePositionEnum.Start,
+    type: DamageTypeEnum.UnknownDamageStart,
     symbol: '(',
-    node: '<ub_in/>'
 };
 export const UnknownBracketEnd: IDamage = {
-    type: DamageTypeEnum.UnknownDamage,
-    position: DamagePositionEnum.End,
-    symbol: ')',
-    node: '<ub_fin/>'
+    type: DamageTypeEnum.UnknownDamageEnd,
+    symbol: ')'
 };
 
-export const allDamages = [
+export const allDamages: Damages[] = [
     DeletionStart, DeletionEnd,
     LesionStart, LesionEnd,
     RasureStart, RasureEnd,
@@ -98,6 +76,39 @@ export const allDamages = [
     SupplementStart, SupplementEnd,
     UnknownBracketStart, UnknownBracketEnd
 ];
+
+export function xmlifyDamage(damageType: DamageTypeEnum): string {
+    switch (damageType) {
+        case DamageTypeEnum.DeletionEnd:
+            return '<del_fin/>';
+        case DamageTypeEnum.DeletionStart:
+            return '<del_in/>';
+        case DamageTypeEnum.LesionEnd:
+            return '<laes_fin/>';
+        case DamageTypeEnum.LesionStart:
+            return '<laes_in/>';
+        case DamageTypeEnum.RasureEnd:
+            return '<ras_fin/>';
+        case DamageTypeEnum.RasureStart:
+            return '<ras_in/>';
+        case DamageTypeEnum.SupplementEnd:
+            return '<sup_fin/>';
+        case DamageTypeEnum.SupplementStart:
+            return '<sup_in/>';
+        case DamageTypeEnum.SurplusEnd:
+            return '<sur_fin/>';
+        case DamageTypeEnum.SurplusStart:
+            return '<sur_in/>';
+        case DamageTypeEnum.UnknownDamageEnd:
+            return '<ub_fin/>';
+        case DamageTypeEnum.UnknownDamageStart:
+            return '<ub_in/>';
+    }
+}
+
+export function isDamage(twc: TransliterationWordContent): twc is Damages {
+    return !!allDamages.find((d) => d === twc);
+}
 
 export type Damages = typeof DeletionStart | typeof DeletionEnd
     | typeof LesionStart | typeof LesionEnd

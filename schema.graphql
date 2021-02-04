@@ -14,6 +14,7 @@ type ManuscriptMetaData {
   status: ManuscriptStatus
   otherIdentifiers: [ManuscriptIdentifier!]!
   pictureUrls: [String!]!
+  transliterationResult: [TransliterationLine!]
 }
 
 type ManuscriptIdentifier {
@@ -49,10 +50,78 @@ enum ManuscriptStatus {
   Approved
 }
 
+type TransliterationLine {
+  lineIndex: Int!
+  transliterationLineInput: String!
+  result: TransliterationLineResult
+}
+
+type TransliterationLineResult {
+  lineNumber: Int!
+  isAbsolute: Boolean!
+  words: [TransliterationWord!]!
+}
+
+type TransliterationWord {
+  content: [TransliterationWordContentUnion!]!
+}
+
+union TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent
+
+type StringContent {
+  type: StringContentTypeEnum!
+  content: String!
+}
+
+enum StringContentTypeEnum {
+  Hittite
+  Akadogramm
+  Determinativ
+  MaterLectionis
+  Sumerogramm
+}
+
+type DamageContent {
+  type: DamageTypeEnum!
+}
+
+enum DamageTypeEnum {
+  DeletionStart
+  DeletionEnd
+  LesionStart
+  LesionEnd
+  RasureStart
+  RasureEnd
+  SurplusStart
+  SurplusEnd
+  SupplementStart
+  SupplementEnd
+  UnknownDamageStart
+  UnknownDamageEnd
+}
+
+type CorrectionContent {
+  type: CorrectionType!
+}
+
+enum CorrectionType {
+  UnsureCorrection
+  MaybeUnsureCorrection
+  SureCorrection
+  SicCorrection
+  Ellipsis
+  ParagraphEnd
+}
+
+type NumeralContent {
+  isSubscript: Boolean!
+  content: String!
+}
+
 type Mutation {
   register(userInput: UserInput!): String
   login(username: String!, password: String!): LoggedInUser
-  me(jwt: String!): LoggedInUserMutations
+  me: LoggedInUserMutations
 }
 
 input UserInput {
@@ -73,7 +142,7 @@ type LoggedInUser {
 
 type LoggedInUserMutations {
   createManuscript(values: ManuscriptMetaDataInput): String
-  manuscript(mainIdentifier: String): ManuscriptMutations
+  manuscript(mainIdentifier: String!): ManuscriptMutations
 }
 
 input ManuscriptMetaDataInput {
@@ -92,18 +161,29 @@ input ManuscriptIdentifierInput {
 }
 
 type ManuscriptMutations {
-  updateTransliteration(values: [TransliterationTextLineInput!]!): String
+  updateTransliteration(values: [TransliterationLineInput!]!): Boolean!
 }
 
-input TransliterationTextLineInput {
+input TransliterationLineInput {
+  lineIndex: Int!
+  transliterationLineInput: String!
+  result: TransliterationLineResultInput
+}
+
+input TransliterationLineResultInput {
   lineNumber: Int!
   isAbsolute: Boolean!
-  content: [TransliterationTextLineContentUnion!]!
+  words: [TransliterationWordInput!]!
 }
 
-input TransliterationTextLineContentUnion {
+input TransliterationWordInput {
+  content: [TransliterationWordContentInputUnion]!
+}
+
+input TransliterationWordContentInputUnion {
   stringContent: StringContentInput
-  damageContent: DamageInput
+  numeralContent: NumeralContentInput
+  damageContent: DamageTypeEnum
   correctionContent: CorrectionType
 }
 
@@ -112,39 +192,9 @@ input StringContentInput {
   content: String!
 }
 
-enum StringContentTypeEnum {
-  Akadogramm
-  Determinativ
-  MaterLectionis
-  Sumerogramm
-}
-
-input DamageInput {
-  type: DamageTypeEnum!
-  position: DamagePositionEnum!
-}
-
-enum DamageTypeEnum {
-  Deletion
-  Lesion
-  Rasure
-  Surplus
-  Supplement
-  UnknownDamage
-}
-
-enum DamagePositionEnum {
-  Start
-  End
-}
-
-enum CorrectionType {
-  UnsureCorrection
-  MaybeUnsureCorrection
-  SureCorrection
-  SicCorrection
-  Ellipsis
-  ParagraphEnd
+input NumeralContentInput {
+  isSubscript: Boolean!
+  content: String!
 }
 
 enum ManuscriptSide {
