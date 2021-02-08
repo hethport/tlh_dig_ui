@@ -7,13 +7,12 @@ import {LoginForm} from './forms/LoginForm';
 import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import {LoggedInUserFragment} from "./generated/graphql";
-import {CreateManuscriptForm} from "./forms/CreateManuscriptForm";
+import {CreateManuscriptForm} from "./CreateManuscriptForm";
 import {Manuscript} from "./Manuscript";
 import {NotFound} from './NotFound';
 import {useDispatch, useSelector} from "react-redux";
 import {activeUserSelector} from "./store/store";
 import {StoreAction, userLoggedOutAction} from "./store/actions";
-
 
 const languages: string[] = ["de", "en"];
 
@@ -24,7 +23,6 @@ export function App(): JSX.Element {
     const dispatch = useDispatch<Dispatch<StoreAction>>();
 
     const user: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
-
 
     function logout() {
         dispatch(userLoggedOutAction());

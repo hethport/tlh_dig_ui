@@ -7,16 +7,27 @@ import {
     ManuscriptMetaDataInput,
     PalaeographicClassification,
     useCreateManuscriptMutation
-} from "../generated/graphql";
-import {ErrorMessage, Field, FieldArray, FieldArrayRenderProps, Form, Formik, FormikErrors} from "formik";
-import {manuscriptSchema} from './schemas';
+} from "./generated/graphql";
+import {
+    ErrorMessage,
+    Field,
+    FieldArray,
+    FieldArrayRenderProps,
+    Form,
+    Formik,
+    FormikErrors,
+    FormikHelpers
+} from "formik";
+import {manuscriptSchema} from './forms/schemas';
 import classnames from "classnames";
-import {ManuscriptIdInputField} from './ManuscriptIdInputField';
-import {loginUrl} from "../urls";
+import {ManuscriptIdInputField} from './forms/ManuscriptIdInputField';
+import {loginUrl} from "./urls";
 import {Redirect} from 'react-router-dom';
-import {BulmaFieldWithLabel} from "./BulmaFields";
+import {BulmaField} from "./forms/BulmaFields";
 import {useSelector} from "react-redux";
-import {activeUserSelector} from "../store/store";
+import {activeUserSelector} from "./store/store";
+import {allPalaeographicClassifications, getNameForPalaeoClassification} from "./palaeoClassification";
+import {allKnownProvenances} from "./provenances";
 
 function newManuscriptIdentifier(): ManuscriptIdentifierInput {
     return {
@@ -28,11 +39,12 @@ function newManuscriptIdentifier(): ManuscriptIdentifierInput {
 export function CreateManuscriptForm() {
 
     const {t} = useTranslation('common');
-    const [createManuscript, {data}] = useCreateManuscriptMutation();
+
+    const [createManuscript, {data: manuscriptCreationData}] = useCreateManuscriptMutation();
 
     const currentUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
-    const createdManuscript: string | null | undefined = data?.me?.createManuscript;
+    const createdManuscript: string | null | undefined = manuscriptCreationData?.me?.createManuscript;
 
     if (!currentUser) {
         return <Redirect to={loginUrl}/>
@@ -47,7 +59,7 @@ export function CreateManuscriptForm() {
         palaeographicClassificationSure: false,
     }
 
-    function handleSubmit(manuscriptMetaData: ManuscriptMetaDataInput, setSubmitting: (isSubmitting: boolean) => void): void {
+    function handleSubmit(manuscriptMetaData: ManuscriptMetaDataInput, {setSubmitting}: FormikHelpers<ManuscriptMetaDataInput>): void {
         createManuscript({variables: {manuscriptMetaData}})
             .catch((e) => console.error(e));
 
@@ -58,12 +70,9 @@ export function CreateManuscriptForm() {
         <div className="container">
             <h1 className="title is-3 has-text-centered">{t('Manuskript erstellen')}</h1>
 
-            <Formik
-                initialValues={initialValues}
-                validationSchema={manuscriptSchema}
-                onSubmit={(values, {setSubmitting}) => handleSubmit(values, setSubmitting)}>
+            <Formik initialValues={initialValues} validationSchema={manuscriptSchema} onSubmit={handleSubmit}>
 
-                {({initialValues, errors, touched, isSubmitting, setFieldValue, values}) => {
+                {({errors, touched, isSubmitting, setFieldValue, values}) => {
 
                     const palaeoClassificationClasses = classnames("select", 'is-fullwidth', {
                         'is-success': touched.palaeographicClassification && !errors.palaeographicClassification,
@@ -75,14 +84,15 @@ export function CreateManuscriptForm() {
                             <div className="field">
                                 <label className="label">{t('Hauptidentifikator')}</label>
                                 <div className="control">
-                                    <ManuscriptIdInputField mainId="mainIdentifier" value={values.mainIdentifier}
+                                    <ManuscriptIdInputField mainId="mainIdentifier"
+                                                            value={values.mainIdentifier}
                                                             errors={errors.mainIdentifier}
                                                             touched={touched.mainIdentifier}/>
                                 </div>
                             </div>
 
-                            <FieldArray name="otherIdentifiers" render={(arrayHelpers: FieldArrayRenderProps) => {
-                                return (
+                            <FieldArray name="otherIdentifiers">
+                                {(arrayHelpers: FieldArrayRenderProps) =>
                                     <>
                                         <div className="field">
                                             <label className="label">{t('Andere Identifikatoren')}:</label>
@@ -104,9 +114,9 @@ export function CreateManuscriptForm() {
                                             </button>
                                         </div>
                                     </>
-                                );
-                            }
-                            }/>
+
+                                }
+                            </FieldArray>
 
                             <div className="field">
                                 <label className="label">{t('Paläographische Klassifikation')}:</label>
@@ -115,33 +125,10 @@ export function CreateManuscriptForm() {
                                         <div className={palaeoClassificationClasses}>
                                             <Field as="select" id="palaeographicClassification"
                                                    name="palaeographicClassification">
-                                                <option value={PalaeographicClassification.OldScript}>
-                                                    {t('Althethitische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.OldAssyrianScript}>
-                                                    {t('Altassyrische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.NewScript}>
-                                                    {t('Junghethitische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.MiddleScript}>
-                                                    {t('Mittelhethitische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.MiddleBabylonianScript}>
-                                                    {t('Mittelbabylonische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.MiddleAssyrianScript}>
-                                                    {t('Mittelassyrische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.LateNewScript}>
-                                                    {t('Spätjunghethitische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.AssyroMittanianScript}>
-                                                    {t('Assyro-mittanische Schrift')}
-                                                </option>
-                                                <option value={PalaeographicClassification.Unclassified}>
-                                                    {t('Unklassifiziert')}
-                                                </option>
+                                                {allPalaeographicClassifications.map((pc) =>
+                                                    <option key={pc}
+                                                            value={pc}>{getNameForPalaeoClassification(pc, t)}</option>
+                                                )}
                                             </Field>
                                         </div>
                                     </div>
@@ -160,21 +147,19 @@ export function CreateManuscriptForm() {
                                 </ErrorMessage>
                             </div>
 
-                            <BulmaFieldWithLabel id="provenance" initialValue={initialValues.provenance}
-                                                 label={t('Provenienz')} errors={errors.provenance}
-                                                 touched={touched.provenance}/>
+                            <Field name="provenance" id="provenance" label={t('provenance')} list="provenances"
+                                   component={BulmaField}/>
+                            <datalist id="provenances">
+                                {allKnownProvenances.map((pro) =>
+                                    <option key={pro.englishName} value={pro.englishName}/>)}
+                            </datalist>
 
-                            <BulmaFieldWithLabel id="cthClassification" initialValue={initialValues.cthClassification}
-                                                 type="number" label={t('Vorschlag CTH-Klassifikation')}
-                                                 errors={errors.cthClassification} touched={touched.cthClassification}/>
+                            <Field name="cthClassification" id="cthClassification"
+                                   label={t('cthClassification')}
+                                   component={BulmaField}/>
 
-                            <div className="field">
-                                <label htmlFor="bibliography" className="label">{t('Bibliographie')}:</label>
-                                <div className="control">
-                                    <Field as="textarea" className="textarea" id="bibliography" name="bibliography"
-                                           value={initialValues.bibliography} placeholder={t('Bibliographie')}/>
-                                </div>
-                            </div>
+                            <Field name="bibliography" id="bibliography" label={t('bibliography')}
+                                   component={BulmaField} asTextArea={true}/>
 
                             {!!createdManuscript && <div className="notification is-success has-text-centered">
                                 {t('Manuskript {{which}} wurde erfolgreich erstellt.', {which: createdManuscript})}
@@ -192,5 +177,5 @@ export function CreateManuscriptForm() {
                 }}
             </Formik>
         </div>
-    )
+    );
 }

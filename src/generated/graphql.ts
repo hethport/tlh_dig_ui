@@ -57,8 +57,8 @@ export enum PalaeographicClassification {
   NewScript = 'NewScript',
   LateNewScript = 'LateNewScript',
   OldAssyrianScript = 'OldAssyrianScript',
-  MiddleAssyrianScript = 'MiddleAssyrianScript',
   MiddleBabylonianScript = 'MiddleBabylonianScript',
+  MiddleAssyrianScript = 'MiddleAssyrianScript',
   AssyroMittanianScript = 'AssyroMittanianScript',
   Unclassified = 'Unclassified'
 }

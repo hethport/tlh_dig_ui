@@ -1,36 +1,32 @@
-import {ErrorMessage, Field} from "formik";
-import classnames from "classnames";
+import {ErrorMessage, Field, FieldProps} from "formik";
+import classNames from "classnames";
 import React from "react";
 
-interface BaseInputProps {
-    id: string;
-    errors: string | undefined;
-    touched: boolean | undefined;
-}
-
-// Input
-
-interface InputProps extends BaseInputProps {
-    type?: string;
-    initialValue?: string | number | null;
+interface CustomFieldProps extends FieldProps {
     label: string;
-    autoFocus?: boolean;
+    id: string;
+    asTextArea?: boolean;
 }
 
-export function BulmaFieldWithLabel({id, type, initialValue, label, errors, touched, autoFocus}: InputProps): JSX.Element {
-    const classes = classnames("input", {
-        'is-success': touched && !errors,
-        'is-danger': touched && errors
-    });
+export function BulmaField({label, id, asTextArea, field, ...props}: CustomFieldProps): JSX.Element {
+    const classes = classNames(
+        asTextArea ? 'textarea' : 'input',
+        {
+            'is-success': props.form.touched[field.name] && !props.form.errors[field.name],
+            'is-danger': props.form.touched[field.name] && !!props.form.errors[field.name],
+        });
 
     return (
         <div className="field">
-            <label htmlFor="password" className="label">{label}:</label>
+            <label htmlFor="id" className="label">{label}:</label>
             <div className="control">
-                <Field type={type || 'text'} id={id} name={id} value={initialValue || undefined}
-                       placeholder={label} autoFocus={!!autoFocus} className={classes}/>
-                <ErrorMessage name={id}>{msg => <p className="help is-danger">{msg}</p>}</ErrorMessage>
+                {asTextArea
+
+                    ? <Field as="textarea" {...props} {...field} id={id} className={classes} placeholder={label}/>
+                    : <Field  {...props} {...field} id={id} className={classes} placeholder={label}/>
+                }
             </div>
+            <ErrorMessage name={field.name}>{msg => <p className="help is-danger">{msg}</p>}</ErrorMessage>
         </div>
     );
 }

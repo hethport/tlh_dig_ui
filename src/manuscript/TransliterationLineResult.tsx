@@ -1,13 +1,6 @@
 import React from "react";
-import {TransliterationWord, TransliterationWordContent} from "../model/transliterationTextLine";
-import {
-    ManuscriptSide,
-    TransliterationLineInput,
-    TransliterationLineResultInput,
-    TransliterationWordContentInputUnion,
-    TransliterationWordInput,
-    useUploadTransliterationMutation
-} from "../generated/graphql";
+import {TransliterationWordContent} from "../model/transliterationTextLine";
+import {ManuscriptSide} from "../generated/graphql";
 import {useTranslation} from "react-i18next";
 import {TransliterationLineParseResult} from "../transliterationParser/parser";
 import {classForStringContentType, isStringContentInput} from "../model/stringContent";
@@ -17,6 +10,8 @@ import {getSymbolForDamageType, isDamage} from "../model/damages";
 interface IProps {
     mainIdentifier: string;
     lines: TransliterationLineParseResult[];
+    updateTransliteration: () => void;
+    transliterationIsUpToDate?: boolean;
 }
 
 function renderTransliterationLineContent(content: TransliterationWordContent): JSX.Element {
@@ -46,27 +41,11 @@ function saveBlob(content: string, fileName: string): void {
     window.URL.revokeObjectURL(url);
 }
 
-function convertWord({contents}: TransliterationWord): TransliterationWordInput {
-    return {
-        content: contents.map<TransliterationWordContentInputUnion>((content) => {
-            // FIXME: implement!
-            if (isStringContentInput(content)) {
-                return {stringContent: content};
-            } else if (isCorrection(content)) {
-                return {correctionContent: content}
-            } else if (isDamage(content)) {
-                return {damageContent: content.type};
-            } else {
-                return {numeralContent: content};
-            }
-        })
-    };
-}
-
-export function TransliterationLineResultComponent({mainIdentifier, lines}: IProps): JSX.Element {
+export function TransliterationLineResultComponent(
+    {mainIdentifier, lines, updateTransliteration, transliterationIsUpToDate}: IProps
+): JSX.Element {
 
     const {t} = useTranslation('common');
-    const [uploadTransliteration] = useUploadTransliterationMutation();
 
     const maxLineNumber: number = lines
         .flatMap((tlr) => tlr.result ? [tlr.result.lineNumber] : [])
@@ -83,27 +62,6 @@ export function TransliterationLineResultComponent({mainIdentifier, lines}: IPro
         const xmlOutput = '<AOxml>\n' + xmlLinesOutput + '\n</AOxml>';
 
         saveBlob(xmlOutput, mainIdentifier + '.xml');
-    }
-
-    function upload(): void {
-        console.info('TODO: upload!');
-
-        const values: TransliterationLineInput[] = lines
-            .map<TransliterationLineInput>(({transliterationLineInput, result}, lineIndex) => {
-
-                let content: TransliterationLineResultInput | undefined = result
-                    ? {
-                        isAbsolute: result.isAbsolute,
-                        lineNumber: result.lineNumber,
-                        words: result.content.map(convertWord)
-                    }
-                    : undefined;
-
-                return {lineIndex, transliterationLineInput, result: content}
-            });
-
-        uploadTransliteration({variables: {mainIdentifier, values}})
-            .catch((error) => console.error('Could not upload transliteration:\n' + error));
     }
 
     return (
@@ -136,11 +94,18 @@ export function TransliterationLineResultComponent({mainIdentifier, lines}: IPro
                 </pre>
             </div>
 
-            <div className="buttons">
-                <button type="button" className="button is-link is-fullwidth"
-                        onClick={exportAsXml}>{t('xml_export')}</button>
-                <button type="button" className="button is-link is-fullwidth"
-                        onClick={upload}>{t('create_transliteration')}</button>
+            <div className="columns">
+                <div className="column">
+                    <button type="button" className="button is-link is-fullwidth" onClick={exportAsXml}>
+                        {t('xml_export')}
+                    </button>
+                </div>
+                <div className="column">
+                    <button type="button" className="button is-link is-fullwidth" onClick={updateTransliteration}
+                            disabled={transliterationIsUpToDate}>
+                        {t('create_transliteration')}
+                    </button>
+                </div>
             </div>
         </div>
     );

@@ -39,6 +39,7 @@ query Index {
 }
 
 # /createManuscript
+
 mutation CreateManuscript($manuscriptMetaData : ManuscriptMetaDataInput) {
   me {
     createManuscript(values: $manuscriptMetaData)

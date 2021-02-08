@@ -34,8 +34,8 @@ enum PalaeographicClassification {
   NewScript
   LateNewScript
   OldAssyrianScript
-  MiddleAssyrianScript
   MiddleBabylonianScript
+  MiddleAssyrianScript
   AssyroMittanianScript
   Unclassified
 }
