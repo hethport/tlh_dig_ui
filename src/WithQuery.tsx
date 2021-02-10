@@ -17,7 +17,7 @@ export function WithQuery<T>({query: {data, loading, error}, children}: IProps<T
 
         return (
             <div className={classes}>
-                {loading && <span>{t('loading_data')}...</span>}
+                {loading && <span>{t('loadingData')}...</span>}
                 {error && error.message}
             </div>
         );

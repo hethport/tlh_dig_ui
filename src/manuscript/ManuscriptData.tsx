@@ -1,90 +1,103 @@
 import React from 'react';
 import {useTranslation} from "react-i18next";
 import {Link} from "react-router-dom";
-import {IProps} from "./ManuscriptHelpers";
-import {LoggedInUserFragment} from "../generated/graphql";
+import {LoggedInUserFragment, ManuscriptIdentifierFragment} from "../generated/graphql";
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {Transliteration} from "./Transliteration";
+import {getNameForPalaeoClassification} from "../palaeoClassification";
+import {createTransliterationUrl, ManuscriptBaseIProps, uploadPicturesUrl} from "./ManuscriptBase";
+import {PicturesBlock} from "./PicturesBlock";
 
-export function ManuscriptData({manuscript}: IProps): JSX.Element {
+export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element {
 
-    const {t} = useTranslation('common');
+  const {t} = useTranslation('common');
 
-    const activeUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
+  const activeUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
-    const createdByUser: boolean = !!activeUser && activeUser.username === manuscript.creatorUsername;
+  const createdByUser: boolean = !!activeUser && activeUser.username === manuscript.creatorUsername;
 
-    function renderOtherIdentifiers(): JSX.Element {
-        if (manuscript.otherIdentifiers.length === 0) {
-            return <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>;
-        } else {
-            return <div className="content">
-                <ul>
-                    {manuscript.otherIdentifiers.map(({identifier, type}) =>
-                        <li key={identifier}>{identifier} ({type})</li>
-                    )}
-                </ul>
-            </div>
-        }
+  function renderOtherIdentifiers(otherIdentifiers: ManuscriptIdentifierFragment[]): JSX.Element {
+    if (otherIdentifiers.length === 0) {
+      return <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>;
+    } else {
+      return <div className="content">
+        <ul>
+          {otherIdentifiers.map(({identifier, type}) =>
+            <li key={identifier}>{identifier} ({type})</li>
+          )}
+        </ul>
+      </div>
     }
+  }
 
-    return (
-        <div className="container">
-            <h2 className="subtitle is-3 has-text-centered">{t('Allgemeine Daten')}</h2>
+  return (
+    <div className="container">
+      <h1 className="title is-3 has-text-centered">
+        {t('manuscript{{mainIdentifier}}', {mainIdentifier: manuscript.mainIdentifier.identifier})}: {t('generalData_plural')}
+      </h1>
 
-            <div className="my-3">
-                <h2 className="subtitle is-4">{t('Daten')}</h2>
+      <div className="my-3">
+        <h2 className="subtitle is-4">{t('data_plural')}</h2>
 
-                <table className="table is-fullwidth">
-                    <tbody>
-                        <tr>
-                            <th>{t('Weitere Identifikatoren')}</th>
-                            <td>{renderOtherIdentifiers()}</td>
-                        </tr>
-                        <tr>
-                            <th>{t('Bilder')}</th>
-                            <td>
-                                {manuscript.pictureUrls.length === 0
-                                    ? <span className="is-italic">{t('Es wurden noch keine Bilder hochgeladen')}.</span>
-                                    : <div className="content">
-                                        <ul>
-                                            {manuscript.pictureUrls.map((pu) => <li key={pu}>{pu}</li>)}
-                                        </ul>
-                                    </div>}
-                            </td>
-                        </tr>
-                        <tr>
-                            <th>{t('Paläographische Klassifikation')}</th>
-                            <td>{manuscript.palaeographicClassification}{manuscript.palaeographicClassificationSure ? '' : '?'}</td>
-                        </tr>
-                        <tr>
-                            <th>{t('Vorschlag CTH-Klassifikation')}</th>
-                            <td>{manuscript.cthClassification || '--'}</td>
-                        </tr>
-                        <tr>
-                            <th>{t('Provenienz')}</th>
-                            <td>{manuscript.provenance || '--'}</td>
-                        </tr>
-                        <tr>
-                            <th>{t('Bibliographie')}</th>
-                            <td>{manuscript.bibliography || '--'}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+        <table className="table is-fullwidth">
+          <tbody>
+            <tr>
+              <th>{t('otherIdentifier_plural')}</th>
+              <td>{renderOtherIdentifiers(manuscript.otherIdentifiers)}</td>
+            </tr>
+            <tr>
+              <th>{t('palaeographicClassification')}</th>
+              <td>
+                {getNameForPalaeoClassification(manuscript.palaeographicClassification, t)}
+                {manuscript.palaeographicClassificationSure ? '' : '?'}
+              </td>
+            </tr>
+            <tr>
+              <th>{t('(proposed)CthClassification')}</th>
+              <td>{manuscript.cthClassification || '--'}</td>
+            </tr>
+            <tr>
+              <th>{t('provenance')}</th>
+              <td>{manuscript.provenance || '--'}</td>
+            </tr>
+            <tr>
+              <th>{t('bibliography')}</th>
+              <td>{manuscript.bibliography || '--'}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-            <div className="my-3">
-                <h2 className="subtitle is-4">{t('Transliteration')}</h2>
+      <div className="my-3">
+        <h2 className="subtitle is-4">{t('picture_plural')}</h2>
 
-                {manuscript.transliterationResult
-                    ? <Transliteration lines={manuscript.transliterationResult}/>
-                    : <div className="notification is-info has-text-centered">{t('no_transliteration_yet')}</div>}
+        {manuscript.pictureUrls.length === 0
+          ? <div className="notification is-info has-text-centered">
+            {t('noPicturesUploadedYet')}.
+          </div>
+          : <PicturesBlock mainIdentifier={manuscript.mainIdentifier.identifier} pictures={manuscript.pictureUrls}/>
+        }
 
-                {createdByUser && <Link className="button is-link is-fullwidth" to={'./transliterationInput'}>
-                    {t('Transliteration erstellen')}
-                </Link>}
-            </div>
-        </div>
-    );
+        {createdByUser && <Link className="button is-link is-fullwidth" to={`./${uploadPicturesUrl}`}>
+          {t('uploadPicture_plural')}
+        </Link>}
+      </div>
+
+      <div className="my-3">
+        <h2 className="subtitle is-4">{t('transliteration')}</h2>
+
+        {manuscript.transliterationResult
+          ? <Transliteration lines={manuscript.transliterationResult}/>
+          : <div className="notification is-info has-text-centered">
+            {t('noTransliterationCraetedYet')}.
+          </div>}
+
+        {createdByUser &&
+        <Link className="button is-link is-fullwidth" to={`./${createTransliterationUrl}`}>
+          {t('createTransliteration')}
+        </Link>}
+      </div>
+    </div>
+  );
 }

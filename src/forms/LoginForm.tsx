@@ -1,7 +1,7 @@
 import React, {Dispatch, useState} from 'react';
 import {LoginMutationVariables, useLoginMutation} from "../generated/graphql";
 import {useTranslation} from "react-i18next";
-import {Field, Form, Formik, FormikHelpers} from 'formik';
+import {Field, Form, Formik} from 'formik';
 import {BulmaField} from "./BulmaFields";
 import {loginSchema} from './schemas';
 import classnames from "classnames";
@@ -13,67 +13,62 @@ import {activeUserSelector} from "../store/store";
 
 export function LoginForm() {
 
-    const {t} = useTranslation('common');
-    const [login] = useLoginMutation();
-    const dispatch = useDispatch<Dispatch<StoreAction>>();
-    const [invalidLoginTry, setInvalidLoginTry] = useState(false);
+  const {t} = useTranslation('common');
+  const dispatch = useDispatch<Dispatch<StoreAction>>();
+  const [invalidLoginTry, setInvalidLoginTry] = useState(false);
+  const [login, {loading, error}] = useLoginMutation();
 
-    const activeUser = useSelector(activeUserSelector);
-    if (activeUser) {
-        return <Redirect to={homeUrl}/>;
-    }
+  if (!!useSelector(activeUserSelector)) {
+    // User is already logged in
+    return <Redirect to={homeUrl}/>;
+  }
 
-    const initialValues: LoginMutationVariables = {
-        username: '',
-        password: ''
-    }
+  const initialValues: LoginMutationVariables = {username: '', password: ''}
 
-    function handleSubmit(values: LoginMutationVariables, {setSubmitting}: FormikHelpers<LoginMutationVariables>): void {
-        login({variables: values})
-            .then(({data}) => {
-                setSubmitting(false);
+  function handleSubmit(values: LoginMutationVariables): void {
+    login({variables: values})
+      .then(({data}) => {
+        if (data && data.login) {
+          setInvalidLoginTry(false);
+          dispatch(userLoggedInAction(data.login));
+        } else {
+          setInvalidLoginTry(true);
+        }
+      })
+      .catch((e) => {
+        setInvalidLoginTry(false);
+        console.error(e);
+      });
+  }
 
-                if (data && data.login) {
-                    setInvalidLoginTry(false);
-                    dispatch(userLoggedInAction(data.login));
-                } else {
-                    setInvalidLoginTry(true);
-                }
-            })
-            .catch((e) => {
-                setSubmitting(false);
-                setInvalidLoginTry(false);
+  return (
+    <div className="container">
+      <h1 className="title is-3 has-text-centered">{t('login')}</h1>
 
-                console.error(e);
-            });
-    }
+      <Formik initialValues={initialValues} validationSchema={loginSchema} onSubmit={handleSubmit}>
+        {() =>
 
-    return (
-        <div className="container">
-            <h1 className="title is-3 has-text-centered">{t('Login')}</h1>
+          <Form>
+            <Field name="username" id="username" label={t('username')} component={BulmaField}/>
 
-            <Formik initialValues={initialValues} validationSchema={loginSchema} onSubmit={handleSubmit}>
-                {({isSubmitting}) =>
+            <Field type="password" name="password" id="password" label={t('password')}
+                   component={BulmaField}/>
 
-                    <Form>
-                        <Field name="username" id="username" label={t('username')} component={BulmaField}/>
+            {invalidLoginTry && <div className="notification is-warning has-text-centered">
+              {t('invalidUsernamePasswordCombination')}.
+            </div>}
 
-                        <Field type="password" name="password" id="password" label={t('password')}
-                               component={BulmaField}/>
+            {error && <div className="notification is-danger has-text-centered">{error.message}</div>}
 
-                        {invalidLoginTry && <div className="notification is-warning has-text-centered">
-                            {t('invalid_username_password_combination')}
-                        </div>}
-
-                        <div className="field">
-                            <button type="submit" disabled={isSubmitting}
-                                    className={classnames("button", "is-link", "is-fullwidth", {'is-loading': isSubmitting})}>
-                                {t('Login')}
-                            </button>
-                        </div>
-                    </Form>
-                }
-            </Formik>
-        </div>
-    )
+            <div className="field">
+              <button type="submit" disabled={loading}
+                      className={classnames('button', 'is-link', 'is-fullwidth', {'is-loading': loading})}>
+                {t('login')}
+              </button>
+            </div>
+          </Form>
+        }
+      </Formik>
+    </div>
+  )
 }
