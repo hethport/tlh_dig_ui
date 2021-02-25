@@ -258,12 +258,53 @@ export type NumeralContentInput = {
 };
 
 export enum ManuscriptSide {
-  Front = 'Front',
-  Back = 'Back',
+  NotIdentifiable = 'NotIdentifiable',
+  Obverse = 'Obverse',
+  Reverse = 'Reverse',
+  LowerEdge = 'LowerEdge',
+  UpperEdge = 'UpperEdge',
   LeftEdge = 'LeftEdge',
   RightEdge = 'RightEdge',
-  UpperEdge = 'UpperEdge',
-  LowerEdge = 'LowerEdge'
+  SideA = 'SideA',
+  SideB = 'SideB',
+  InscriptionNumber = 'InscriptionNumber',
+  SealInscription = 'SealInscription'
+}
+
+export enum ManuscriptColumn {
+  I = 'I',
+  Ii = 'II',
+  Iii = 'III',
+  Iv = 'IV',
+  V = 'V',
+  Vi = 'VI',
+  Vii = 'VII',
+  Viii = 'VIII',
+  Ix = 'IX',
+  X = 'X',
+  Xi = 'XI',
+  Xii = 'XII',
+  LeftColumn = 'LeftColumn',
+  MiddleColumn = 'MiddleColumn',
+  RightColumn = 'RightColumn',
+  ColumnDivider = 'ColumnDivider'
+}
+
+export enum ManuscriptColumnModifier {
+  None = 'None',
+  Slash = 'Slash',
+  SlashQuestion = 'SlashQuestion'
+}
+
+export enum ManuscriptLanguage {
+  Hittite = 'Hittite',
+  Luwian = 'Luwian',
+  Palaic = 'Palaic',
+  Hattic = 'Hattic',
+  Hurrian = 'Hurrian',
+  Akkadian = 'Akkadian',
+  Sumerian = 'Sumerian',
+  NotIdentifiable = 'NotIdentifiable'
 }
 
 export type ManuscriptIdentifierFragment = (

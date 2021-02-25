@@ -198,10 +198,51 @@ input NumeralContentInput {
 }
 
 enum ManuscriptSide {
-  Front
-  Back
+  NotIdentifiable
+  Obverse
+  Reverse
+  LowerEdge
+  UpperEdge
   LeftEdge
   RightEdge
-  UpperEdge
-  LowerEdge
+  SideA
+  SideB
+  InscriptionNumber
+  SealInscription
+}
+
+enum ManuscriptColumn {
+  I
+  II
+  III
+  IV
+  V
+  VI
+  VII
+  VIII
+  IX
+  X
+  XI
+  XII
+  LeftColumn
+  MiddleColumn
+  RightColumn
+  ColumnDivider
+}
+
+enum ManuscriptColumnModifier {
+  None
+  Slash
+  SlashQuestion
+}
+
+enum ManuscriptLanguage {
+  Hittite
+  Luwian
+  Palaic
+  Hattic
+  Hurrian
+  Akkadian
+  Sumerian
+  NotIdentifiable
 }

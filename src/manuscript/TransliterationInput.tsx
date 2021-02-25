@@ -1,4 +1,4 @@
-import React, {createRef, useState} from 'react';
+import React, {ChangeEvent, createRef, useState} from 'react';
 import {useTranslation} from "react-i18next";
 import {parseTransliterationLine, TransliterationLineParseResult} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
@@ -8,6 +8,8 @@ import {homeUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
 import {TransliterationLineResultComponent} from './TransliterationLineResult';
 import {
+  ManuscriptColumn,
+  ManuscriptColumnModifier,
   ManuscriptSide,
   TransliterationLineInput,
   TransliterationLineResultInput,
@@ -20,11 +22,21 @@ import {isStringContentInput} from "../model/stringContent";
 import {isCorrection} from "../model/corrections";
 import {isDamage} from "../model/damages";
 import {ManuscriptBaseIProps} from "./ManuscriptBase";
-
+import {
+  allManuscriptLanguages,
+  getNameForManuscriptSide,
+  manuscriptColumnModifiers,
+  manuscriptColumns,
+  manuscriptSides
+} from "../manuscriptSide";
+import {saveBlob} from "../saveBlob";
 
 interface IState {
   transliterationOutput?: TransliterationLineParseResult[];
   transliterationIsUpToDate?: boolean;
+  manuscriptSide?: ManuscriptSide;
+  manuscriptColumn?: ManuscriptColumn;
+  manuscriptColumnModifier?: ManuscriptColumnModifier;
 }
 
 function convertWord({contents}: TransliterationWord): TransliterationWordInput {
@@ -42,20 +54,6 @@ function convertWord({contents}: TransliterationWord): TransliterationWordInput 
       }
     })
   };
-}
-
-function saveBlob(content: string, fileName: string): void {
-  let a = document.createElement("a");
-  document.body.appendChild(a);
-  a.hidden = true;
-
-  const file = new Blob([content]);
-
-  const url = window.URL.createObjectURL(file);
-  a.href = url;
-  a.download = fileName;
-  a.click();
-  window.URL.revokeObjectURL(url);
 }
 
 function convertTransliterationTextLine(
@@ -104,13 +102,43 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
 
   function exportAsXml(): void {
     // FIXME: get ManuscriptSide!
+    const manuscriptSide = state.manuscriptSide || ManuscriptSide.NotIdentifiable;
+
     const xmlLinesOutput = state.transliterationOutput!
-      .map((line) => line.result ? line.result.xmlify(mainIdentifier, ManuscriptSide.Front) : '')
+      .map((line) => line.result ? line.result.xmlify(mainIdentifier, manuscriptSide) : '')
       .join('\n\n\n');
 
     const xmlOutput = '<AOxml>\n' + xmlLinesOutput + '\n</AOxml>';
 
     saveBlob(xmlOutput, mainIdentifier + '.xml');
+  }
+
+  function updateManuscriptSide(event: ChangeEvent<HTMLSelectElement>): void {
+    const manuscriptSide = manuscriptSides[event.target.selectedIndex];
+
+    setState((state) => {
+      return {...state, manuscriptSide};
+    });
+  }
+
+  function updateManuscriptColumn(event: ChangeEvent<HTMLSelectElement>): void {
+    const manuscriptColumn = manuscriptColumns[event.target.selectedIndex];
+
+    setState((state) => {
+      return {...state, manuscriptColumn};
+    })
+  }
+
+  function updateManuscriptColumnModifier(event: ChangeEvent<HTMLSelectElement>): void {
+    const manuscriptColumnModifier = manuscriptColumnModifiers[event.target.selectedIndex];
+
+    setState((state) => {
+      return {...state, manuscriptColumnModifier};
+    })
+  }
+
+  function updateDefaultLanguage(event: ChangeEvent<HTMLSelectElement>): void {
+
   }
 
   function upload(): void {
@@ -134,6 +162,56 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
 
         <div className="column">
           <h2 className="subtitle is-4 has-text-centered">{t('transliteration')}:</h2>
+
+          <div className="field">
+            <div className="field-body">
+
+              <div className="field">
+                <label htmlFor="manuscriptSide" className="label">{t('manuscriptSide')}:</label>
+                <div className="control is-expanded">
+                  <div className="select is-fullwidth">
+                    <select onChange={updateManuscriptSide} id="manuscriptSide">
+                      {manuscriptSides.map((ms) => <option key={ms}>{getNameForManuscriptSide(ms, t)}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="field">
+                <label htmlFor="manuscriptColumn" className="label">{t('manuscriptColumn')}:</label>
+                <div className="control is-expanded">
+                  <div className="select is-fullwidth">
+                    <select onChange={updateManuscriptColumn}>
+                      {manuscriptColumns.map((mc) => <option key={mc}>{mc}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="field">
+                <label htmlFor="manuscriptColumnModifier" className="label">{t('manuscriptColumnModifier')}:</label>
+                <div className="control">
+                  <div className="select is-fullwidth">
+                    <select onChange={updateManuscriptColumnModifier} id="manuscriptColumnModifier">
+                      {manuscriptColumnModifiers.map((mcm) => <option key={mcm}>{mcm}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div className="field">
+                <label htmlFor="defaultLanguage" className="label">{t('defaultLanguage')}:</label>
+                <div className="control">
+                  <div className="select">
+                    <select onChange={updateDefaultLanguage} id="defaultLanguage">
+                      {allManuscriptLanguages.map((l) => <option key={l}>{l}</option>)}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
 
           <div className="field">
             <div className="control">
