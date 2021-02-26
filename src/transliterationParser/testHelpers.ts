@@ -1,13 +1,13 @@
-import {CorrectionType, DamageTypeEnum} from "../generated/graphql";
+import {CorrectionType, DamageType} from "../generated/graphql";
 
-export const de = DamageTypeEnum.DeletionEnd;
-export const ds = DamageTypeEnum.DeletionStart;
-export const le = DamageTypeEnum.LesionEnd;
-export const ls = DamageTypeEnum.LesionStart;
-export const supE = DamageTypeEnum.SupplementEnd;
-export const supS = DamageTypeEnum.SupplementStart;
-export const ue = DamageTypeEnum.UnknownDamageEnd;
-export const us = DamageTypeEnum.UnknownDamageStart;
+export const de = DamageType.DeletionEnd;
+export const ds = DamageType.DeletionStart;
+export const le = DamageType.LesionEnd;
+export const ls = DamageType.LesionStart;
+export const supE = DamageType.SupplementEnd;
+export const supS = DamageType.SupplementStart;
+export const ue = DamageType.UnknownDamageEnd;
+export const us = DamageType.UnknownDamageStart;
 
 export const el = CorrectionType.Ellipsis;
 export const pe = CorrectionType.ParagraphEnd;

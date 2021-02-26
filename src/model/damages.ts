@@ -1,71 +1,71 @@
-import {DamageTypeEnum} from "../generated/graphql";
+import {DamageType} from "../generated/graphql";
 import {TransliterationWordContent} from "./transliterationTextLine";
 
-export const allDamageTypes: DamageTypeEnum[] = [
-  DamageTypeEnum.DeletionStart, DamageTypeEnum.DeletionEnd,
-  DamageTypeEnum.LesionStart, DamageTypeEnum.LesionEnd,
-  DamageTypeEnum.Rasure,
-  DamageTypeEnum.SurplusStart, DamageTypeEnum.SurplusEnd,
-  DamageTypeEnum.SupplementStart, DamageTypeEnum.SupplementEnd,
-  DamageTypeEnum.UnknownDamageStart, DamageTypeEnum.UnknownDamageEnd
+export const allDamageTypes: DamageType[] = [
+  DamageType.DeletionStart, DamageType.DeletionEnd,
+  DamageType.LesionStart, DamageType.LesionEnd,
+  DamageType.Rasure,
+  DamageType.SurplusStart, DamageType.SurplusEnd,
+  DamageType.SupplementStart, DamageType.SupplementEnd,
+  DamageType.UnknownDamageStart, DamageType.UnknownDamageEnd
 ];
 
-export function xmlifyDamage(damageType: DamageTypeEnum): string {
+export function xmlifyDamage(damageType: DamageType): string {
   switch (damageType) {
-    case DamageTypeEnum.DeletionEnd:
+    case DamageType.DeletionEnd:
       return '<del_fin/>';
-    case DamageTypeEnum.DeletionStart:
+    case DamageType.DeletionStart:
       return '<del_in/>';
-    case DamageTypeEnum.LesionEnd:
+    case DamageType.LesionEnd:
       return '<laes_fin/>';
-    case DamageTypeEnum.LesionStart:
+    case DamageType.LesionStart:
       return '<laes_in/>';
-    case DamageTypeEnum.Rasure:
+    case DamageType.Rasure:
       return '<ras_fin/>';
-    case DamageTypeEnum.Rasure:
+    case DamageType.Rasure:
       return '<ras_in/>';
-    case DamageTypeEnum.SupplementEnd:
+    case DamageType.SupplementEnd:
       return '<sup_fin/>';
-    case DamageTypeEnum.SupplementStart:
+    case DamageType.SupplementStart:
       return '<sup_in/>';
-    case DamageTypeEnum.SurplusEnd:
+    case DamageType.SurplusEnd:
       return '<sur_fin/>';
-    case DamageTypeEnum.SurplusStart:
+    case DamageType.SurplusStart:
       return '<sur_in/>';
-    case DamageTypeEnum.UnknownDamageEnd:
+    case DamageType.UnknownDamageEnd:
       return '<ub_fin/>';
-    case DamageTypeEnum.UnknownDamageStart:
+    case DamageType.UnknownDamageStart:
       return '<ub_in/>';
   }
 }
 
-export function getSymbolForDamageType(damageType: DamageTypeEnum): string {
+export function getSymbolForDamageType(damageType: DamageType): string {
   switch (damageType) {
-    case DamageTypeEnum.DeletionEnd:
+    case DamageType.DeletionEnd:
       return ']';
-    case DamageTypeEnum.DeletionStart:
+    case DamageType.DeletionStart:
       return '[';
-    case DamageTypeEnum.LesionEnd:
+    case DamageType.LesionEnd:
       return '⸣';
-    case DamageTypeEnum.LesionStart:
+    case DamageType.LesionStart:
       return '⸢';
-    case DamageTypeEnum.Rasure:
+    case DamageType.Rasure:
       return '*';
-    case DamageTypeEnum.SupplementEnd:
+    case DamageType.SupplementEnd:
       return '〉';
-    case DamageTypeEnum.SupplementStart:
+    case DamageType.SupplementStart:
       return '〈';
-    case DamageTypeEnum.SurplusEnd:
+    case DamageType.SurplusEnd:
       return '〉〉';
-    case DamageTypeEnum.SurplusStart:
+    case DamageType.SurplusStart:
       return '〈〈';
-    case DamageTypeEnum.UnknownDamageEnd:
+    case DamageType.UnknownDamageEnd:
       return ')';
-    case DamageTypeEnum.UnknownDamageStart:
+    case DamageType.UnknownDamageStart:
       return '(';
   }
 }
 
-export function isDamage(twc: TransliterationWordContent): twc is DamageTypeEnum {
+export function isDamage(twc: TransliterationWordContent): twc is DamageType {
   return !!allDamageTypes.find((d) => d === twc);
 }

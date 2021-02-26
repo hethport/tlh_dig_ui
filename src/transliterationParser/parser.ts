@@ -18,7 +18,7 @@ import {
   TransliterationWordContent
 } from "../model/transliterationTextLine";
 import {akkadogramm, determinativ, hittite, materLectionis, sumerogramm} from "../model/stringContent";
-import {CorrectionType, DamageTypeEnum, NumeralContentInput, StringContentInput} from "../generated/graphql";
+import {CorrectionType, DamageType, NumeralContentInput, StringContentInput} from "../generated/graphql";
 
 // helper functions
 
@@ -35,7 +35,7 @@ export interface TransliterationLineParseResult {
 
 type LanguageSpec = {
   // String contents
-  damages: DamageTypeEnum;
+  damages: DamageType;
   corrections: CorrectionType;
 
   hittite: StringContentInput;
@@ -78,17 +78,17 @@ const lineParser: Parser<LinePreParseResult> = seq(
 
 export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<LanguageSpec>({
   damages: () => alt(
-    string('[').map(() => DamageTypeEnum.DeletionStart),
-    string(']').map(() => DamageTypeEnum.DeletionEnd),
-    string('⸢').map(() => DamageTypeEnum.LesionStart),
-    string('⸣').map(() => DamageTypeEnum.LesionEnd),
-    string('*').map(() => DamageTypeEnum.Rasure),
-    regexp(/[〈<]{2}/).map(() => DamageTypeEnum.SurplusStart),
-    regexp(/[〉>]{2}/).map(() => DamageTypeEnum.SurplusEnd),
-    regexp(/[〈<]/).map(() => DamageTypeEnum.SupplementStart),
-    regex(/[〉>]/).map(() => DamageTypeEnum.SupplementEnd),
-    string('(').map(() => DamageTypeEnum.UnknownDamageStart),
-    string(')').map(() => DamageTypeEnum.UnknownDamageEnd),
+    string('[').map(() => DamageType.DeletionStart),
+    string(']').map(() => DamageType.DeletionEnd),
+    string('⸢').map(() => DamageType.LesionStart),
+    string('⸣').map(() => DamageType.LesionEnd),
+    string('*').map(() => DamageType.Rasure),
+    regexp(/[〈<]{2}/).map(() => DamageType.SurplusStart),
+    regexp(/[〉>]{2}/).map(() => DamageType.SurplusEnd),
+    regexp(/[〈<]/).map(() => DamageType.SupplementStart),
+    regex(/[〉>]/).map(() => DamageType.SupplementEnd),
+    string('(').map(() => DamageType.UnknownDamageStart),
+    string(')').map(() => DamageType.UnknownDamageEnd),
   ),
 
   corrections: () => alt(...allCorrections.map((c) => string(symbolForCorrection(c)).result(c))),

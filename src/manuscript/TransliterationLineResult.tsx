@@ -15,7 +15,7 @@ function renderTransliterationLineContent(content: TransliterationWordContent): 
   } else if (isCorrection(content)) {
     return <sup className="correction">{symbolForCorrection(content)}</sup>;
   } else if (isDamage(content)) {
-    return <span>{getSymbolForDamageType(content.type)}</span>;
+    return <span>{getSymbolForDamageType(content)}</span>;
   } else {
     return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
   }

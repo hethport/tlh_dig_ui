@@ -2,7 +2,7 @@ import {isStringContentInput, xmlifyStringContentInput} from './stringContent';
 import {isDamage, xmlifyDamage} from "./damages";
 import {
   CorrectionType,
-  DamageTypeEnum,
+  DamageType,
   ManuscriptSide,
   NumeralContentInput,
   StringContentInput
@@ -10,7 +10,7 @@ import {
 import {isCorrection} from "./corrections";
 
 
-export type TransliterationWordContent = StringContentInput | NumeralContentInput | DamageTypeEnum | CorrectionType;
+export type TransliterationWordContent = StringContentInput | NumeralContentInput | DamageType | CorrectionType;
 
 
 function xmlify(content: TransliterationWordContent): string {

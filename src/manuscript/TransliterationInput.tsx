@@ -48,7 +48,7 @@ function convertWord({contents}: TransliterationWord): TransliterationWordInput 
       } else if (isCorrection(content)) {
         return {correctionContent: content}
       } else if (isDamage(content)) {
-        return {damageContent: content.type};
+        return {damageContent: content};
       } else {
         return {numeralContent: content};
       }

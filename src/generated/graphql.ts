@@ -110,10 +110,10 @@ export enum StringContentTypeEnum {
 
 export type DamageContent = {
   __typename?: 'DamageContent';
-  type: DamageTypeEnum;
+  type: DamageType;
 };
 
-export enum DamageTypeEnum {
+export enum DamageType {
   DeletionStart = 'DeletionStart',
   DeletionEnd = 'DeletionEnd',
   LesionStart = 'LesionStart',
@@ -242,7 +242,7 @@ export type TransliterationWordInput = {
 export type TransliterationWordContentInputUnion = {
   stringContent?: Maybe<StringContentInput>;
   numeralContent?: Maybe<NumeralContentInput>;
-  damageContent?: Maybe<DamageTypeEnum>;
+  damageContent?: Maybe<DamageType>;
   correctionContent?: Maybe<CorrectionType>;
 };
 

@@ -82,10 +82,10 @@ enum StringContentTypeEnum {
 }
 
 type DamageContent {
-  type: DamageTypeEnum!
+  type: DamageType!
 }
 
-enum DamageTypeEnum {
+enum DamageType {
   DeletionStart
   DeletionEnd
   LesionStart
@@ -182,7 +182,7 @@ input TransliterationWordInput {
 input TransliterationWordContentInputUnion {
   stringContent: StringContentInput
   numeralContent: NumeralContentInput
-  damageContent: DamageTypeEnum
+  damageContent: DamageType
   correctionContent: CorrectionType
 }
 
