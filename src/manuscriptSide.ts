@@ -42,6 +42,7 @@ export function getNameForManuscriptSide(ms: ManuscriptSide, t: TFunction): stri
 // Columns
 
 export const manuscriptColumns: ManuscriptColumn[] = [
+  ManuscriptColumn.None,
   ManuscriptColumn.I, ManuscriptColumn.Ii, ManuscriptColumn.Iii, ManuscriptColumn.Iv,
   ManuscriptColumn.V, ManuscriptColumn.Vi, ManuscriptColumn.Vii, ManuscriptColumn.Viii,
   ManuscriptColumn.Ix, ManuscriptColumn.X, ManuscriptColumn.Xi, ManuscriptColumn.Xii,

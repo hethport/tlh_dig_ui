@@ -211,6 +211,7 @@ enum ManuscriptSide {
 }
 
 enum ManuscriptColumn {
+  None
   I
   II
   III

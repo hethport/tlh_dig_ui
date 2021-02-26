@@ -271,6 +271,7 @@ export enum ManuscriptSide {
 }
 
 export enum ManuscriptColumn {
+  None = 'None',
   I = 'I',
   Ii = 'II',
   Iii = 'III',
