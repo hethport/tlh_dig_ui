@@ -1,15 +1,32 @@
-import {alt, createLanguage, digits, optWhitespace, regexp, seq, string, TypedLanguage, whitespace} from "parsimmon";
-import {allDamages, Damages, getSymbolForDamageType} from "../model/damages";
+import {
+  alt,
+  createLanguage,
+  digits,
+  optWhitespace,
+  Parser,
+  regex,
+  regexp,
+  seq,
+  string,
+  TypedLanguage,
+  whitespace
+} from "parsimmon";
 import {allCorrections, symbolForCorrection} from "../model/corrections";
-import {numeralContent, numeralContentRegex, subscriptNumeralContentRegex} from "../model/numeralContent";
 import {
   TransliterationTextLine,
   TransliterationWord,
   TransliterationWordContent
 } from "../model/transliterationTextLine";
 import {akkadogramm, determinativ, hittite, materLectionis, sumerogramm} from "../model/stringContent";
-import {CorrectionType, NumeralContentInput, StringContentInput} from "../generated/graphql";
+import {CorrectionType, DamageTypeEnum, NumeralContentInput, StringContentInput} from "../generated/graphql";
 
+// helper functions
+
+export function numeralContent(content: string, isSubscript: boolean = false): NumeralContentInput {
+  return {content, isSubscript};
+}
+
+// Other
 
 export interface TransliterationLineParseResult {
   transliterationLineInput: string;
@@ -18,7 +35,7 @@ export interface TransliterationLineParseResult {
 
 type LanguageSpec = {
   // String contents
-  damages: Damages;
+  damages: DamageTypeEnum;
   corrections: CorrectionType;
 
   hittite: StringContentInput;
@@ -32,7 +49,6 @@ type LanguageSpec = {
   numeralContent: NumeralContentInput;
   subscriptNumeralContent: NumeralContentInput;
 
-
   singleContent: TransliterationWordContent;
 
   transliterationWord: TransliterationWord;
@@ -40,19 +56,47 @@ type LanguageSpec = {
   transliterationTextLine: TransliterationTextLine;
 }
 
+interface LinePreParseResult {
+  lineNumber: number;
+  lineNumberIsAbsolute: boolean;
+  content: string;
+}
+
+function newLinePreParseResult(lineNumber: number, lineNumberIsAbsolute: boolean, content: string): LinePreParseResult {
+  return {lineNumber, lineNumberIsAbsolute, content};
+}
+
+const lineParser: Parser<LinePreParseResult> = seq(
+  digits.map(parseInt),
+  string("'").times(0, 1).map((res) => res.length === 0),
+  optWhitespace,
+  string('#'),
+  optWhitespace,
+  regexp(/\w\W/)
+)
+  .map(([number, isAbsolute, _ows1, _hash, _ows2, content]) => newLinePreParseResult(number, isAbsolute, content))
+
 export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<LanguageSpec>({
   damages: () => alt(
-    ...allDamages.map(
-      (d) => (d.regex ? regexp(d.regex) : string(getSymbolForDamageType(d.type))).result(d)
-    )
+    string('[').map(() => DamageTypeEnum.DeletionStart),
+    string(']').map(() => DamageTypeEnum.DeletionEnd),
+    string('⸢').map(() => DamageTypeEnum.LesionStart),
+    string('⸣').map(() => DamageTypeEnum.LesionEnd),
+    string('*').map(() => DamageTypeEnum.Rasure),
+    regexp(/[〈<]{2}/).map(() => DamageTypeEnum.SurplusStart),
+    regexp(/[〉>]{2}/).map(() => DamageTypeEnum.SurplusEnd),
+    regexp(/[〈<]/).map(() => DamageTypeEnum.SupplementStart),
+    regex(/[〉>]/).map(() => DamageTypeEnum.SupplementEnd),
+    string('(').map(() => DamageTypeEnum.UnknownDamageStart),
+    string(')').map(() => DamageTypeEnum.UnknownDamageEnd),
   ),
 
   corrections: () => alt(...allCorrections.map((c) => string(symbolForCorrection(c)).result(c))),
 
-  numeralContent: () => regexp(numeralContentRegex)
+  numeralContent: () => regexp(/\d+/)
     .map((result) => numeralContent(result, false)),
 
-  subscriptNumeralContent: () => regexp(subscriptNumeralContentRegex)
+  subscriptNumeralContent: () => regexp(/[₀₁₂₃₄₅₆₇₈₉]+/)
     .map((result) => numeralContent((result.codePointAt(0)! % 10).toString(), true)),
 
   hittite: () => regexp(/[\p{Ll}-]+/u).map((result) => hittite(result)),
@@ -60,33 +104,30 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   /**
    * Akadogramm: automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht
    */
-  akkadogramm: () => regexp(/[_-]([\p{Lu}-])+/u)
-    .map((result) => akkadogramm(result.substring(1))),
+  akkadogramm: () => regexp(/[_-]([\p{Lu}-])+/u).map((result) => akkadogramm(result.substring(1))),
 
   /**
    * Sumerogramm:
    * - automatisch für Versalien
    * - im Wortinnern durch vorausgehendes `--` markiert
    */
-  sumerogramm: () => regexp(/[.\p{Lu}]+/u)
-    .map((result) => sumerogramm(result)),
+  sumerogramm: () => regexp(/(--)?([.\p{Lu}]+)/u, 2).map((result) => sumerogramm(result)),
 
   /**
    * Determinativ:
    * - automatisch für Großbuchstaben markiert durch ° … ° (davor oder dahinter jeweils ein Spatium oder Bindestrich)
    * - bei mehreren Determinativen nacheinander Doppelsetzung (°°.°°)
    */
-  determinativ: () => regexp(/°([\p{Lu}.]+)°/u, 1)
-    .map((result) => determinativ(result)),
+  determinativ: () => regexp(/°([\p{Lu}.]+)°/u, 1).map((result) => determinativ(result)),
 
   /**
    * Mater lectionis:
    * vor und nach der Mater Lectionis (Kleinbuchstaben markiert durch ° … °; davor oder dahinter jeweils ein Spatium oder Bindestrich)
    */
-  materLectionis: () => regexp(/°([\p{Ll}.]+)°/u, 1)
-    .map((result) => materLectionis(result)),
+  materLectionis: () => regexp(/°([\p{Ll}.]+)°/u, 1).map((result) => materLectionis(result)),
 
-  stringContent: r => alt(r.hittite, r.akkadogramm, r.sumerogramm, r.determinativ, r.materLectionis),
+  // Do not change order of parsers!
+  stringContent: r => alt(r.sumerogramm, r.akkadogramm, r.hittite, r.determinativ, r.materLectionis),
 
   singleContent: r => alt(r.damages, r.corrections, r.subscriptNumeralContent, r.numeralContent, r.stringContent),
 
@@ -100,7 +141,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     string('#'),
     optWhitespace,
     r.transliterationWord.sepBy(whitespace)
-  ).map(([number, isAbsolute, ows1, _hash, _ows2, content]) => new TransliterationTextLine(number, isAbsolute, content))
+  ).map(([number, isAbsolute, _ows1, _hash, _ows2, content]) => new TransliterationTextLine(number, isAbsolute, content))
 });
 
 export function parseTransliterationLine(transliterationLineInput: string): TransliterationLineParseResult {

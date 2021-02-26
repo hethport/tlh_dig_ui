@@ -90,8 +90,7 @@ enum DamageTypeEnum {
   DeletionEnd
   LesionStart
   LesionEnd
-  RasureStart
-  RasureEnd
+  Rasure
   SurplusStart
   SurplusEnd
   SupplementStart

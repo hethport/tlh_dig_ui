@@ -1,70 +1,13 @@
 import {DamageTypeEnum} from "../generated/graphql";
 import {TransliterationWordContent} from "./transliterationTextLine";
 
-interface IDamage {
-  type: DamageTypeEnum;
-  /**
-   * @deprecated
-   */
-  regex?: RegExp;
-}
-
-export const DeletionStart: IDamage = {
-  type: DamageTypeEnum.DeletionStart,
-};
-
-export const DeletionEnd: IDamage = {
-  type: DamageTypeEnum.DeletionEnd,
-};
-
-export const LesionStart: IDamage = {
-  type: DamageTypeEnum.LesionStart
-};
-export const LesionEnd: IDamage = {
-  type: DamageTypeEnum.LesionEnd
-};
-
-export const RasureStart: IDamage = {
-  type: DamageTypeEnum.RasureStart,
-};
-
-export const RasureEnd: IDamage = {
-  type: DamageTypeEnum.RasureEnd,
-};
-
-export const SurplusStart: IDamage = {
-  type: DamageTypeEnum.SurplusStart,
-  regex: /[〈<]{2}/
-};
-
-export const SurplusEnd: IDamage = {
-  type: DamageTypeEnum.SurplusEnd,
-  regex: /[〉>]{2}/
-};
-
-export const SupplementStart: IDamage = {
-  type: DamageTypeEnum.SupplementStart,
-  regex: /[〈<]/
-};
-export const SupplementEnd: IDamage = {
-  type: DamageTypeEnum.SupplementEnd,
-  regex: /[〉>]/
-};
-
-export const UnknownBracketStart: IDamage = {
-  type: DamageTypeEnum.UnknownDamageStart
-};
-export const UnknownBracketEnd: IDamage = {
-  type: DamageTypeEnum.UnknownDamageEnd
-};
-
-export const allDamages: Damages[] = [
-  DeletionStart, DeletionEnd,
-  LesionStart, LesionEnd,
-  RasureStart, RasureEnd,
-  SurplusStart, SurplusEnd,
-  SupplementStart, SupplementEnd,
-  UnknownBracketStart, UnknownBracketEnd
+export const allDamageTypes: DamageTypeEnum[] = [
+  DamageTypeEnum.DeletionStart, DamageTypeEnum.DeletionEnd,
+  DamageTypeEnum.LesionStart, DamageTypeEnum.LesionEnd,
+  DamageTypeEnum.Rasure,
+  DamageTypeEnum.SurplusStart, DamageTypeEnum.SurplusEnd,
+  DamageTypeEnum.SupplementStart, DamageTypeEnum.SupplementEnd,
+  DamageTypeEnum.UnknownDamageStart, DamageTypeEnum.UnknownDamageEnd
 ];
 
 export function xmlifyDamage(damageType: DamageTypeEnum): string {
@@ -77,9 +20,9 @@ export function xmlifyDamage(damageType: DamageTypeEnum): string {
       return '<laes_fin/>';
     case DamageTypeEnum.LesionStart:
       return '<laes_in/>';
-    case DamageTypeEnum.RasureEnd:
+    case DamageTypeEnum.Rasure:
       return '<ras_fin/>';
-    case DamageTypeEnum.RasureStart:
+    case DamageTypeEnum.Rasure:
       return '<ras_in/>';
     case DamageTypeEnum.SupplementEnd:
       return '<sup_fin/>';
@@ -106,8 +49,7 @@ export function getSymbolForDamageType(damageType: DamageTypeEnum): string {
       return '⸣';
     case DamageTypeEnum.LesionStart:
       return '⸢';
-    case DamageTypeEnum.RasureEnd:
-    case DamageTypeEnum.RasureStart:
+    case DamageTypeEnum.Rasure:
       return '*';
     case DamageTypeEnum.SupplementEnd:
       return '〉';
@@ -124,13 +66,6 @@ export function getSymbolForDamageType(damageType: DamageTypeEnum): string {
   }
 }
 
-export function isDamage(twc: TransliterationWordContent): twc is Damages {
-  return !!allDamages.find((d) => d === twc);
+export function isDamage(twc: TransliterationWordContent): twc is DamageTypeEnum {
+  return !!allDamageTypes.find((d) => d === twc);
 }
-
-export type Damages = typeof DeletionStart | typeof DeletionEnd
-  | typeof LesionStart | typeof LesionEnd
-  | typeof RasureStart | typeof RasureEnd
-  | typeof SurplusStart | typeof SurplusEnd
-  | typeof SupplementStart | typeof SupplementStart
-  | typeof UnknownBracketStart | typeof UnknownBracketEnd;

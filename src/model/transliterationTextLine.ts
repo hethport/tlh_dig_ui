@@ -1,10 +1,16 @@
 import {isStringContentInput, xmlifyStringContentInput} from './stringContent';
-import {Damages, isDamage, xmlifyDamage} from "./damages";
-import {CorrectionType, ManuscriptSide, NumeralContentInput, StringContentInput} from "../generated/graphql";
+import {isDamage, xmlifyDamage} from "./damages";
+import {
+  CorrectionType,
+  DamageTypeEnum,
+  ManuscriptSide,
+  NumeralContentInput,
+  StringContentInput
+} from "../generated/graphql";
 import {isCorrection} from "./corrections";
 
 
-export type TransliterationWordContent = StringContentInput | NumeralContentInput | Damages | CorrectionType;
+export type TransliterationWordContent = StringContentInput | NumeralContentInput | DamageTypeEnum | CorrectionType;
 
 
 function xmlify(content: TransliterationWordContent): string {
@@ -13,9 +19,9 @@ function xmlify(content: TransliterationWordContent): string {
   } else if (isCorrection(content)) {
     return '<todo/>';
   } else if (isDamage(content)) {
-    return xmlifyDamage(content.type);
+    return xmlifyDamage(content);
   } else {
-    return `<nc>${content.content}</nc>`;
+    return `<nc>${content}</nc>`;
   }
 }
 
