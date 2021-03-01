@@ -92,7 +92,7 @@ export type TransliterationWord = {
   content: Array<TransliterationWordContentUnion>;
 };
 
-export type TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent;
+export type TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent;
 
 export type StringContent = {
   __typename?: 'StringContent';
@@ -138,7 +138,8 @@ export enum CorrectionType {
   SureCorrection = 'SureCorrection',
   SicCorrection = 'SicCorrection',
   Ellipsis = 'Ellipsis',
-  ParagraphEnd = 'ParagraphEnd'
+  ParagraphEnd = 'ParagraphEnd',
+  DoubleParagraphEnd = 'DoubleParagraphEnd'
 }
 
 export type NumeralContent = {
@@ -146,6 +147,20 @@ export type NumeralContent = {
   isSubscript: Scalars['Boolean'];
   content: Scalars['String'];
 };
+
+export type MarkContent = {
+  __typename?: 'MarkContent';
+  type: MarkType;
+  content: Scalars['String'];
+};
+
+export enum MarkType {
+  Sign = 'Sign',
+  TextGap = 'TextGap',
+  FootNote = 'FootNote',
+  Colon = 'Colon',
+  Arbitrary = 'Arbitrary'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -244,6 +259,7 @@ export type TransliterationWordContentInputUnion = {
   numeralContent?: Maybe<NumeralContentInput>;
   damageContent?: Maybe<DamageType>;
   correctionContent?: Maybe<CorrectionType>;
+  markContent?: Maybe<MarkContentInput>;
 };
 
 export type StringContentInput = {
@@ -253,6 +269,11 @@ export type StringContentInput = {
 
 export type NumeralContentInput = {
   isSubscript: Scalars['Boolean'];
+  content: Scalars['String'];
+};
+
+export type MarkContentInput = {
+  type: MarkType;
   content: Scalars['String'];
 };
 
@@ -395,7 +416,9 @@ type TransliterationWordContent_NumeralContent_Fragment = (
   & Pick<NumeralContent, 'content' | 'isSubscript'>
 );
 
-export type TransliterationWordContentFragment = TransliterationWordContent_StringContent_Fragment | TransliterationWordContent_DamageContent_Fragment | TransliterationWordContent_CorrectionContent_Fragment | TransliterationWordContent_NumeralContent_Fragment;
+type TransliterationWordContent_MarkContent_Fragment = { __typename?: 'MarkContent' };
+
+export type TransliterationWordContentFragment = TransliterationWordContent_StringContent_Fragment | TransliterationWordContent_DamageContent_Fragment | TransliterationWordContent_CorrectionContent_Fragment | TransliterationWordContent_NumeralContent_Fragment | TransliterationWordContent_MarkContent_Fragment;
 
 export type TransliterationLineFragment = (
   { __typename?: 'TransliterationLine' }
@@ -417,6 +440,9 @@ export type TransliterationLineFragment = (
       ) | (
         { __typename?: 'NumeralContent' }
         & TransliterationWordContent_NumeralContent_Fragment
+      ) | (
+        { __typename?: 'MarkContent' }
+        & TransliterationWordContent_MarkContent_Fragment
       )> }
     )> }
   )> }

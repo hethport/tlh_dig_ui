@@ -1,5 +1,5 @@
 import {DamageType} from "../generated/graphql";
-import {TransliterationWordContent} from "./transliterationTextLine";
+import {TransliterationWordContent} from "./transliterationTextLineParseResult";
 
 export const allDamageTypes: DamageType[] = [
   DamageType.DeletionStart, DamageType.DeletionEnd,

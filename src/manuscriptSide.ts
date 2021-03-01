@@ -12,6 +12,34 @@ export const manuscriptSides: ManuscriptSide[] = [
   ManuscriptSide.InscriptionNumber, ManuscriptSide.SealInscription
 ];
 
+
+export function getXmlNameForManuscriptSide(side: ManuscriptSide): string {
+  switch (side) {
+    case ManuscriptSide.NotIdentifiable:
+      return '';
+    case ManuscriptSide.Obverse:
+      return 'obv.';
+    case ManuscriptSide.Reverse:
+      return 'rev.';
+    case ManuscriptSide.LowerEdge:
+      return 'lo. e.';
+    case ManuscriptSide.UpperEdge:
+      return 'u. e.';
+    case ManuscriptSide.LeftEdge:
+      return 'l. e.';
+    case ManuscriptSide.RightEdge:
+      return 'r. e.';
+    case ManuscriptSide.SideA:
+      return 'side A';
+    case ManuscriptSide.SideB:
+      return 'side B';
+    case ManuscriptSide.InscriptionNumber:
+      return 'inscription no.';
+    case ManuscriptSide.SealInscription:
+      return 'seal inscription';
+  }
+}
+
 export function getNameForManuscriptSide(ms: ManuscriptSide, t: TFunction): string {
   switch (ms) {
     case ManuscriptSide.NotIdentifiable:

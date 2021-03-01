@@ -21,7 +21,6 @@ export function BulmaField({label, id, asTextArea, field, ...props}: CustomField
       <label htmlFor="id" className="label">{label}:</label>
       <div className="control">
         {asTextArea
-
           ? <Field as="textarea" {...props} {...field} id={id} className={classes} placeholder={label}/>
           : <Field  {...props} {...field} id={id} className={classes} placeholder={label}/>
         }
@@ -40,7 +39,7 @@ export function BulmaSelect({label, id, field, ...props}: CustomFieldProps): JSX
 
   return (
     <div className="field">
-      <label htmlFor="id" className="label">{label}:</label>
+      <label htmlFor={id} className="label">{label}:</label>
       <div className="control">
         <div className={classes}>
           <Field as="select" {...props} {...field} id={id} placeholder={label}/>

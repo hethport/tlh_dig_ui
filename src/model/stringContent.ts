@@ -1,5 +1,5 @@
 import {StringContentInput, StringContentTypeEnum} from "../generated/graphql";
-import {TransliterationWordContent} from "./transliterationTextLine";
+import {TransliterationWordContent} from "./transliterationTextLineParseResult";
 
 /**
  * Hittite

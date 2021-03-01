@@ -6,19 +6,27 @@ import {
   Parser,
   regex,
   regexp,
+  Result as ParsimmonResult,
   seq,
   string,
-  TypedLanguage,
-  whitespace
+  TypedLanguage
 } from "parsimmon";
-import {allCorrections, symbolForCorrection} from "../model/corrections";
 import {
-  TransliterationTextLine,
+  TransliterationTextLineParseResult,
   TransliterationWord,
-  TransliterationWordContent
-} from "../model/transliterationTextLine";
+  TransliterationWordContent,
+  TransliterationWordParseResult
+} from "../model/transliterationTextLineParseResult";
 import {akkadogramm, determinativ, hittite, materLectionis, sumerogramm} from "../model/stringContent";
-import {CorrectionType, DamageType, NumeralContentInput, StringContentInput} from "../generated/graphql";
+import {
+  CorrectionType,
+  DamageType,
+  MarkContentInput,
+  MarkType,
+  NumeralContentInput,
+  StringContentInput
+} from "../generated/graphql";
+import {markContent} from "../model/markContent";
 
 // helper functions
 
@@ -26,11 +34,12 @@ export function numeralContent(content: string, isSubscript: boolean = false): N
   return {content, isSubscript};
 }
 
+
 // Other
 
 export interface TransliterationLineParseResult {
   transliterationLineInput: string;
-  result?: TransliterationTextLine;
+  result?: TransliterationTextLineParseResult;
 }
 
 type LanguageSpec = {
@@ -46,14 +55,15 @@ type LanguageSpec = {
 
   stringContent: StringContentInput,
 
+  markType: MarkType;
+  markContent: MarkContentInput,
+
   numeralContent: NumeralContentInput;
   subscriptNumeralContent: NumeralContentInput;
 
   singleContent: TransliterationWordContent;
 
   transliterationWord: TransliterationWord;
-
-  transliterationTextLine: TransliterationTextLine;
 }
 
 interface LinePreParseResult {
@@ -72,26 +82,47 @@ const lineParser: Parser<LinePreParseResult> = seq(
   optWhitespace,
   string('#'),
   optWhitespace,
-  regexp(/\w\W/)
-)
-  .map(([number, isAbsolute, _ows1, _hash, _ows2, content]) => newLinePreParseResult(number, isAbsolute, content))
+  regexp(/[\w\W]+/)
+).map(([number, isAbsolute, _ows1, _hash, _ows2, content]) => newLinePreParseResult(number, isAbsolute, content))
 
 export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<LanguageSpec>({
   damages: () => alt(
-    string('[').map(() => DamageType.DeletionStart),
-    string(']').map(() => DamageType.DeletionEnd),
-    string('⸢').map(() => DamageType.LesionStart),
-    string('⸣').map(() => DamageType.LesionEnd),
-    string('*').map(() => DamageType.Rasure),
-    regexp(/[〈<]{2}/).map(() => DamageType.SurplusStart),
-    regexp(/[〉>]{2}/).map(() => DamageType.SurplusEnd),
-    regexp(/[〈<]/).map(() => DamageType.SupplementStart),
-    regex(/[〉>]/).map(() => DamageType.SupplementEnd),
-    string('(').map(() => DamageType.UnknownDamageStart),
-    string(')').map(() => DamageType.UnknownDamageEnd),
+    string('[').result(DamageType.DeletionStart),
+    string(']').result(DamageType.DeletionEnd),
+    string('⸢').result(DamageType.LesionStart),
+    string('⸣').result(DamageType.LesionEnd),
+    string('*').result(DamageType.Rasure),
+    regexp(/[〈<]{2}/).result(DamageType.SurplusStart),
+    regexp(/[〉>]{2}/).result(DamageType.SurplusEnd),
+    regexp(/[〈<]/).result(DamageType.SupplementStart),
+    regex(/[〉>]/).result(DamageType.SupplementEnd),
+    string('(').result(DamageType.UnknownDamageStart),
+    string(')').result(DamageType.UnknownDamageEnd),
   ),
 
-  corrections: () => alt(...allCorrections.map((c) => string(symbolForCorrection(c)).result(c))),
+  corrections: () => alt(
+    string('?').result(CorrectionType.UnsureCorrection),
+    string('(?)').result(CorrectionType.MaybeUnsureCorrection),
+    string('!').result(CorrectionType.SureCorrection),
+    string('sic').result(CorrectionType.SicCorrection),
+    string('…').result(CorrectionType.Ellipsis),
+    // Double paragraph end
+    string('$$').result(CorrectionType.DoubleParagraphEnd),
+    string('===').result(CorrectionType.DoubleParagraphEnd),
+    // Paragraph end
+    string('$').result(CorrectionType.ParagraphEnd),
+    string('¬¬¬').result(CorrectionType.ParagraphEnd),
+  ),
+
+  markType: () => alt(
+    string('S').result(MarkType.Sign),
+    string('G').result(MarkType.TextGap),
+    string('F').result(MarkType.FootNote),
+    string('K').result(MarkType.Colon),
+  ),
+
+  markContent: r => seq(string('{'), r.markType, string(':'), optWhitespace, regex(/[^}]*/), string('}'))
+    .map(([_oa, markType, _colon, _ws, content, _ca]) => markContent(markType, content)),
 
   numeralContent: () => regexp(/\d+/)
     .map((result) => numeralContent(result, false)),
@@ -129,22 +160,33 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   // Do not change order of parsers!
   stringContent: r => alt(r.sumerogramm, r.akkadogramm, r.hittite, r.determinativ, r.materLectionis),
 
-  singleContent: r => alt(r.damages, r.corrections, r.subscriptNumeralContent, r.numeralContent, r.stringContent),
+  singleContent: r => alt(r.markContent, r.damages, r.corrections, r.subscriptNumeralContent, r.numeralContent, r.stringContent),
 
   transliterationWord: r => r.singleContent.atLeast(1)
     .map((content: TransliterationWordContent[]) => new TransliterationWord(content)),
-
-  transliterationTextLine: r => seq(
-    digits.map(parseInt),
-    string("'").times(0, 1).map((res) => res.length === 0),
-    optWhitespace,
-    string('#'),
-    optWhitespace,
-    r.transliterationWord.sepBy(whitespace)
-  ).map(([number, isAbsolute, _ows1, _hash, _ows2, content]) => new TransliterationTextLine(number, isAbsolute, content))
 });
 
+const spaceNotInAccoladesRegex = /\s+(?![^{]*})/;
+
 export function parseTransliterationLine(transliterationLineInput: string): TransliterationLineParseResult {
-  const parsed = transliteration.transliterationTextLine.parse(transliterationLineInput);
-  return parsed.status ? {transliterationLineInput, result: parsed.value} : {transliterationLineInput};
+  const linePreParsingResult: ParsimmonResult<LinePreParseResult> = lineParser.parse(transliterationLineInput);
+
+  if (linePreParsingResult.status) {
+    const {lineNumber, lineNumberIsAbsolute, content} = linePreParsingResult.value;
+
+    const newContent: TransliterationWordParseResult[] = content
+      .split(spaceNotInAccoladesRegex)
+      .map((wordInput) => {
+        const wordParseResult: ParsimmonResult<TransliterationWord> = transliteration.transliterationWord.parse(wordInput);
+
+        return wordParseResult.status ? {wordInput, result: wordParseResult.value} : {wordInput};
+      });
+
+    return {
+      transliterationLineInput,
+      result: new TransliterationTextLineParseResult(lineNumber, lineNumberIsAbsolute, newContent)
+    };
+  } else {
+    return {transliterationLineInput};
+  }
 }

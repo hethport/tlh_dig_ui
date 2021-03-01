@@ -4,14 +4,20 @@ import {
   CorrectionType,
   DamageType,
   ManuscriptSide,
+  MarkContent,
   NumeralContentInput,
   StringContentInput
 } from "../generated/graphql";
 import {isCorrection} from "./corrections";
+import {getXmlNameForManuscriptSide} from "../manuscriptSide";
 
 
-export type TransliterationWordContent = StringContentInput | NumeralContentInput | DamageType | CorrectionType;
-
+export type TransliterationWordContent =
+  StringContentInput
+  | NumeralContentInput
+  | DamageType
+  | CorrectionType
+  | MarkContent;
 
 function xmlify(content: TransliterationWordContent): string {
   if (isStringContentInput(content)) {
@@ -36,32 +42,6 @@ function getContent(twc: TransliterationWordContent): string {
   }
 }
 
-function getNameForManuscriptSide(side: ManuscriptSide): string {
-  switch (side) {
-    case ManuscriptSide.NotIdentifiable:
-      return '';
-    case ManuscriptSide.Obverse:
-      return 'obv.';
-    case ManuscriptSide.Reverse:
-      return 'rev.';
-    case ManuscriptSide.LowerEdge:
-      return 'lo. e.';
-    case ManuscriptSide.UpperEdge:
-      return 'u. e.';
-    case ManuscriptSide.LeftEdge:
-      return 'l. e.';
-    case ManuscriptSide.RightEdge:
-      return 'r. e.';
-    case ManuscriptSide.SideA:
-      return 'side A';
-    case ManuscriptSide.SideB:
-      return 'side B';
-    case ManuscriptSide.InscriptionNumber:
-      return 'inscription no.';
-    case ManuscriptSide.SealInscription:
-      return 'seal inscription';
-  }
-}
 
 export class TransliterationWord {
   constructor(public contents: TransliterationWordContent[]) {
@@ -81,11 +61,24 @@ export function transliterationWord(...content: TransliterationWordContent[]): T
   return new TransliterationWord(content);
 }
 
-export class TransliterationTextLine {
+export interface TransliterationWordParseResult {
+  wordInput: string;
+  result?: TransliterationWord;
+}
+
+function xmlifyTransliterationWordParseResult(t: TransliterationWordParseResult): string {
+  if (t.result) {
+    return t.result.xmlify();
+  } else {
+    return `<unknown>${t.wordInput}</unknown>`;
+  }
+}
+
+export class TransliterationTextLineParseResult {
   constructor(
     public lineNumber: number,
-    public isAbsolute: boolean = false,
-    public content: TransliterationWord[]
+    public lineNumberIsAbsolute: boolean = false,
+    public content: TransliterationWordParseResult[]
   ) {
   }
 
@@ -93,12 +86,11 @@ export class TransliterationTextLine {
     // FIXME: paragraphNumber, language!
     const language = 'Hit';
 
-    const x = `<lb txtid="${textId}" lnr="${getNameForManuscriptSide(side)} ${paragraphNumber} ${this.lineNumber}" lg="${language}"/>\n\n`
-    return x + this.content.map((tw) => tw.xmlify()).join('\n\n');
-
+    const x = `<lb txtid="${textId}" lnr="${getXmlNameForManuscriptSide(side)} ${paragraphNumber} ${this.lineNumber}" lg="${language}"/>\n\n`
+    return x + this.content.map((tw) => xmlifyTransliterationWordParseResult(tw)).join('\n\n');
   }
 }
 
-export function transliterationTextLine(lineNumber: number, content: TransliterationWord[], isAbsolute: boolean = false): TransliterationTextLine {
-  return new TransliterationTextLine(lineNumber, isAbsolute, content);
+export function transliterationTextLine(lineNumber: number, content: TransliterationWordParseResult[], isAbsolute: boolean = false): TransliterationTextLineParseResult {
+  return new TransliterationTextLineParseResult(lineNumber, isAbsolute, content);
 }

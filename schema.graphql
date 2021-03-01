@@ -66,7 +66,7 @@ type TransliterationWord {
   content: [TransliterationWordContentUnion!]!
 }
 
-union TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent
+union TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent
 
 type StringContent {
   type: StringContentTypeEnum!
@@ -110,11 +110,25 @@ enum CorrectionType {
   SicCorrection
   Ellipsis
   ParagraphEnd
+  DoubleParagraphEnd
 }
 
 type NumeralContent {
   isSubscript: Boolean!
   content: String!
+}
+
+type MarkContent {
+  type: MarkType!
+  content: String!
+}
+
+enum MarkType {
+  Sign
+  TextGap
+  FootNote
+  Colon
+  Arbitrary
 }
 
 type Mutation {
@@ -184,6 +198,7 @@ input TransliterationWordContentInputUnion {
   numeralContent: NumeralContentInput
   damageContent: DamageType
   correctionContent: CorrectionType
+  markContent: MarkContentInput
 }
 
 input StringContentInput {
@@ -193,6 +208,11 @@ input StringContentInput {
 
 input NumeralContentInput {
   isSubscript: Boolean!
+  content: String!
+}
+
+input MarkContentInput {
+  type: MarkType!
   content: String!
 }
 

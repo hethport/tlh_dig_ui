@@ -1,4 +1,4 @@
-import {transliteration} from "./parser";
+import {markContent as mc, transliteration} from "./parser";
 import {
   akkadogramm as ag,
   determinativ as dt,
@@ -6,6 +6,7 @@ import {
   materLectionis as ml,
   sumerogramm as sg
 } from "../model/stringContent";
+import {MarkType} from "../generated/graphql";
 
 describe('hittite', () => {
   const parser = transliteration.hittite;
@@ -73,38 +74,67 @@ describe('materLectionis', () => {
 });
 
 describe('stringContent', () => {
+  const parser = transliteration.stringContent;
+
   it('should parser hittite', () => {
-    expect(transliteration.stringContent.tryParse('abc')).toEqual(ht('abc'));
-    expect(transliteration.stringContent.tryParse('xyz')).toEqual(ht('xyz'));
+    expect(parser.tryParse('abc')).toEqual(ht('abc'));
+    expect(parser.tryParse('xyz')).toEqual(ht('xyz'));
   });
 
   it('should parser a determinativ', () => {
-    expect(transliteration.stringContent.tryParse('°ABC°')).toEqual(dt('ABC'));
-    expect(transliteration.stringContent.tryParse('°XYZ°')).toEqual(dt('XYZ'));
+    expect(parser.tryParse('°ABC°')).toEqual(dt('ABC'));
+    expect(parser.tryParse('°XYZ°')).toEqual(dt('XYZ'));
   });
 
   it('should parse a mater lectionis', () => {
-    expect(transliteration.stringContent.tryParse('°abc°')).toEqual(ml('abc'));
-    expect(transliteration.stringContent.tryParse('°xyz°')).toEqual(ml('xyz'));
+    expect(parser.tryParse('°abc°')).toEqual(ml('abc'));
+    expect(parser.tryParse('°xyz°')).toEqual(ml('xyz'));
   });
 
   it('should parse sumerogramms', () => {
-    expect(transliteration.stringContent.tryParse('ABC')).toEqual(sg('ABC'));
-    expect(transliteration.stringContent.tryParse('LUGAL')).toEqual(sg('LUGAL'));
+    expect(parser.tryParse('ABC')).toEqual(sg('ABC'));
+    expect(parser.tryParse('LUGAL')).toEqual(sg('LUGAL'));
   });
 
   it('should parse akkadogramms starting with _', () => {
-    expect(transliteration.stringContent.tryParse('_ABC')).toEqual(ag('ABC'));
-    expect(transliteration.stringContent.tryParse('_LUGAL')).toEqual(ag('LUGAL'));
+    expect(parser.tryParse('_ABC')).toEqual(ag('ABC'));
+    expect(parser.tryParse('_LUGAL')).toEqual(ag('LUGAL'));
   });
 
   it('should parse sumerogramms starting with --', () => {
-    expect(transliteration.stringContent.tryParse('--ABC')).toEqual(sg('ABC'));
-    expect(transliteration.stringContent.tryParse('--LUGAL')).toEqual(sg('LUGAL'));
+    expect(parser.tryParse('--ABC')).toEqual(sg('ABC'));
+    expect(parser.tryParse('--LUGAL')).toEqual(sg('LUGAL'));
   });
 
   it('should parse akkadogramms starting with -', () => {
-    expect(transliteration.stringContent.tryParse('-ABC')).toEqual(ag('ABC'));
-    expect(transliteration.stringContent.tryParse('-LUGAL')).toEqual(ag('LUGAL'));
+    expect(parser.tryParse('-ABC')).toEqual(ag('ABC'));
+    expect(parser.tryParse('-LUGAL')).toEqual(ag('LUGAL'));
+  });
+});
+
+describe('markType', () => {
+  const parser = transliteration.markType;
+
+  it('should parse mark types', () => {
+    expect(parser.tryParse('S')).toEqual(MarkType.Sign);
+    expect(parser.tryParse('G')).toEqual(MarkType.TextGap);
+    expect(parser.tryParse('F')).toEqual(MarkType.FootNote);
+    expect(parser.tryParse('K')).toEqual(MarkType.Colon);
+  });
+});
+
+describe('markContent', () => {
+  const parser = transliteration.markContent;
+
+  it('should parse mark contents', () => {
+    expect(parser.tryParse('{S:AN}')).toEqual(mc(MarkType.Sign, 'AN'))
+    expect(parser.tryParse('{K:AN}')).toEqual(mc(MarkType.Colon, 'AN'))
+    expect(parser.tryParse('{F:AN}')).toEqual(mc(MarkType.FootNote, 'AN'))
+    expect(parser.tryParse('{G:AN}')).toEqual(mc(MarkType.TextGap, 'AN'))
+
+    expect(parser.tryParse('{S:Anderer Text}')).toEqual(mc(MarkType.Sign, 'Anderer Text'))
+    expect(parser.tryParse('{K:Anderer Text}')).toEqual(mc(MarkType.Colon, 'Anderer Text'))
+    expect(parser.tryParse('{F:Anderer Text}')).toEqual(mc(MarkType.FootNote, 'Anderer Text'))
+    expect(parser.tryParse('{G:Anderer Text}')).toEqual(mc(MarkType.TextGap, 'Anderer Text'))
   });
 });
