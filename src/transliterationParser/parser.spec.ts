@@ -4,7 +4,7 @@ import {
   parseTransliterationLine,
   TransliterationLineParseResult
 } from './parser';
-import {transliterationTextLine as tl, transliterationWord as w} from '../model/transliterationTextLineParseResult';
+import {transliterationTextLineParseResult as tl, transliterationWord as w} from '../model/transliterationTextLineParseResult';
 import {
   akkadogramm as ag,
   determinativ as dt,

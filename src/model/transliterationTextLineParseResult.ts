@@ -2,7 +2,7 @@ import {isStringContentInput, xmlifyStringContentInput} from './stringContent';
 import {isDamage, xmlifyDamage} from "./damages";
 import {
   CorrectionType,
-  DamageType,
+  DamageType, ManuscriptLanguage,
   ManuscriptSide,
   MarkContent,
   NumeralContentInput,
@@ -82,7 +82,7 @@ export class TransliterationTextLineParseResult {
   ) {
   }
 
-  xmlify(textId: string, side: ManuscriptSide, paragraphNumber: number = 1): string {
+  xmlify(textId: string, side: ManuscriptSide, manuscriptLanguage: ManuscriptLanguage, paragraphNumber: number = 1): string {
     // FIXME: paragraphNumber, language!
     const language = 'Hit';
 
@@ -91,6 +91,6 @@ export class TransliterationTextLineParseResult {
   }
 }
 
-export function transliterationTextLine(lineNumber: number, content: TransliterationWordParseResult[], isAbsolute: boolean = false): TransliterationTextLineParseResult {
+export function transliterationTextLineParseResult(lineNumber: number, content: TransliterationWordParseResult[], isAbsolute: boolean = false): TransliterationTextLineParseResult {
   return new TransliterationTextLineParseResult(lineNumber, isAbsolute, content);
 }

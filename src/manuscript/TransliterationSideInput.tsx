@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
   allManuscriptLanguages,
   getNameForManuscriptSide,
@@ -11,16 +11,21 @@ import {useTranslation} from "react-i18next";
 import {parseTransliterationLine, TransliterationLineParseResult} from "../transliterationParser/parser";
 import {TransliterationSideParseResult} from "../model/transliterationSideParseResult";
 import {Field, Form, Formik} from "formik";
-import {BulmaField, BulmaSelect} from "../forms/BulmaFields";
+import {BulmaSelect} from "../forms/BulmaFields";
+import {TransliterationLineParseResultsComponent} from "./TransliterationLineResult";
 
 interface IProps {
   onTransliterationUpdate: (t: TransliterationSideParseResult) => void;
 }
 
 interface IState {
+  sideParseResult?: TransliterationSideParseResult;
+}
+
+interface IFormValues {
   manuscriptSide: ManuscriptSide;
-  manuscriptColumn?: ManuscriptColumn;
-  manuscriptColumnModifier?: ManuscriptColumnModifier;
+  manuscriptColumn: ManuscriptColumn;
+  manuscriptColumnModifier: ManuscriptColumnModifier;
   manuscriptDefaultLanguage: ManuscriptLanguage;
   transliteration: string;
 }
@@ -28,56 +33,76 @@ interface IState {
 export function TransliterationSideInput({onTransliterationUpdate}: IProps): JSX.Element {
 
   const {t} = useTranslation('common');
+  const [state, setState] = useState<IState>({});
 
-  const initialValues: IState = {
+  const initialValues: IFormValues = {
     manuscriptSide: ManuscriptSide.NotIdentifiable,
+    manuscriptColumn: ManuscriptColumn.None,
+    manuscriptColumnModifier: ManuscriptColumnModifier.None,
     manuscriptDefaultLanguage: ManuscriptLanguage.Hittite,
     transliteration: '',
   };
 
-  function updateTransliteration(values: IState): void {
+  function updateTransliteration(values: IFormValues): void {
     const lineResults: TransliterationLineParseResult[] = values.transliteration
       .split('\n')
       .map<TransliterationLineParseResult>((line, lineIndex) => {
         return {...parseTransliterationLine(line), lineIndex};
       });
 
-    onTransliterationUpdate({
-      lineResults,
-      ...values
+    const sideParseResult = {lineResults, ...values};
+
+    setState(() => {
+      return {sideParseResult}
     });
+
+    onTransliterationUpdate(sideParseResult);
   }
 
   return (
-    <Formik initialValues={initialValues} onSubmit={updateTransliteration}>
-      {({submitForm}) =>
+    <div className="box">
+      <Formik initialValues={initialValues} onSubmit={updateTransliteration}>
+        {({submitForm}) =>
+          <Form>
+            <div className="field">
+              <div className="field-body">
+                <Field as="select" name="manuscriptSide" label={t('manuscriptSide')} component={BulmaSelect}>
+                  {manuscriptSides.map((ms) =>
+                    <option key={ms} value={ms}>{getNameForManuscriptSide(ms, t)}</option>
+                  )}
+                </Field>
 
-        <Form>
-          <div className="field">
-            <div className="field-body">
-              <Field as="select" name="manuscriptSide" label={t('manuscriptSide')} component={BulmaSelect}>
-                {manuscriptSides.map((ms) => <option key={ms} value={ms}>{getNameForManuscriptSide(ms, t)}</option>)}
-              </Field>
+                <Field name="manuscriptDefaultLanguage" label={t('defaultLanguage')} component={BulmaSelect}>
+                  {allManuscriptLanguages.map((l) => <option key={l}>{l}</option>)}
+                </Field>
 
-              <Field name="manuscriptColumn" label={t('manuscriptColumn')} component={BulmaSelect}>
-                {manuscriptColumns.map((mc) => <option key={mc} value={mc}>{mc}</option>)}
-              </Field>
+                <Field name="manuscriptColumn" label={t('manuscriptColumn')} component={BulmaSelect}>
+                  {manuscriptColumns.map((mc) => <option key={mc} value={mc}>{mc}</option>)}
+                </Field>
 
-              <Field name="manuscriptColumnModifier" label={t('manuscriptColumnModifier')} component={BulmaSelect}>
-                {manuscriptColumnModifiers.map((mcm) => <option key={mcm} value={mcm}>{mcm}</option>)}
-              </Field>
-
-              <Field name="manuscriptDefaultLanguage" label={t('defaultLanguage')} component={BulmaSelect}>
-                {allManuscriptLanguages.map((l) => <option key={l}>{l}</option>)}
-              </Field>
+                <Field name="manuscriptColumnModifier" label={t('manuscriptColumnModifier')} component={BulmaSelect}>
+                  {manuscriptColumnModifiers.map((mcm) => <option key={mcm} value={mcm}>{mcm}</option>)}
+                </Field>
+              </div>
             </div>
-          </div>
 
-          <Field name="transliteration" label={t('transliteration')} asTextArea={true} rows={20}
-                 onKeyUp={() => submitForm()}
-                 component={BulmaField}/>
-        </Form>
-      }
-    </Formik>
+            <div className="columns">
+              <div className="column">
+                <label className="label">{t('transliteration')}:</label>
+                <Field as="textarea" className="textarea" name="transliteration" placeholder={t('transliteration')}
+                       rows={20} onKeyUp={() => submitForm()}/>
+              </div>
+              <div className="column">
+                <label className="label">{t('parseResult')}:</label>
+
+                {state.sideParseResult
+                  ? <TransliterationLineParseResultsComponent lineResults={state.sideParseResult.lineResults}/>
+                  : <div className="notification is-info has-text-centered">{t('no_result_yet')}</div>}
+              </div>
+            </div>
+          </Form>
+        }
+      </Formik>
+    </div>
   );
 }
