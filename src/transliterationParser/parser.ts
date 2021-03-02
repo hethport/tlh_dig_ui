@@ -13,8 +13,7 @@ import {
 } from "parsimmon";
 import {
   TransliterationTextLineParseResult,
-  TransliterationWord,
-  TransliterationWordContent,
+  transliterationWord,
   TransliterationWordParseResult
 } from "../model/transliterationTextLineParseResult";
 import {akkadogramm, determinativ, hittite, materLectionis, sumerogramm} from "../model/stringContent";
@@ -24,7 +23,9 @@ import {
   MarkContentInput,
   MarkType,
   NumeralContentInput,
-  StringContentInput
+  StringContentInput,
+  TransliterationWordContentInputUnion,
+  TransliterationWordInput
 } from "../generated/graphql";
 import {markContent} from "../model/markContent";
 
@@ -33,7 +34,6 @@ import {markContent} from "../model/markContent";
 export function numeralContent(content: string, isSubscript: boolean = false): NumeralContentInput {
   return {content, isSubscript};
 }
-
 
 // Other
 
@@ -53,7 +53,7 @@ type LanguageSpec = {
   determinativ: StringContentInput;
   materLectionis: StringContentInput;
 
-  stringContent: StringContentInput,
+  stringContent: TransliterationWordContentInputUnion,
 
   markType: MarkType;
   markContent: MarkContentInput,
@@ -61,9 +61,9 @@ type LanguageSpec = {
   numeralContent: NumeralContentInput;
   subscriptNumeralContent: NumeralContentInput;
 
-  singleContent: TransliterationWordContent;
+  singleContent: TransliterationWordContentInputUnion;
 
-  transliterationWord: TransliterationWord;
+  transliterationWord: TransliterationWordInput;
 }
 
 interface LinePreParseResult {
@@ -158,35 +158,51 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   materLectionis: () => regexp(/°([\p{Ll}.]+)°/u, 1).map((result) => materLectionis(result)),
 
   // Do not change order of parsers!
-  stringContent: r => alt(r.sumerogramm, r.akkadogramm, r.hittite, r.determinativ, r.materLectionis),
+  stringContent: r => alt<StringContentInput>(r.sumerogramm, r.akkadogramm, r.hittite, r.determinativ, r.materLectionis)
+    .map((stringContent) => {
+      return {stringContent};
+    }),
 
-  singleContent: r => alt(r.markContent, r.damages, r.corrections, r.subscriptNumeralContent, r.numeralContent, r.stringContent),
+  singleContent: (r) => alt<TransliterationWordContentInputUnion>(
+    r.markContent.map((markContent) => {
+      return {markContent};
+    }),
+    r.damages.map((damageContent) => {
+      return {damageContent};
+    }),
+    r.corrections.map((correctionContent) => {
+      return {correctionContent};
+    }),
+    alt<NumeralContentInput>(r.subscriptNumeralContent, r.numeralContent).map((numeralContent) => {
+      return {numeralContent};
+    }),
+    r.stringContent
+  ),
 
   transliterationWord: r => r.singleContent.atLeast(1)
-    .map((content: TransliterationWordContent[]) => new TransliterationWord(content)),
+    .map((content: TransliterationWordContentInputUnion[]) => transliterationWord(...content)),
 });
 
 const spaceNotInAccoladesRegex = /\s+(?![^{]*})/;
 
-export function parseTransliterationLine(transliterationLineInput: string): TransliterationLineParseResult {
+export function parseTransliterationLine(transliterationLineInput: string): TransliterationTextLineParseResult | undefined {
+  // step 1: extract line number and actual content
   const linePreParsingResult: ParsimmonResult<LinePreParseResult> = lineParser.parse(transliterationLineInput);
 
-  if (linePreParsingResult.status) {
-    const {lineNumber, lineNumberIsAbsolute, content} = linePreParsingResult.value;
-
-    const newContent: TransliterationWordParseResult[] = content
-      .split(spaceNotInAccoladesRegex)
-      .map((wordInput) => {
-        const wordParseResult: ParsimmonResult<TransliterationWord> = transliteration.transliterationWord.parse(wordInput);
-
-        return wordParseResult.status ? {wordInput, result: wordParseResult.value} : {wordInput};
-      });
-
-    return {
-      transliterationLineInput,
-      result: new TransliterationTextLineParseResult(lineNumber, lineNumberIsAbsolute, newContent)
-    };
-  } else {
-    return {transliterationLineInput};
+  if (!linePreParsingResult.status) {
+    return undefined;
   }
+
+  const {lineNumber, lineNumberIsAbsolute, content} = linePreParsingResult.value;
+
+  // step 2: split by spaces not in accolades, parse words
+  const newContent: TransliterationWordParseResult[] = content
+    .split(spaceNotInAccoladesRegex)
+    .map((wordInput) => {
+      const wordParseResult: ParsimmonResult<TransliterationWordInput> = transliteration.transliterationWord.parse(wordInput);
+
+      return wordParseResult.status ? {wordInput, result: wordParseResult.value} : {wordInput};
+    });
+
+  return new TransliterationTextLineParseResult(lineNumber, lineNumberIsAbsolute, newContent);
 }

@@ -1,5 +1,4 @@
 import {DamageType} from "../generated/graphql";
-import {TransliterationWordContent} from "./transliterationTextLineParseResult";
 
 export const allDamageTypes: DamageType[] = [
   DamageType.DeletionStart, DamageType.DeletionEnd,
@@ -66,6 +65,3 @@ export function getSymbolForDamageType(damageType: DamageType): string {
   }
 }
 
-export function isDamage(twc: TransliterationWordContent): twc is DamageType {
-  return !!allDamageTypes.find((d) => d === twc);
-}

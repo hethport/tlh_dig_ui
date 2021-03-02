@@ -1,78 +1,70 @@
-import {isStringContentInput, xmlifyStringContentInput} from './stringContent';
-import {isDamage, xmlifyDamage} from "./damages";
+import {xmlifyStringContentInput} from './stringContent';
+import {xmlifyDamage} from "./damages";
 import {
-  CorrectionType,
-  DamageType, ManuscriptLanguage,
+  ManuscriptLanguage,
   ManuscriptSide,
-  MarkContent,
-  NumeralContentInput,
-  StringContentInput
+  TransliterationWordContentInputUnion,
+  TransliterationWordInput
 } from "../generated/graphql";
-import {isCorrection} from "./corrections";
-import {getXmlNameForManuscriptSide} from "../manuscriptSide";
+import {getXmlNameForManuscriptSide} from "../manuscriptProperties";
 
+// Word Content
 
-export type TransliterationWordContent =
-  StringContentInput
-  | NumeralContentInput
-  | DamageType
-  | CorrectionType
-  | MarkContent;
-
-function xmlify(content: TransliterationWordContent): string {
-  if (isStringContentInput(content)) {
-    return xmlifyStringContentInput(content);
-  } else if (isCorrection(content)) {
+function xmlify(content: TransliterationWordContentInputUnion): string {
+  if (content.stringContent) {
+    return xmlifyStringContentInput(content.stringContent);
+  } else if (content.correctionContent) {
     return '<todo/>';
-  } else if (isDamage(content)) {
-    return xmlifyDamage(content);
+  } else if (content.damageContent) {
+    return xmlifyDamage(content.damageContent);
+  } else if (content.numeralContent) {
+    return `<nc>${content.numeralContent}</nc>`;
+  } else if (content.markContent) {
+    return `<mc>${content.markContent}</mc>`;
   } else {
-    return `<nc>${content}</nc>`;
+    return `<error/>`;
   }
 }
 
-function getContent(twc: TransliterationWordContent): string {
-  if (typeof twc === 'string') {
-    return twc;
-  } else if (isStringContentInput(twc)) {
-    return twc.content;
+function getContent(twc: TransliterationWordContentInputUnion): string {
+  if (twc.stringContent) {
+    return twc.stringContent.content;
   } else {
     // FIXME: implement!
     return '';
   }
 }
 
-
-export class TransliterationWord {
-  constructor(public contents: TransliterationWordContent[]) {
-  }
-
-  private getTranscription(): string {
-    return this.contents.map((twc) => getContent(twc)).join('');
-  }
-
-  xmlify(): string {
-    return `<w trans="${this.getTranscription()}" mrp0sel="   "
-  >${this.contents.map(xmlify).join('')}</w>`;
-  }
+function getTranscription(content: TransliterationWordContentInputUnion[]): string {
+  return content.map((twc) => getContent(twc)).join('');
 }
 
-export function transliterationWord(...content: TransliterationWordContent[]): TransliterationWord {
-  return new TransliterationWord(content);
+// Word
+
+export function transliterationWord(...content: TransliterationWordContentInputUnion[]): TransliterationWordInput {
+  return {content};
 }
 
 export interface TransliterationWordParseResult {
   wordInput: string;
-  result?: TransliterationWord;
+  result?: TransliterationWordInput;
 }
 
 function xmlifyTransliterationWordParseResult(t: TransliterationWordParseResult): string {
   if (t.result) {
-    return t.result.xmlify();
+    const content = t.result.content;
+
+    const xmlContent = content
+      ? content.map((wc) => wc ? xmlify(wc) : '').join(' ')
+      : '';
+
+    return `<w trans="${getTranscription(content)}">${xmlContent}</w>`;
   } else {
     return `<unknown>${t.wordInput}</unknown>`;
   }
 }
+
+// Line
 
 export class TransliterationTextLineParseResult {
   constructor(

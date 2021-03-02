@@ -5,7 +5,7 @@ import {
   manuscriptColumnModifiers,
   manuscriptColumns,
   manuscriptSides
-} from "../manuscriptSide";
+} from "../manuscriptProperties";
 import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptLanguage, ManuscriptSide} from "../generated/graphql";
 import {useTranslation} from "react-i18next";
 import {parseTransliterationLine, TransliterationLineParseResult} from "../transliterationParser/parser";
@@ -46,8 +46,8 @@ export function TransliterationSideInput({onTransliterationUpdate}: IProps): JSX
   function updateTransliteration(values: IFormValues): void {
     const lineResults: TransliterationLineParseResult[] = values.transliteration
       .split('\n')
-      .map<TransliterationLineParseResult>((line, lineIndex) => {
-        return {...parseTransliterationLine(line), lineIndex};
+      .map((transliterationLineInput, lineIndex) => {
+        return {lineIndex, transliterationLineInput, result: parseTransliterationLine(transliterationLineInput)};
       });
 
     const sideParseResult = {lineResults, ...values};

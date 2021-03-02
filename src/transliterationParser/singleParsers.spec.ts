@@ -1,4 +1,4 @@
-import {markContent as mc, transliteration} from "./parser";
+import {transliteration} from "./parser";
 import {
   akkadogramm as ag,
   determinativ as dt,
@@ -6,7 +6,15 @@ import {
   materLectionis as ml,
   sumerogramm as sg
 } from "../model/stringContent";
+import {markContent as mc} from '../model/markContent';
 import {MarkType} from "../generated/graphql";
+import {
+  akkadogrammContentUnion,
+  determinativContentUnion,
+  hittiteContentUnion,
+  materLectionisContentUnion,
+  sumerogrammContentUnion
+} from "./testHelpers";
 
 describe('hittite', () => {
   const parser = transliteration.hittite;
@@ -77,38 +85,38 @@ describe('stringContent', () => {
   const parser = transliteration.stringContent;
 
   it('should parser hittite', () => {
-    expect(parser.tryParse('abc')).toEqual(ht('abc'));
-    expect(parser.tryParse('xyz')).toEqual(ht('xyz'));
+    expect(parser.tryParse('abc')).toEqual(hittiteContentUnion('abc'));
+    expect(parser.tryParse('xyz')).toEqual(hittiteContentUnion('xyz'));
   });
 
   it('should parser a determinativ', () => {
-    expect(parser.tryParse('°ABC°')).toEqual(dt('ABC'));
-    expect(parser.tryParse('°XYZ°')).toEqual(dt('XYZ'));
+    expect(parser.tryParse('°ABC°')).toEqual(determinativContentUnion('ABC'));
+    expect(parser.tryParse('°XYZ°')).toEqual(determinativContentUnion('XYZ'));
   });
 
   it('should parse a mater lectionis', () => {
-    expect(parser.tryParse('°abc°')).toEqual(ml('abc'));
-    expect(parser.tryParse('°xyz°')).toEqual(ml('xyz'));
+    expect(parser.tryParse('°abc°')).toEqual(materLectionisContentUnion('abc'));
+    expect(parser.tryParse('°xyz°')).toEqual(materLectionisContentUnion('xyz'));
   });
 
   it('should parse sumerogramms', () => {
-    expect(parser.tryParse('ABC')).toEqual(sg('ABC'));
-    expect(parser.tryParse('LUGAL')).toEqual(sg('LUGAL'));
-  });
-
-  it('should parse akkadogramms starting with _', () => {
-    expect(parser.tryParse('_ABC')).toEqual(ag('ABC'));
-    expect(parser.tryParse('_LUGAL')).toEqual(ag('LUGAL'));
+    expect(parser.tryParse('ABC')).toEqual(sumerogrammContentUnion('ABC'));
+    expect(parser.tryParse('LUGAL')).toEqual(sumerogrammContentUnion('LUGAL'));
   });
 
   it('should parse sumerogramms starting with --', () => {
-    expect(parser.tryParse('--ABC')).toEqual(sg('ABC'));
-    expect(parser.tryParse('--LUGAL')).toEqual(sg('LUGAL'));
+    expect(parser.tryParse('--ABC')).toEqual(sumerogrammContentUnion('ABC'));
+    expect(parser.tryParse('--LUGAL')).toEqual(sumerogrammContentUnion('LUGAL'));
+  });
+
+  it('should parse akkadogramms starting with _', () => {
+    expect(parser.tryParse('_ABC')).toEqual(akkadogrammContentUnion('ABC'));
+    expect(parser.tryParse('_LUGAL')).toEqual(akkadogrammContentUnion('LUGAL'));
   });
 
   it('should parse akkadogramms starting with -', () => {
-    expect(parser.tryParse('-ABC')).toEqual(ag('ABC'));
-    expect(parser.tryParse('-LUGAL')).toEqual(ag('LUGAL'));
+    expect(parser.tryParse('-ABC')).toEqual(akkadogrammContentUnion('ABC'));
+    expect(parser.tryParse('-LUGAL')).toEqual(akkadogrammContentUnion('LUGAL'));
   });
 });
 

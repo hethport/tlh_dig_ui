@@ -11,19 +11,14 @@ import {
   ManuscriptSide,
   TransliterationLineInput,
   TransliterationLineResultInput,
-  TransliterationWordContentInputUnion,
   TransliterationWordInput,
   useUploadTransliterationMutation
 } from "../generated/graphql";
-import {TransliterationWord, TransliterationWordParseResult} from "../model/transliterationTextLineParseResult";
-import {isStringContentInput} from "../model/stringContent";
-import {isCorrection} from "../model/corrections";
-import {isDamage} from "../model/damages";
+import {TransliterationWordParseResult} from "../model/transliterationTextLineParseResult";
 import {ManuscriptBaseIProps} from "./ManuscriptBase";
 import {saveBlob} from "../saveBlob";
 import {TransliterationSideInput} from "./TransliterationSideInput";
 import {TransliterationSideParseResult} from "../model/transliterationSideParseResult";
-import {isMarkContent} from "../model/markContent";
 
 interface SideParseResultContainer {
   transliterationOutput?: TransliterationSideParseResult;
@@ -35,28 +30,9 @@ interface IState {
   transliterationIsUpToDate?: boolean;
 }
 
-function convertWord({contents}: TransliterationWord): TransliterationWordInput {
-  return {
-    content: contents.map<TransliterationWordContentInputUnion>((content) => {
-      // FIXME: implement!
-      if (isStringContentInput(content)) {
-        return {stringContent: content};
-      } else if (isCorrection(content)) {
-        return {correctionContent: content}
-      } else if (isDamage(content)) {
-        return {damageContent: content};
-      } else if (isMarkContent(content)) {
-        return {markContent: content};
-      } else {
-        return {numeralContent: content};
-      }
-    })
-  };
-}
-
 function convertWordParseResult({wordInput, result}: TransliterationWordParseResult): TransliterationWordInput {
   if (result) {
-    return convertWord(result);
+    return result;
   } else {
     return {content: [/*wordInput*/]};
   }

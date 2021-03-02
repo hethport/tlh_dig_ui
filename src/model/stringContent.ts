@@ -1,5 +1,4 @@
 import {StringContentInput, StringContentTypeEnum} from "../generated/graphql";
-import {TransliterationWordContent} from "./transliterationTextLineParseResult";
 
 /**
  * Hittite
@@ -59,15 +58,6 @@ export function classForStringContentType(stringContentType: StringContentTypeEn
 }
 
 // String content
-
-export function isStringContentInput(twc: TransliterationWordContent): twc is StringContentInput {
-  return typeof (twc) !== 'string' && 'type' in twc && (
-    twc.type === StringContentTypeEnum.Hittite ||
-    twc.type === StringContentTypeEnum.Determinativ ||
-    twc.type === StringContentTypeEnum.MaterLectionis ||
-    twc.type === StringContentTypeEnum.Akadogramm ||
-    twc.type === StringContentTypeEnum.Sumerogramm);
-}
 
 export function xmlifyStringContentInput(sci: StringContentInput): string {
   switch (sci.type) {

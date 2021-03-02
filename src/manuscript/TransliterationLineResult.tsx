@@ -1,22 +1,32 @@
 import React from "react";
-import {TransliterationWordContent, TransliterationWordParseResult} from "../model/transliterationTextLineParseResult";
-import {classForStringContentType, isStringContentInput} from "../model/stringContent";
-import {isCorrection, symbolForCorrection} from "../model/corrections";
-import {getSymbolForDamageType, isDamage} from "../model/damages";
-import {isMarkContent} from "../model/markContent";
+import {TransliterationWordParseResult} from "../model/transliterationTextLineParseResult";
+import {classForStringContentType} from "../model/stringContent";
+import {symbolForCorrection} from "../model/corrections";
+import {getSymbolForDamageType} from "../model/damages";
 import {TransliterationLineParseResult} from "../transliterationParser/parser";
+import {TransliterationWordContentInputUnion} from "../generated/graphql";
 
-function renderTransliterationLineContent(content: TransliterationWordContent): JSX.Element {
-  if (isStringContentInput(content)) {
-    return <span className={classForStringContentType(content.type)}>{content.content}</span>;
-  } else if (isCorrection(content)) {
-    return <sup className="correction">{symbolForCorrection(content)}</sup>;
-  } else if (isDamage(content)) {
-    return <span>{getSymbolForDamageType(content)}</span>;
-  } else if (isMarkContent(content)) {
-    return <span className="has-text-warning">TODO: {content.content}!</span>
+function renderTransliterationLineContent(
+  {
+    numeralContent,
+    correctionContent,
+    damageContent,
+    markContent,
+    stringContent
+  }: TransliterationWordContentInputUnion
+): JSX.Element {
+  if (stringContent) {
+    return <span className={classForStringContentType(stringContent.type)}>{stringContent.content}</span>;
+  } else if (correctionContent) {
+    return <sup className="correction">{symbolForCorrection(correctionContent)}</sup>;
+  } else if (damageContent) {
+    return <span>{getSymbolForDamageType(damageContent)}</span>;
+  } else if (markContent) {
+    return <span className="has-text-warning">TODO: {markContent.content}!</span>
+  } else if (numeralContent) {
+    return numeralContent.isSubscript ? <sub>{numeralContent.content}</sub> : <span>{numeralContent.content}</span>;
   } else {
-    return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
+    throw new Error("");
   }
 }
 
@@ -25,7 +35,7 @@ function renderTransliterationLineContent(content: TransliterationWordContent): 
 function TransliterationWordParseResultComponent({wordInput, result}: TransliterationWordParseResult): JSX.Element {
   return <>
     {result
-      ? result.contents.map((c, i) => <span key={i}>{renderTransliterationLineContent(c)}</span>)
+      ? result.content.map((c, i) => <span key={i}>{renderTransliterationLineContent(c)}</span>)
       : <span className="has-text-danger">{wordInput}</span>}
   </>;
 }

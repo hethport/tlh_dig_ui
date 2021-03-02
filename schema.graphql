@@ -190,7 +190,7 @@ input TransliterationLineResultInput {
 }
 
 input TransliterationWordInput {
-  content: [TransliterationWordContentInputUnion]!
+  content: [TransliterationWordContentInputUnion!]!
 }
 
 input TransliterationWordContentInputUnion {
@@ -230,6 +230,17 @@ enum ManuscriptSide {
   SealInscription
 }
 
+enum ManuscriptLanguage {
+  Hittite
+  Luwian
+  Palaic
+  Hattic
+  Hurrian
+  Akkadian
+  Sumerian
+  NotIdentifiable
+}
+
 enum ManuscriptColumn {
   None
   I
@@ -254,15 +265,4 @@ enum ManuscriptColumnModifier {
   None
   Slash
   SlashQuestion
-}
-
-enum ManuscriptLanguage {
-  Hittite
-  Luwian
-  Palaic
-  Hattic
-  Hurrian
-  Akkadian
-  Sumerian
-  NotIdentifiable
 }

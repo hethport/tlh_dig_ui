@@ -251,7 +251,7 @@ export type TransliterationLineResultInput = {
 };
 
 export type TransliterationWordInput = {
-  content: Array<Maybe<TransliterationWordContentInputUnion>>;
+  content: Array<TransliterationWordContentInputUnion>;
 };
 
 export type TransliterationWordContentInputUnion = {
@@ -291,6 +291,17 @@ export enum ManuscriptSide {
   SealInscription = 'SealInscription'
 }
 
+export enum ManuscriptLanguage {
+  Hittite = 'Hittite',
+  Luwian = 'Luwian',
+  Palaic = 'Palaic',
+  Hattic = 'Hattic',
+  Hurrian = 'Hurrian',
+  Akkadian = 'Akkadian',
+  Sumerian = 'Sumerian',
+  NotIdentifiable = 'NotIdentifiable'
+}
+
 export enum ManuscriptColumn {
   None = 'None',
   I = 'I',
@@ -315,17 +326,6 @@ export enum ManuscriptColumnModifier {
   None = 'None',
   Slash = 'Slash',
   SlashQuestion = 'SlashQuestion'
-}
-
-export enum ManuscriptLanguage {
-  Hittite = 'Hittite',
-  Luwian = 'Luwian',
-  Palaic = 'Palaic',
-  Hattic = 'Hattic',
-  Hurrian = 'Hurrian',
-  Akkadian = 'Akkadian',
-  Sumerian = 'Sumerian',
-  NotIdentifiable = 'NotIdentifiable'
 }
 
 export type ManuscriptIdentifierFragment = (
