@@ -14,7 +14,7 @@ describe('test', () => {
       .toEqual(ag('ABC'));
 
     expect(transliteration.akkadogramm.tryParse('-ABC'))
-      .toEqual(ag('ABC'));
+      .toEqual(ag('-ABC'));
   });
 
   it('should parse sumerogramms', () => {

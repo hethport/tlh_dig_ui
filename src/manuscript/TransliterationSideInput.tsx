@@ -1,62 +1,74 @@
 import React, {useState} from "react";
 import {
-  allManuscriptLanguages,
   getNameForManuscriptSide,
   manuscriptColumnModifiers,
   manuscriptColumns,
   manuscriptSides
-} from "../manuscriptProperties";
+} from "../model/manuscriptProperties/manuscriptProperties";
+import {allManuscriptLanguages} from "../model/manuscriptProperties/manuscriptLanugage";
 import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptLanguage, ManuscriptSide} from "../generated/graphql";
 import {useTranslation} from "react-i18next";
-import {parseTransliterationLine, TransliterationLineParseResult} from "../transliterationParser/parser";
-import {TransliterationSideParseResult} from "../model/transliterationSideParseResult";
+import {LineParseResult, parseTransliterationLine} from "../transliterationParser/parser";
+import {RawSideInput, SideParseResult} from "../model/sideParseResult";
 import {Field, Form, Formik} from "formik";
 import {BulmaSelect} from "../forms/BulmaFields";
 import {TransliterationLineParseResultsComponent} from "./TransliterationLineResult";
 
 interface IProps {
-  onTransliterationUpdate: (t: TransliterationSideParseResult) => void;
+  mainIdentifier: string;
+  onTransliterationUpdate: (t: SideParseResult) => void;
 }
 
 interface IState {
-  sideParseResult?: TransliterationSideParseResult;
+  activeTab?: string;
+  sideParseResult?: SideParseResult;
 }
 
-interface IFormValues {
-  manuscriptSide: ManuscriptSide;
-  manuscriptColumn: ManuscriptColumn;
-  manuscriptColumnModifier: ManuscriptColumnModifier;
-  manuscriptDefaultLanguage: ManuscriptLanguage;
-  transliteration: string;
+function parseLine(lineInput: string): LineParseResult {
+  return {lineInput, result: parseTransliterationLine(lineInput)};
 }
 
-export function TransliterationSideInput({onTransliterationUpdate}: IProps): JSX.Element {
+export function TransliterationSideInput({mainIdentifier, onTransliterationUpdate}: IProps): JSX.Element {
 
   const {t} = useTranslation('common');
   const [state, setState] = useState<IState>({});
 
-  const initialValues: IFormValues = {
-    manuscriptSide: ManuscriptSide.NotIdentifiable,
-    manuscriptColumn: ManuscriptColumn.None,
-    manuscriptColumnModifier: ManuscriptColumnModifier.None,
-    manuscriptDefaultLanguage: ManuscriptLanguage.Hittite,
+  const initialValues: RawSideInput = {
+    side: ManuscriptSide.NotIdentifiable,
+    column: ManuscriptColumn.None,
+    columnModifier: ManuscriptColumnModifier.None,
+    language: ManuscriptLanguage.Hittite,
     transliteration: '',
   };
 
-  function updateTransliteration(values: IFormValues): void {
-    const lineResults: TransliterationLineParseResult[] = values.transliteration
-      .split('\n')
-      .map((transliterationLineInput, lineIndex) => {
-        return {lineIndex, transliterationLineInput, result: parseTransliterationLine(transliterationLineInput)};
-      });
-
-    const sideParseResult = {lineResults, ...values};
+  function updateTransliteration(values: RawSideInput): void {
+    const sideParseResult: SideParseResult = {
+      lineResults: values.transliteration.split('\n').map(parseLine),
+      ...values
+    };
 
     setState(() => {
       return {sideParseResult}
     });
 
+    toggleTab('rendered');
+
     onTransliterationUpdate(sideParseResult);
+  }
+
+  function exportAsXml({lineResults, side, language, column, columnModifier}: SideParseResult): string[] {
+    const xmlLinesOutput = lineResults
+      .map(({lineInput, result}) => result
+        ? result.xmlify(mainIdentifier, side, language, column, columnModifier)
+        : `<error>${lineInput}</error>`);
+
+    return ['<AOxml>', ...xmlLinesOutput, '</AOxml>'];
+  }
+
+  function toggleTab(name: string): void {
+    setState((state) => {
+      return {...state, activeTab: name};
+    });
   }
 
   return (
@@ -96,7 +108,20 @@ export function TransliterationSideInput({onTransliterationUpdate}: IProps): JSX
                 <label className="label">{t('parseResult')}:</label>
 
                 {state.sideParseResult
-                  ? <TransliterationLineParseResultsComponent lineResults={state.sideParseResult.lineResults}/>
+                  ? <>
+                    <div className="tabs is-centered">
+                      <ul>
+                        <li><a onClick={() => toggleTab('rendered')}>{t('rendered')}</a></li>
+                        <li><a onClick={() => toggleTab('asXml')}>{t('asXml')}</a></li>
+                      </ul>
+                    </div>
+                    {state.activeTab === 'rendered' &&
+                    <TransliterationLineParseResultsComponent lines={state.sideParseResult.lineResults}/>}
+                    {state.activeTab === 'asXml' &&
+                    <div className="box">
+                      {exportAsXml(state.sideParseResult).map((line, index) => <p key={index}>{line}</p>)}
+                    </div>}
+                  </>
                   : <div className="notification is-info has-text-centered">{t('no_result_yet')}</div>}
               </div>
             </div>

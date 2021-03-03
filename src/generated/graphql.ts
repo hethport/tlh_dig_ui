@@ -76,7 +76,7 @@ export enum ManuscriptStatus {
 export type TransliterationLine = {
   __typename?: 'TransliterationLine';
   lineIndex: Scalars['Int'];
-  transliterationLineInput: Scalars['String'];
+  lineInput: Scalars['String'];
   result?: Maybe<TransliterationLineResult>;
 };
 
@@ -84,15 +84,16 @@ export type TransliterationLineResult = {
   __typename?: 'TransliterationLineResult';
   lineNumber: Scalars['Int'];
   isAbsolute: Scalars['Boolean'];
-  words: Array<TransliterationWord>;
+  words: Array<Word>;
 };
 
-export type TransliterationWord = {
-  __typename?: 'TransliterationWord';
-  content: Array<TransliterationWordContentUnion>;
+export type Word = {
+  __typename?: 'Word';
+  input: Scalars['String'];
+  content: Array<WordContentUnion>;
 };
 
-export type TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent;
+export type WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | XContent;
 
 export type StringContent = {
   __typename?: 'StringContent';
@@ -161,6 +162,11 @@ export enum MarkType {
   Colon = 'Colon',
   Arbitrary = 'Arbitrary'
 }
+
+export type XContent = {
+  __typename?: 'XContent';
+  _x?: Maybe<Scalars['Boolean']>;
+};
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -240,26 +246,28 @@ export type ManuscriptMutationsUpdateTransliterationArgs = {
 
 export type TransliterationLineInput = {
   lineIndex: Scalars['Int'];
-  transliterationLineInput: Scalars['String'];
+  lineInput: Scalars['String'];
   result?: Maybe<TransliterationLineResultInput>;
 };
 
 export type TransliterationLineResultInput = {
   lineNumber: Scalars['Int'];
   isAbsolute: Scalars['Boolean'];
-  words: Array<TransliterationWordInput>;
+  words: Array<WordInput>;
 };
 
-export type TransliterationWordInput = {
-  content: Array<TransliterationWordContentInputUnion>;
+export type WordInput = {
+  input: Scalars['String'];
+  content: Array<WordContentInputUnion>;
 };
 
-export type TransliterationWordContentInputUnion = {
+export type WordContentInputUnion = {
   stringContent?: Maybe<StringContentInput>;
   numeralContent?: Maybe<NumeralContentInput>;
   damageContent?: Maybe<DamageType>;
   correctionContent?: Maybe<CorrectionType>;
   markContent?: Maybe<MarkContentInput>;
+  xContent?: Maybe<XContentInput>;
 };
 
 export type StringContentInput = {
@@ -275,6 +283,10 @@ export type NumeralContentInput = {
 export type MarkContentInput = {
   type: MarkType;
   content: Scalars['String'];
+};
+
+export type XContentInput = {
+  x?: Maybe<Scalars['String']>;
 };
 
 export enum ManuscriptSide {
@@ -395,55 +407,66 @@ export type CreateManuscriptMutation = (
   )> }
 );
 
-type TransliterationWordContent_StringContent_Fragment = (
+type WordContent_StringContent_Fragment = (
   { __typename?: 'StringContent' }
   & Pick<StringContent, 'content'>
   & { stringContentType: StringContent['type'] }
 );
 
-type TransliterationWordContent_DamageContent_Fragment = (
+type WordContent_DamageContent_Fragment = (
   { __typename?: 'DamageContent' }
   & { damageType: DamageContent['type'] }
 );
 
-type TransliterationWordContent_CorrectionContent_Fragment = (
+type WordContent_CorrectionContent_Fragment = (
   { __typename?: 'CorrectionContent' }
   & { correctionType: CorrectionContent['type'] }
 );
 
-type TransliterationWordContent_NumeralContent_Fragment = (
+type WordContent_NumeralContent_Fragment = (
   { __typename?: 'NumeralContent' }
   & Pick<NumeralContent, 'content' | 'isSubscript'>
 );
 
-type TransliterationWordContent_MarkContent_Fragment = { __typename?: 'MarkContent' };
+type WordContent_MarkContent_Fragment = { __typename?: 'MarkContent' };
 
-export type TransliterationWordContentFragment = TransliterationWordContent_StringContent_Fragment | TransliterationWordContent_DamageContent_Fragment | TransliterationWordContent_CorrectionContent_Fragment | TransliterationWordContent_NumeralContent_Fragment | TransliterationWordContent_MarkContent_Fragment;
+type WordContent_XContent_Fragment = { __typename?: 'XContent' };
 
-export type TransliterationLineFragment = (
+export type WordContentFragment = WordContent_StringContent_Fragment | WordContent_DamageContent_Fragment | WordContent_CorrectionContent_Fragment | WordContent_NumeralContent_Fragment | WordContent_MarkContent_Fragment | WordContent_XContent_Fragment;
+
+export type WordFragment = (
+  { __typename?: 'Word' }
+  & Pick<Word, 'input'>
+  & { content: Array<(
+    { __typename?: 'StringContent' }
+    & WordContent_StringContent_Fragment
+  ) | (
+    { __typename?: 'DamageContent' }
+    & WordContent_DamageContent_Fragment
+  ) | (
+    { __typename?: 'CorrectionContent' }
+    & WordContent_CorrectionContent_Fragment
+  ) | (
+    { __typename?: 'NumeralContent' }
+    & WordContent_NumeralContent_Fragment
+  ) | (
+    { __typename?: 'MarkContent' }
+    & WordContent_MarkContent_Fragment
+  ) | (
+    { __typename?: 'XContent' }
+    & WordContent_XContent_Fragment
+  )> }
+);
+
+export type LineFragment = (
   { __typename?: 'TransliterationLine' }
-  & Pick<TransliterationLine, 'lineIndex' | 'transliterationLineInput'>
+  & Pick<TransliterationLine, 'lineIndex' | 'lineInput'>
   & { result?: Maybe<(
     { __typename?: 'TransliterationLineResult' }
     & Pick<TransliterationLineResult, 'isAbsolute' | 'lineNumber'>
     & { words: Array<(
-      { __typename?: 'TransliterationWord' }
-      & { content: Array<(
-        { __typename?: 'StringContent' }
-        & TransliterationWordContent_StringContent_Fragment
-      ) | (
-        { __typename?: 'DamageContent' }
-        & TransliterationWordContent_DamageContent_Fragment
-      ) | (
-        { __typename?: 'CorrectionContent' }
-        & TransliterationWordContent_CorrectionContent_Fragment
-      ) | (
-        { __typename?: 'NumeralContent' }
-        & TransliterationWordContent_NumeralContent_Fragment
-      ) | (
-        { __typename?: 'MarkContent' }
-        & TransliterationWordContent_MarkContent_Fragment
-      )> }
+      { __typename?: 'Word' }
+      & WordFragment
     )> }
   )> }
 );
@@ -459,7 +482,7 @@ export type ManuscriptMetaDataFragment = (
     & ManuscriptIdentifierFragment
   )>, transliterationResult?: Maybe<Array<(
     { __typename?: 'TransliterationLine' }
-    & TransliterationLineFragment
+    & LineFragment
   )>> }
 );
 
@@ -554,8 +577,8 @@ export const ManuscriptBasicDataFragmentDoc = gql`
   creatorUsername
 }
     ${ManuscriptIdentifierFragmentDoc}`;
-export const TransliterationWordContentFragmentDoc = gql`
-    fragment TransliterationWordContent on TransliterationWordContentUnion {
+export const WordContentFragmentDoc = gql`
+    fragment WordContent on WordContentUnion {
   ... on CorrectionContent {
     correctionType: type
   }
@@ -572,21 +595,27 @@ export const TransliterationWordContentFragmentDoc = gql`
   }
 }
     `;
-export const TransliterationLineFragmentDoc = gql`
-    fragment TransliterationLine on TransliterationLine {
+export const WordFragmentDoc = gql`
+    fragment Word on Word {
+  input
+  content {
+    ...WordContent
+  }
+}
+    ${WordContentFragmentDoc}`;
+export const LineFragmentDoc = gql`
+    fragment Line on TransliterationLine {
   lineIndex
-  transliterationLineInput
+  lineInput
   result {
     isAbsolute
     lineNumber
     words {
-      content {
-        ...TransliterationWordContent
-      }
+      ...Word
     }
   }
 }
-    ${TransliterationWordContentFragmentDoc}`;
+    ${WordFragmentDoc}`;
 export const ManuscriptMetaDataFragmentDoc = gql`
     fragment ManuscriptMetaData on ManuscriptMetaData {
   mainIdentifier {
@@ -603,11 +632,11 @@ export const ManuscriptMetaDataFragmentDoc = gql`
   creatorUsername
   pictureUrls
   transliterationResult {
-    ...TransliterationLine
+    ...Line
   }
 }
     ${ManuscriptIdentifierFragmentDoc}
-${TransliterationLineFragmentDoc}`;
+${LineFragmentDoc}`;
 export const ManuscriptIdentWithCreatorFragmentDoc = gql`
     fragment ManuscriptIdentWithCreator on ManuscriptMetaData {
   mainIdentifier {

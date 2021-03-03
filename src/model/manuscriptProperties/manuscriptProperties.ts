@@ -1,4 +1,4 @@
-import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptLanguage, ManuscriptSide} from "./generated/graphql";
+import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptSide} from "../../generated/graphql";
 import {TFunction} from "i18next";
 
 // Sides
@@ -80,11 +80,4 @@ export const manuscriptColumns: ManuscriptColumn[] = [
 
 export const manuscriptColumnModifiers: ManuscriptColumnModifier[] = [
   ManuscriptColumnModifier.None, ManuscriptColumnModifier.Slash, ManuscriptColumnModifier.SlashQuestion
-];
-
-// Languages
-
-export const allManuscriptLanguages: ManuscriptLanguage[] = [
-  ManuscriptLanguage.Hittite, ManuscriptLanguage.Luwian, ManuscriptLanguage.Palaic, ManuscriptLanguage.Hattic,
-  ManuscriptLanguage.Hurrian, ManuscriptLanguage.Akkadian, ManuscriptLanguage.Sumerian, ManuscriptLanguage.NotIdentifiable
 ];

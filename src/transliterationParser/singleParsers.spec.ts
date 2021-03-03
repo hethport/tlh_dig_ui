@@ -34,8 +34,8 @@ describe('akkadogramm', () => {
   });
 
   it('should parse akkadogramms starting with -', () => {
-    expect(parser.tryParse('-ABC')).toEqual(ag('ABC'));
-    expect(parser.tryParse('-LUGAL')).toEqual(ag('LUGAL'));
+    expect(parser.tryParse('-ABC')).toEqual(ag('-ABC'));
+    expect(parser.tryParse('-LUGAL')).toEqual(ag('-LUGAL'));
   });
 });
 
@@ -45,6 +45,8 @@ describe('sumerogramm', () => {
   it('should parse sumerogramms', () => {
     expect(parser.tryParse('ABC')).toEqual(sg('ABC'));
     expect(parser.tryParse('LUGAL')).toEqual(sg('LUGAL'));
+
+    expect(parser.tryParse('GUₓ.MAḪ')).toEqual(sg('GUₓ.MAḪ'))
   });
 
   it('should parse sumerogramms starting with --', () => {
@@ -102,6 +104,8 @@ describe('stringContent', () => {
   it('should parse sumerogramms', () => {
     expect(parser.tryParse('ABC')).toEqual(sumerogrammContentUnion('ABC'));
     expect(parser.tryParse('LUGAL')).toEqual(sumerogrammContentUnion('LUGAL'));
+
+    expect(parser.tryParse('GUₓ.MAḪ')).toEqual(sumerogrammContentUnion('GUₓ.MAḪ'))
   });
 
   it('should parse sumerogramms starting with --', () => {
@@ -115,8 +119,8 @@ describe('stringContent', () => {
   });
 
   it('should parse akkadogramms starting with -', () => {
-    expect(parser.tryParse('-ABC')).toEqual(akkadogrammContentUnion('ABC'));
-    expect(parser.tryParse('-LUGAL')).toEqual(akkadogrammContentUnion('LUGAL'));
+    expect(parser.tryParse('-ABC')).toEqual(akkadogrammContentUnion('-ABC'));
+    expect(parser.tryParse('-LUGAL')).toEqual(akkadogrammContentUnion('-LUGAL'));
   });
 });
 

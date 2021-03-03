@@ -1,19 +1,12 @@
 import React from "react";
-import {TransliterationWordParseResult} from "../model/transliterationTextLineParseResult";
 import {classForStringContentType} from "../model/stringContent";
 import {symbolForCorrection} from "../model/corrections";
 import {getSymbolForDamageType} from "../model/damages";
-import {TransliterationLineParseResult} from "../transliterationParser/parser";
-import {TransliterationWordContentInputUnion} from "../generated/graphql";
+import {LineParseResult} from "../transliterationParser/parser";
+import {WordContentInputUnion, WordInput} from "../generated/graphql";
 
-function renderTransliterationLineContent(
-  {
-    numeralContent,
-    correctionContent,
-    damageContent,
-    markContent,
-    stringContent
-  }: TransliterationWordContentInputUnion
+function renderWordContent(
+  {numeralContent, correctionContent, damageContent, markContent, stringContent, xContent}: WordContentInputUnion
 ): JSX.Element {
   if (stringContent) {
     return <span className={classForStringContentType(stringContent.type)}>{stringContent.content}</span>;
@@ -25,44 +18,42 @@ function renderTransliterationLineContent(
     return <span className="has-text-warning">TODO: {markContent.content}!</span>
   } else if (numeralContent) {
     return numeralContent.isSubscript ? <sub>{numeralContent.content}</sub> : <span>{numeralContent.content}</span>;
+  } else if (xContent) {
+    return <span>'x'</span>;
   } else {
-    throw new Error("");
+    return <div>TODO!</div>;
+    // throw new Error("");
   }
 }
 
 // Single word
 
-function TransliterationWordParseResultComponent({wordInput, result}: TransliterationWordParseResult): JSX.Element {
+function renderWordInput({input, content}: WordInput): JSX.Element {
   return <>
-    {result
-      ? result.content.map((c, i) => <span key={i}>{renderTransliterationLineContent(c)}</span>)
-      : <span className="has-text-danger">{wordInput}</span>}
-  </>;
+    {content.length > 0
+      ? content.map((c, i) => <span key={i}>{renderWordContent(c)}</span>)
+      : <span className="has-text-danger">{input}</span>}
+  </>
 }
 
 // Single line
 
-function TransliterationLineParseResultComponent(
-  {transliterationLineInput, result}: TransliterationLineParseResult): JSX.Element {
+function renderLine({lineInput, result}: LineParseResult, maxLength: number): JSX.Element {
   if (result) {
-    return (
-      <p>
-        <sup>{result.lineNumber}{result.lineNumberIsAbsolute ? '' : '\''}</sup>
-        &nbsp;
-        {result.content.map((word, index) =>
-          <span key={index}>
-            <TransliterationWordParseResultComponent wordInput={word.wordInput} result={word.result}/>&nbsp;
-          </span>
-        )}
-      </p>
-    );
+    const {lineNumber, lineNumberIsAbsolute, words} = result;
+
+    const ln = lineNumber.toString().padStart(maxLength, ' ') + (lineNumberIsAbsolute ? '' : '\'');
+
+    return <>
+      <sup>{ln}</sup>
+      &nbsp;
+      {words.map((wordInput, index) => <span key={index}>{renderWordInput(wordInput)}&nbsp;</span>)}
+    </>;
   } else {
     return (
-      <p className="has-text-danger">
-        {transliterationLineInput.length > 100
-          ? `${transliterationLineInput.substr(0, 100)}...`
-          : transliterationLineInput}
-      </p>
+      <span className="has-text-danger">
+        {lineInput.length > 100 ? `${lineInput.substr(0, 100)}...` : lineInput}
+      </span>
     );
   }
 }
@@ -70,17 +61,21 @@ function TransliterationLineParseResultComponent(
 // All lines
 
 interface IProps {
-  lineResults: TransliterationLineParseResult[];
+  lines: LineParseResult[];
 }
 
-export function TransliterationLineParseResultsComponent({lineResults}: IProps): JSX.Element {
+export function TransliterationLineParseResultsComponent({lines}: IProps): JSX.Element {
+
+  const maxLineNumber: number = lines
+    .flatMap((tlr) => tlr.result ? [tlr.result.lineNumber] : [])
+    .reduce((a, b) => a > b ? a : b, 0);
+
+  const maxLength = Math.ceil(Math.log10(maxLineNumber));
+
   return (
-    <div className="my-3 box has-background-grey-lighter">
-      {lineResults.map((lineParseResult, lineIndex) =>
-        <TransliterationLineParseResultComponent
-          key={lineIndex}
-          transliterationLineInput={lineParseResult.transliterationLineInput}
-          result={lineParseResult.result}/>
+    <div className="box">
+      {lines.map((lineParseResult, lineIndex) =>
+        <p key={lineIndex}>{renderLine(lineParseResult, maxLength)}</p>
       )}
     </div>
   );

@@ -49,8 +49,7 @@ mutation CreateManuscript($manuscriptMetaData : ManuscriptMetaDataInput) {
 
 # /manuscripts/:id
 
-fragment TransliterationWordContent on TransliterationWordContentUnion {
-
+fragment WordContent on WordContentUnion {
   ... on CorrectionContent {
     correctionType: type
   }
@@ -67,16 +66,21 @@ fragment TransliterationWordContent on TransliterationWordContentUnion {
   }
 }
 
-fragment TransliterationLine on TransliterationLine {
+fragment Word on Word {
+  input
+  content {
+    ...WordContent
+  }
+}
+
+fragment Line on TransliterationLine {
   lineIndex
-  transliterationLineInput
+  lineInput
   result {
     isAbsolute
     lineNumber
     words {
-      content {
-        ...TransliterationWordContent
-      }
+      ...Word
     }
   }
 }
@@ -96,7 +100,7 @@ fragment ManuscriptMetaData on ManuscriptMetaData {
   creatorUsername
   pictureUrls
   transliterationResult {
-    ...TransliterationLine
+    ...Line
   }
 }
 

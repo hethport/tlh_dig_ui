@@ -1,4 +1,5 @@
 import {DamageType} from "../generated/graphql";
+import {alt, Parser, regex, regexp, string} from "parsimmon";
 
 export const allDamageTypes: DamageType[] = [
   DamageType.DeletionStart, DamageType.DeletionEnd,
@@ -8,6 +9,20 @@ export const allDamageTypes: DamageType[] = [
   DamageType.SupplementStart, DamageType.SupplementEnd,
   DamageType.UnknownDamageStart, DamageType.UnknownDamageEnd
 ];
+
+export const damageTypeParser: Parser<DamageType> = alt(
+  string('[').result(DamageType.DeletionStart),
+  string(']').result(DamageType.DeletionEnd),
+  string('⸢').result(DamageType.LesionStart),
+  string('⸣').result(DamageType.LesionEnd),
+  string('*').result(DamageType.Rasure),
+  regexp(/[〈<]{2}/).result(DamageType.SurplusStart),
+  regexp(/[〉>]{2}/).result(DamageType.SurplusEnd),
+  regexp(/[〈<]/).result(DamageType.SupplementStart),
+  regex(/[〉>]/).result(DamageType.SupplementEnd),
+  string('(').result(DamageType.UnknownDamageStart),
+  string(')').result(DamageType.UnknownDamageEnd),
+);
 
 export function xmlifyDamage(damageType: DamageType): string {
   switch (damageType) {

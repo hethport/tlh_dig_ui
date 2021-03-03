@@ -1,15 +1,13 @@
 import React from "react";
-import {TransliterationLineFragment, TransliterationWordContentFragment} from "../generated/graphql";
+import {LineFragment, WordContentFragment, WordFragment} from "../generated/graphql";
 import {classForStringContentType} from "../model/stringContent";
 import {symbolForCorrection} from "../model/corrections";
 import {getSymbolForDamageType} from "../model/damages";
 
-interface IProps {
-  lines: TransliterationLineFragment [];
-}
 
+// Word content
 
-function renderTransliterationLineContent(content: TransliterationWordContentFragment): JSX.Element {
+function renderWordContent(content: WordContentFragment): JSX.Element {
   if (content.__typename === 'StringContent') {
     return <span className={classForStringContentType(content.stringContentType)}>{content.content}</span>;
   } else if (content.__typename === 'CorrectionContent') {
@@ -18,11 +16,51 @@ function renderTransliterationLineContent(content: TransliterationWordContentFra
     return <span>{getSymbolForDamageType(content.damageType)}</span>;
   } else if (content.__typename === 'NumeralContent') {
     return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
+  } else if (content.__typename === 'MarkContent') {
+    return <span>TODO: Mark Content...</span>
+  } else if (content.__typename === 'XContent') {
+    return <span>x</span>;
   } else {
     return <></>;
   }
 }
 
+// Single word
+
+function renderWord({input, content}: WordFragment): JSX.Element {
+  return <>
+    {content.length > 0
+      ? content.map((c, i) => <span key={i}>{renderWordContent(c)}</span>)
+      : <span className="has-text-danger">{input}</span>
+    }
+  </>
+}
+
+// Single line
+
+function renderLine({lineInput, result}: LineFragment, maxLength: number): JSX.Element {
+  if (result) {
+    const {lineNumber, isAbsolute, words} = result;
+
+    const ln = lineNumber.toString().padStart(maxLength, ' ') + (isAbsolute ? '' : '\'');
+
+    return <>
+      <sup>{ln}</sup>
+      &nbsp;
+      {words.map((word, index) => <span key={index}>{renderWord(word)}&nbsp;</span>)}
+    </>;
+  } else {
+    return <span className="has-text-danger">
+      {lineInput.length > 100 ? `${lineInput.substr(0, 100)}...` : lineInput}
+    </span>
+  }
+}
+
+// All lines
+
+interface IProps {
+  lines: LineFragment[];
+}
 
 export function Transliteration({lines}: IProps): JSX.Element {
 
@@ -34,29 +72,9 @@ export function Transliteration({lines}: IProps): JSX.Element {
 
   return (
     <pre>
-            {lines.map(({transliterationLineInput, result}, lineIndex) => {
-                if (result) {
-                  const ln = result.lineNumber.toString().padStart(maxLength, ' ');
-
-                  return (
-                    <p key={lineIndex}>
-                      <sup>{ln}{result.isAbsolute ? '' : '\''}</sup>
-                      &nbsp;
-                      {result.words.map((word, index) =>
-                        <span key={index}>
-                                            {word.content.map((c, i) =>
-                                              <span key={i}>{renderTransliterationLineContent(c)}</span>)
-                                            }&nbsp;
-                                        </span>
-                      )}
-                    </p>
-                  );
-                } else {
-                  const display = transliterationLineInput.length > 100 ? `${transliterationLineInput.substr(0, 100)}...` : transliterationLineInput;
-                  return <p key={lineIndex} className="has-text-danger">{display}</p>
-                }
-              }
-            )}
-        </pre>
+        {lines.map((line, lineIndex) =>
+          <p key={lineIndex}>{renderLine(line, maxLength)}</p>
+        )}
+    </pre>
   );
 }

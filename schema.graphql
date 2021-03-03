@@ -52,21 +52,22 @@ enum ManuscriptStatus {
 
 type TransliterationLine {
   lineIndex: Int!
-  transliterationLineInput: String!
+  lineInput: String!
   result: TransliterationLineResult
 }
 
 type TransliterationLineResult {
   lineNumber: Int!
   isAbsolute: Boolean!
-  words: [TransliterationWord!]!
+  words: [Word!]!
 }
 
-type TransliterationWord {
-  content: [TransliterationWordContentUnion!]!
+type Word {
+  input: String!
+  content: [WordContentUnion!]!
 }
 
-union TransliterationWordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent
+union WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | XContent
 
 type StringContent {
   type: StringContentTypeEnum!
@@ -131,6 +132,10 @@ enum MarkType {
   Arbitrary
 }
 
+type XContent {
+  _x: Boolean
+}
+
 type Mutation {
   register(userInput: UserInput!): String
   login(username: String!, password: String!): LoggedInUser
@@ -179,26 +184,28 @@ type ManuscriptMutations {
 
 input TransliterationLineInput {
   lineIndex: Int!
-  transliterationLineInput: String!
+  lineInput: String!
   result: TransliterationLineResultInput
 }
 
 input TransliterationLineResultInput {
   lineNumber: Int!
   isAbsolute: Boolean!
-  words: [TransliterationWordInput!]!
+  words: [WordInput!]!
 }
 
-input TransliterationWordInput {
-  content: [TransliterationWordContentInputUnion!]!
+input WordInput {
+  input: String!
+  content: [WordContentInputUnion!]!
 }
 
-input TransliterationWordContentInputUnion {
+input WordContentInputUnion {
   stringContent: StringContentInput
   numeralContent: NumeralContentInput
   damageContent: DamageType
   correctionContent: CorrectionType
   markContent: MarkContentInput
+  xContent: XContentInput
 }
 
 input StringContentInput {
@@ -214,6 +221,10 @@ input NumeralContentInput {
 input MarkContentInput {
   type: MarkType!
   content: String!
+}
+
+input XContentInput {
+  x: String
 }
 
 enum ManuscriptSide {

@@ -1,56 +1,42 @@
 import React, {useState} from 'react';
 import {useTranslation} from "react-i18next";
-import {TransliterationLineParseResult} from "../transliterationParser/parser"
+import {LineParseResult} from "../transliterationParser/parser"
 import './TransliterationInput.sass';
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {homeUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
 import {
-  ManuscriptLanguage,
-  ManuscriptSide,
   TransliterationLineInput,
   TransliterationLineResultInput,
-  TransliterationWordInput,
   useUploadTransliterationMutation
 } from "../generated/graphql";
-import {TransliterationWordParseResult} from "../model/transliterationTextLineParseResult";
 import {ManuscriptBaseIProps} from "./ManuscriptBase";
-import {saveBlob} from "../saveBlob";
 import {TransliterationSideInput} from "./TransliterationSideInput";
-import {TransliterationSideParseResult} from "../model/transliterationSideParseResult";
+import {SideParseResult} from "../model/sideParseResult";
 
 interface SideParseResultContainer {
-  transliterationOutput?: TransliterationSideParseResult;
+  transliterationOutput?: SideParseResult;
 }
 
 interface IState {
   sideParseResults: SideParseResultContainer[];
-  transliterationOutput?: TransliterationLineParseResult[];
   transliterationIsUpToDate?: boolean;
 }
 
-function convertWordParseResult({wordInput, result}: TransliterationWordParseResult): TransliterationWordInput {
-  if (result) {
-    return result;
-  } else {
-    return {content: [/*wordInput*/]};
-  }
-}
-
 function convertTransliterationTextLine(
-  {transliterationLineInput, result}: TransliterationLineParseResult,
+  {lineInput, result}: LineParseResult,
   lineIndex: number
 ): TransliterationLineInput {
   const content: TransliterationLineResultInput | undefined = result
     ? {
       isAbsolute: result.lineNumberIsAbsolute,
       lineNumber: result.lineNumber,
-      words: result.content.map(convertWordParseResult)
+      words: result.words // .map(convertWordParseResult)
     }
     : undefined;
 
-  return {lineIndex, transliterationLineInput, result: content}
+  return {lineIndex, lineInput, result: content}
 }
 
 export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.Element {
@@ -67,22 +53,9 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
     return <Redirect to={homeUrl}/>;
   }
 
-  function exportAsXml(): void {
-    // FIXME: get ManuscriptSide!
-    const manuscriptSide = /*state.manuscriptSide ||*/ ManuscriptSide.NotIdentifiable;
-    const manuscriptLanguage = ManuscriptLanguage.Hittite;
-
-    const xmlLinesOutput = state.transliterationOutput!
-      .map((line) => line.result ? line.result.xmlify(mainIdentifier, manuscriptSide, manuscriptLanguage) : '')
-      .join('\n\n\n');
-
-    const xmlOutput = '<AOxml>\n' + xmlLinesOutput + '\n</AOxml>';
-
-    saveBlob(xmlOutput, mainIdentifier + '.xml');
-  }
-
   function upload(): void {
-    const values: TransliterationLineInput[] = state.transliterationOutput!
+    const values: TransliterationLineInput[] = state.sideParseResults
+      .flatMap(({transliterationOutput}) => transliterationOutput?.lineResults || [])
       .map<TransliterationLineInput>(convertTransliterationTextLine);
 
     uploadTransliteration({variables: {mainIdentifier, values}})
@@ -100,7 +73,7 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
     })
   }
 
-  function updateTransliteration(index: number, result: TransliterationSideParseResult): void {
+  function updateTransliteration(index: number, result: SideParseResult): void {
     setState((state) => {
       return {
         ...state,
@@ -111,23 +84,18 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
   }
 
   return (
-    <div className="container">
+    <div className="container is-fluid">
       <h1 className="subtitle is-3 has-text-centered">{t('createTransliteration')}</h1>
 
       {state.sideParseResults.map((_, index) =>
-        <TransliterationSideInput key={index} onTransliterationUpdate={(s) => updateTransliteration(index, s)}/>
+        <TransliterationSideInput key={index} mainIdentifier={mainIdentifier}
+                                  onTransliterationUpdate={(s) => updateTransliteration(index, s)}/>
       )}
 
       <div className="columns">
         <div className="column">
           <button className="button is-link is-fullwidth" onClick={addTransliterationSideInput}>
             {t('additionalPage')}
-          </button>
-        </div>
-
-        <div className="column">
-          <button type="button" className="button is-link is-fullwidth" onClick={exportAsXml}>
-            {t('xml_export')}
           </button>
         </div>
         <div className="column">
