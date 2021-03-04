@@ -67,7 +67,7 @@ type Word {
   content: [WordContentUnion!]!
 }
 
-union WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | XContent
+union WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | IllegibleContent
 
 type StringContent {
   type: StringContentTypeEnum!
@@ -132,7 +132,7 @@ enum MarkType {
   Arbitrary
 }
 
-type XContent {
+type IllegibleContent {
   _x: Boolean
 }
 
@@ -205,7 +205,7 @@ input WordContentInputUnion {
   damageContent: DamageType
   correctionContent: CorrectionType
   markContent: MarkContentInput
-  xContent: XContentInput
+  illegibleContent: IllegibleContentInput
 }
 
 input StringContentInput {
@@ -223,7 +223,7 @@ input MarkContentInput {
   content: String!
 }
 
-input XContentInput {
+input IllegibleContentInput {
   x: String
 }
 

@@ -8,20 +8,21 @@ import {getSymbolForDamageType} from "../model/damages";
 // Word content
 
 function renderWordContent(content: WordContentFragment): JSX.Element {
-  if (content.__typename === 'StringContent') {
-    return <span className={classForStringContentType(content.stringContentType)}>{content.content}</span>;
-  } else if (content.__typename === 'CorrectionContent') {
-    return <sup className="correction">{symbolForCorrection(content.correctionType)}</sup>;
-  } else if (content.__typename === 'DamageContent') {
-    return <span>{getSymbolForDamageType(content.damageType)}</span>;
-  } else if (content.__typename === 'NumeralContent') {
-    return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
-  } else if (content.__typename === 'MarkContent') {
-    return <span>TODO: Mark Content...</span>
-  } else if (content.__typename === 'XContent') {
-    return <span>x</span>;
-  } else {
-    return <></>;
+  switch (content.__typename) {
+    case 'StringContent':
+      return <span className={classForStringContentType(content.stringContentType)}>{content.content}</span>;
+    case "CorrectionContent":
+      return <sup className="correction">{symbolForCorrection(content.correctionType)}</sup>;
+    case "DamageContent":
+      return <span>{getSymbolForDamageType(content.damageType)}</span>;
+    case "IllegibleContent":
+      return <span>x</span>;
+    case "MarkContent":
+      return <span>TODO: Mark Content...</span>
+    case "NumeralContent":
+      return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
+    default:
+      return <></>;
   }
 }
 
@@ -45,9 +46,7 @@ function renderLine({lineInput, result}: LineFragment, maxLength: number): JSX.E
     const ln = lineNumber.toString().padStart(maxLength, ' ') + (isAbsolute ? '' : '\'');
 
     return <>
-      <sup>{ln}</sup>
-      &nbsp;
-      {words.map((word, index) => <span key={index}>{renderWord(word)}&nbsp;</span>)}
+      <sup>{ln}</sup>&nbsp;{words.map((word) => <span key={word.input}>{renderWord(word)}&nbsp;</span>)}
     </>;
   } else {
     return <span className="has-text-danger">

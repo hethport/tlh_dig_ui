@@ -93,7 +93,7 @@ export type Word = {
   content: Array<WordContentUnion>;
 };
 
-export type WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | XContent;
+export type WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | IllegibleContent;
 
 export type StringContent = {
   __typename?: 'StringContent';
@@ -163,8 +163,8 @@ export enum MarkType {
   Arbitrary = 'Arbitrary'
 }
 
-export type XContent = {
-  __typename?: 'XContent';
+export type IllegibleContent = {
+  __typename?: 'IllegibleContent';
   _x?: Maybe<Scalars['Boolean']>;
 };
 
@@ -267,7 +267,7 @@ export type WordContentInputUnion = {
   damageContent?: Maybe<DamageType>;
   correctionContent?: Maybe<CorrectionType>;
   markContent?: Maybe<MarkContentInput>;
-  xContent?: Maybe<XContentInput>;
+  illegibleContent?: Maybe<IllegibleContentInput>;
 };
 
 export type StringContentInput = {
@@ -285,7 +285,7 @@ export type MarkContentInput = {
   content: Scalars['String'];
 };
 
-export type XContentInput = {
+export type IllegibleContentInput = {
   x?: Maybe<Scalars['String']>;
 };
 
@@ -430,9 +430,9 @@ type WordContent_NumeralContent_Fragment = (
 
 type WordContent_MarkContent_Fragment = { __typename?: 'MarkContent' };
 
-type WordContent_XContent_Fragment = { __typename?: 'XContent' };
+type WordContent_IllegibleContent_Fragment = { __typename?: 'IllegibleContent' };
 
-export type WordContentFragment = WordContent_StringContent_Fragment | WordContent_DamageContent_Fragment | WordContent_CorrectionContent_Fragment | WordContent_NumeralContent_Fragment | WordContent_MarkContent_Fragment | WordContent_XContent_Fragment;
+export type WordContentFragment = WordContent_StringContent_Fragment | WordContent_DamageContent_Fragment | WordContent_CorrectionContent_Fragment | WordContent_NumeralContent_Fragment | WordContent_MarkContent_Fragment | WordContent_IllegibleContent_Fragment;
 
 export type WordFragment = (
   { __typename?: 'Word' }
@@ -453,8 +453,8 @@ export type WordFragment = (
     { __typename?: 'MarkContent' }
     & WordContent_MarkContent_Fragment
   ) | (
-    { __typename?: 'XContent' }
-    & WordContent_XContent_Fragment
+    { __typename?: 'IllegibleContent' }
+    & WordContent_IllegibleContent_Fragment
   )> }
 );
 

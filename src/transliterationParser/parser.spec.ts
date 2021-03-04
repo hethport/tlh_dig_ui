@@ -11,6 +11,7 @@ import {
   ds,
   el,
   hittiteContentUnion as ht,
+  illegibleContent,
   le,
   ls,
   markContentUnion as mc,
@@ -24,8 +25,7 @@ import {
   supS,
   uc,
   ue,
-  us,
-  xContent
+  us
 } from './testHelpers';
 import {MarkType} from '../generated/graphql';
 
@@ -46,7 +46,7 @@ describe('The transliteration parser', () => {
           // <w><sGr>AN</sGr><aGr>-E</aGr></w>
           w('AN-E', sg('AN'), ag('-E')),
           // x
-          w('x', xContent),
+          w('x', illegibleContent),
           // <w><sGr>GUₓ.MAḪ</sGr></w>
           w('GUx.MAḪ', sg('GUₓ.MAḪ')),
           // <w>pa-a-i</w>
@@ -117,11 +117,11 @@ describe('The transliteration parser', () => {
           // <w><sGr>...</sGr></w>
           w('...', sg('...')),
           // <w>mdu-ut-ḫa-l<del_fin/>i-ia-aš</w>
-          w('mdu-ut-ḫa-l]i-ia-aš', ht('mdu-ut-ḫa-l'), ds, ht('i-ia-aš')),
+          w('mdu-ut-ḫa-l]i-ia-aš', ht('mdu-ut-ḫa-l'), de, ht('i-ia-aš')),
           // <w><sGr>GAL</sGr></w>
           w('GAL', sg('GAL')),
           // <w><sGr>ME</sGr><aGr>-ŠE-DI</aGr></w>
-          w('ME-ŠE-DI', sg('ME'), ag('ŠE-DI'))
+          w('ME-ŠE-DI', sg('ME'), ag('-ŠE-DI'))
         ])
       );
 
@@ -144,8 +144,8 @@ describe('The transliteration parser', () => {
         new TransliterationTextLineParseResult(6, false, [
           // <w><del_in/></w>
           w('[', ds),
-        // <w><sGr>...</sGr></w>
-        w('...', sg('...')),
+          // <w><sGr>...</sGr></w>
+          w('...', sg('...')),
           // <w>pa-ra-a<del_fin/></w>
           w('pa-ra-a]', ht('pa-ra-a'), de),
           // <w>da-a-aš</w>
@@ -165,9 +165,9 @@ describe('The transliteration parser', () => {
           // <w><del_fin/></w>
           w(']', de),
           // x
-          w('x'),
+          w('x', illegibleContent),
           // <w><d>m</d>mur-ši-<sGr>DINGIR</sGr><aGr>-LIM</aGr></w>
-          w('°m°mur-ši--DINGIR-LIM', dt('m'), ht('mur-ši'), sg('DINGIR'), ag('LIM')),
+          w('°m°mur-ši--DINGIR-LIM', dt('m'), ht('mur-ši'), sg('DINGIR'), ag('-LIM')),
           // <w><d>MUNUS</d><sGr>ŠU.GI</sGr></w>
           w('°MUNUS°ŠU.GI', dt('MUNUS'), sg('ŠU.GI')),
           // <w><sGr>LÚ</sGr><d>MEŠ</d></w>
@@ -287,9 +287,9 @@ describe('The transliteration parser', () => {
       .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(1, false, [
           w('[(x)]', ds, us, ht('x'), ue, de),
-          w('x', xContent),
+          w('x', illegibleContent),
           w('⸢zi⸣', ls, ht('zi'), le),
-          w('x', xContent),
+          w('x', illegibleContent),
           w('[', ds)
         ])
       );
@@ -323,7 +323,7 @@ describe('The transliteration parser', () => {
       .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(5, false, [
           w('[k]u-it-ma-an-aš-ma', ds, ht('k'), de, ht('u-it-ma-an-aš-ma')),
-          w('x', xContent),
+          w('x', illegibleContent),
           w('[', ds)
         ])
       );
@@ -346,17 +346,17 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("8' # [da?]-⸢a?⸣ nu-uš-ši x ["))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(8, false, [
           w('[da?]-⸢a?⸣', ds, ht('da'), uc, de, ht('-'), ls, ht('a'), uc, le),
           w('nu-uš-ši', ht('nu-uš-ši')),
-          w('x', xContent),
+          w('x', illegibleContent),
           w('[', ds)
         ])
       );
 
     expect(parseTransliterationLine("9' # [nu-u]š-ši im-ma(-)["))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(9, false, [
           w('[nu-u]š-ši', ds, ht('nu-u'), de, ht('š-ši')),
           w('im-ma(-)[', ht('im-ma'), us, ht('-'), ue, ds)
@@ -364,7 +364,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(10, false, [
           w('[x-x]-TE°MEŠ°', ds, ht('x-x'), de, ag('-TE'), dt('MEŠ')),
           w('⸢e⸣-[', ls, ht('e'), le, ht('-'), ds)
@@ -372,7 +372,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("11' # [x (x)]-ri-⸢ia⸣-[ ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(11, false, [
           w('[x', ds, ht('x')),
           w('(x)]-ri-⸢ia⸣-[', us, ht('x'), ue, de, ht('-ri-'), ls, ht('ia'), le, ht('-'), ds),
@@ -381,28 +381,28 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("12' # [x x] x ["))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(12, false, [
           w('[x', ds, ht('x')),
           w('x]', ht('x'), de),
-          w('x', xContent),
+          w('x', illegibleContent),
           w('[', ds)
         ])
       );
 
     expect(parseTransliterationLine("1' # [ … ] x ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(1, false, [
           w('[', ds),
           w('…', el),
           w(']', de),
-          w('x', xContent),
+          w('x', illegibleContent),
           w('¬¬¬', pe)
         ])
       );
 
     expect(parseTransliterationLine("2' # [ … °MUNUS.MEŠ°zi-i]n-tu-ḫi-e-eš"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(2, false, [
           w('[', ds),
           w('…', el),
@@ -422,7 +422,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("4' # [ … °G]IŠ°BANŠUR °GIŠ°BANŠUR an-da"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(4, false, [
           w('[', ds),
           w('…', el),
@@ -433,7 +433,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("5' # [ … ] ⸢6⸣ NINDA.GUR₄.RA°ḪI.A° ki-an-da"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(5, false, [
           w('[', ds),
           w('…', el),
@@ -445,7 +445,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("6' # [ … -t]i-ia še-er pé-ra-an da-a-i ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(6, false, [
           w('[', ds),
           w('…', el),
@@ -458,7 +458,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("7' # [ … pé-r]a-an ḫu-u-wa-a-i"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(7, false, [
           w('[', ds),
           w('…', el),
@@ -468,7 +468,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("8' # [ … °MUNUS.MEŠ°zi]-⸢in-tu-ḫi⸣-e-eš an-da {Rasur}"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(8, false, [
           w('[', ds),
           w('…', el),
@@ -479,7 +479,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("9' # [ú-wa-an-zi … k]i?-an-ta ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(9, false, [
           w('[ú-wa-an-zi', ds, ht('ú-wa-an-zi')),
           w('…', el),
@@ -489,7 +489,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("10' # [ … ] x-zi ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(10, false, [
           w('[', ds),
           w('…', el),
@@ -500,7 +500,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("11' # [ … ]-da"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(11, false, [
           w('[', ds),
           w('…', el),
@@ -509,7 +509,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("12' # [ … °LÚ°ALAM.Z]U₉"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(12, false, [
           w('[', ds),
           w('…', el),
@@ -518,7 +518,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("13' # [ … -z]i ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(13, false, [
           w('[', ds),
           w('…', el),
@@ -532,15 +532,15 @@ describe('The transliteration parser', () => {
         new TransliterationTextLineParseResult(1, false, [
           w('[x', ds, ht('x')),
           w('x]', ht('x'), de),
-          w('x', xContent),
-          w('x', xContent),
+          w('x', illegibleContent),
+          w('x', illegibleContent),
           w('[', ds),
           w('¬¬¬', pe)
         ])
       );
 
     expect(parseTransliterationLine("2' # LUGAL-uš GUB-[aš"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(2, false, [
           w('LUGAL-uš', sg('LUGAL'), ht('-uš')),
           w('GUB-[aš', sg('GUB'), ht('-'), ds, ht('aš'))
@@ -548,7 +548,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("3' # °D°UTU °D°U ⸢°D°⸣["))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(3, false, [
           w('°D°UTU', dt('D'), sg('UTU')),
           w('°D°U', dt('D'), sg('U')),
@@ -557,7 +557,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("4' # °D°zi-in-t[u-ḫi ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(4, false, [
           w('°D°zi-in-t[u-ḫi', dt('D'), ht('zi-in-t'), ds, ht('u-ḫi')),
           w('¬¬¬', pe)
@@ -565,7 +565,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("5' # °LÚ°SAGI.A 1 NINDA.G[UR₄.RA _EM-ṢA]"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(5, false, [
           w('°LÚ°SAGI.A', dt('LÚ'), sg('SAGI.A')),
           w('1', nc('1')),
@@ -575,7 +575,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("6' # LUGAL-i pa-a-i LUGAL-u[š pár-ši-ia] ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(6, false, [
           w('LUGAL-i', sg('LUGAL'), ht('-i')),
           w('pa-a-i', ht('pa-a-i')),
@@ -586,7 +586,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("7' # ta-aš-ta °MUNUS.MEŠ°zi-[in-tu-ḫi-e-eš"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(7, false, [
           w('ta-aš-ta', ht('ta-aš-ta')),
           w('°MUNUS.MEŠ°zi-[in-tu-ḫi-e-eš', dt('MUNUS.MEŠ'), ht('zi-'), ds, ht('in-tu-ḫi-e-eš'))
@@ -594,7 +594,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("8' # pa-ra-a [ ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(8, false, [
           w('pa-ra-a', ht('pa-ra-a')),
           w('[', ds),
@@ -603,7 +603,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("9' # pár-aš-na-a-u-<aš>-kán °LÚ°SAG[I.A ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(9, false, [
           w('pár-aš-na-a-u-<aš>-kán', ht('pár-aš-na-a-u-'), supS, ht('aš'), supE, ht('-kán')),
           w('°LÚ°SAG[I.A', dt('LÚ'), sg('SAG'), ds, sg('I.A')),
@@ -612,7 +612,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("10' # LUGAL-uš TUŠ-aš <°D°>iz-zi-i[š?-ta?-nu?"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(10, false, [
           w('LUGAL-uš', sg('LUGAL'), ht('-uš')),
           w('TUŠ-aš', sg('TUŠ'), ht('-aš')),
@@ -621,7 +621,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("11' # e-ku-zi GIŠ ⸢°D°⸣[INANNA ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(11, false, [
           w('e-ku-zi', ht('e-ku-zi')),
           w('GIŠ', sg('GIŠ')),
@@ -631,7 +631,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("12' # °LÚ°SAGI.A [1 NINDA.GUR₄.RA EM-ṢA]"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(12, false, [
           w('°LÚ°SAGI.A', dt('LÚ'), sg('SAGI.A')),
           w('[1', ds, nc('1')),
@@ -641,7 +641,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("13' # LUGAL-i pa-a-i [LUGAL-uš pár-ši-ia] ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(13, false, [
           w('LUGAL-i', sg('LUGAL'), ht('-i')),
           w('pa-a-i', ht('pa-a-i')),
@@ -652,7 +652,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("14' # GAL DUMU.MEŠ ⸢É⸣.[GAL"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(14, false, [
           w('GAL', sg('GAL')),
           w('DUMU.MEŠ', sg('DUMU.MEŠ')),
@@ -661,7 +661,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("15' # °LÚ.MEŠ°GA[LA ¬¬¬"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(15, false, [
           w('°LÚ.MEŠ°GA[LA', dt('LÚ.MEŠ'), sg('GA'), ds, sg('LA')),
           w('¬¬¬', pe)
@@ -669,14 +669,14 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("16' # ⸢na-aš⸣-k[án"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(16, false, [
           w('⸢na-aš⸣-k[án', ls, ht('na-aš'), le, ht('-k'), ds, ht('án'))
         ])
       );
 
     expect(parseTransliterationLine("1 # a-na ša ki-ma | i-a-tí | ù! ku-li"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(1, true, [
           w('a-na', ht('a-na')),
           w('ša', ht('ša')),
@@ -690,7 +690,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("2 # a-na ku-li | qí-bi₄-ma | um-ma"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(2, true, [
           w('a-na', ht('a-na')),
           w('ku-li', ht('ku-li')),
@@ -702,7 +702,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("3 # a-šùr-e-na-ma 2 MA.NA 2 ⅔ GÍN"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(3, true, [
           w('a-šùr-e-na-ma', ht('a-šùr-e-na-ma')),
           w('2', nc('2')),
@@ -714,7 +714,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("4 # KÙ.BABBAR | ša li-bi₄-kà | ša a-na MU 1.[ŠÈ]"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(4, true, [
           w('KÙ.BABBAR', sg('KÙ.BABBAR')),
           w('|'),
@@ -729,7 +729,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("5 # ša-qá-lìm | qá-bi₄-a-tí-ni"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(5, true, [
           w('ša-qá-lìm', ht('ša-qá-lìm')),
           w('|'),
@@ -738,7 +738,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("6 # ITI 1°KAM° | ku-zal-li | li-mu-um"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(6, true, [
           w('ITI', sg('ITI')),
           w('1°KAM°', nc('1'), dt('KAM')),
@@ -750,7 +750,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("7 # am-ri-iš₈-tár DUMU ma-num-ba-lúm-a-šùr"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(7, true, [
           w('am-ri-iš₈-tár', ht('am-ri-iš'), nc('8', true), ht('-tár')),
           w('DUMU', sg('DUMU')),
@@ -759,7 +759,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("8 # i-na ṭup-pì-kà | a-šùr-mu-da-mì-i[q]"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(8, true, [
           w('i-na', ht('i-na')),
           w('ṭup-pì-kà', ht('ṭup-pì-kà')),
@@ -769,7 +769,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("9 # DUMU sá-ak-lá-nim | ⸢ú e⸣-dí-na-a"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(9, true, [
           w('DUMU', sg('DUMU')),
           w('sá-ak-lá-nim', ht('sá-ak-lá-nim')),
@@ -780,7 +780,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("10 # [DU]MU a-a-a | kà-an-ku-ni 1 GÍN KÙ.BABBAR"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(10, true, [
           w('[DU]MU', ds, sg('DU'), de, sg('MU')),
           w('a-a-a', ht('a-a-a')),
@@ -793,7 +793,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("11 # lá tù-qá-ri-ba-am"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(11, true, [
           w('lá', ht('lá')),
           w('tù-qá-ri-ba-am', ht('tù-qá-ri-ba-am'))
@@ -801,7 +801,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("12 # i-na °d°UTU-ši na-áš-pì-ir-⸢tí⸣"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(12, true, [
           w('i-na', ht('i-na')),
           w('°d°UTU-ši', ml('d'), sg('UTU'), ht('-ši')),
@@ -810,7 +810,7 @@ describe('The transliteration parser', () => {
       );
 
     expect(parseTransliterationLine("13 # ta-ša-me-{Rasur}⸢ú⸣"))
-      .toEqual <TransliterationTextLineParseResult>(
+      .toEqual<TransliterationTextLineParseResult>(
         new TransliterationTextLineParseResult(13, true, [
           w('ta-ša-me-{Rasur}⸢ú⸣')
         ])

@@ -6,7 +6,14 @@ import {LineParseResult} from "../transliterationParser/parser";
 import {WordContentInputUnion, WordInput} from "../generated/graphql";
 
 function renderWordContent(
-  {numeralContent, correctionContent, damageContent, markContent, stringContent, xContent}: WordContentInputUnion
+  {
+    numeralContent,
+    correctionContent,
+    damageContent,
+    markContent,
+    stringContent,
+    illegibleContent
+  }: WordContentInputUnion
 ): JSX.Element {
   if (stringContent) {
     return <span className={classForStringContentType(stringContent.type)}>{stringContent.content}</span>;
@@ -18,7 +25,7 @@ function renderWordContent(
     return <span className="has-text-warning">TODO: {markContent.content}!</span>
   } else if (numeralContent) {
     return numeralContent.isSubscript ? <sub>{numeralContent.content}</sub> : <span>{numeralContent.content}</span>;
-  } else if (xContent) {
+  } else if (illegibleContent) {
     return <span>'x'</span>;
   } else {
     return <div>TODO!</div>;

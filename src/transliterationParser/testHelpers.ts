@@ -3,7 +3,7 @@ import {akkadogramm, determinativ, hittite, materLectionis, sumerogramm} from ".
 import {markContent} from "../model/markContent";
 import {numeralContent} from "./parser";
 
-export const xContent: WordContentInputUnion = {xContent: {}};
+export const illegibleContent: WordContentInputUnion = {illegibleContent: {}};
 
 export const de: WordContentInputUnion = {damageContent: DamageType.DeletionEnd};
 export const ds: WordContentInputUnion = {damageContent: DamageType.DeletionStart};
@@ -27,25 +27,28 @@ export const K = MarkType.Colon;
 export const F = MarkType.FootNote
 
 
-export function hittiteContentUnion(content: string): WordContentInputUnion {
-  return {stringContent: hittite(content)}
-}
-
 export function sumerogrammContentUnion(content: string): WordContentInputUnion {
   return {stringContent: sumerogramm(content)};
-}
-
-export function determinativContentUnion(content: string): WordContentInputUnion {
-  return {stringContent: determinativ(content)};
 }
 
 export function akkadogrammContentUnion(content: string): WordContentInputUnion {
   return {stringContent: akkadogramm(content)};
 }
 
+
+export function determinativContentUnion(content: string): WordContentInputUnion {
+  return {stringContent: determinativ(content)};
+}
+
 export function materLectionisContentUnion(content: string): WordContentInputUnion {
   return {stringContent: materLectionis(content)};
 }
+
+
+export function hittiteContentUnion(content: string): WordContentInputUnion {
+  return {stringContent: hittite(content)}
+}
+
 
 export function markContentUnion(markType: MarkType, content: string): WordContentInputUnion {
   return {markContent: markContent(markType, content)};

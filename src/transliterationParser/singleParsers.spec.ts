@@ -15,9 +15,13 @@ import {
   materLectionisContentUnion,
   sumerogrammContentUnion
 } from "./testHelpers";
+import {alt, oneOf, regexp} from "parsimmon";
+import {upperTextRegex} from "./singleParsers";
 
 describe('hittite', () => {
   const parser = transliteration.hittite;
+
+  expect(alt(regexp(upperTextRegex), oneOf('-ₓ')).tryParse('ₓ')).toEqual('ₓ');
 
   it('should parser hittite', () => {
     expect(parser.tryParse('abc')).toEqual(ht('abc'));
@@ -31,11 +35,13 @@ describe('akkadogramm', () => {
   it('should parse akkadogramms starting with _', () => {
     expect(parser.tryParse('_ABC')).toEqual(ag('ABC'));
     expect(parser.tryParse('_LUGAL')).toEqual(ag('LUGAL'));
+    expect(parser.tryParse('_LUGₓAL')).toEqual(ag('LUGₓAL'));
   });
 
   it('should parse akkadogramms starting with -', () => {
     expect(parser.tryParse('-ABC')).toEqual(ag('-ABC'));
     expect(parser.tryParse('-LUGAL')).toEqual(ag('-LUGAL'));
+    expect(parser.tryParse('-LUGₓAL')).toEqual(ag('-LUGₓAL'));
   });
 });
 
@@ -52,6 +58,8 @@ describe('sumerogramm', () => {
   it('should parse sumerogramms starting with --', () => {
     expect(parser.tryParse('--ABC')).toEqual(sg('ABC'));
     expect(parser.tryParse('--LUGAL')).toEqual(sg('LUGAL'));
+
+    expect(parser.tryParse('--GUₓ.MAḪ')).toEqual(sg('GUₓ.MAḪ'))
   });
 });
 
