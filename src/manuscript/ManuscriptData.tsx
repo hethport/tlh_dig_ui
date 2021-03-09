@@ -4,10 +4,10 @@ import {Link} from "react-router-dom";
 import {LoggedInUserFragment, ManuscriptIdentifierFragment} from "../generated/graphql";
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
-import {Transliteration} from "./Transliteration";
 import {getNameForPalaeoClassification} from "../palaeoClassification";
 import {createTransliterationUrl, ManuscriptBaseIProps, uploadPicturesUrl} from "./ManuscriptBase";
 import {PicturesBlock} from "./PicturesBlock";
+import {Transliteration} from "./TransliterationLineResult";
 
 export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element {
 

@@ -1,8 +1,7 @@
 import {transliteration} from "./parser";
-import {de} from "./testHelpers";
+import {de, determinativ as dt, numeralContent as nc} from "./testHelpers";
 import {sumerogramm} from "../model/multiStringContent";
-import {numeralContent as nc, WordContent} from "../model/oldTransliteration";
-import {determinativ as dt} from "../model/stringContent";
+import {WordContent} from "../model/oldTransliteration";
 import {inscribedLetter} from "../model/inscribedLetter";
 
 describe('wordParser', () => {

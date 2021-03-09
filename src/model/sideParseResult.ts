@@ -1,6 +1,6 @@
 import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptSide} from "./manuscriptProperties/manuscriptProperties";
-import {LineParseResult} from "../transliterationParser/parser";
 import {ManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
+import {TransliterationLine} from "./oldTransliteration";
 
 interface SideBasics {
   side: ManuscriptSide;
@@ -14,5 +14,5 @@ export interface RawSideInput extends SideBasics {
 }
 
 export interface SideParseResult extends SideBasics {
-  lineResults: LineParseResult[];
+  lineResults: TransliterationLine[];
 }

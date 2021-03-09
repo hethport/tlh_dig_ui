@@ -10,11 +10,12 @@ import {
 } from "../model/manuscriptProperties/manuscriptProperties";
 import {allManuscriptLanguages, ManuscriptLanguage} from "../model/manuscriptProperties/manuscriptLanugage";
 import {useTranslation} from "react-i18next";
-import {LineParseResult, parseTransliterationLine} from "../transliterationParser/parser";
+import {parseTransliterationLine} from "../transliterationParser/parser";
 import {RawSideInput, SideParseResult} from "../model/sideParseResult";
 import {Field, Form, Formik} from "formik";
 import {BulmaSelect} from "../forms/BulmaFields";
-import {TransliterationLineParseResultsComponent} from "./TransliterationLineResult";
+import {Transliteration} from "./TransliterationLineResult";
+import {TransliterationLine} from "../model/oldTransliteration";
 
 interface IProps {
   mainIdentifier: string;
@@ -26,7 +27,7 @@ interface IState {
   sideParseResult?: SideParseResult;
 }
 
-function parseLine(lineInput: string): LineParseResult {
+function parseLine(lineInput: string): TransliterationLine {
   return {lineInput, result: parseTransliterationLine(lineInput)};
 }
 
@@ -117,7 +118,7 @@ export function TransliterationSideInput({mainIdentifier, onTransliterationUpdat
                       </ul>
                     </div>
                     {state.activeTab === 'rendered' &&
-                    <TransliterationLineParseResultsComponent lines={state.sideParseResult.lineResults}/>}
+                    <Transliteration lines={state.sideParseResult.lineResults}/>}
                     {state.activeTab === 'asXml' &&
                     <div className="box">
                       {exportAsXml(state.sideParseResult).map((line, index) => <p key={index}>{line}</p>)}

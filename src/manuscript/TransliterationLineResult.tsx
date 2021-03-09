@@ -1,7 +1,6 @@
 import React from "react";
 import {StringContent} from "../model/stringContent";
-import {LineParseResult} from "../transliterationParser/parser";
-import {NumeralContent, Word, WordContent} from "../model/oldTransliteration";
+import {NumeralContent, TransliterationLine, Word, WordContent} from "../model/oldTransliteration";
 import {MarkContent} from "../model/markContent";
 import {DamageContent, getSymbolForDamageType} from "../model/damages";
 import {CorrectionContent, symbolForCorrection} from "../model/corrections";
@@ -34,7 +33,7 @@ function renderWordContent(content: WordContent): JSX.Element {
 
 // Single word
 
-function renderWordInput({input, content}: Word): JSX.Element {
+export function renderWord({input, content}: Word): JSX.Element {
   return <>
     {content.length > 0
       ? content.map((c, i) => <span className="hittie" key={i}>{renderWordContent(c)}</span>)
@@ -44,7 +43,7 @@ function renderWordInput({input, content}: Word): JSX.Element {
 
 // Single line
 
-function renderLine({lineInput, result}: LineParseResult, maxLength: number): JSX.Element {
+export function renderLine({lineInput, result}: TransliterationLine, maxLength: number): JSX.Element {
   if (result) {
     const {lineNumber, lineNumberIsAbsolute, words} = result;
 
@@ -53,7 +52,7 @@ function renderLine({lineInput, result}: LineParseResult, maxLength: number): JS
     return <>
       <sup>{ln}</sup>
       &nbsp;
-      {words.map((wordInput, index) => <span key={index}>{renderWordInput(wordInput)}&nbsp;</span>)}
+      {words.map((wordInput, index) => <span key={index}>{renderWord(wordInput)}&nbsp;</span>)}
     </>;
   } else {
     return (
@@ -67,10 +66,10 @@ function renderLine({lineInput, result}: LineParseResult, maxLength: number): JS
 // All lines
 
 interface IProps {
-  lines: LineParseResult[];
+  lines: TransliterationLine[];
 }
 
-export function TransliterationLineParseResultsComponent({lines}: IProps): JSX.Element {
+export function Transliteration({lines}: IProps): JSX.Element {
 
   const maxLineNumber: number = lines
     .flatMap((tlr) => tlr.result ? [tlr.result.lineNumber] : [])

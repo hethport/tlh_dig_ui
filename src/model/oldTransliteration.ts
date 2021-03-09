@@ -1,11 +1,17 @@
-import {Maybe} from "../generated/graphql";
 import {StringContent} from "./stringContent";
 import {MarkContent} from "./markContent";
 import {CorrectionContent} from "./corrections";
 import {DamageContent} from "./damages";
 import {MultiStringContent} from "./multiStringContent";
 import {InscribedLetter} from "./inscribedLetter";
-import {TransliterationTextLineParseResult} from "./transliterationTextLineParseResult";
+import {
+  getXmlNameForManuscriptSide,
+  ManuscriptColumn,
+  ManuscriptColumnModifier,
+  ManuscriptSide
+} from "./manuscriptProperties/manuscriptProperties";
+import {getAbbreviationForManuscriptLanguage, ManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
+import {string} from "parsimmon";
 
 // Word Content
 
@@ -25,19 +31,17 @@ export type WordContent = MultiStringContent | SimpleWordContent;
 
 // Numeral content
 
+const charCodeZero = '0'.charCodeAt(0);
+const charCodeSubscriptZero = '₀'.charCodeAt(0);
+
 export class NumeralContent {
-  constructor(public isSubscript: boolean, public  content: string) {
+  constructor(public content: string, public isSubscript: boolean) {
+  }
+
+  private digitToSubscript(): string {
+    return String.fromCharCode(charCodeSubscriptZero + (this.content.charCodeAt(0) - charCodeZero));
   }
 }
-
-export function numeralContent(content: string, isSubscript: boolean = false): NumeralContent {
-  return new NumeralContent(isSubscript, content);
-}
-
-export function wordContentIsMultiStringContent(wordContent: WordContent): wordContent is MultiStringContent {
-  return wordContent instanceof MultiStringContent;
-}
-
 
 function getContent(twc: WordContent): string {
   if (typeof twc === 'string') {
@@ -92,13 +96,24 @@ export class Word {
   }
 }
 
-export function transliterationWord(input: string, ...content: WordContent[]): Word {
-  return new Word(input, content);
-}
 
 // Line
 
+export class LineParseResult {
+  constructor(public lineNumber: number, public lineNumberIsAbsolute: boolean = false, public words: Word[]) {
+  }
+
+  xmlify(textId: string, side: ManuscriptSide, language: ManuscriptLanguage, column: ManuscriptColumn, columnModifier: ManuscriptColumnModifier, paragraphNumber: number = 1): string {
+    // FIXME: paragraphNumber!
+    const sideName = getXmlNameForManuscriptSide(side);
+    const lang = getAbbreviationForManuscriptLanguage(language);
+
+    const x = `<lb txtid="${textId}" lnr="${sideName} ${paragraphNumber} ${this.lineNumber}" lg="${lang}"/>\n\n`
+    return x + this.words.map((tw) => tw.xmlify()).join(' ');
+  }
+}
+
 export interface TransliterationLine {
   lineInput: string;
-  result?: Maybe<TransliterationTextLineParseResult>;
+  result?: LineParseResult;
 }

@@ -1,5 +1,5 @@
 import {transliteration} from "./parser";
-import {determinativ, determinativ as dt, materLectionis, materLectionis as ml,} from "../model/stringContent";
+import {determinativ, determinativ as dt, materLectionis, materLectionis as ml,} from "./testHelpers";
 import {akkadogramm, sumerogramm} from "../model/multiStringContent";
 import {markContent as mc, MarkType} from '../model/markContent';
 import {inscribedLetter} from "../model/inscribedLetter";

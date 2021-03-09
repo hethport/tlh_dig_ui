@@ -1,7 +1,7 @@
 import {MarkType} from "../model/markContent";
 import {DamageContent, DamageType} from "../model/damages";
 import {CorrectionContent, CorrectionType} from "../model/corrections";
-import {WordContent} from "../model/oldTransliteration";
+import {NumeralContent, Word, WordContent} from "../model/oldTransliteration";
 import {Determinativ, MaterLectionis, StringContent} from "../model/stringContent";
 
 export const illegibleContent: WordContent = {};
@@ -33,4 +33,12 @@ export function determinativ(content: string): StringContent {
 
 export function materLectionis(content: string): StringContent {
   return new MaterLectionis(content);
+}
+
+export function numeralContent(content: string, isSubscript: boolean = false): NumeralContent {
+  return new NumeralContent(content, isSubscript);
+}
+
+export function transliterationWord(input: string, ...content: WordContent[]): Word {
+  return new Word(input, content);
 }

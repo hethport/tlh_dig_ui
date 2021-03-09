@@ -12,11 +12,10 @@ import {
   string,
   TypedLanguage
 } from "parsimmon";
-import {TransliterationTextLineParseResult} from "../model/transliterationTextLineParseResult";
 import {
   ContentOfMultiStringContent,
   IllegibleContent,
-  numeralContent,
+  LineParseResult,
   NumeralContent,
   SimpleWordContent,
   Word,
@@ -31,21 +30,7 @@ import {akkadogramm, MultiStringContent, sumerogramm} from "../model/multiString
 import {upperTextRegex} from "./parserHelpers";
 import {inscribedLetter, InscribedLetter} from "../model/inscribedLetter";
 
-// helper functions
-
-const charCodeZero = '0'.charCodeAt(0);
-const charCodeSubscriptZero = '₀'.charCodeAt(0);
-
-function digitToSubscript(digit: string): string {
-  return String.fromCharCode(charCodeSubscriptZero + (digit.charCodeAt(0) - charCodeZero));
-}
-
 // Other
-
-export interface LineParseResult {
-  lineInput: string;
-  result?: TransliterationTextLineParseResult;
-}
 
 type LanguageSpec = {
   // String contents
@@ -120,9 +105,9 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     .map(([_oa, markType, _colon, _ws, content, _ca]) => markContent(markType, content)),
 
   numeralContent: () => regexp(/\d+/)
-    .map((result) => numeralContent(result, false)),
+    .map((result) => new NumeralContent(result, false)),
   subscriptNumeralContent: () => regexp(/[₀₁₂₃₄₅₆₇₈₉]+/)
-    .map((result) => numeralContent((result.codePointAt(0)! % 10).toString(), true)),
+    .map((result) => new NumeralContent((result.codePointAt(0)! % 10).toString(), true)),
 
   inscribedLetter: () => seq(string('x'), regexp(upperTextRegex)).map(([_x, result]) => inscribedLetter(result)),
 
@@ -179,9 +164,12 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
 
 const spaceNotInAccoladesRegex = /\s+(?![^{]*})/;
 
-export function parseTransliterationLine(transliterationLineInput: string): TransliterationTextLineParseResult | undefined {
+export function parseTransliterationLine(transliterationLineInput: string): LineParseResult | undefined {
+  // step 0: trim line content
+  const trimmedLine = transliterationLineInput.trim();
+
   // step 1: extract line number and actual content
-  const linePreParsingResult: ParsimmonResult<LinePreParseResult> = lineParser.parse(transliterationLineInput);
+  const linePreParsingResult: ParsimmonResult<LinePreParseResult> = lineParser.parse(trimmedLine);
 
   if (!linePreParsingResult.status) {
     return undefined;
@@ -213,5 +201,5 @@ export function parseTransliterationLine(transliterationLineInput: string): Tran
   });
 
 
-  return new TransliterationTextLineParseResult(lineNumber, lineNumberIsAbsolute, newContent);
+  return new LineParseResult(lineNumber, lineNumberIsAbsolute, newContent);
 }
