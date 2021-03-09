@@ -1,21 +1,21 @@
-import {xmlifyStringContentInput} from './stringContent';
+import {xmlifyStringContent} from './stringContent';
 import {xmlifyDamage} from "./damages";
 import {
+  getXmlNameForManuscriptSide,
   ManuscriptColumn,
   ManuscriptColumnModifier,
-  ManuscriptLanguage,
-  ManuscriptSide,
-  WordContentInputUnion,
-  WordInput
-} from "../generated/graphql";
-import {getXmlNameForManuscriptSide} from "./manuscriptProperties/manuscriptProperties";
-import {getAbbreviationForManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
+  ManuscriptSide
+} from "./manuscriptProperties/manuscriptProperties";
+import {getAbbreviationForManuscriptLanguage, ManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
+import {Word, WordContent} from "./oldTransliteration";
 
 // Word Content
 
-function xmlify(content: WordContentInputUnion): string {
+export function xmlify(content: WordContent): string {
+  return '';
+  /*
   if (content.stringContent) {
-    return xmlifyStringContentInput(content.stringContent);
+    return xmlifyStringContent(content.stringContent);
   } else if (content.correctionContent) {
     return '<todo/>';
   } else if (content.damageContent) {
@@ -27,28 +27,32 @@ function xmlify(content: WordContentInputUnion): string {
   } else {
     return `<error/>`;
   }
+   */
 }
 
-function getContent(twc: WordContentInputUnion): string {
+function getContent(twc: WordContent): string {
+  return '';
+  /*
   if (twc.stringContent) {
     return twc.stringContent.content;
   } else {
     // FIXME: implement!
     return '';
   }
+   */
 }
 
-function getTranscription(content: WordContentInputUnion[]): string {
+function getTranscription(content: WordContent[]): string {
   return content.map((twc) => getContent(twc)).join('');
 }
 
 // Word
 
-export function transliterationWord(input: string, ...content: WordContentInputUnion[]): WordInput {
+export function transliterationWord(input: string, ...content: WordContent[]): Word {
   return {input, content};
 }
 
-function xmlifyTransliterationWordParseResult({input, content}: WordInput): string {
+function xmlifyTransliterationWordParseResult({input, content}: Word): string {
   if (content) {
     const xmlContent = content
       ? content.map((wc) => wc ? xmlify(wc) : '').join(' ')
@@ -66,7 +70,7 @@ export class TransliterationTextLineParseResult {
   constructor(
     public lineNumber: number,
     public lineNumberIsAbsolute: boolean = false,
-    public words: WordInput[]
+    public words: Word[]
   ) {
   }
 
@@ -80,6 +84,6 @@ export class TransliterationTextLineParseResult {
   }
 }
 
-export function transliterationTextLineParseResult(lineNumber: number, content: WordInput[], isAbsolute: boolean = false): TransliterationTextLineParseResult {
+export function transliterationTextLineParseResult(lineNumber: number, content: Word[], isAbsolute: boolean = false): TransliterationTextLineParseResult {
   return new TransliterationTextLineParseResult(lineNumber, isAbsolute, content);
 }

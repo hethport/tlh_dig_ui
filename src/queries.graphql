@@ -1,6 +1,6 @@
 # Common fragments
 fragment ManuscriptIdentifier on ManuscriptIdentifier {
-  type
+  identifierType
   identifier
 }
 
@@ -49,42 +49,6 @@ mutation CreateManuscript($manuscriptMetaData : ManuscriptMetaDataInput) {
 
 # /manuscripts/:id
 
-fragment WordContent on WordContentUnion {
-  ... on CorrectionContent {
-    correctionType: type
-  }
-  ... on DamageContent {
-    damageType: type
-  }
-  ... on StringContent {
-    stringContentType: type
-    content
-  }
-  ... on NumeralContent {
-    content
-    isSubscript
-  }
-}
-
-fragment Word on Word {
-  input
-  content {
-    ...WordContent
-  }
-}
-
-fragment Line on TransliterationLine {
-  lineIndex
-  lineInput
-  result {
-    isAbsolute
-    lineNumber
-    words {
-      ...Word
-    }
-  }
-}
-
 fragment ManuscriptMetaData on ManuscriptMetaData {
   mainIdentifier {
     ...ManuscriptIdentifier
@@ -100,7 +64,9 @@ fragment ManuscriptMetaData on ManuscriptMetaData {
   creatorUsername
   pictureUrls
   transliterationResult {
-    ...Line
+    version
+    input
+    resultXml
   }
 }
 
@@ -136,7 +102,7 @@ query TransliterationInput($mainIdentifier: String!) {
   }
 }
 
-mutation uploadTransliteration($mainIdentifier: String!, $values: [TransliterationLineInput!]!) {
+mutation uploadTransliteration($mainIdentifier: String!, $values: [TransliterationInput!]!) {
   me {
     manuscript(mainIdentifier: $mainIdentifier) {
       updateTransliteration(values: $values)

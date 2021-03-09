@@ -1,31 +1,16 @@
 import {transliteration} from "./parser";
-import {
-  akkadogramm as ag,
-  determinativ as dt,
-  hittite as ht,
-  materLectionis as ml,
-  sumerogramm as sg
-} from "../model/stringContent";
-import {markContent as mc} from '../model/markContent';
-import {MarkType} from "../generated/graphql";
-import {
-  akkadogrammContentUnion,
-  determinativContentUnion,
-  hittiteContentUnion,
-  materLectionisContentUnion,
-  sumerogrammContentUnion
-} from "./testHelpers";
-import {alt, oneOf, regexp} from "parsimmon";
-import {upperTextRegex} from "./singleParsers";
+import {materLectionis, materLectionis as ml,} from "../model/stringContent";
+import {akkadogramm, sumerogramm} from "../model/multiStringContent";
+import {markContent as mc, MarkType} from '../model/markContent';
+import {determinativ, determinativ as dt} from "../model/determinativ";
+import {inscribedLetter} from "../model/inscribedLetter";
 
 describe('hittite', () => {
   const parser = transliteration.hittite;
 
-  expect(alt(regexp(upperTextRegex), oneOf('-ₓ')).tryParse('ₓ')).toEqual('ₓ');
-
   it('should parser hittite', () => {
-    expect(parser.tryParse('abc')).toEqual(ht('abc'));
-    expect(parser.tryParse('xyz')).toEqual(ht('xyz'));
+    expect(parser.tryParse('abc')).toEqual('abc');
+    expect(parser.tryParse('xyz')).toEqual('xyz');
   });
 });
 
@@ -33,15 +18,17 @@ describe('akkadogramm', () => {
   const parser = transliteration.akkadogramm;
 
   it('should parse akkadogramms starting with _', () => {
-    expect(parser.tryParse('_ABC')).toEqual(ag('ABC'));
-    expect(parser.tryParse('_LUGAL')).toEqual(ag('LUGAL'));
-    expect(parser.tryParse('_LUGₓAL')).toEqual(ag('LUGₓAL'));
+    expect(parser.tryParse('_ABC')).toEqual(akkadogramm('_', 'ABC'));
+    expect(parser.tryParse('_LUGAL')).toEqual(akkadogramm('_', 'LUGAL'));
+    expect(parser.tryParse('_LUGxAL')).toEqual(akkadogramm('_', 'LUG', inscribedLetter('AL')));
+    expect(parser.tryParse('_LUGxALx')).toEqual(akkadogramm('_', 'LUG', inscribedLetter('AL'), 'ₓ'));
   });
 
   it('should parse akkadogramms starting with -', () => {
-    expect(parser.tryParse('-ABC')).toEqual(ag('-ABC'));
-    expect(parser.tryParse('-LUGAL')).toEqual(ag('-LUGAL'));
-    expect(parser.tryParse('-LUGₓAL')).toEqual(ag('-LUGₓAL'));
+    expect(parser.tryParse('-ABC')).toEqual(akkadogramm('-', 'ABC'));
+    expect(parser.tryParse('-LUGAL')).toEqual(akkadogramm('-', 'LUGAL'));
+    expect(parser.tryParse('-LUGxAL')).toEqual(akkadogramm('-', 'LUG', inscribedLetter('AL')));
+    expect(parser.tryParse('-LUGxALx')).toEqual(akkadogramm('-', 'LUG', inscribedLetter('AL'), 'ₓ'));
   });
 });
 
@@ -49,17 +36,15 @@ describe('sumerogramm', () => {
   const parser = transliteration.sumerogramm;
 
   it('should parse sumerogramms', () => {
-    expect(parser.tryParse('ABC')).toEqual(sg('ABC'));
-    expect(parser.tryParse('LUGAL')).toEqual(sg('LUGAL'));
-
-    expect(parser.tryParse('GUₓ.MAḪ')).toEqual(sg('GUₓ.MAḪ'))
+    expect(parser.tryParse('ABC')).toEqual(sumerogramm('ABC'));
+    expect(parser.tryParse('LUGAL')).toEqual(sumerogramm('LUGAL'));
+    expect(parser.tryParse('GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
   });
 
   it('should parse sumerogramms starting with --', () => {
-    expect(parser.tryParse('--ABC')).toEqual(sg('ABC'));
-    expect(parser.tryParse('--LUGAL')).toEqual(sg('LUGAL'));
-
-    expect(parser.tryParse('--GUₓ.MAḪ')).toEqual(sg('GUₓ.MAḪ'))
+    expect(parser.tryParse('--ABC')).toEqual(sumerogramm('ABC'));
+    expect(parser.tryParse('--LUGAL')).toEqual(sumerogramm('LUGAL'));
+    expect(parser.tryParse('--GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
   });
 });
 
@@ -70,6 +55,11 @@ describe('determinativ', () => {
     expect(parser.tryParse('°ABC°')).toEqual(dt('ABC'));
     expect(parser.tryParse('°XYZ°')).toEqual(dt('XYZ'));
   });
+
+  it('should parse special determinatives', () => {
+    expect(parser.tryParse('°m.D°')).toEqual(dt('m.D'));
+    expect(parser.tryParse('°f.D°')).toEqual(dt('f.D'));
+  })
 
   it('should not parse a mater lectionis', () => {
     expect(parser.parse('°abc°').status).toBeFalsy();
@@ -85,6 +75,11 @@ describe('materLectionis', () => {
     expect(parser.tryParse('°xyz°')).toEqual(ml('xyz'));
   });
 
+  it('should parse special content as a determinativ', () => {
+    expect(parser.tryParse('°m°')).toEqual(dt('m'));
+    expect(parser.tryParse('°f°')).toEqual(dt('f'));
+  })
+
   it('should not parse a determinativ', () => {
     expect(parser.parse('°ABC°').status).toBeFalsy();
     expect(parser.parse('°XYZ°').status).toBeFalsy();
@@ -92,44 +87,23 @@ describe('materLectionis', () => {
 });
 
 describe('stringContent', () => {
-  const parser = transliteration.stringContent;
+  const parser = transliteration.simpleWordContent;
 
   it('should parser hittite', () => {
-    expect(parser.tryParse('abc')).toEqual(hittiteContentUnion('abc'));
-    expect(parser.tryParse('xyz')).toEqual(hittiteContentUnion('xyz'));
+    expect(parser.tryParse('abc')).toEqual('abc');
+    expect(parser.tryParse('xyz')).toEqual('xyz');
   });
 
   it('should parser a determinativ', () => {
-    expect(parser.tryParse('°ABC°')).toEqual(determinativContentUnion('ABC'));
-    expect(parser.tryParse('°XYZ°')).toEqual(determinativContentUnion('XYZ'));
+    expect(parser.tryParse('°ABC°')).toEqual(determinativ('ABC'));
+    expect(parser.tryParse('°XYZ°')).toEqual(determinativ('XYZ'));
   });
 
   it('should parse a mater lectionis', () => {
-    expect(parser.tryParse('°abc°')).toEqual(materLectionisContentUnion('abc'));
-    expect(parser.tryParse('°xyz°')).toEqual(materLectionisContentUnion('xyz'));
+    expect(parser.tryParse('°abc°')).toEqual(materLectionis('abc'));
+    expect(parser.tryParse('°xyz°')).toEqual(materLectionis('xyz'));
   });
 
-  it('should parse sumerogramms', () => {
-    expect(parser.tryParse('ABC')).toEqual(sumerogrammContentUnion('ABC'));
-    expect(parser.tryParse('LUGAL')).toEqual(sumerogrammContentUnion('LUGAL'));
-
-    expect(parser.tryParse('GUₓ.MAḪ')).toEqual(sumerogrammContentUnion('GUₓ.MAḪ'))
-  });
-
-  it('should parse sumerogramms starting with --', () => {
-    expect(parser.tryParse('--ABC')).toEqual(sumerogrammContentUnion('ABC'));
-    expect(parser.tryParse('--LUGAL')).toEqual(sumerogrammContentUnion('LUGAL'));
-  });
-
-  it('should parse akkadogramms starting with _', () => {
-    expect(parser.tryParse('_ABC')).toEqual(akkadogrammContentUnion('ABC'));
-    expect(parser.tryParse('_LUGAL')).toEqual(akkadogrammContentUnion('LUGAL'));
-  });
-
-  it('should parse akkadogramms starting with -', () => {
-    expect(parser.tryParse('-ABC')).toEqual(akkadogrammContentUnion('-ABC'));
-    expect(parser.tryParse('-LUGAL')).toEqual(akkadogrammContentUnion('-LUGAL'));
-  });
 });
 
 describe('markType', () => {
@@ -158,3 +132,46 @@ describe('markContent', () => {
     expect(parser.tryParse('{G:Anderer Text}')).toEqual(mc(MarkType.TextGap, 'Anderer Text'))
   });
 });
+
+describe('wordContent', () => {
+  const parser = transliteration.wordContent;
+
+  it('should parser hittite', () => {
+    expect(parser.tryParse('abc')).toEqual('abc');
+    expect(parser.tryParse('xyz')).toEqual('xyz');
+  });
+
+  it('should parser a determinativ', () => {
+    expect(parser.tryParse('°ABC°')).toEqual(determinativ('ABC'));
+    expect(parser.tryParse('°XYZ°')).toEqual(determinativ('XYZ'));
+  });
+
+  it('should parse a mater lectionis', () => {
+    expect(parser.tryParse('°abc°')).toEqual(materLectionis('abc'));
+    expect(parser.tryParse('°xyz°')).toEqual(materLectionis('xyz'));
+  });
+
+  it('should parse sumerogramms', () => {
+    expect(parser.tryParse('ABC')).toEqual(sumerogramm('ABC'));
+    expect(parser.tryParse('LUGAL')).toEqual(sumerogramm('LUGAL'));
+    expect(parser.tryParse('GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
+  });
+
+  it('should parse sumerogramms starting with --', () => {
+    expect(parser.tryParse('--ABC')).toEqual(sumerogramm('ABC'));
+    expect(parser.tryParse('--LUGAL')).toEqual(sumerogramm('LUGAL'));
+    expect(parser.tryParse('--GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
+  });
+
+  it('should parse akkadogramms starting with _', () => {
+    expect(parser.tryParse('_ABC')).toEqual(akkadogramm('_', 'ABC'));
+    expect(parser.tryParse('_LUGAL')).toEqual(akkadogramm('_', 'LUGAL'));
+    expect(parser.tryParse('_LUGxALx')).toEqual(akkadogramm('_', 'LUG', inscribedLetter('AL'), 'ₓ'));
+  });
+
+  it('should parse akkadogramms starting with -', () => {
+    expect(parser.tryParse('-ABC')).toEqual(akkadogramm('-', 'ABC'));
+    expect(parser.tryParse('-LUGAL')).toEqual(akkadogramm('-', 'LUGAL'));
+    expect(parser.tryParse('-LUGxALx')).toEqual(akkadogramm('-', 'LUG', inscribedLetter('AL'), 'ₓ'));
+  });
+})

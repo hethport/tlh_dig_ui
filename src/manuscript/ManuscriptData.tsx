@@ -23,8 +23,8 @@ export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element 
     } else {
       return <div className="content">
         <ul>
-          {otherIdentifiers.map(({identifier, type}) =>
-            <li key={identifier}>{identifier} ({type})</li>
+          {otherIdentifiers.map(({identifier, identifierType}) =>
+            <li key={identifier}>{identifier} ({identifierType})</li>
           )}
         </ul>
       </div>
@@ -88,7 +88,7 @@ export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element 
         <h2 className="subtitle is-4">{t('transliteration')}</h2>
 
         {manuscript.transliterationResult
-          ? <Transliteration lines={manuscript.transliterationResult}/>
+          ? <Transliteration lines={[] /*manuscript.transliterationResult*/}/>
           : <div className="notification is-info has-text-centered">
             {t('noTransliterationCraetedYet')}.
           </div>}

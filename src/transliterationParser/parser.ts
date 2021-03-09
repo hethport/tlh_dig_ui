@@ -2,6 +2,7 @@ import {
   alt,
   createLanguage,
   digits,
+  oneOf,
   optWhitespace,
   Parser,
   regex,
@@ -13,32 +14,23 @@ import {
 } from "parsimmon";
 import {TransliterationTextLineParseResult} from "../model/transliterationTextLineParseResult";
 import {
-  CorrectionType,
-  DamageType,
-  IllegibleContentInput,
-  MarkContentInput,
-  MarkType,
-  NumeralContentInput,
-  StringContentInput,
-  WordContentInputUnion,
-  WordInput
-} from "../generated/graphql";
-import {markContent, markTypeParser} from "../model/markContent";
-import {damageTypeParser} from "../model/damages";
-import {correctionTypeParser} from "../model/corrections";
-import {
-  akkadogrammParser,
-  determinativParser,
-  hittiteParser,
-  materLectionisParser,
-  sumerogrammParser
-} from "./singleParsers";
+  IllegibleContent,
+  numeralContent,
+  NumeralContent,
+  SimpleWordContent,
+  Word,
+  WordContent
+} from "../model/oldTransliteration";
+import {MarkContent, markContent, MarkType, markTypeParser} from "../model/markContent";
+import {DamageType, damageTypeParser} from "../model/damages";
+import {CorrectionType, correctionTypeParser} from "../model/corrections";
+import {hittiteParser, materLectionisParser} from "./singleParsers";
+import {determinativParser, StringContent} from "../model/stringContent";
+import {akkadogramm, ContentOfMultiStringContent, MultiStringContent, sumerogramm} from "../model/multiStringContent";
+import {upperTextRegex} from "./parserHelpers";
+import {inscribedLetter, InscribedLetter} from "../model/inscribedLetter";
 
 // helper functions
-
-export function numeralContent(content: string, isSubscript: boolean = false): NumeralContentInput {
-  return {content, isSubscript};
-}
 
 const charCodeZero = '0'.charCodeAt(0);
 const charCodeSubscriptZero = '₀'.charCodeAt(0);
@@ -47,12 +39,7 @@ function digitToSubscript(digit: string): string {
   return String.fromCharCode(charCodeSubscriptZero + (digit.charCodeAt(0) - charCodeZero));
 }
 
-function toWordContentInputUnion(wordInput: WordContentInputUnion): WordContentInputUnion {
-  return wordInput;
-}
-
 // Other
-
 
 export interface LineParseResult {
   lineInput: string;
@@ -64,25 +51,36 @@ type LanguageSpec = {
   damages: DamageType;
   corrections: CorrectionType;
 
-  hittite: StringContentInput;
-  akkadogramm: StringContentInput;
-  sumerogramm: StringContentInput;
-  determinativ: StringContentInput;
-  materLectionis: StringContentInput;
+  hittite: string;
 
-  stringContent: WordContentInputUnion;
+  determinativ: StringContent;
+  materLectionis: StringContent;
 
-  illegible: IllegibleContentInput;
+  illegible: IllegibleContent;
 
   markType: MarkType;
-  markContent: MarkContentInput,
+  markContent: MarkContent,
 
-  numeralContent: NumeralContentInput;
-  subscriptNumeralContent: NumeralContentInput;
+  numeralContent: NumeralContent;
+  subscriptNumeralContent: NumeralContent;
 
-  singleContent: WordContentInputUnion;
+  inscribedLetter: InscribedLetter;
 
-  wordContent: WordContentInputUnion[];
+  indexDigit: string;
+
+  contentOfMultiStringContent: ContentOfMultiStringContent;
+
+  simpleWordContent: SimpleWordContent;
+
+  singleAkkadogrammContent: ContentOfMultiStringContent[];
+  akkadogramm: MultiStringContent;
+
+  singleSumerogrammContent: ContentOfMultiStringContent[];
+  sumerogramm: MultiStringContent;
+
+  wordContent: WordContent;
+
+  wordContents: WordContent[];
 }
 
 interface LinePreParseResult {
@@ -94,7 +92,6 @@ interface LinePreParseResult {
 function newLinePreParseResult(lineNumber: number, lineNumberIsAbsolute: boolean, content: string): LinePreParseResult {
   return {lineNumber, lineNumberIsAbsolute, content};
 }
-
 
 const lineParser: Parser<LinePreParseResult> = seq(
   digits.map(parseInt),
@@ -110,50 +107,72 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
 
   corrections: () => correctionTypeParser,
 
-  markType: () => markTypeParser,
+  hittite: () => hittiteParser,
 
+  determinativ: () => determinativParser,
+  materLectionis: () => materLectionisParser,
+
+  illegible: () => string('x').result<IllegibleContent>({}),
+
+  markType: () => markTypeParser,
   markContent: r => seq(string('{'), r.markType, string(':'), optWhitespace, regex(/[^}]*/), string('}'))
     .map(([_oa, markType, _colon, _ws, content, _ca]) => markContent(markType, content)),
 
   numeralContent: () => regexp(/\d+/)
     .map((result) => numeralContent(result, false)),
-
   subscriptNumeralContent: () => regexp(/[₀₁₂₃₄₅₆₇₈₉]+/)
     .map((result) => numeralContent((result.codePointAt(0)! % 10).toString(), true)),
 
-  illegible: () => string('x').result<IllegibleContentInput>({}),
+  inscribedLetter: () => seq(string('x'), regexp(upperTextRegex)).map(([_x, result]) => inscribedLetter(result)),
 
+  indexDigit: () => oneOf('1234567890x').notFollowedBy(regexp(upperTextRegex))
+    .map((result) => result === 'x' ? 'ₓ' : result),
 
-  hittite: () => hittiteParser,
-
-  akkadogramm: () => akkadogrammParser,
-  sumerogramm: () => sumerogrammParser,
-  determinativ: () => determinativParser,
-  materLectionis: () => materLectionisParser,
-
-  // Do not change order of parsers!
-  stringContent: r => alt<StringContentInput>(
-    r.sumerogramm,
-    r.akkadogramm,
-    r.determinativ,
-    r.materLectionis,
-    r.hittite,
-  ).map((stringContent) => toWordContentInputUnion({stringContent})),
-
-  singleContent: (r) => alt<WordContentInputUnion>(
-    r.markContent.map((markContent) => toWordContentInputUnion({markContent})),
-    r.damages.map((damageContent) => toWordContentInputUnion({damageContent})),
-    r.corrections.map((correctionContent) => toWordContentInputUnion({correctionContent})),
-    alt<NumeralContentInput>(
-      r.subscriptNumeralContent,
-      r.numeralContent
-    ).map((numeralContent) => toWordContentInputUnion({numeralContent})),
-    r.stringContent
+  contentOfMultiStringContent: r => alt(
+    r.markContent,
+    r.damages,
+    r.corrections,
+    r.inscribedLetter,
+    r.indexDigit
   ),
 
-  wordContent: r => alt<WordContentInputUnion[]>(
-    r.illegible.result([{illegibleContent: {}}]),
-    r.singleContent.atLeast(1)
+  simpleWordContent: r => alt<SimpleWordContent>(
+    r.markContent,
+    r.damages,
+    r.corrections,
+    alt<NumeralContent>(r.subscriptNumeralContent, r.numeralContent),
+    // Do not change order of parsers!
+    alt<StringContent>(r.determinativ, r.materLectionis),
+    r.hittite
+  ),
+
+  singleAkkadogrammContent: r => seq(
+    regexp(upperTextRegex),
+    alt<ContentOfMultiStringContent>(regexp(upperTextRegex), r.contentOfMultiStringContent).many()
+  ).map(([first, rest]) => [first, ...rest]),
+
+  akkadogramm: r => seq(
+    oneOf('_-'),
+    r.singleAkkadogrammContent,
+    seq(string('-'), r.singleAkkadogrammContent).many()
+  ).map(([mark, start, rest]) => akkadogramm(mark, ...start.flat(), ...rest.flat().flat())),
+
+  singleSumerogrammContent: r => seq(
+    regexp(upperTextRegex),
+    alt<ContentOfMultiStringContent>(regexp(upperTextRegex), r.contentOfMultiStringContent).many()
+  ).map(([first, rest]) => [first, ...rest]),
+
+  sumerogramm: r => seq(
+    string('--').times(0, 1),
+    r.singleSumerogrammContent,
+    seq(string('.'), r.singleSumerogrammContent).many()
+  ).map(([_x, sgs, rest]) => sumerogramm(...sgs.flat(), ...rest.flat().flat())),
+
+  wordContent: r => alt(r.akkadogramm, r.sumerogramm, r.simpleWordContent),
+
+  wordContents: r => alt<WordContent[]>(
+    r.illegible.result([{}]),
+    r.wordContent.atLeast(1)
   )
 });
 
@@ -179,18 +198,16 @@ export function parseTransliterationLine(transliterationLineInput: string): Tran
       .replace(';', '𒀹')
       .replace(/(?<!{[SKGF]):/, '𒑱')
       .replace('><', '𒉽')
-      // Index digit or x
-      .replace(/(?<=\w)x(?=\W)/, 'ₓ')
+      // Index digit or x FIXME: Remove!
       .replace(/(?<=\w)(\d)(?=\w)/, (s) => digitToSubscript(s))
-      // Replace inscribed 'x'
-      .replace(/(?<=\w)x(?=\w)/, '×');
+    // Replace inscribed 'x'
 
     return [word, replaced_word];
   });
 
   // step 4: parse words
-  const newContent: WordInput[] = substitutedWords.map(([input, replacedWordInput]) => {
-    const wordParseResult: ParsimmonResult<WordContentInputUnion[]> = transliteration.wordContent.parse(replacedWordInput);
+  const newContent: Word[] = substitutedWords.map(([input, replacedWordInput]) => {
+    const wordParseResult: ParsimmonResult<WordContent[]> = transliteration.wordContents.parse(replacedWordInput);
 
     const content = wordParseResult.status ? wordParseResult.value : [];
 

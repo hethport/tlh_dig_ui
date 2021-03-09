@@ -16,14 +16,14 @@
     "parsimmon": "^1.16.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-i18next": "^11.8.5",
+    "react-i18next": "^11.8.9",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.1",
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.20.1",
+    "@graphql-codegen/cli": "^1.21.2",
     "@graphql-codegen/schema-ast": "^1.18.1",
     "@graphql-codegen/typescript": "^1.20.2",
     "@graphql-codegen/typescript-operations": "^1.17.14",
@@ -39,7 +39,7 @@
     "@types/yup": "^0.29.11",
     "i18next-parser": "^3.6.0",
     "node-sass": "^5.0.0",
-    "typescript": "^4.1.3"
+    "typescript": "^4.2.0"
   },
   "scripts": {
     "start": "react-scripts start",

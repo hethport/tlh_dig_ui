@@ -1,41 +1,38 @@
 import React from "react";
-import {classForStringContentType} from "../model/stringContent";
-import {symbolForCorrection} from "../model/corrections";
-import {getSymbolForDamageType} from "../model/damages";
+import {classForStringContentType, StringContent} from "../model/stringContent";
 import {LineParseResult} from "../transliterationParser/parser";
-import {WordContentInputUnion, WordInput} from "../generated/graphql";
+import {NumeralContent, Word, WordContent} from "../model/oldTransliteration";
+import {MarkContent} from "../model/markContent";
+import {getCssClassForMultiStringContentType, MultiStringContent} from "../model/multiStringContent";
 
-function renderWordContent(
-  {
-    numeralContent,
-    correctionContent,
-    damageContent,
-    markContent,
-    stringContent,
-    illegibleContent
-  }: WordContentInputUnion
-): JSX.Element {
-  if (stringContent) {
-    return <span className={classForStringContentType(stringContent.type)}>{stringContent.content}</span>;
-  } else if (correctionContent) {
-    return <sup className="correction">{symbolForCorrection(correctionContent)}</sup>;
-  } else if (damageContent) {
-    return <span>{getSymbolForDamageType(damageContent)}</span>;
-  } else if (markContent) {
-    return <span className="has-text-warning">TODO: {markContent.content}!</span>
-  } else if (numeralContent) {
-    return numeralContent.isSubscript ? <sub>{numeralContent.content}</sub> : <span>{numeralContent.content}</span>;
-  } else if (illegibleContent) {
-    return <span>'x'</span>;
+function renderWordContent(content: WordContent): JSX.Element {
+  if (content instanceof MultiStringContent) {
+    return <span className={getCssClassForMultiStringContentType(content.type)}>{content.contents}</span>;
   } else {
-    return <div>TODO!</div>;
-    // throw new Error("");
+    if (typeof content === 'string') {
+      /*
+      if (correctionContent) {
+        return <sup className="correction">{symbolForCorrection(correctionContent)}</sup>;
+      } else if (damageContent) {
+        return <span>{getSymbolForDamageType(damageContent)}</span>;
+      } else
+       */
+      return <span>TODO!</span>;
+    } else if (content instanceof StringContent) {
+      return <span className={classForStringContentType(content.type)}>{content.content}</span>;
+    } else if (content instanceof MarkContent) {
+      return <span className="has-text-warning">TODO: {content.content}!</span>
+    } else if (content instanceof NumeralContent) {
+      return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
+    } else {
+      return <span>'x'</span>;
+    }
   }
 }
 
 // Single word
 
-function renderWordInput({input, content}: WordInput): JSX.Element {
+function renderWordInput({input, content}: Word): JSX.Element {
   return <>
     {content.length > 0
       ? content.map((c, i) => <span key={i}>{renderWordContent(c)}</span>)

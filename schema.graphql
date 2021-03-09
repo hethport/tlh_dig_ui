@@ -14,11 +14,11 @@ type ManuscriptMetaData {
   status: ManuscriptStatus
   otherIdentifiers: [ManuscriptIdentifier!]!
   pictureUrls: [String!]!
-  transliterationResult: [TransliterationLine!]
+  transliterationResult: [Transliteration!]
 }
 
 type ManuscriptIdentifier {
-  type: ManuscriptIdentifierType!
+  identifierType: ManuscriptIdentifierType!
   identifier: String!
 }
 
@@ -50,90 +50,10 @@ enum ManuscriptStatus {
   Approved
 }
 
-type TransliterationLine {
-  lineIndex: Int!
-  lineInput: String!
-  result: TransliterationLineResult
-}
-
-type TransliterationLineResult {
-  lineNumber: Int!
-  isAbsolute: Boolean!
-  words: [Word!]!
-}
-
-type Word {
+type Transliteration {
+  version: Int!
   input: String!
-  content: [WordContentUnion!]!
-}
-
-union WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | IllegibleContent
-
-type StringContent {
-  type: StringContentTypeEnum!
-  content: String!
-}
-
-enum StringContentTypeEnum {
-  Hittite
-  Akadogramm
-  Determinativ
-  MaterLectionis
-  Sumerogramm
-}
-
-type DamageContent {
-  type: DamageType!
-}
-
-enum DamageType {
-  DeletionStart
-  DeletionEnd
-  LesionStart
-  LesionEnd
-  Rasure
-  SurplusStart
-  SurplusEnd
-  SupplementStart
-  SupplementEnd
-  UnknownDamageStart
-  UnknownDamageEnd
-}
-
-type CorrectionContent {
-  type: CorrectionType!
-}
-
-enum CorrectionType {
-  UnsureCorrection
-  MaybeUnsureCorrection
-  SureCorrection
-  SicCorrection
-  Ellipsis
-  ParagraphEnd
-  DoubleParagraphEnd
-}
-
-type NumeralContent {
-  isSubscript: Boolean!
-  content: String!
-}
-
-type MarkContent {
-  type: MarkType!
-  content: String!
-}
-
-enum MarkType {
-  Sign
-  TextGap
-  FootNote
-  Colon
-  Arbitrary
-}
-
-type IllegibleContent {
-  _x: Boolean
+  resultXml: String!
 }
 
 type Mutation {
@@ -179,101 +99,10 @@ input ManuscriptIdentifierInput {
 }
 
 type ManuscriptMutations {
-  updateTransliteration(values: [TransliterationLineInput!]!): Boolean!
+  updateTransliteration(values: [TransliterationInput!]!): Boolean!
 }
 
-input TransliterationLineInput {
-  lineIndex: Int!
-  lineInput: String!
-  result: TransliterationLineResultInput
-}
-
-input TransliterationLineResultInput {
-  lineNumber: Int!
-  isAbsolute: Boolean!
-  words: [WordInput!]!
-}
-
-input WordInput {
+input TransliterationInput {
   input: String!
-  content: [WordContentInputUnion!]!
-}
-
-input WordContentInputUnion {
-  stringContent: StringContentInput
-  numeralContent: NumeralContentInput
-  damageContent: DamageType
-  correctionContent: CorrectionType
-  markContent: MarkContentInput
-  illegibleContent: IllegibleContentInput
-}
-
-input StringContentInput {
-  type: StringContentTypeEnum!
-  content: String!
-}
-
-input NumeralContentInput {
-  isSubscript: Boolean!
-  content: String!
-}
-
-input MarkContentInput {
-  type: MarkType!
-  content: String!
-}
-
-input IllegibleContentInput {
-  x: String
-}
-
-enum ManuscriptSide {
-  NotIdentifiable
-  Obverse
-  Reverse
-  LowerEdge
-  UpperEdge
-  LeftEdge
-  RightEdge
-  SideA
-  SideB
-  InscriptionNumber
-  SealInscription
-}
-
-enum ManuscriptLanguage {
-  Hittite
-  Luwian
-  Palaic
-  Hattic
-  Hurrian
-  Akkadian
-  Sumerian
-  NotIdentifiable
-}
-
-enum ManuscriptColumn {
-  None
-  I
-  II
-  III
-  IV
-  V
-  VI
-  VII
-  VIII
-  IX
-  X
-  XI
-  XII
-  LeftColumn
-  MiddleColumn
-  RightColumn
-  ColumnDivider
-}
-
-enum ManuscriptColumnModifier {
-  None
-  Slash
-  SlashQuestion
+  result: String!
 }

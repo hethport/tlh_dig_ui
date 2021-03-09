@@ -1,25 +1,33 @@
 import {transliteration} from "./parser";
-import {ds, hittiteContentUnion as ht, illegibleContent, sumerogrammContentUnion as sg} from "./testHelpers";
-import {Success} from "parsimmon";
-import {WordContentInputUnion} from "../generated/graphql";
+import {de, ds, illegibleContent,} from "./testHelpers";
+import {determinativ as dt} from "../model/determinativ";
+import {sumerogramm} from "../model/multiStringContent";
+import {numeralContent as nc} from "../model/numeralContent";
+import {WordContent} from "../model/oldTransliteration";
+import {inscribedLetter} from "../model/inscribedLetter";
 
 describe('wordParser', () => {
-  const parser = transliteration.wordContent;
+  const parser = transliteration.wordContents;
 
   it('should parse words...', () => {
-    expect(parser.parse('GUₓ.MAḪ'))
-      .toEqual<Success<WordContentInputUnion[]>>({status: true, value: [sg('GUₓ.MAḪ')]});
+    expect(parser.tryParse('GUx.MAḪ'))
+      .toEqual<WordContent[]>([sumerogramm('GU', 'ₓ', '.', 'MAḪ')]);
 
     expect(parser.tryParse('LUGAL-uš'))
-      .toEqual([sg('LUGAL'), ht('-uš')]);
+      .toEqual([sumerogramm('LUGAL'), '-uš']);
 
-    expect(parser.parse('K]AxU'))
-      .toEqual<Success<WordContentInputUnion[]>>({status: true, value: [sg('K', ds, 'A×U')]});
+    expect(parser.tryParse('°m.D°30--SUM'))
+      .toEqual([dt('m.D'), nc('30'), sumerogramm('SUM')]);
 
-    expect(parser.parse('[x'))
-      .toEqual<Success<WordContentInputUnion[]>>({status: true, value: [ds, illegibleContent]});
+    expect(parser.tryParse('K]AxU'))
+      .toEqual<WordContent[]>([sumerogramm('K', de, 'A', inscribedLetter('U'))]);
+
+    /*
+    expect(parser.tryParse('[x'))
+      .toEqual<WordContent[]>([ds, illegibleContent]);
 
     expect(parser.tryParse('x]'))
-      .toEqual<Success<WordContentInputUnion[]>>({status: true, value: [ds, illegibleContent]});
+      .toEqual<WordContent[]>([ds, illegibleContent]);
+     */
   });
 })

@@ -1,34 +1,43 @@
 import React from "react";
-import {LineFragment, WordContentFragment, WordFragment} from "../generated/graphql";
-import {classForStringContentType} from "../model/stringContent";
-import {symbolForCorrection} from "../model/corrections";
-import {getSymbolForDamageType} from "../model/damages";
-
+import {
+  NumeralContent,
+  TransliterationLine,
+  Word,
+  WordContent,
+  wordContentIsMultiStringContent
+} from "../model/oldTransliteration";
+import {classForStringContentType, StringContent} from "../model/stringContent";
+import {getCssClassForMultiStringContentType} from "../model/multiStringContent";
+import {MarkContent} from "../model/markContent";
 
 // Word content
 
-function renderWordContent(content: WordContentFragment): JSX.Element {
-  switch (content.__typename) {
-    case 'StringContent':
-      return <span className={classForStringContentType(content.stringContentType)}>{content.content}</span>;
-    case "CorrectionContent":
-      return <sup className="correction">{symbolForCorrection(content.correctionType)}</sup>;
-    case "DamageContent":
-      return <span>{getSymbolForDamageType(content.damageType)}</span>;
-    case "IllegibleContent":
-      return <span>x</span>;
-    case "MarkContent":
-      return <span>TODO: Mark Content...</span>
-    case "NumeralContent":
-      return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
-    default:
-      return <></>;
+function renderWordContent(content: WordContent): JSX.Element {
+  if (wordContentIsMultiStringContent(content)) {
+    return <span className={getCssClassForMultiStringContentType(content.type)}>TODO!</span>
+  } else {
+    if (typeof content === 'string') {
+      // Text, Correction, Damage!
+      return <span className="hittite">{content}</span>;
+    } else {
+      let y = content;
+
+      if (content instanceof StringContent) {
+        return <span className={classForStringContentType(content.type)}>{content.content}</span>;
+      } else if (content instanceof NumeralContent) {
+        return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
+      } else if (content instanceof MarkContent) {
+        return <span>TODO: Mark Content...</span>
+      } else {
+        return <span>x</span>
+      }
+    }
   }
 }
 
 // Single word
 
-function renderWord({input, content}: WordFragment): JSX.Element {
+function renderWord({input, content}: Word): JSX.Element {
   return <>
     {content.length > 0
       ? content.map((c, i) => <span key={i}>{renderWordContent(c)}</span>)
@@ -39,7 +48,7 @@ function renderWord({input, content}: WordFragment): JSX.Element {
 
 // Single line
 
-function renderLine({lineInput, result}: LineFragment, maxLength: number): JSX.Element {
+function renderLine({lineInput, result}: TransliterationLine, maxLength: number): JSX.Element {
   if (result) {
     const {lineNumber, isAbsolute, words} = result;
 
@@ -58,7 +67,7 @@ function renderLine({lineInput, result}: LineFragment, maxLength: number): JSX.E
 // All lines
 
 interface IProps {
-  lines: LineFragment[];
+  lines: TransliterationLine[];
 }
 
 export function Transliteration({lines}: IProps): JSX.Element {

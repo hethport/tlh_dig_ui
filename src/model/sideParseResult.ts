@@ -1,5 +1,6 @@
-import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptLanguage, ManuscriptSide} from "../generated/graphql";
+import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptSide} from "./manuscriptProperties/manuscriptProperties";
 import {LineParseResult} from "../transliterationParser/parser";
+import {ManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
 
 interface SideBasics {
   side: ManuscriptSide;

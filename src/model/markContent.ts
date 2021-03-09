@@ -1,5 +1,11 @@
-import {MarkContentInput, MarkType} from "../generated/graphql";
 import {alt, Parser, string} from "parsimmon";
+
+export enum MarkType {
+  Sign = 'Sign',
+  TextGap = 'TextGap',
+  FootNote = 'FootNote',
+  Colon = 'Colon',
+}
 
 export const markTypeParser: Parser<MarkType> = alt(
   string('S').result(MarkType.Sign),
@@ -8,6 +14,12 @@ export const markTypeParser: Parser<MarkType> = alt(
   string('K').result(MarkType.Colon),
 );
 
-export function markContent(markType: MarkType, content: string): MarkContentInput {
-  return {type: markType, content};
+
+export class MarkContent {
+  constructor(public type: MarkType, public content: string) {
+  }
+}
+
+export function markContent(markType: MarkType, content: string): MarkContent {
+  return new MarkContent(markType, content);
 }

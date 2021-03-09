@@ -1,5 +1,19 @@
-import {DamageType} from "../generated/graphql";
 import {alt, Parser, regex, regexp, string} from "parsimmon";
+
+export enum DamageType {
+  DeletionStart = 'DeletionStart',
+  DeletionEnd = 'DeletionEnd',
+  LesionStart = 'LesionStart',
+  LesionEnd = 'LesionEnd',
+  Rasure = 'Rasure',
+  SurplusStart = 'SurplusStart',
+  SurplusEnd = 'SurplusEnd',
+  SupplementStart = 'SupplementStart',
+  SupplementEnd = 'SupplementEnd',
+  UnknownDamageStart = 'UnknownDamageStart',
+  UnknownDamageEnd = 'UnknownDamageEnd'
+}
+
 
 export const allDamageTypes: DamageType[] = [
   DamageType.DeletionStart, DamageType.DeletionEnd,

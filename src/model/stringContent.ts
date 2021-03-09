@@ -1,75 +1,72 @@
-import {StringContentInput, StringContentTypeEnum} from "../generated/graphql";
+import {alt, oneOf, Parser, regexp, seq, string} from "parsimmon";
+import {upperTextRegex} from "../transliterationParser/parserHelpers";
 
-/**
- * Hittite
- */
-export function hittite(content: string): StringContentInput {
-  return {type: StringContentTypeEnum.Hittite, content};
+export enum StringContentTypeEnum {
+  Determinativ = 'Determinativ',
+  MaterLectionis = 'MaterLectionis',
 }
 
-/**
- * Akadogramm: automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht
- */
-export function akkadogramm(content: string): StringContentInput {
-  return {type: StringContentTypeEnum.Akadogramm, content};
-}
-
-/**
- * Determinativ:
- * - automatisch für Großbuchstaben markiert durch ° … ° (davor oder dahinter jeweils ein Spatium oder Bindestrich)
- * - bei mehreren Determinativen nacheinander Doppelsetzung (°°.°°)
- */
-export function determinativ(content: string): StringContentInput {
-  return {type: StringContentTypeEnum.Determinativ, content};
+export class StringContent {
+  constructor(public type: StringContentTypeEnum, public content: string) {
+  }
 }
 
 /**
  * Mater lectionis:
  * vor und nach der Mater Lectionis (Kleinbuchstaben markiert durch ° … °; davor oder dahinter jeweils ein Spatium oder Bindestrich)
  */
-export function materLectionis(content: string): StringContentInput {
-  return {type: StringContentTypeEnum.MaterLectionis, content};
+export function materLectionis(content: string): StringContent {
+  return new StringContent(StringContentTypeEnum.MaterLectionis, content);
 }
 
-/**
- * Sumerogramm:
- * - automatisch für Versalien
- * - im Wortinnern durch vorausgehendes `--` markiert
+
+/*
+ * Determinativ:
+ * - automatisch für Großbuchstaben markiert durch ° … ° (davor oder dahinter jeweils ein Spatium oder Bindestrich)
+ * - auch °m°, °m.[...]°, °f° und °f.[...]° sind Determinative!
  */
-export function sumerogramm(content: string): StringContentInput {
-  return {type: StringContentTypeEnum.Sumerogramm, content};
+
+export function determinativ(content: string): StringContent {
+  return new StringContent(StringContentTypeEnum.Determinativ, content);
 }
+
+const defaultDeterminativParser: Parser<StringContent> = seq(
+  alt(regexp(upperTextRegex), oneOf('.')).atLeast(1).tie(),
+).map(([content]) => determinativ(content));
+
+const specialDeterminativParser: Parser<StringContent> = seq(
+  alt(string('m'), string('f')),
+  string('.'),
+  regexp(upperTextRegex),
+).map(([genus, dot, rest]) => determinativ(genus + dot + rest))
+
+export const determinativParser: Parser<StringContent> = seq(
+  string('°'),
+  alt(
+    defaultDeterminativParser,
+    specialDeterminativParser
+  ),
+  string('°')
+).map(([_deg1, content, _deg2]) => content);
 
 // CSS class
 
 export function classForStringContentType(stringContentType: StringContentTypeEnum): string {
   switch (stringContentType) {
-    case StringContentTypeEnum.Hittite:
-      return 'hittite';
-    case StringContentTypeEnum.Akadogramm:
-      return 'akadogramm';
     case StringContentTypeEnum.Determinativ:
       return 'determinativ';
     case StringContentTypeEnum.MaterLectionis:
       return 'materLectionis';
-    case StringContentTypeEnum.Sumerogramm:
-      return 'sumerogramm';
   }
 }
 
 // String content
 
-export function xmlifyStringContentInput(sci: StringContentInput): string {
-  switch (sci.type) {
-    case StringContentTypeEnum.Hittite:
-      return sci.content;
-    case StringContentTypeEnum.Akadogramm:
-      return `<aGr>${sci.content}</aGr>`;
-    case StringContentTypeEnum.Sumerogramm:
-      return `<sGr>${sci.content}</sGr>`;
+export function xmlifyStringContent({type, content}: StringContent): string {
+  switch (type) {
     case StringContentTypeEnum.MaterLectionis:
-      return `<ml>${sci.content}</ml>`;
+      return `<ml>${content}</ml>`;
     case StringContentTypeEnum.Determinativ:
-      return `<dt>${sci.content}</dt>`;
+      return `<dt>${content}</dt>`;
   }
 }

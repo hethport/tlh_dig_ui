@@ -36,12 +36,12 @@ export type ManuscriptMetaData = {
   status?: Maybe<ManuscriptStatus>;
   otherIdentifiers: Array<ManuscriptIdentifier>;
   pictureUrls: Array<Scalars['String']>;
-  transliterationResult?: Maybe<Array<TransliterationLine>>;
+  transliterationResult?: Maybe<Array<Transliteration>>;
 };
 
 export type ManuscriptIdentifier = {
   __typename?: 'ManuscriptIdentifier';
-  type: ManuscriptIdentifierType;
+  identifierType: ManuscriptIdentifierType;
   identifier: Scalars['String'];
 };
 
@@ -73,99 +73,11 @@ export enum ManuscriptStatus {
   Approved = 'Approved'
 }
 
-export type TransliterationLine = {
-  __typename?: 'TransliterationLine';
-  lineIndex: Scalars['Int'];
-  lineInput: Scalars['String'];
-  result?: Maybe<TransliterationLineResult>;
-};
-
-export type TransliterationLineResult = {
-  __typename?: 'TransliterationLineResult';
-  lineNumber: Scalars['Int'];
-  isAbsolute: Scalars['Boolean'];
-  words: Array<Word>;
-};
-
-export type Word = {
-  __typename?: 'Word';
+export type Transliteration = {
+  __typename?: 'Transliteration';
+  version: Scalars['Int'];
   input: Scalars['String'];
-  content: Array<WordContentUnion>;
-};
-
-export type WordContentUnion = StringContent | DamageContent | CorrectionContent | NumeralContent | MarkContent | IllegibleContent;
-
-export type StringContent = {
-  __typename?: 'StringContent';
-  type: StringContentTypeEnum;
-  content: Scalars['String'];
-};
-
-export enum StringContentTypeEnum {
-  Hittite = 'Hittite',
-  Akadogramm = 'Akadogramm',
-  Determinativ = 'Determinativ',
-  MaterLectionis = 'MaterLectionis',
-  Sumerogramm = 'Sumerogramm'
-}
-
-export type DamageContent = {
-  __typename?: 'DamageContent';
-  type: DamageType;
-};
-
-export enum DamageType {
-  DeletionStart = 'DeletionStart',
-  DeletionEnd = 'DeletionEnd',
-  LesionStart = 'LesionStart',
-  LesionEnd = 'LesionEnd',
-  Rasure = 'Rasure',
-  SurplusStart = 'SurplusStart',
-  SurplusEnd = 'SurplusEnd',
-  SupplementStart = 'SupplementStart',
-  SupplementEnd = 'SupplementEnd',
-  UnknownDamageStart = 'UnknownDamageStart',
-  UnknownDamageEnd = 'UnknownDamageEnd'
-}
-
-export type CorrectionContent = {
-  __typename?: 'CorrectionContent';
-  type: CorrectionType;
-};
-
-export enum CorrectionType {
-  UnsureCorrection = 'UnsureCorrection',
-  MaybeUnsureCorrection = 'MaybeUnsureCorrection',
-  SureCorrection = 'SureCorrection',
-  SicCorrection = 'SicCorrection',
-  Ellipsis = 'Ellipsis',
-  ParagraphEnd = 'ParagraphEnd',
-  DoubleParagraphEnd = 'DoubleParagraphEnd'
-}
-
-export type NumeralContent = {
-  __typename?: 'NumeralContent';
-  isSubscript: Scalars['Boolean'];
-  content: Scalars['String'];
-};
-
-export type MarkContent = {
-  __typename?: 'MarkContent';
-  type: MarkType;
-  content: Scalars['String'];
-};
-
-export enum MarkType {
-  Sign = 'Sign',
-  TextGap = 'TextGap',
-  FootNote = 'FootNote',
-  Colon = 'Colon',
-  Arbitrary = 'Arbitrary'
-}
-
-export type IllegibleContent = {
-  __typename?: 'IllegibleContent';
-  _x?: Maybe<Scalars['Boolean']>;
+  resultXml: Scalars['String'];
 };
 
 export type Mutation = {
@@ -241,108 +153,17 @@ export type ManuscriptMutations = {
 
 
 export type ManuscriptMutationsUpdateTransliterationArgs = {
-  values: Array<TransliterationLineInput>;
+  values: Array<TransliterationInput>;
 };
 
-export type TransliterationLineInput = {
-  lineIndex: Scalars['Int'];
-  lineInput: Scalars['String'];
-  result?: Maybe<TransliterationLineResultInput>;
-};
-
-export type TransliterationLineResultInput = {
-  lineNumber: Scalars['Int'];
-  isAbsolute: Scalars['Boolean'];
-  words: Array<WordInput>;
-};
-
-export type WordInput = {
+export type TransliterationInput = {
   input: Scalars['String'];
-  content: Array<WordContentInputUnion>;
+  result: Scalars['String'];
 };
-
-export type WordContentInputUnion = {
-  stringContent?: Maybe<StringContentInput>;
-  numeralContent?: Maybe<NumeralContentInput>;
-  damageContent?: Maybe<DamageType>;
-  correctionContent?: Maybe<CorrectionType>;
-  markContent?: Maybe<MarkContentInput>;
-  illegibleContent?: Maybe<IllegibleContentInput>;
-};
-
-export type StringContentInput = {
-  type: StringContentTypeEnum;
-  content: Scalars['String'];
-};
-
-export type NumeralContentInput = {
-  isSubscript: Scalars['Boolean'];
-  content: Scalars['String'];
-};
-
-export type MarkContentInput = {
-  type: MarkType;
-  content: Scalars['String'];
-};
-
-export type IllegibleContentInput = {
-  x?: Maybe<Scalars['String']>;
-};
-
-export enum ManuscriptSide {
-  NotIdentifiable = 'NotIdentifiable',
-  Obverse = 'Obverse',
-  Reverse = 'Reverse',
-  LowerEdge = 'LowerEdge',
-  UpperEdge = 'UpperEdge',
-  LeftEdge = 'LeftEdge',
-  RightEdge = 'RightEdge',
-  SideA = 'SideA',
-  SideB = 'SideB',
-  InscriptionNumber = 'InscriptionNumber',
-  SealInscription = 'SealInscription'
-}
-
-export enum ManuscriptLanguage {
-  Hittite = 'Hittite',
-  Luwian = 'Luwian',
-  Palaic = 'Palaic',
-  Hattic = 'Hattic',
-  Hurrian = 'Hurrian',
-  Akkadian = 'Akkadian',
-  Sumerian = 'Sumerian',
-  NotIdentifiable = 'NotIdentifiable'
-}
-
-export enum ManuscriptColumn {
-  None = 'None',
-  I = 'I',
-  Ii = 'II',
-  Iii = 'III',
-  Iv = 'IV',
-  V = 'V',
-  Vi = 'VI',
-  Vii = 'VII',
-  Viii = 'VIII',
-  Ix = 'IX',
-  X = 'X',
-  Xi = 'XI',
-  Xii = 'XII',
-  LeftColumn = 'LeftColumn',
-  MiddleColumn = 'MiddleColumn',
-  RightColumn = 'RightColumn',
-  ColumnDivider = 'ColumnDivider'
-}
-
-export enum ManuscriptColumnModifier {
-  None = 'None',
-  Slash = 'Slash',
-  SlashQuestion = 'SlashQuestion'
-}
 
 export type ManuscriptIdentifierFragment = (
   { __typename?: 'ManuscriptIdentifier' }
-  & Pick<ManuscriptIdentifier, 'type' | 'identifier'>
+  & Pick<ManuscriptIdentifier, 'identifierType' | 'identifier'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -407,70 +228,6 @@ export type CreateManuscriptMutation = (
   )> }
 );
 
-type WordContent_StringContent_Fragment = (
-  { __typename?: 'StringContent' }
-  & Pick<StringContent, 'content'>
-  & { stringContentType: StringContent['type'] }
-);
-
-type WordContent_DamageContent_Fragment = (
-  { __typename?: 'DamageContent' }
-  & { damageType: DamageContent['type'] }
-);
-
-type WordContent_CorrectionContent_Fragment = (
-  { __typename?: 'CorrectionContent' }
-  & { correctionType: CorrectionContent['type'] }
-);
-
-type WordContent_NumeralContent_Fragment = (
-  { __typename?: 'NumeralContent' }
-  & Pick<NumeralContent, 'content' | 'isSubscript'>
-);
-
-type WordContent_MarkContent_Fragment = { __typename?: 'MarkContent' };
-
-type WordContent_IllegibleContent_Fragment = { __typename?: 'IllegibleContent' };
-
-export type WordContentFragment = WordContent_StringContent_Fragment | WordContent_DamageContent_Fragment | WordContent_CorrectionContent_Fragment | WordContent_NumeralContent_Fragment | WordContent_MarkContent_Fragment | WordContent_IllegibleContent_Fragment;
-
-export type WordFragment = (
-  { __typename?: 'Word' }
-  & Pick<Word, 'input'>
-  & { content: Array<(
-    { __typename?: 'StringContent' }
-    & WordContent_StringContent_Fragment
-  ) | (
-    { __typename?: 'DamageContent' }
-    & WordContent_DamageContent_Fragment
-  ) | (
-    { __typename?: 'CorrectionContent' }
-    & WordContent_CorrectionContent_Fragment
-  ) | (
-    { __typename?: 'NumeralContent' }
-    & WordContent_NumeralContent_Fragment
-  ) | (
-    { __typename?: 'MarkContent' }
-    & WordContent_MarkContent_Fragment
-  ) | (
-    { __typename?: 'IllegibleContent' }
-    & WordContent_IllegibleContent_Fragment
-  )> }
-);
-
-export type LineFragment = (
-  { __typename?: 'TransliterationLine' }
-  & Pick<TransliterationLine, 'lineIndex' | 'lineInput'>
-  & { result?: Maybe<(
-    { __typename?: 'TransliterationLineResult' }
-    & Pick<TransliterationLineResult, 'isAbsolute' | 'lineNumber'>
-    & { words: Array<(
-      { __typename?: 'Word' }
-      & WordFragment
-    )> }
-  )> }
-);
-
 export type ManuscriptMetaDataFragment = (
   { __typename?: 'ManuscriptMetaData' }
   & Pick<ManuscriptMetaData, 'bibliography' | 'cthClassification' | 'palaeographicClassification' | 'palaeographicClassificationSure' | 'provenance' | 'creatorUsername' | 'pictureUrls'>
@@ -481,8 +238,8 @@ export type ManuscriptMetaDataFragment = (
     { __typename?: 'ManuscriptIdentifier' }
     & ManuscriptIdentifierFragment
   )>, transliterationResult?: Maybe<Array<(
-    { __typename?: 'TransliterationLine' }
-    & LineFragment
+    { __typename?: 'Transliteration' }
+    & Pick<Transliteration, 'version' | 'input' | 'resultXml'>
   )>> }
 );
 
@@ -539,7 +296,7 @@ export type TransliterationInputQuery = (
 
 export type UploadTransliterationMutationVariables = Exact<{
   mainIdentifier: Scalars['String'];
-  values: Array<TransliterationLineInput> | TransliterationLineInput;
+  values: Array<TransliterationInput> | TransliterationInput;
 }>;
 
 
@@ -564,7 +321,7 @@ export const LoggedInUserFragmentDoc = gql`
     `;
 export const ManuscriptIdentifierFragmentDoc = gql`
     fragment ManuscriptIdentifier on ManuscriptIdentifier {
-  type
+  identifierType
   identifier
 }
     `;
@@ -577,45 +334,6 @@ export const ManuscriptBasicDataFragmentDoc = gql`
   creatorUsername
 }
     ${ManuscriptIdentifierFragmentDoc}`;
-export const WordContentFragmentDoc = gql`
-    fragment WordContent on WordContentUnion {
-  ... on CorrectionContent {
-    correctionType: type
-  }
-  ... on DamageContent {
-    damageType: type
-  }
-  ... on StringContent {
-    stringContentType: type
-    content
-  }
-  ... on NumeralContent {
-    content
-    isSubscript
-  }
-}
-    `;
-export const WordFragmentDoc = gql`
-    fragment Word on Word {
-  input
-  content {
-    ...WordContent
-  }
-}
-    ${WordContentFragmentDoc}`;
-export const LineFragmentDoc = gql`
-    fragment Line on TransliterationLine {
-  lineIndex
-  lineInput
-  result {
-    isAbsolute
-    lineNumber
-    words {
-      ...Word
-    }
-  }
-}
-    ${WordFragmentDoc}`;
 export const ManuscriptMetaDataFragmentDoc = gql`
     fragment ManuscriptMetaData on ManuscriptMetaData {
   mainIdentifier {
@@ -632,11 +350,12 @@ export const ManuscriptMetaDataFragmentDoc = gql`
   creatorUsername
   pictureUrls
   transliterationResult {
-    ...Line
+    version
+    input
+    resultXml
   }
 }
-    ${ManuscriptIdentifierFragmentDoc}
-${LineFragmentDoc}`;
+    ${ManuscriptIdentifierFragmentDoc}`;
 export const ManuscriptIdentWithCreatorFragmentDoc = gql`
     fragment ManuscriptIdentWithCreator on ManuscriptMetaData {
   mainIdentifier {
@@ -875,7 +594,7 @@ export type TransliterationInputQueryHookResult = ReturnType<typeof useTranslite
 export type TransliterationInputLazyQueryHookResult = ReturnType<typeof useTransliterationInputLazyQuery>;
 export type TransliterationInputQueryResult = Apollo.QueryResult<TransliterationInputQuery, TransliterationInputQueryVariables>;
 export const UploadTransliterationDocument = gql`
-    mutation uploadTransliteration($mainIdentifier: String!, $values: [TransliterationLineInput!]!) {
+    mutation uploadTransliteration($mainIdentifier: String!, $values: [TransliterationInput!]!) {
   me {
     manuscript(mainIdentifier: $mainIdentifier) {
       updateTransliteration(values: $values)

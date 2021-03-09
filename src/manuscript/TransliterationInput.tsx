@@ -6,11 +6,8 @@ import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {homeUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
-import {
-  TransliterationLineInput,
-  TransliterationLineResultInput,
-  useUploadTransliterationMutation
-} from "../generated/graphql";
+import {TransliterationLine, TransliterationLineResult} from "../model/oldTransliteration";
+import {useUploadTransliterationMutation} from "../generated/graphql";
 import {ManuscriptBaseIProps} from "./ManuscriptBase";
 import {TransliterationSideInput} from "./TransliterationSideInput";
 import {SideParseResult} from "../model/sideParseResult";
@@ -27,8 +24,8 @@ interface IState {
 function convertTransliterationTextLine(
   {lineInput, result}: LineParseResult,
   lineIndex: number
-): TransliterationLineInput {
-  const content: TransliterationLineResultInput | undefined = result
+): TransliterationLine {
+  const content: TransliterationLineResult | undefined = result
     ? {
       isAbsolute: result.lineNumberIsAbsolute,
       lineNumber: result.lineNumber,
@@ -54,11 +51,14 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
   }
 
   function upload(): void {
-    const values: TransliterationLineInput[] = state.sideParseResults
+    const values: TransliterationLine[] = state.sideParseResults
       .flatMap(({transliterationOutput}) => transliterationOutput?.lineResults || [])
-      .map<TransliterationLineInput>(convertTransliterationTextLine);
+      .map<TransliterationLine>(convertTransliterationTextLine);
 
-    uploadTransliteration({variables: {mainIdentifier, values}})
+    const input = '';
+    const result = '';
+
+    uploadTransliteration({variables: {mainIdentifier, values: {input, result}}})
       .then(({data}) => {
         setState((currentState) => {
           return {...currentState, transliterationIsUpToDate: !!data?.me?.manuscript?.updateTransliteration}

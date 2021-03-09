@@ -8,12 +8,12 @@ interface CustomFieldProps extends FieldProps {
   asTextArea?: boolean;
 }
 
-export function BulmaField({label, id, asTextArea, field, ...props}: CustomFieldProps): JSX.Element {
+export function BulmaField({label, id, asTextArea, field, form, ...props}: CustomFieldProps): JSX.Element {
   const classes = classNames(
     asTextArea ? 'textarea' : 'input',
     {
-      'is-success': props.form.touched[field.name] && !props.form.errors[field.name],
-      'is-danger': props.form.touched[field.name] && !!props.form.errors[field.name],
+      'is-success': form.touched[field.name] && !form.errors[field.name],
+      'is-danger': form.touched[field.name] && !!form.errors[field.name],
     });
 
   return (

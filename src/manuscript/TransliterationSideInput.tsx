@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import {
   getNameForManuscriptSide,
+  ManuscriptColumn,
+  ManuscriptColumnModifier,
   manuscriptColumnModifiers,
   manuscriptColumns,
+  ManuscriptSide,
   manuscriptSides
 } from "../model/manuscriptProperties/manuscriptProperties";
-import {allManuscriptLanguages} from "../model/manuscriptProperties/manuscriptLanugage";
-import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptLanguage, ManuscriptSide} from "../generated/graphql";
+import {allManuscriptLanguages, ManuscriptLanguage} from "../model/manuscriptProperties/manuscriptLanugage";
 import {useTranslation} from "react-i18next";
 import {LineParseResult, parseTransliterationLine} from "../transliterationParser/parser";
 import {RawSideInput, SideParseResult} from "../model/sideParseResult";
