@@ -1,31 +1,33 @@
 import React from "react";
-import {classForStringContentType, StringContent} from "../model/stringContent";
+import {StringContent} from "../model/stringContent";
 import {LineParseResult} from "../transliterationParser/parser";
 import {NumeralContent, Word, WordContent} from "../model/oldTransliteration";
 import {MarkContent} from "../model/markContent";
-import {getCssClassForMultiStringContentType, MultiStringContent} from "../model/multiStringContent";
+import {DamageContent, getSymbolForDamageType} from "../model/damages";
+import {CorrectionContent, symbolForCorrection} from "../model/corrections";
+import {MultiStringContent} from "../model/multiStringContent";
 
 function renderWordContent(content: WordContent): JSX.Element {
   if (content instanceof MultiStringContent) {
-    return <span className={getCssClassForMultiStringContentType(content.type)}>{content.contents}</span>;
+    return <span className={content.cssClass()}>
+      {content.contents.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
+    </span>;
   } else {
     if (typeof content === 'string') {
-      /*
-      if (correctionContent) {
-        return <sup className="correction">{symbolForCorrection(correctionContent)}</sup>;
-      } else if (damageContent) {
-        return <span>{getSymbolForDamageType(damageContent)}</span>;
-      } else
-       */
-      return <span>TODO!</span>;
+      return <span>{content}</span>;
+    } else if (content instanceof DamageContent) {
+      return <span>{getSymbolForDamageType(content.damageType)}</span>;
+    } else if (content instanceof CorrectionContent) {
+      return <sup className="correction">{symbolForCorrection(content.correctionType)}</sup>;
     } else if (content instanceof StringContent) {
-      return <span className={classForStringContentType(content.type)}>{content.content}</span>;
+      return <span className={content.cssClass()}>{content.content}</span>;
     } else if (content instanceof MarkContent) {
       return <span className="has-text-warning">TODO: {content.content}!</span>
     } else if (content instanceof NumeralContent) {
       return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
     } else {
-      return <span>'x'</span>;
+      // Illegible Content
+      return <span>x</span>;
     }
   }
 }
@@ -35,7 +37,7 @@ function renderWordContent(content: WordContent): JSX.Element {
 function renderWordInput({input, content}: Word): JSX.Element {
   return <>
     {content.length > 0
-      ? content.map((c, i) => <span key={i}>{renderWordContent(c)}</span>)
+      ? content.map((c, i) => <span className="hittie" key={i}>{renderWordContent(c)}</span>)
       : <span className="has-text-danger">{input}</span>}
   </>
 }
@@ -79,7 +81,7 @@ export function TransliterationLineParseResultsComponent({lines}: IProps): JSX.E
   return (
     <div className="box">
       {lines.map((lineParseResult, lineIndex) =>
-        <p key={lineIndex}>{renderLine(lineParseResult, maxLength)}</p>
+        <p key={lineIndex} className="hittite">{renderLine(lineParseResult, maxLength)}</p>
       )}
     </div>
   );

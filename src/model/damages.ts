@@ -1,5 +1,14 @@
 import {alt, Parser, regex, regexp, string} from "parsimmon";
 
+export class DamageContent {
+  constructor(public damageType: DamageType) {
+  }
+
+  xmlify(): string {
+    return xmlifyDamage(this.damageType);
+  }
+}
+
 export enum DamageType {
   DeletionStart = 'DeletionStart',
   DeletionEnd = 'DeletionEnd',
@@ -14,7 +23,6 @@ export enum DamageType {
   UnknownDamageEnd = 'UnknownDamageEnd'
 }
 
-
 export const allDamageTypes: DamageType[] = [
   DamageType.DeletionStart, DamageType.DeletionEnd,
   DamageType.LesionStart, DamageType.LesionEnd,
@@ -24,7 +32,7 @@ export const allDamageTypes: DamageType[] = [
   DamageType.UnknownDamageStart, DamageType.UnknownDamageEnd
 ];
 
-export const damageTypeParser: Parser<DamageType> = alt(
+export const damageTypeParser: Parser<DamageContent> = alt(
   string('[').result(DamageType.DeletionStart),
   string(']').result(DamageType.DeletionEnd),
   string('⸢').result(DamageType.LesionStart),
@@ -36,9 +44,9 @@ export const damageTypeParser: Parser<DamageType> = alt(
   regex(/[〉>]/).result(DamageType.SupplementEnd),
   string('(').result(DamageType.UnknownDamageStart),
   string(')').result(DamageType.UnknownDamageEnd),
-);
+).map((damageType) => new DamageContent(damageType));
 
-export function xmlifyDamage(damageType: DamageType): string {
+function xmlifyDamage(damageType: DamageType): string {
   switch (damageType) {
     case DamageType.DeletionEnd:
       return '<del_fin/>';

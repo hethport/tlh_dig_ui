@@ -11,7 +11,7 @@ import {NotFound} from './NotFound';
 import {useDispatch, useSelector} from "react-redux";
 import {activeUserSelector} from "./store/store";
 import {StoreAction, userLoggedOutAction} from "./store/actions";
-import {ManuscriptBase, manuscriptBaseUrl} from "./manuscript/ManuscriptBase";
+import {ManuscriptBase} from "./manuscript/ManuscriptBase";
 
 // TODO: solve languages different?
 const languages: string[] = ["de", "en"];
@@ -67,7 +67,7 @@ export function App(): JSX.Element {
         <Route path={registerUrl} component={RegisterForm}/>
         <Route path={loginUrl} component={LoginForm}/>
         <Route path={createManuscriptUrl} component={CreateManuscriptForm}/>
-        <Route path={manuscriptBaseUrl} component={ManuscriptBase}/>
+        <Route path={'/manuscripts/:mainIdentifier'} component={ManuscriptBase}/>
         <Route component={NotFound}/>
       </Switch>
     </>

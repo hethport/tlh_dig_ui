@@ -1,8 +1,7 @@
 import {transliteration} from "./parser";
-import {materLectionis, materLectionis as ml,} from "../model/stringContent";
+import {determinativ, determinativ as dt, materLectionis, materLectionis as ml,} from "../model/stringContent";
 import {akkadogramm, sumerogramm} from "../model/multiStringContent";
 import {markContent as mc, MarkType} from '../model/markContent';
-import {determinativ, determinativ as dt} from "../model/determinativ";
 import {inscribedLetter} from "../model/inscribedLetter";
 
 describe('hittite', () => {

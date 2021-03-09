@@ -59,12 +59,11 @@ export function TransliterationSideInput({mainIdentifier, onTransliterationUpdat
   }
 
   function exportAsXml({lineResults, side, language, column, columnModifier}: SideParseResult): string[] {
-    const xmlLinesOutput = lineResults
-      .map(({lineInput, result}) => result
+    return lineResults.map(({lineInput, result}) =>
+      result
         ? result.xmlify(mainIdentifier, side, language, column, columnModifier)
-        : `<error>${lineInput}</error>`);
-
-    return ['<AOxml>', ...xmlLinesOutput, '</AOxml>'];
+        : `<error>${lineInput}</error>`
+    );
   }
 
   function toggleTab(name: string): void {

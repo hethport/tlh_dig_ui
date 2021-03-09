@@ -1,12 +1,25 @@
 import {parseTransliterationLine} from './parser';
+import {TransliterationTextLineParseResult,} from '../model/transliterationTextLineParseResult';
 import {
-  TransliterationTextLineParseResult,
-  transliterationWord as w
-} from '../model/transliterationTextLineParseResult';
-import {de, dpe, ds, el, illegibleContent, le, ls, pe, r, sc, supE, supS, uc, ue, us} from './testHelpers';
-import {materLectionis as ml} from "../model/stringContent";
-import {determinativ as dt} from "../model/determinativ";
-import {numeralContent as nc} from "../model/numeralContent";
+  de,
+  determinativ as dt,
+  dpe,
+  ds,
+  el,
+  illegibleContent,
+  le,
+  ls,
+  materLectionis as ml,
+  pe,
+  r,
+  sc,
+  supE,
+  supS,
+  uc,
+  ue,
+  us
+} from './testHelpers';
+import {numeralContent as nc, transliterationWord as w} from "../model/oldTransliteration";
 import {markContent as mc, MarkType} from "../model/markContent";
 import {akkadogramm as ag, sumerogramm as sg} from "../model/multiStringContent";
 

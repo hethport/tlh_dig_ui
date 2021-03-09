@@ -14,6 +14,7 @@ import {
 } from "parsimmon";
 import {TransliterationTextLineParseResult} from "../model/transliterationTextLineParseResult";
 import {
+  ContentOfMultiStringContent,
   IllegibleContent,
   numeralContent,
   NumeralContent,
@@ -22,11 +23,11 @@ import {
   WordContent
 } from "../model/oldTransliteration";
 import {MarkContent, markContent, MarkType, markTypeParser} from "../model/markContent";
-import {DamageType, damageTypeParser} from "../model/damages";
-import {CorrectionType, correctionTypeParser} from "../model/corrections";
+import {DamageContent, damageTypeParser} from "../model/damages";
+import {CorrectionContent, correctionTypeParser} from "../model/corrections";
 import {hittiteParser, materLectionisParser} from "./singleParsers";
 import {determinativParser, StringContent} from "../model/stringContent";
-import {akkadogramm, ContentOfMultiStringContent, MultiStringContent, sumerogramm} from "../model/multiStringContent";
+import {akkadogramm, MultiStringContent, sumerogramm} from "../model/multiStringContent";
 import {upperTextRegex} from "./parserHelpers";
 import {inscribedLetter, InscribedLetter} from "../model/inscribedLetter";
 
@@ -48,8 +49,8 @@ export interface LineParseResult {
 
 type LanguageSpec = {
   // String contents
-  damages: DamageType;
-  corrections: CorrectionType;
+  damages: DamageContent;
+  corrections: CorrectionContent;
 
   hittite: string;
 
@@ -128,7 +129,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   indexDigit: () => oneOf('1234567890x').notFollowedBy(regexp(upperTextRegex))
     .map((result) => result === 'x' ? 'ₓ' : result),
 
-  contentOfMultiStringContent: r => alt(
+  contentOfMultiStringContent: r => alt<ContentOfMultiStringContent>(
     r.markContent,
     r.damages,
     r.corrections,
@@ -197,10 +198,7 @@ export function parseTransliterationLine(transliterationLineInput: string): Tran
       // Replace wedges
       .replace(';', '𒀹')
       .replace(/(?<!{[SKGF]):/, '𒑱')
-      .replace('><', '𒉽')
-      // Index digit or x FIXME: Remove!
-      .replace(/(?<=\w)(\d)(?=\w)/, (s) => digitToSubscript(s))
-    // Replace inscribed 'x'
+      .replace('><', '𒉽');
 
     return [word, replaced_word];
   });
@@ -211,7 +209,7 @@ export function parseTransliterationLine(transliterationLineInput: string): Tran
 
     const content = wordParseResult.status ? wordParseResult.value : [];
 
-    return {input, content};
+    return new Word(input, content);
   });
 
 

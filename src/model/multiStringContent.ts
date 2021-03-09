@@ -1,55 +1,56 @@
-import {xmlify} from "./transliterationTextLineParseResult";
-import {CorrectionType} from "./corrections";
-import {DamageType} from "./damages";
-import {InscribedLetter} from "./inscribedLetter";
+import {ContentOfMultiStringContent, xmlify} from "./oldTransliteration";
 
-export enum MultiStringContentType {
-  Akkadogramm = 'Akkadogramm',
-  Sumerogramm = 'Sumerogramm'
-}
+export abstract class MultiStringContent {
+  protected constructor(public contents: ContentOfMultiStringContent[]) {
+  }
 
-export type ContentOfMultiStringContent = string | CorrectionType | DamageType | InscribedLetter;
+  abstract cssClass(): string;
 
-export class MultiStringContent {
-  constructor(
-    public type: MultiStringContentType,
-    public contents: ContentOfMultiStringContent[]
-  ) {
+  protected abstract getTag(): string;
+
+  xmlify(): string {
+    return `<${this.getTag()}>${this.contents.map(xmlify).join('')}</${this.getTag()}>`;
   }
 }
 
-
 // Akadogramm: automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht
 
+export class Akkadogramm extends MultiStringContent {
+  constructor(contents: ContentOfMultiStringContent[]) {
+    super(contents);
+  }
+
+  cssClass(): string {
+    return 'akkadogramm';
+  }
+
+  protected getTag(): string {
+    return 'aGr';
+  }
+}
+
 export function akkadogramm(...contents: ContentOfMultiStringContent[]): MultiStringContent {
-  return {type: MultiStringContentType.Akkadogramm, contents};
+  return new Akkadogramm(contents);
 }
 
 // Sumerogramm:
 // - automatisch für Versalien
 // - im Wortinnern durch vorausgehendes `--` markiert
 
+export class Sumerogramm extends MultiStringContent {
+  constructor(contents: ContentOfMultiStringContent[]) {
+    super(contents);
+  }
+
+  cssClass(): string {
+    return 'sumerogramm';
+  }
+
+  protected getTag(): string {
+    return 'sGr';
+  }
+}
+
 export function sumerogramm(...contents: ContentOfMultiStringContent[]): MultiStringContent {
-  return {type: MultiStringContentType.Sumerogramm, contents};
-}
-
-
-// Helpers
-
-export function getCssClassForMultiStringContentType(multiStringContentType: MultiStringContentType) {
-  switch (multiStringContentType) {
-    case MultiStringContentType.Akkadogramm:
-      return 'akadogramm';
-    case MultiStringContentType.Sumerogramm:
-      return 'sumerogramm';
-  }
-}
-
-export function xmlifyMultiStringContent({type, contents}: MultiStringContent): string {
-  switch (type) {
-    case MultiStringContentType.Akkadogramm:
-      return `<aGr>${contents.map(xmlify)}</aGr>`;
-    case MultiStringContentType.Sumerogramm:
-      return `<sGr>${contents.map(xmlify)}</sGr>`;
-  }
+  return new Sumerogramm(contents);
 }

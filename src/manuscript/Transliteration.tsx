@@ -6,24 +6,22 @@ import {
   WordContent,
   wordContentIsMultiStringContent
 } from "../model/oldTransliteration";
-import {classForStringContentType, StringContent} from "../model/stringContent";
-import {getCssClassForMultiStringContentType} from "../model/multiStringContent";
+import {StringContent} from "../model/stringContent";
 import {MarkContent} from "../model/markContent";
 
 // Word content
 
 function renderWordContent(content: WordContent): JSX.Element {
   if (wordContentIsMultiStringContent(content)) {
-    return <span className={getCssClassForMultiStringContentType(content.type)}>TODO!</span>
+    return <span className={content.cssClass()}>{content.contents.map(renderWordContent)}</span>
   } else {
     if (typeof content === 'string') {
       // Text, Correction, Damage!
       return <span className="hittite">{content}</span>;
     } else {
-      let y = content;
 
       if (content instanceof StringContent) {
-        return <span className={classForStringContentType(content.type)}>{content.content}</span>;
+        return <span className={content.cssClass()}>{content.content}</span>;
       } else if (content instanceof NumeralContent) {
         return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
       } else if (content instanceof MarkContent) {
@@ -50,9 +48,9 @@ function renderWord({input, content}: Word): JSX.Element {
 
 function renderLine({lineInput, result}: TransliterationLine, maxLength: number): JSX.Element {
   if (result) {
-    const {lineNumber, isAbsolute, words} = result;
+    const {lineNumber, lineNumberIsAbsolute, words} = result;
 
-    const ln = lineNumber.toString().padStart(maxLength, ' ') + (isAbsolute ? '' : '\'');
+    const ln = lineNumber.toString().padStart(maxLength, ' ') + (lineNumberIsAbsolute ? '' : '\'');
 
     return <>
       <sup>{ln}</sup>&nbsp;{words.map((word) => <span key={word.input}>{renderWord(word)}&nbsp;</span>)}

@@ -12,7 +12,6 @@ import {PicturesBlock} from "./PicturesBlock";
 export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element {
 
   const {t} = useTranslation('common');
-
   const activeUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
   const createdByUser: boolean = !!activeUser && activeUser.username === manuscript.creatorUsername;
@@ -20,15 +19,17 @@ export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element 
   function renderOtherIdentifiers(otherIdentifiers: ManuscriptIdentifierFragment[]): JSX.Element {
     if (otherIdentifiers.length === 0) {
       return <span className="is-italic">{t('Keine weiteren Identfikatoren gefunden')}.</span>;
-    } else {
-      return <div className="content">
+    }
+
+    return (
+      <div className="content">
         <ul>
           {otherIdentifiers.map(({identifier, identifierType}) =>
             <li key={identifier}>{identifier} ({identifierType})</li>
           )}
         </ul>
       </div>
-    }
+    );
   }
 
   return (

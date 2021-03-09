@@ -1,13 +1,16 @@
 import {alt, oneOf, Parser, regexp, seq, string} from "parsimmon";
 import {upperTextRegex} from "../transliterationParser/parserHelpers";
 
-export enum StringContentTypeEnum {
-  Determinativ = 'Determinativ',
-  MaterLectionis = 'MaterLectionis',
-}
+export abstract class StringContent {
+  protected constructor(public content: string) {
+  }
 
-export class StringContent {
-  constructor(public type: StringContentTypeEnum, public content: string) {
+  protected abstract getTag(): string;
+
+  abstract cssClass(): string ;
+
+  xmlify(): string {
+    return `<${this.getTag()}>${this.content}</${this.getTag()}>`;
   }
 }
 
@@ -15,30 +18,48 @@ export class StringContent {
  * Mater lectionis:
  * vor und nach der Mater Lectionis (Kleinbuchstaben markiert durch ° … °; davor oder dahinter jeweils ein Spatium oder Bindestrich)
  */
-export function materLectionis(content: string): StringContent {
-  return new StringContent(StringContentTypeEnum.MaterLectionis, content);
-}
+export class MaterLectionis extends StringContent {
+  constructor(content: string) {
+    super(content);
+  }
 
+  protected getTag(): string {
+    return 'ml';
+  }
+
+  cssClass(): string {
+    return 'materLectionis';
+  }
+}
 
 /*
  * Determinativ:
  * - automatisch für Großbuchstaben markiert durch ° … ° (davor oder dahinter jeweils ein Spatium oder Bindestrich)
  * - auch °m°, °m.[...]°, °f° und °f.[...]° sind Determinative!
  */
+export class Determinativ extends StringContent {
+  constructor(content: string) {
+    super(content);
+  }
 
-export function determinativ(content: string): StringContent {
-  return new StringContent(StringContentTypeEnum.Determinativ, content);
+  protected getTag(): string {
+    return 'dt';
+  }
+
+  cssClass(): string {
+    return 'determinativ';
+  }
 }
 
 const defaultDeterminativParser: Parser<StringContent> = seq(
   alt(regexp(upperTextRegex), oneOf('.')).atLeast(1).tie(),
-).map(([content]) => determinativ(content));
+).map(([content]) => new Determinativ(content));
 
 const specialDeterminativParser: Parser<StringContent> = seq(
   alt(string('m'), string('f')),
   string('.'),
   regexp(upperTextRegex),
-).map(([genus, dot, rest]) => determinativ(genus + dot + rest))
+).map(([genus, dot, rest]) => new Determinativ(genus + dot + rest))
 
 export const determinativParser: Parser<StringContent> = seq(
   string('°'),
@@ -48,25 +69,3 @@ export const determinativParser: Parser<StringContent> = seq(
   ),
   string('°')
 ).map(([_deg1, content, _deg2]) => content);
-
-// CSS class
-
-export function classForStringContentType(stringContentType: StringContentTypeEnum): string {
-  switch (stringContentType) {
-    case StringContentTypeEnum.Determinativ:
-      return 'determinativ';
-    case StringContentTypeEnum.MaterLectionis:
-      return 'materLectionis';
-  }
-}
-
-// String content
-
-export function xmlifyStringContent({type, content}: StringContent): string {
-  switch (type) {
-    case StringContentTypeEnum.MaterLectionis:
-      return `<ml>${content}</ml>`;
-    case StringContentTypeEnum.Determinativ:
-      return `<dt>${content}</dt>`;
-  }
-}
