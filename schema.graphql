@@ -14,7 +14,7 @@ type ManuscriptMetaData {
   status: ManuscriptStatus
   otherIdentifiers: [ManuscriptIdentifier!]!
   pictureUrls: [String!]!
-  transliterationResult: [Transliteration!]
+  transliterations: [Transliteration!]
 }
 
 type ManuscriptIdentifier {
@@ -51,9 +51,24 @@ enum ManuscriptStatus {
 }
 
 type Transliteration {
+  side: ManuscriptSide!
   version: Int!
   input: String!
   resultXml: String!
+}
+
+enum ManuscriptSide {
+  NotIdentifiable
+  Obverse
+  Reverse
+  LowerEdge
+  UpperEdge
+  LeftEdge
+  RightEdge
+  SideA
+  SideB
+  InscriptionNumber
+  SealInscription
 }
 
 type Mutation {
@@ -103,6 +118,7 @@ type ManuscriptMutations {
 }
 
 input TransliterationInput {
+  side: ManuscriptSide!
   input: String!
   result: String!
 }

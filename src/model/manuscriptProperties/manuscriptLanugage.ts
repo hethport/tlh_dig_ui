@@ -19,7 +19,7 @@ export const allManuscriptLanguages: ManuscriptLanguage[] = [
 
 export function getNameForManuscriptLanguage(l: ManuscriptLanguage, t: TFunction): string {
   // FIXME: implement!
-  return 'TODO!';
+  return 'TODO: ' + l.toString();
 }
 
 export function getAbbreviationForManuscriptLanguage(l: ManuscriptLanguage): string {

@@ -1,19 +1,5 @@
 import {TFunction} from "i18next";
-
-
-export enum ManuscriptSide {
-  NotIdentifiable = 'NotIdentifiable',
-  Obverse = 'Obverse',
-  Reverse = 'Reverse',
-  LowerEdge = 'LowerEdge',
-  UpperEdge = 'UpperEdge',
-  LeftEdge = 'LeftEdge',
-  RightEdge = 'RightEdge',
-  SideA = 'SideA',
-  SideB = 'SideB',
-  InscriptionNumber = 'InscriptionNumber',
-  SealInscription = 'SealInscription'
-}
+import {ManuscriptSide} from "../../generated/graphql";
 
 export enum ManuscriptColumn {
   None = 'None',

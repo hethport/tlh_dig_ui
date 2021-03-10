@@ -4,14 +4,9 @@ import {CorrectionContent} from "./corrections";
 import {DamageContent} from "./damages";
 import {MultiStringContent} from "./multiStringContent";
 import {InscribedLetter} from "./inscribedLetter";
-import {
-  getXmlNameForManuscriptSide,
-  ManuscriptColumn,
-  ManuscriptColumnModifier,
-  ManuscriptSide
-} from "./manuscriptProperties/manuscriptProperties";
-import {getAbbreviationForManuscriptLanguage, ManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
-import {string} from "parsimmon";
+import {getXmlNameForManuscriptSide} from "./manuscriptProperties/manuscriptProperties";
+import {getAbbreviationForManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
+import {SideBasics} from "./sideParseResult";
 
 // Word Content
 
@@ -103,7 +98,7 @@ export class LineParseResult {
   constructor(public lineNumber: number, public lineNumberIsAbsolute: boolean = false, public words: Word[]) {
   }
 
-  xmlify(textId: string, side: ManuscriptSide, language: ManuscriptLanguage, column: ManuscriptColumn, columnModifier: ManuscriptColumnModifier, paragraphNumber: number = 1): string {
+  xmlify(textId: string, {side, language, column, columnModifier}: SideBasics, paragraphNumber: number = 1): string {
     // FIXME: paragraphNumber!
     const sideName = getXmlNameForManuscriptSide(side);
     const lang = getAbbreviationForManuscriptLanguage(language);
@@ -113,7 +108,13 @@ export class LineParseResult {
   }
 }
 
-export interface TransliterationLine {
-  lineInput: string;
-  result?: LineParseResult;
+export class TransliterationLine {
+  constructor(public lineInput: string, public result?: LineParseResult) {
+  }
+
+  xmlify(mainIdentifier: string, sideBasics: SideBasics): string {
+    return this.result
+      ? this.result.xmlify(mainIdentifier, sideBasics)
+      : `<error>${this.lineInput}</error>`
+  }
 }

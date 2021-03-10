@@ -1,7 +1,7 @@
 import {ContentOfMultiStringContent, xmlify} from "./oldTransliteration";
 
 export abstract class MultiStringContent {
-  protected constructor(public contents: ContentOfMultiStringContent[]) {
+  constructor(public contents: ContentOfMultiStringContent[]) {
   }
 
   abstract cssClass(): string;
@@ -16,10 +16,6 @@ export abstract class MultiStringContent {
 // Akadogramm: automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht
 
 export class Akkadogramm extends MultiStringContent {
-  constructor(contents: ContentOfMultiStringContent[]) {
-    super(contents);
-  }
-
   cssClass(): string {
     return 'akkadogramm';
   }
@@ -38,10 +34,6 @@ export function akkadogramm(...contents: ContentOfMultiStringContent[]): MultiSt
 // - im Wortinnern durch vorausgehendes `--` markiert
 
 export class Sumerogramm extends MultiStringContent {
-  constructor(contents: ContentOfMultiStringContent[]) {
-    super(contents);
-  }
-
   cssClass(): string {
     return 'sumerogramm';
   }

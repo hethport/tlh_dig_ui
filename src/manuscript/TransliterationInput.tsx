@@ -5,19 +5,16 @@ import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {homeUrl} from "../urls";
 import {Redirect} from 'react-router-dom';
-import {TransliterationLine} from "../model/oldTransliteration";
-import {useUploadTransliterationMutation} from "../generated/graphql";
+import {TransliterationInput as TI, useUploadTransliterationMutation} from "../generated/graphql";
 import {ManuscriptBaseIProps} from "./ManuscriptBase";
 import {TransliterationSideInput} from "./TransliterationSideInput";
-import {SideParseResult} from "../model/sideParseResult";
 
 interface SideParseResultContainer {
-  transliterationOutput?: SideParseResult;
+  newSideParseResult?: TI;
 }
 
 interface IState {
   sideParseResults: SideParseResultContainer[];
-  transliterationIsUpToDate?: boolean;
 }
 
 export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.Element {
@@ -35,18 +32,9 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
   }
 
   function upload(): void {
-    const values: TransliterationLine[] = state.sideParseResults
-      .flatMap(({transliterationOutput}) => transliterationOutput?.lineResults || []);
+    const values = state.sideParseResults.flatMap(({newSideParseResult}) => newSideParseResult ? [newSideParseResult] : []);
 
-    const input = '';
-    const result = '';
-
-    uploadTransliteration({variables: {mainIdentifier, values: {input, result}}})
-      .then(({data}) => {
-        setState((currentState) => {
-          return {...currentState, transliterationIsUpToDate: !!data?.me?.manuscript?.updateTransliteration}
-        });
-      })
+    uploadTransliteration({variables: {mainIdentifier, values}})
       .catch((error) => console.error('Could not upload transliteration:\n' + error));
   }
 
@@ -56,12 +44,12 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
     })
   }
 
-  function updateTransliteration(index: number, result: SideParseResult): void {
+  function updateTransliteration(index: number, result: TI): void {
     setState((state) => {
       return {
         ...state,
         sideParseResults: state.sideParseResults
-          .map((sprc, runningIndex) => index === runningIndex ? {transliterationOutput: result} : sprc),
+          .map((sprc, runningIndex) => index === runningIndex ? {newSideParseResult: result} : sprc),
       }
     });
   }
@@ -83,8 +71,7 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
           </button>
         </div>
         <div className="column">
-          <button type="button" className="button is-link is-fullwidth" onClick={upload}
-                  disabled={loading || state.transliterationIsUpToDate}>
+          <button type="button" className="button is-link is-fullwidth" onClick={upload} disabled={loading}>
             {t('uploadTransliteration')}
           </button>
 

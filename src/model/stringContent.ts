@@ -2,7 +2,7 @@ import {alt, oneOf, Parser, regexp, seq, string} from "parsimmon";
 import {upperTextRegex} from "../transliterationParser/parserHelpers";
 
 export abstract class StringContent {
-  protected constructor(public content: string) {
+  constructor(public content: string) {
   }
 
   protected abstract getTag(): string;
@@ -19,10 +19,6 @@ export abstract class StringContent {
  * vor und nach der Mater Lectionis (Kleinbuchstaben markiert durch ° … °; davor oder dahinter jeweils ein Spatium oder Bindestrich)
  */
 export class MaterLectionis extends StringContent {
-  constructor(content: string) {
-    super(content);
-  }
-
   protected getTag(): string {
     return 'ml';
   }
@@ -38,10 +34,6 @@ export class MaterLectionis extends StringContent {
  * - auch °m°, °m.[...]°, °f° und °f.[...]° sind Determinative!
  */
 export class Determinativ extends StringContent {
-  constructor(content: string) {
-    super(content);
-  }
-
   protected getTag(): string {
     return 'dt';
   }

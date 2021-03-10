@@ -7,7 +7,6 @@ import {activeUserSelector} from "../store/store";
 import {getNameForPalaeoClassification} from "../palaeoClassification";
 import {createTransliterationUrl, ManuscriptBaseIProps, uploadPicturesUrl} from "./ManuscriptBase";
 import {PicturesBlock} from "./PicturesBlock";
-import {Transliteration} from "./TransliterationLineResult";
 
 export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element {
 
@@ -88,8 +87,10 @@ export function ManuscriptData({manuscript}: ManuscriptBaseIProps): JSX.Element 
       <div className="my-3">
         <h2 className="subtitle is-4">{t('transliteration')}</h2>
 
-        {manuscript.transliterationResult
-          ? <Transliteration lines={[] /*manuscript.transliterationResult*/}/>
+        {manuscript.transliterations
+          ? <div className="notification is-danger has-text-centered">
+            {/* TODO: <Transliteration lines={manuscript.transliterationResult}/>*/}TODO: reimplement!
+          </div>
           : <div className="notification is-info has-text-centered">
             {t('noTransliterationCraetedYet')}.
           </div>}

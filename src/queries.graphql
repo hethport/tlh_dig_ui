@@ -63,7 +63,8 @@ fragment ManuscriptMetaData on ManuscriptMetaData {
   provenance
   creatorUsername
   pictureUrls
-  transliterationResult {
+  transliterations {
+    side
     version
     input
     resultXml

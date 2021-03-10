@@ -1,18 +1,28 @@
-import {ManuscriptColumn, ManuscriptColumnModifier, ManuscriptSide} from "./manuscriptProperties/manuscriptProperties";
+import {ManuscriptColumn, ManuscriptColumnModifier} from "./manuscriptProperties/manuscriptProperties";
 import {ManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
 import {TransliterationLine} from "./oldTransliteration";
+import {ManuscriptSide} from "../generated/graphql";
 
-interface SideBasics {
+export interface SideBasics {
   side: ManuscriptSide;
   column: ManuscriptColumn;
   columnModifier: ManuscriptColumnModifier;
   language: ManuscriptLanguage;
 }
 
-export interface RawSideInput extends SideBasics {
+export const defaultSideBasics: SideBasics = {
+  side: ManuscriptSide.NotIdentifiable,
+  column: ManuscriptColumn.None,
+  columnModifier: ManuscriptColumnModifier.None,
+  language: ManuscriptLanguage.Hittite
+};
+
+export interface RawSideInput {
+  sideBasics: SideBasics;
   transliteration: string;
 }
 
-export interface SideParseResult extends SideBasics {
+export interface SideParseResult {
+  sideBasics: SideBasics;
   lineResults: TransliterationLine[];
 }

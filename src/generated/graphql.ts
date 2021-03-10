@@ -37,7 +37,7 @@ export type ManuscriptMetaData = {
   status?: Maybe<ManuscriptStatus>;
   otherIdentifiers: Array<ManuscriptIdentifier>;
   pictureUrls: Array<Scalars['String']>;
-  transliterationResult?: Maybe<Array<Transliteration>>;
+  transliterations?: Maybe<Array<Transliteration>>;
 };
 
 export type ManuscriptIdentifier = {
@@ -76,10 +76,25 @@ export enum ManuscriptStatus {
 
 export type Transliteration = {
   __typename?: 'Transliteration';
+  side: ManuscriptSide;
   version: Scalars['Int'];
   input: Scalars['String'];
   resultXml: Scalars['String'];
 };
+
+export enum ManuscriptSide {
+  NotIdentifiable = 'NotIdentifiable',
+  Obverse = 'Obverse',
+  Reverse = 'Reverse',
+  LowerEdge = 'LowerEdge',
+  UpperEdge = 'UpperEdge',
+  LeftEdge = 'LeftEdge',
+  RightEdge = 'RightEdge',
+  SideA = 'SideA',
+  SideB = 'SideB',
+  InscriptionNumber = 'InscriptionNumber',
+  SealInscription = 'SealInscription'
+}
 
 export type Mutation = {
   __typename?: 'Mutation';
@@ -158,6 +173,7 @@ export type ManuscriptMutationsUpdateTransliterationArgs = {
 };
 
 export type TransliterationInput = {
+  side: ManuscriptSide;
   input: Scalars['String'];
   result: Scalars['String'];
 };
@@ -238,9 +254,9 @@ export type ManuscriptMetaDataFragment = (
   ), otherIdentifiers: Array<(
     { __typename?: 'ManuscriptIdentifier' }
     & ManuscriptIdentifierFragment
-  )>, transliterationResult?: Maybe<Array<(
+  )>, transliterations?: Maybe<Array<(
     { __typename?: 'Transliteration' }
-    & Pick<Transliteration, 'version' | 'input' | 'resultXml'>
+    & Pick<Transliteration, 'side' | 'version' | 'input' | 'resultXml'>
   )>> }
 );
 
@@ -350,7 +366,8 @@ export const ManuscriptMetaDataFragmentDoc = gql`
   provenance
   creatorUsername
   pictureUrls
-  transliterationResult {
+  transliterations {
+    side
     version
     input
     resultXml

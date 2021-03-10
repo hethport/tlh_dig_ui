@@ -1,25 +1,23 @@
 import React, {useState} from "react";
 import {
   getNameForManuscriptSide,
-  ManuscriptColumn,
-  ManuscriptColumnModifier,
   manuscriptColumnModifiers,
   manuscriptColumns,
-  ManuscriptSide,
   manuscriptSides
 } from "../model/manuscriptProperties/manuscriptProperties";
-import {allManuscriptLanguages, ManuscriptLanguage} from "../model/manuscriptProperties/manuscriptLanugage";
+import {allManuscriptLanguages, getNameForManuscriptLanguage} from "../model/manuscriptProperties/manuscriptLanugage";
 import {useTranslation} from "react-i18next";
 import {parseTransliterationLine} from "../transliterationParser/parser";
-import {RawSideInput, SideParseResult} from "../model/sideParseResult";
+import {defaultSideBasics, RawSideInput, SideParseResult} from "../model/sideParseResult";
 import {Field, Form, Formik} from "formik";
 import {BulmaSelect} from "../forms/BulmaFields";
 import {Transliteration} from "./TransliterationLineResult";
 import {TransliterationLine} from "../model/oldTransliteration";
+import {TransliterationInput} from "../generated/graphql";
 
 interface IProps {
   mainIdentifier: string;
-  onTransliterationUpdate: (t: SideParseResult) => void;
+  onTransliterationUpdate: (t: TransliterationInput) => void;
 }
 
 interface IState {
@@ -27,44 +25,38 @@ interface IState {
   sideParseResult?: SideParseResult;
 }
 
-function parseLine(lineInput: string): TransliterationLine {
-  return {lineInput, result: parseTransliterationLine(lineInput)};
-}
-
 export function TransliterationSideInput({mainIdentifier, onTransliterationUpdate}: IProps): JSX.Element {
 
   const {t} = useTranslation('common');
   const [state, setState] = useState<IState>({});
 
-  const initialValues: RawSideInput = {
-    side: ManuscriptSide.NotIdentifiable,
-    column: ManuscriptColumn.None,
-    columnModifier: ManuscriptColumnModifier.None,
-    language: ManuscriptLanguage.Hittite,
-    transliteration: '',
-  };
+  const initialValues: RawSideInput = {sideBasics: defaultSideBasics, transliteration: '',};
 
-  function updateTransliteration(values: RawSideInput): void {
-    const sideParseResult: SideParseResult = {
-      lineResults: values.transliteration.split('\n').map(parseLine),
-      ...values
-    };
+  function updateTransliteration({sideBasics, transliteration}: RawSideInput): void {
+    console.info(JSON.stringify(sideBasics));
+
+    const lineResults: TransliterationLine[] = transliteration
+      .split('\n')
+      .map((lineInput) => new TransliterationLine(lineInput, parseTransliterationLine(lineInput)));
 
     setState(() => {
-      return {sideParseResult}
+      return {sideParseResult: {sideBasics, lineResults}}
     });
 
     toggleTab('rendered');
 
-    onTransliterationUpdate(sideParseResult);
+    onTransliterationUpdate({
+      side: sideBasics.side,
+      input: transliteration,
+      result: lineResults
+        .map((lr) => lr.xmlify(mainIdentifier, sideBasics))
+        .join('\n')
+    });
   }
 
-  function exportAsXml({lineResults, side, language, column, columnModifier}: SideParseResult): string[] {
-    return lineResults.map(({lineInput, result}) =>
-      result
-        ? result.xmlify(mainIdentifier, side, language, column, columnModifier)
-        : `<error>${lineInput}</error>`
-    );
+  function exportAsXml({lineResults, sideBasics}: SideParseResult): string[] {
+    console.info(lineResults);
+    return lineResults.map((lr) => lr.xmlify(mainIdentifier, sideBasics));
   }
 
   function toggleTab(name: string): void {
@@ -80,21 +72,24 @@ export function TransliterationSideInput({mainIdentifier, onTransliterationUpdat
           <Form>
             <div className="field">
               <div className="field-body">
-                <Field as="select" name="manuscriptSide" label={t('manuscriptSide')} component={BulmaSelect}>
+                <Field as="select" name="sideBasics.side" label={t('manuscriptSide')} component={BulmaSelect}>
                   {manuscriptSides.map((ms) =>
                     <option key={ms} value={ms}>{getNameForManuscriptSide(ms, t)}</option>
                   )}
                 </Field>
 
-                <Field name="manuscriptDefaultLanguage" label={t('defaultLanguage')} component={BulmaSelect}>
-                  {allManuscriptLanguages.map((l) => <option key={l}>{l}</option>)}
+                <Field name="sideBasics.language" label={t('defaultLanguage')} component={BulmaSelect}>
+                  {allManuscriptLanguages.map((l) =>
+                    <option key={l} value={l}>{getNameForManuscriptLanguage(l, t)}</option>
+                  )}
                 </Field>
 
-                <Field name="manuscriptColumn" label={t('manuscriptColumn')} component={BulmaSelect}>
+                <Field name="sideBasics.column" label={t('manuscriptColumn')} component={BulmaSelect}>
                   {manuscriptColumns.map((mc) => <option key={mc} value={mc}>{mc}</option>)}
                 </Field>
 
-                <Field name="manuscriptColumnModifier" label={t('manuscriptColumnModifier')} component={BulmaSelect}>
+                <Field name="sideBasics.columnModifier" label={t('manuscriptColumnModifier')}
+                       component={BulmaSelect}>
                   {manuscriptColumnModifiers.map((mcm) => <option key={mcm} value={mcm}>{mcm}</option>)}
                 </Field>
               </div>
