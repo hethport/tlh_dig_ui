@@ -1,8 +1,8 @@
-import {StringContent} from "./stringContent";
-import {MarkContent} from "./markContent";
-import {CorrectionContent} from "./corrections";
-import {DamageContent} from "./damages";
-import {MultiStringContent} from "./multiStringContent";
+import {isStringContent, StringContent, xmlifyStringContent} from "./stringContent";
+import {isMarkContent, MarkContent} from "./markContent";
+import {CorrectionContent, isCorrectionContent} from "./corrections";
+import {DamageContent, isDamageContent, xmlifyDamageContent} from "./damages";
+import {isMultiStringContent, MultiStringContent, xmlifyMultiStringContent} from "./multiStringContent";
 import {InscribedLetter} from "./inscribedLetter";
 import {getXmlNameForManuscriptSide} from "./manuscriptProperties/manuscriptProperties";
 import {getAbbreviationForManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
@@ -29,49 +29,62 @@ export type WordContent = MultiStringContent | SimpleWordContent;
 const charCodeZero = '0'.charCodeAt(0);
 const charCodeSubscriptZero = '₀'.charCodeAt(0);
 
-export class NumeralContent {
-  constructor(public content: string, public isSubscript: boolean) {
-  }
+export interface NumeralContent {
+  type: 'Numeral';
+  content: string;
+  isSubscript: boolean
+}
 
+export function numeralContent(content: string, isSubscript: boolean = false): NumeralContent {
+  return {type: 'Numeral', content, isSubscript};
+}
+
+export function isNumeralContent(w: WordContent): w is NumeralContent {
+  return typeof w !== 'string' && 'type' in w && w.type === 'Numeral';
+}
+
+/*
+{
   private digitToSubscript(): string {
     return String.fromCharCode(charCodeSubscriptZero + (this.content.charCodeAt(0) - charCodeZero));
   }
 }
+ */
 
-function getContent(twc: WordContent): string {
-  if (typeof twc === 'string') {
-    return twc;
-  } else if (twc instanceof MultiStringContent) {
-    return twc.contents.map(getContent).join('');
-  } else if (twc instanceof StringContent) {
-    return twc.content;
+function getContent(c: WordContent): string {
+  if (typeof c === 'string') {
+    return c;
+  } else if (isMultiStringContent(c)) {
+    return c.contents.map(getContent).join('');
+  } else if (isStringContent(c)) {
+    return c.content;
   } else {
     // FIXME: implement?!
     return '';
   }
 }
 
-export function xmlify(content: WordContent): string {
-  if (content instanceof MultiStringContent) {
-    return content.xmlify();
+export function xmlify(c: WordContent): string {
+  if (isMultiStringContent(c)) {
+    return xmlifyMultiStringContent(c);
   } else {
-    if (typeof content === 'string') {
-      return content;
-    } else if (content instanceof StringContent) {
-      return content.xmlify();
-    } else if (content instanceof CorrectionContent) {
+    if (typeof c === 'string') {
+      return c;
+    } else if (isStringContent(c)) {
+      return xmlifyStringContent(c);
+    } else if (isCorrectionContent(c)) {
       // TODO!
-      return `<todo!/>`; // content.xmlify();
-    } else if (content instanceof DamageContent) {
-      return content.xmlify();
-    } else if (content instanceof NumeralContent) {
+      return `<todo!/>`; // c.xmlify();
+    } else if (isDamageContent(c)) {
+      return xmlifyDamageContent(c);
+    } else if (isNumeralContent(c)) {
       // TODO!
-      return `<nc>${content.content}</nc>`
-    } else if (content instanceof MarkContent) {
+      return `<nc>${c.content}</nc>`
+    } else if (isMarkContent(c)) {
       // TODO!
-      return `<mc>${content.content}</mc>`
+      return `<mc>${c.content}</mc>`
     } else {
-      // Illegible content
+      // Illegible c
       return 'x';
     }
   }

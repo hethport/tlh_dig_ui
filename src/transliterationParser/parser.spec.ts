@@ -1,16 +1,13 @@
 import {parseTransliterationLine} from './parser';
-import {LineParseResult} from "../model/oldTransliteration";
+import {LineParseResult, numeralContent as nc} from "../model/oldTransliteration";
 import {
   de,
-  determinativ as dt,
   dpe,
   ds,
   el,
   illegibleContent,
   le,
   ls,
-  materLectionis as ml,
-  numeralContent as nc,
   pe,
   r,
   sc,
@@ -21,6 +18,7 @@ import {
   ue,
   us
 } from './testHelpers';
+import {determinativ as dt, materLectionis as ml} from '../model/stringContent';
 import {markContent as mc, MarkType} from "../model/markContent";
 import {akkadogramm as ag, sumerogramm as sg} from "../model/multiStringContent";
 

@@ -1,31 +1,32 @@
 import {alt, oneOf, Parser, regexp, seq, string} from "parsimmon";
 import {upperTextRegex} from "../transliterationParser/parserHelpers";
+import {WordContent} from "./oldTransliteration";
 
-export abstract class StringContent {
-  constructor(public content: string) {
-  }
+export interface StringContent {
+  type: 'Determinativ' | 'MaterLectionis';
+  content: string;
+}
 
-  protected abstract getTag(): string;
+export function isStringContent(w: WordContent): w is StringContent {
+  return typeof w !== 'string' && 'type' in w && (w.type === 'Determinativ' || w.type === 'MaterLectionis');
+}
 
-  abstract cssClass(): string ;
+export function xmlifyStringContent({type, content}: StringContent): string {
+  const tag = type === 'Determinativ' ? 'dt' : 'ml';
 
-  xmlify(): string {
-    return `<${this.getTag()}>${this.content}</${this.getTag()}>`;
-  }
+  return `<${tag}>${content}</${tag}>`;
+}
+
+export function cssClassForStringContent({type}: StringContent): string {
+  return type === 'Determinativ' ? 'determinativ' : 'materLectionis';
 }
 
 /**
  * Mater lectionis:
  * vor und nach der Mater Lectionis (Kleinbuchstaben markiert durch ° … °; davor oder dahinter jeweils ein Spatium oder Bindestrich)
  */
-export class MaterLectionis extends StringContent {
-  protected getTag(): string {
-    return 'ml';
-  }
-
-  cssClass(): string {
-    return 'materLectionis';
-  }
+export function materLectionis(content: string): StringContent {
+  return {type: 'MaterLectionis', content};
 }
 
 /*
@@ -33,25 +34,20 @@ export class MaterLectionis extends StringContent {
  * - automatisch für Großbuchstaben markiert durch ° … ° (davor oder dahinter jeweils ein Spatium oder Bindestrich)
  * - auch °m°, °m.[...]°, °f° und °f.[...]° sind Determinative!
  */
-export class Determinativ extends StringContent {
-  protected getTag(): string {
-    return 'dt';
-  }
-
-  cssClass(): string {
-    return 'determinativ';
-  }
+export function determinativ(content: string): StringContent {
+  return {type: 'Determinativ', content};
 }
 
-const defaultDeterminativParser: Parser<StringContent> = seq(
-  alt(regexp(upperTextRegex), oneOf('.')).atLeast(1).tie(),
-).map(([content]) => new Determinativ(content));
+const defaultDeterminativParser: Parser<StringContent> = alt(regexp(upperTextRegex), oneOf('.'))
+  .atLeast(1)
+  .tie()
+  .map((content) => determinativ(content));
 
 const specialDeterminativParser: Parser<StringContent> = seq(
   alt(string('m'), string('f')),
   string('.'),
   regexp(upperTextRegex),
-).map(([genus, dot, rest]) => new Determinativ(genus + dot + rest))
+).map(([genus, dot, rest]) => determinativ(genus + dot + rest))
 
 export const determinativParser: Parser<StringContent> = seq(
   string('°'),

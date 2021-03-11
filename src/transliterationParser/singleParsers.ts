@@ -1,18 +1,16 @@
 import {alt, oneOf, Parser, regexp, seq, string} from "parsimmon";
-import {Determinativ, MaterLectionis, StringContent} from "../model/stringContent";
+import {determinativ, materLectionis, StringContent} from "../model/stringContent";
 import {lowerTextRegex} from './parserHelpers';
 
 function materLectionisThatIsActuallyDeterminatives(ml: string): boolean {
   return ml === 'm' || ml === 'f' || ml.startsWith('m.') || ml.startsWith('f.');
 }
-
 export const hittiteParser: Parser<string> =
   alt(
     regexp(lowerTextRegex),
     string('-').notFollowedBy(string('-')),
     oneOf('×ₓ')
   ).atLeast(1).tie()
-
 
 /**
  * Mater lectionis:
@@ -26,6 +24,6 @@ export const materLectionisParser: Parser<StringContent> =
   )
     .map(([_degSym1, result, _degSym2]) =>
       materLectionisThatIsActuallyDeterminatives(result)
-        ? new Determinativ(result)
-        : new MaterLectionis(result)
+        ? determinativ(result)
+        : materLectionis(result)
     );

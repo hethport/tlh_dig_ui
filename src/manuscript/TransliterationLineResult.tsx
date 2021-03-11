@@ -1,28 +1,28 @@
 import React from "react";
-import {StringContent} from "../model/stringContent";
-import {NumeralContent, TransliterationLine, Word, WordContent} from "../model/oldTransliteration";
-import {MarkContent} from "../model/markContent";
-import {DamageContent, getSymbolForDamageType} from "../model/damages";
-import {CorrectionContent, symbolForCorrection} from "../model/corrections";
-import {MultiStringContent} from "../model/multiStringContent";
+import {cssClassForStringContent, isStringContent} from "../model/stringContent";
+import {isNumeralContent, TransliterationLine, Word, WordContent} from "../model/oldTransliteration";
+import {isMarkContent} from "../model/markContent";
+import {getSymbolForDamageType, isDamageContent} from "../model/damages";
+import {isCorrectionContent, symbolForCorrection} from "../model/corrections";
+import {cssClassForMultiStringContent, isMultiStringContent} from "../model/multiStringContent";
 
 function renderWordContent(content: WordContent): JSX.Element {
-  if (content instanceof MultiStringContent) {
-    return <span className={content.cssClass()}>
+  if (isMultiStringContent(content)) {
+    return <span className={cssClassForMultiStringContent(content)}>
       {content.contents.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
     </span>;
   } else {
     if (typeof content === 'string') {
       return <span>{content}</span>;
-    } else if (content instanceof DamageContent) {
+    } else if (isDamageContent(content)) {
       return <span>{getSymbolForDamageType(content.damageType)}</span>;
-    } else if (content instanceof CorrectionContent) {
+    } else if (isCorrectionContent(content)) {
       return <sup className="correction">{symbolForCorrection(content.correctionType)}</sup>;
-    } else if (content instanceof StringContent) {
-      return <span className={content.cssClass()}>{content.content}</span>;
-    } else if (content instanceof MarkContent) {
+    } else if (isStringContent(content)) {
+      return <span className={cssClassForStringContent(content)}>{content.content}</span>;
+    } else if (isMarkContent(content)) {
       return <span className="has-text-warning">TODO: {content.content}!</span>
-    } else if (content instanceof NumeralContent) {
+    } else if (isNumeralContent(content)) {
       return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
     } else {
       // Illegible Content

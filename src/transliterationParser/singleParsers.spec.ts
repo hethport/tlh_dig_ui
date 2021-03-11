@@ -1,5 +1,5 @@
 import {transliteration} from "./parser";
-import {determinativ, determinativ as dt, materLectionis, materLectionis as ml,} from "./testHelpers";
+import {determinativ, materLectionis} from "../model/stringContent";
 import {akkadogramm, sumerogramm} from "../model/multiStringContent";
 import {markContent as mc, MarkType} from '../model/markContent';
 import {inscribedLetter} from "../model/inscribedLetter";
@@ -51,13 +51,13 @@ describe('determinativ', () => {
   const parser = transliteration.determinativ;
 
   it('should parser a determinativ', () => {
-    expect(parser.tryParse('°ABC°')).toEqual(dt('ABC'));
-    expect(parser.tryParse('°XYZ°')).toEqual(dt('XYZ'));
+    expect(parser.tryParse('°ABC°')).toEqual(determinativ('ABC'));
+    expect(parser.tryParse('°XYZ°')).toEqual(determinativ('XYZ'));
   });
 
   it('should parse special determinatives', () => {
-    expect(parser.tryParse('°m.D°')).toEqual(dt('m.D'));
-    expect(parser.tryParse('°f.D°')).toEqual(dt('f.D'));
+    expect(parser.tryParse('°m.D°')).toEqual(determinativ('m.D'));
+    expect(parser.tryParse('°f.D°')).toEqual(determinativ('f.D'));
   })
 
   it('should not parse a mater lectionis', () => {
@@ -70,13 +70,13 @@ describe('materLectionis', () => {
   const parser = transliteration.materLectionis;
 
   it('should parse a mater lectionis', () => {
-    expect(parser.tryParse('°abc°')).toEqual(ml('abc'));
-    expect(parser.tryParse('°xyz°')).toEqual(ml('xyz'));
+    expect(parser.tryParse('°abc°')).toEqual(materLectionis('abc'));
+    expect(parser.tryParse('°xyz°')).toEqual(materLectionis('xyz'));
   });
 
   it('should parse special content as a determinativ', () => {
-    expect(parser.tryParse('°m°')).toEqual(dt('m'));
-    expect(parser.tryParse('°f°')).toEqual(dt('f'));
+    expect(parser.tryParse('°m°')).toEqual(determinativ('m'));
+    expect(parser.tryParse('°f°')).toEqual(determinativ('f'));
   })
 
   it('should not parse a determinativ', () => {

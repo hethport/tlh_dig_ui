@@ -5,7 +5,6 @@ import {
   oneOf,
   optWhitespace,
   Parser,
-  regex,
   regexp,
   Result as ParsimmonResult,
   seq,
@@ -15,7 +14,7 @@ import {
 import {
   ContentOfMultiStringContent,
   IllegibleContent,
-  LineParseResult,
+  LineParseResult, numeralContent,
   NumeralContent,
   SimpleWordContent,
   Word,
@@ -101,13 +100,13 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   illegible: () => string('x').result<IllegibleContent>({}),
 
   markType: () => markTypeParser,
-  markContent: r => seq(string('{'), r.markType, string(':'), optWhitespace, regex(/[^}]*/), string('}'))
+  markContent: r => seq(string('{'), r.markType, string(':'), optWhitespace, regexp(/[^}]*/), string('}'))
     .map(([_oa, markType, _colon, _ws, content, _ca]) => markContent(markType, content)),
 
   numeralContent: () => regexp(/\d+/)
-    .map((result) => new NumeralContent(result, false)),
+    .map((result) => numeralContent(result, false)),
   subscriptNumeralContent: () => regexp(/[₀₁₂₃₄₅₆₇₈₉]+/)
-    .map((result) => new NumeralContent((result.codePointAt(0)! % 10).toString(), true)),
+    .map((result) => numeralContent((result.codePointAt(0)! % 10).toString(), true)),
 
   inscribedLetter: () => seq(string('x'), regexp(upperTextRegex)).map(([_x, result]) => inscribedLetter(result)),
 

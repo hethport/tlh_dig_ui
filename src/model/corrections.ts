@@ -1,8 +1,17 @@
 import {alt, Parser, string} from "parsimmon";
+import {WordContent} from "./oldTransliteration";
 
-export class CorrectionContent {
-  constructor(public correctionType: CorrectionType) {
-  }
+export interface CorrectionContent {
+  type: 'Correction';
+  correctionType: CorrectionType;
+}
+
+export function correctionContent(correctionType: CorrectionType): CorrectionContent {
+  return {type: 'Correction', correctionType};
+}
+
+export function isCorrectionContent(w: WordContent): w is CorrectionContent {
+  return typeof w !== 'string' && 'type' in w && w.type === 'Correction';
 }
 
 export enum CorrectionType {
@@ -23,7 +32,7 @@ export const correctionTypeParser: Parser<CorrectionContent> = alt(
   alt(string('…'), string('...')).result(CorrectionType.Ellipsis),
   alt(string('§§'), string('===')).result(CorrectionType.DoubleParagraphEnd),
   alt(string('§'), string('¬¬¬')).result(CorrectionType.ParagraphEnd),
-).map((correctionType) => new CorrectionContent(correctionType));
+).map(correctionContent);
 
 export function symbolForCorrection(correctionType: CorrectionType): string {
   switch (correctionType) {

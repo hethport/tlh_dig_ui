@@ -1,12 +1,21 @@
 import {alt, Parser, regex, regexp, string} from "parsimmon";
+import {WordContent} from "./oldTransliteration";
 
-export class DamageContent {
-  constructor(public damageType: DamageType) {
-  }
+export interface DamageContent {
+  type: 'Damage';
+  damageType: DamageType;
+}
 
-  xmlify(): string {
-    return xmlifyDamage(this.damageType);
-  }
+export function damageContent(damageType: DamageType): DamageContent {
+  return {type: 'Damage', damageType};
+}
+
+export function isDamageContent(w: WordContent): w is DamageContent {
+  return typeof w !== 'string' && 'type' in w && w.type === 'Damage';
+}
+
+export function xmlifyDamageContent({damageType}: DamageContent): string {
+  return xmlifyDamage(damageType);
 }
 
 export enum DamageType {
@@ -23,15 +32,6 @@ export enum DamageType {
   UnknownDamageEnd = 'UnknownDamageEnd'
 }
 
-export const allDamageTypes: DamageType[] = [
-  DamageType.DeletionStart, DamageType.DeletionEnd,
-  DamageType.LesionStart, DamageType.LesionEnd,
-  DamageType.Rasure,
-  DamageType.SurplusStart, DamageType.SurplusEnd,
-  DamageType.SupplementStart, DamageType.SupplementEnd,
-  DamageType.UnknownDamageStart, DamageType.UnknownDamageEnd
-];
-
 export const damageTypeParser: Parser<DamageContent> = alt(
   string('[').result(DamageType.DeletionStart),
   string(']').result(DamageType.DeletionEnd),
@@ -44,7 +44,7 @@ export const damageTypeParser: Parser<DamageContent> = alt(
   regex(/[〉>]/).result(DamageType.SupplementEnd),
   string('(').result(DamageType.UnknownDamageStart),
   string(')').result(DamageType.UnknownDamageEnd),
-).map((damageType) => new DamageContent(damageType));
+).map(damageContent);
 
 function xmlifyDamage(damageType: DamageType): string {
   switch (damageType) {
