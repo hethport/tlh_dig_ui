@@ -1,4 +1,3 @@
-import {alt, Parser, string} from "parsimmon";
 import {WordContent} from "./oldTransliteration";
 
 export interface CorrectionContent {
@@ -23,16 +22,6 @@ export enum CorrectionType {
   ParagraphEnd = 'ParagraphEnd',
   DoubleParagraphEnd = 'DoubleParagraphEnd'
 }
-
-export const correctionTypeParser: Parser<CorrectionContent> = alt(
-  string('?').result(CorrectionType.UnsureCorrection),
-  string('(?)').result(CorrectionType.MaybeUnsureCorrection),
-  string('!').result(CorrectionType.SureCorrection),
-  string('sic').result(CorrectionType.SicCorrection),
-  alt(string('…'), string('...')).result(CorrectionType.Ellipsis),
-  alt(string('§§'), string('===')).result(CorrectionType.DoubleParagraphEnd),
-  alt(string('§'), string('¬¬¬')).result(CorrectionType.ParagraphEnd),
-).map(correctionContent);
 
 export function symbolForCorrection(correctionType: CorrectionType): string {
   switch (correctionType) {

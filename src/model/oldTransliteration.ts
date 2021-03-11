@@ -92,42 +92,63 @@ export function xmlify(c: WordContent): string {
 
 // Word
 
-export class Word {
-  constructor(public input: string, public content: WordContent[]) {
-  }
-
-  xmlify(): string {
-    const xmlContent = this.content.map((wc) => xmlify(wc)).join(' ');
-    const transcription = this.content.map((twc) => getContent(twc)).join('');
-
-    return `<w trans="${transcription}">${xmlContent}</w>`;
-  }
+export interface Word {
+  input: string;
+  content: WordContent[]
 }
 
+export function word(input: string, ...content: WordContent[]): Word {
+  return {input, content};
+}
+
+export function xmlifyWord({input, content}: Word): string {
+  const xmlContent = content.map((wc) => xmlify(wc)).join(' ');
+  const transcription = content.map((twc) => getContent(twc)).join('');
+
+  return `<w trans="${transcription}">${xmlContent}</w>`;
+}
 
 // Line
 
-export class LineParseResult {
-  constructor(public lineNumber: number, public lineNumberIsAbsolute: boolean = false, public words: Word[]) {
-  }
-
-  xmlify(textId: string, {side, language, column, columnModifier}: SideBasics, paragraphNumber: number = 1): string {
-    // FIXME: paragraphNumber!
-    const sideName = getXmlNameForManuscriptSide(side);
-    const lang = getAbbreviationForManuscriptLanguage(language);
-
-    const x = `<lb txtid="${textId}" lnr="${sideName} ${paragraphNumber} ${this.lineNumber}" lg="${lang}"/>\n\n`
-    return x + this.words.map((tw) => tw.xmlify()).join(' ');
-  }
+export interface LineParseResult {
+  lineNumber: number;
+  lineNumberIsAbsolute: boolean;
+  words: Word[]
 }
 
-export class TransliterationLine {
-  constructor(public lineInput: string, public result?: LineParseResult) {
-  }
+export function xmlifyLineParseResult(
+  {lineNumber, lineNumberIsAbsolute, words}: LineParseResult,
+  textId: string,
+  {side, language, column, columnModifier}: SideBasics,
+  paragraphNumber: number = 1
+): string {
+  // FIXME: paragraphNumber!
+  const sideName = getXmlNameForManuscriptSide(side);
+  const lang = getAbbreviationForManuscriptLanguage(language);
 
-  xmlify(mainIdentifier: string, sideBasics: SideBasics): string {
-    return this.result
-      ? this.result.xmlify(mainIdentifier, sideBasics)
-      : `<error>${this.lineInput}</error>`
-  }
+  const x = `<lb txtid="${textId}" lnr="${sideName} ${paragraphNumber} ${lineNumber}${lineNumberIsAbsolute ? '' : '\''}" lg="${lang}"/>\n\n`
+  return x + words.map(xmlifyWord).join(' ');
+}
+
+export function lineParseResult(lineNumber: number, lineNumberIsAbsolute: boolean = false, words: Word[]): LineParseResult {
+  return {lineNumber, lineNumberIsAbsolute, words};
+}
+
+export interface TransliterationLine {
+  lineInput: string;
+  result?: LineParseResult;
+}
+
+export function transliterationLine(lineInput: string, result?: LineParseResult): TransliterationLine {
+  return {lineInput, result};
+}
+
+export function xmlifyTransliterationLine(
+  {lineInput, result}: TransliterationLine,
+  mainIdentifier: string,
+  sideBasics: SideBasics
+): string {
+  return result
+    ? xmlifyLineParseResult(result, mainIdentifier, sideBasics)
+    : `<error>${lineInput}</error>`
 }

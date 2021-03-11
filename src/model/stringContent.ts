@@ -1,5 +1,3 @@
-import {alt, oneOf, Parser, regexp, seq, string} from "parsimmon";
-import {upperTextRegex} from "../transliterationParser/parserHelpers";
 import {WordContent} from "./oldTransliteration";
 
 export interface StringContent {
@@ -37,23 +35,3 @@ export function materLectionis(content: string): StringContent {
 export function determinativ(content: string): StringContent {
   return {type: 'Determinativ', content};
 }
-
-const defaultDeterminativParser: Parser<StringContent> = alt(regexp(upperTextRegex), oneOf('.'))
-  .atLeast(1)
-  .tie()
-  .map((content) => determinativ(content));
-
-const specialDeterminativParser: Parser<StringContent> = seq(
-  alt(string('m'), string('f')),
-  string('.'),
-  regexp(upperTextRegex),
-).map(([genus, dot, rest]) => determinativ(genus + dot + rest))
-
-export const determinativParser: Parser<StringContent> = seq(
-  string('°'),
-  alt(
-    defaultDeterminativParser,
-    specialDeterminativParser
-  ),
-  string('°')
-).map(([_deg1, content, _deg2]) => content);

@@ -1,7 +1,7 @@
 import {MarkType} from "../model/markContent";
 import {damageContent, DamageContent, DamageType} from "../model/damages";
 import {correctionContent, CorrectionContent, CorrectionType} from "../model/corrections";
-import {Word, WordContent} from "../model/oldTransliteration";
+import {WordContent} from "../model/oldTransliteration";
 
 export const illegibleContent: WordContent = {};
 
@@ -25,7 +25,3 @@ export const S = MarkType.Sign;
 export const G = MarkType.TextGap;
 export const K = MarkType.Colon;
 export const F = MarkType.FootNote
-
-export function transliterationWord(input: string, ...content: WordContent[]): Word {
-  return new Word(input, content);
-}

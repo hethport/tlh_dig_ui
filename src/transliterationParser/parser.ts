@@ -5,6 +5,7 @@ import {
   oneOf,
   optWhitespace,
   Parser,
+  regex,
   regexp,
   Result as ParsimmonResult,
   seq,
@@ -14,22 +15,26 @@ import {
 import {
   ContentOfMultiStringContent,
   IllegibleContent,
-  LineParseResult, numeralContent,
+  lineParseResult,
+  LineParseResult,
+  numeralContent,
   NumeralContent,
   SimpleWordContent,
+  word,
   Word,
   WordContent
 } from "../model/oldTransliteration";
 import {MarkContent, markContent, MarkType, markTypeParser} from "../model/markContent";
-import {DamageContent, damageTypeParser} from "../model/damages";
-import {CorrectionContent, correctionTypeParser} from "../model/corrections";
-import {hittiteParser, materLectionisParser} from "./singleParsers";
-import {determinativParser, StringContent} from "../model/stringContent";
+import {damageContent, DamageContent, DamageType} from "../model/damages";
+import {correctionContent, CorrectionContent, CorrectionType} from "../model/corrections";
+import {determinativ, materLectionis, StringContent} from "../model/stringContent";
 import {akkadogramm, MultiStringContent, sumerogramm} from "../model/multiStringContent";
-import {upperTextRegex} from "./parserHelpers";
 import {inscribedLetter, InscribedLetter} from "../model/inscribedLetter";
 
 // Other
+
+const lowerTextRegex: RegExp = /\p{Ll}+/u;
+const upperTextRegex: RegExp = /\p{Lu}+/u;
 
 type LanguageSpec = {
   // String contents
@@ -38,6 +43,8 @@ type LanguageSpec = {
 
   hittite: string;
 
+  defaultDeterminativ: StringContent;
+  specialDeterminativ: StringContent;
   determinativ: StringContent;
   materLectionis: StringContent;
 
@@ -88,14 +95,61 @@ const lineParser: Parser<LinePreParseResult> = seq(
 ).map(([number, isAbsolute, _ows1, _hash, _ows2, content]) => newLinePreParseResult(number, isAbsolute, content))
 
 export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<LanguageSpec>({
-  damages: () => damageTypeParser,
+  damages: () => alt(
+    string('[').result(DamageType.DeletionStart),
+    string(']').result(DamageType.DeletionEnd),
+    string('⸢').result(DamageType.LesionStart),
+    string('⸣').result(DamageType.LesionEnd),
+    string('*').result(DamageType.Rasure),
+    regexp(/[〈<]{2}/).result(DamageType.SurplusStart),
+    regexp(/[〉>]{2}/).result(DamageType.SurplusEnd),
+    regexp(/[〈<]/).result(DamageType.SupplementStart),
+    regex(/[〉>]/).result(DamageType.SupplementEnd),
+    string('(').result(DamageType.UnknownDamageStart),
+    string(')').result(DamageType.UnknownDamageEnd),
+  ).map(damageContent),
 
-  corrections: () => correctionTypeParser,
+  corrections: () => alt(
+    string('?').result(CorrectionType.UnsureCorrection),
+    string('(?)').result(CorrectionType.MaybeUnsureCorrection),
+    string('!').result(CorrectionType.SureCorrection),
+    string('sic').result(CorrectionType.SicCorrection),
+    alt(string('…'), string('...')).result(CorrectionType.Ellipsis),
+    alt(string('§§'), string('===')).result(CorrectionType.DoubleParagraphEnd),
+    alt(string('§'), string('¬¬¬')).result(CorrectionType.ParagraphEnd),
+  ).map(correctionContent),
 
-  hittite: () => hittiteParser,
+  hittite: () => alt(
+    regexp(lowerTextRegex),
+    string('-').notFollowedBy(string('-')),
+    oneOf('×ₓ')
+  ).atLeast(1).tie(),
 
-  determinativ: () => determinativParser,
-  materLectionis: () => materLectionisParser,
+  defaultDeterminativ: () => alt(regexp(upperTextRegex), string('.'))
+    .atLeast(1)
+    .tie()
+    .map((content) => determinativ(content)),
+
+  specialDeterminativ: () => seq(
+    alt(string('m'), string('f')),
+    string('.'),
+    regexp(upperTextRegex),
+  ).map(([genus, dot, rest]) => determinativ(genus + dot + rest)),
+
+  determinativ: r => seq(
+    string('°'),
+    alt<StringContent>(r.defaultDeterminativ, r.specialDeterminativ),
+    string('°')
+  ).map(([_deg1, content, _deg2]) => content),
+
+  materLectionis: () => seq(
+    string('°'),
+    alt(
+      regexp(lowerTextRegex),
+      string('.')
+    ).atLeast(1).tie(),
+    string('°')
+  ).map(([_degSym1, result, _degSym2]) => result === 'm' || result === 'f' ? determinativ(result) : materLectionis(result)),
 
   illegible: () => string('x').result<IllegibleContent>({}),
 
@@ -194,11 +248,8 @@ export function parseTransliterationLine(transliterationLineInput: string): Line
   const newContent: Word[] = substitutedWords.map(([input, replacedWordInput]) => {
     const wordParseResult: ParsimmonResult<WordContent[]> = transliteration.wordContents.parse(replacedWordInput);
 
-    const content = wordParseResult.status ? wordParseResult.value : [];
-
-    return new Word(input, content);
+    return word(input, ...(wordParseResult.status ? wordParseResult.value : []));
   });
 
-
-  return new LineParseResult(lineNumber, lineNumberIsAbsolute, newContent);
+  return lineParseResult(lineNumber, lineNumberIsAbsolute, newContent);
 }

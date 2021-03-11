@@ -12,7 +12,7 @@ import {defaultSideBasics, RawSideInput, SideParseResult} from "../model/sidePar
 import {Field, Form, Formik} from "formik";
 import {BulmaSelect} from "../forms/BulmaFields";
 import {Transliteration} from "./TransliterationLineResult";
-import {TransliterationLine} from "../model/oldTransliteration";
+import {transliterationLine, TransliterationLine, xmlifyTransliterationLine} from "../model/oldTransliteration";
 import {TransliterationInput} from "../generated/graphql";
 
 interface IProps {
@@ -37,7 +37,7 @@ export function TransliterationSideInput({mainIdentifier, onTransliterationUpdat
 
     const lineResults: TransliterationLine[] = transliteration
       .split('\n')
-      .map((lineInput) => new TransliterationLine(lineInput, parseTransliterationLine(lineInput)));
+      .map((lineInput) => transliterationLine(lineInput, parseTransliterationLine(lineInput)));
 
     setState(() => {
       return {sideParseResult: {sideBasics, lineResults}}
@@ -49,14 +49,14 @@ export function TransliterationSideInput({mainIdentifier, onTransliterationUpdat
       side: sideBasics.side,
       input: transliteration,
       result: lineResults
-        .map((lr) => lr.xmlify(mainIdentifier, sideBasics))
+        .map((lr) => xmlifyTransliterationLine(lr, mainIdentifier, sideBasics))
         .join('\n')
     });
   }
 
   function exportAsXml({lineResults, sideBasics}: SideParseResult): string[] {
     console.info(lineResults);
-    return lineResults.map((lr) => lr.xmlify(mainIdentifier, sideBasics));
+    return lineResults.map((lr) => xmlifyTransliterationLine(lr, mainIdentifier, sideBasics));
   }
 
   function toggleTab(name: string): void {
