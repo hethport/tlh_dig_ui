@@ -8,7 +8,7 @@ import {createManuscriptUrl} from "./urls";
 export function Home(): JSX.Element {
 
   const {t} = useTranslation('common');
-  const indexQuery = useIndexQuery({fetchPolicy: 'no-cache'});
+  const indexQuery = useIndexQuery();
 
   function render({allManuscripts}: IndexQuery): JSX.Element {
     if (allManuscripts.length === 0) {

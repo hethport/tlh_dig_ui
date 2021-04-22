@@ -5,16 +5,16 @@ import {ManuscriptSide} from "../generated/graphql";
 
 export interface SideBasics {
   side: ManuscriptSide;
+  language: ManuscriptLanguage;
   column: ManuscriptColumn;
   columnModifier: ManuscriptColumnModifier;
-  language: ManuscriptLanguage;
 }
 
 export const defaultSideBasics: SideBasics = {
   side: ManuscriptSide.NotIdentifiable,
+  language: ManuscriptLanguage.Hittite,
   column: ManuscriptColumn.None,
-  columnModifier: ManuscriptColumnModifier.None,
-  language: ManuscriptLanguage.Hittite
+  columnModifier: ManuscriptColumnModifier.None
 };
 
 export interface RawSideInput {

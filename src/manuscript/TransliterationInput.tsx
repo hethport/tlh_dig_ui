@@ -23,12 +23,16 @@ export function TransliterationInput({manuscript}: ManuscriptBaseIProps): JSX.El
   const [state, setState] = useState<IState>({sideParseResults: [{}]})
   const currentUser = useSelector(activeUserSelector);
 
-  const [uploadTransliteration, {loading, error}] = useUploadTransliterationMutation();
+  const [uploadTransliteration, {data, loading, error}] = useUploadTransliterationMutation();
 
   const mainIdentifier = manuscript.mainIdentifier.identifier;
 
   if (!currentUser || currentUser.username !== manuscript.creatorUsername) {
     return <Redirect to={homeUrl}/>;
+  }
+
+  if (!!data) {
+    console.info(JSON.stringify(data, null, 2));
   }
 
   function upload(): void {

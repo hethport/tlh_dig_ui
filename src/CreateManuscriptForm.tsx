@@ -30,16 +30,16 @@ function newManuscriptIdentifier(): ManuscriptIdentifierInput {
 export function CreateManuscriptForm() {
 
   const {t} = useTranslation('common');
-
   const [createManuscript, {data, loading, error}] = useCreateManuscriptMutation();
-
   const currentUser: LoggedInUserFragment | undefined = useSelector(activeUserSelector);
 
   const createdManuscript: string | null | undefined = data?.me?.createManuscript;
 
   if (!currentUser) {
     return <Redirect to={loginUrl}/>
-  } else if (!!createdManuscript) {
+  }
+
+  if (!!createdManuscript) {
     return <Redirect to={`./manuscripts/${encodeURIComponent(createdManuscript)}/data`}/>
   }
 
@@ -70,7 +70,7 @@ export function CreateManuscriptForm() {
           return (
             <Form>
               <div className="field">
-                <label className="label">{t('mainIdentifier')}</label>
+                <label className="label">{t('mainIdentifier')}*:</label>
                 <div className="control">
                   <ManuscriptIdInputField mainId="mainIdentifier" value={values.mainIdentifier}
                                           errors={errors.mainIdentifier} touched={touched.mainIdentifier}/>
@@ -148,20 +148,14 @@ export function CreateManuscriptForm() {
               <Field name="provenance" id="provenance" label={t('provenance')} list="provenances"
                      component={BulmaField}/>
               <datalist id="provenances">
-                {allKnownProvenances.map((pro) =>
-                  <option key={pro.englishName} value={pro.englishName}/>)}
+                {allKnownProvenances.map(({englishName}) => <option key={englishName} value={englishName}/>)}
               </datalist>
 
               <Field type="number" name="cthClassification" id="cthClassification"
-                     label={t('(proposed)CthClassification')}
-                     component={BulmaField}/>
+                     label={t('(proposed)CthClassification')} component={BulmaField}/>
 
               <Field name="bibliography" id="bibliography" label={t('bibliography')}
                      component={BulmaField} asTextArea={true}/>
-
-              {!!createdManuscript && <div className="notification is-success has-text-centered">
-                {t('manuskriptCreated{{which}}', {which: createdManuscript})}.
-              </div>}
 
               {error && <div className="notification is-danger has-text-centered">{error.message}</div>}
 

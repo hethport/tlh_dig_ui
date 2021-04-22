@@ -68,6 +68,7 @@ fragment ManuscriptMetaData on ManuscriptMetaData {
     version
     input
     resultXml
+    resultJson
   }
 }
 

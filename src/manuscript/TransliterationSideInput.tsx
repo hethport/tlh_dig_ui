@@ -1,19 +1,25 @@
 import React, {useState} from "react";
 import {
   getNameForManuscriptSide,
+  ManuscriptColumn,
+  ManuscriptColumnModifier,
   manuscriptColumnModifiers,
   manuscriptColumns,
   manuscriptSides
 } from "../model/manuscriptProperties/manuscriptProperties";
-import {allManuscriptLanguages, getNameForManuscriptLanguage} from "../model/manuscriptProperties/manuscriptLanugage";
+import {
+  allManuscriptLanguages,
+  getNameForManuscriptLanguage,
+  ManuscriptLanguage
+} from "../model/manuscriptProperties/manuscriptLanugage";
 import {useTranslation} from "react-i18next";
 import {parseTransliterationLine} from "../transliterationParser/parser";
-import {defaultSideBasics, RawSideInput, SideParseResult} from "../model/sideParseResult";
-import {Field, Form, Formik} from "formik";
-import {BulmaSelect} from "../forms/BulmaFields";
+import {defaultSideBasics, SideBasics, SideParseResult} from "../model/sideParseResult";
+import {BulmaObjectSelect, SelectOption, selectOption} from "../forms/BulmaFields";
 import {Transliteration} from "./TransliterationLineResult";
 import {transliterationLine, TransliterationLine, xmlifyTransliterationLine} from "../model/oldTransliteration";
-import {TransliterationInput} from "../generated/graphql";
+import {ManuscriptSide, TransliterationInput} from "../generated/graphql";
+import {BulmaTabs, TabConfig} from "../BulmaTabs";
 
 interface IProps {
   mainIdentifier: string;
@@ -21,110 +27,137 @@ interface IProps {
 }
 
 interface IState {
-  activeTab?: string;
+  sideBasics: SideBasics;
   sideParseResult?: SideParseResult;
+}
+
+interface SideBasicsUpdate {
+  side?: ManuscriptSide;
+  language?: ManuscriptLanguage;
+  column?: ManuscriptColumn;
+  columnModifier?: ManuscriptColumnModifier;
+}
+
+interface SideParseResultComponentIProps {
+  mainIdentifier: string;
+  sideParseResult: SideParseResult;
+}
+
+
+function exportAsXml(mainIdentifier: string, {lineResults, sideBasics}: SideParseResult): string[] {
+  return lineResults.map((lr) => xmlifyTransliterationLine(lr, mainIdentifier, sideBasics));
+}
+
+function SideParseResultComponent({mainIdentifier, sideParseResult}: SideParseResultComponentIProps): JSX.Element {
+
+  const {t} = useTranslation('common');
+
+  const tabConfigs: TabConfig[] = [
+    {id: 'rendered', name: t('rendered'), render: () => <Transliteration lines={sideParseResult.lineResults}/>},
+    {
+      id: 'asXml', name: t('asXml'), render: () => <div className="box">
+        {exportAsXml(mainIdentifier, sideParseResult).map((line, index) => <p key={index}>{line}</p>)}
+      </div>
+    }
+  ]
+
+  return <BulmaTabs tabs={tabConfigs}/>;
 }
 
 export function TransliterationSideInput({mainIdentifier, onTransliterationUpdate}: IProps): JSX.Element {
 
   const {t} = useTranslation('common');
-  const [state, setState] = useState<IState>({});
+  const [state, setState] = useState<IState>({sideBasics: defaultSideBasics});
 
-  const initialValues: RawSideInput = {sideBasics: defaultSideBasics, transliteration: '',};
+  const manuscriptSideOptions: SelectOption<ManuscriptSide>[] = manuscriptSides
+    .map((side) => selectOption(side, getNameForManuscriptSide(side, t)));
 
-  function updateTransliteration({sideBasics, transliteration}: RawSideInput): void {
-    console.info(JSON.stringify(sideBasics));
+  const languageOptions: SelectOption<ManuscriptLanguage>[] = allManuscriptLanguages
+    .map((language) => selectOption(language, getNameForManuscriptLanguage(language, t)));
 
-    const lineResults: TransliterationLine[] = transliteration
+  const columnOptions: SelectOption<ManuscriptColumn>[] = manuscriptColumns
+    // FIXME: label!
+    .map((column) => selectOption(column, column));
+
+  const columnModifierOptions: SelectOption<ManuscriptColumnModifier>[] = manuscriptColumnModifiers
+    // FIXME: label!
+    .map((columnModifier) => selectOption(columnModifier, columnModifier));
+
+  function updateTransliteration(input: string): void {
+    const lineResults: TransliterationLine[] = input
       .split('\n')
       .map((lineInput) => transliterationLine(lineInput, parseTransliterationLine(lineInput)));
 
-    setState(() => {
-      return {sideParseResult: {sideBasics, lineResults}}
-    });
+    const sideParseResult = {
+      sideBasics: state.sideBasics,
+      lineResults
+    };
 
-    toggleTab('rendered');
+    setState((state) => {
+      return {...state, sideParseResult};
+    });
 
     onTransliterationUpdate({
-      side: sideBasics.side,
-      input: transliteration,
-      result: lineResults
-        .map((lr) => xmlifyTransliterationLine(lr, mainIdentifier, sideBasics))
-        .join('\n')
+      side: state.sideBasics.side,
+      input,
+      resultXml: exportAsXml(mainIdentifier, sideParseResult).join('\n'),
+      resultJson: JSON.stringify(sideParseResult) // FIXME: what to upload?
     });
   }
 
-  function exportAsXml({lineResults, sideBasics}: SideParseResult): string[] {
-    console.info(lineResults);
-    return lineResults.map((lr) => xmlifyTransliterationLine(lr, mainIdentifier, sideBasics));
-  }
-
-  function toggleTab(name: string): void {
+  function updateSideBasics({side, language, column, columnModifier}: SideBasicsUpdate): void {
     setState((state) => {
-      return {...state, activeTab: name};
+      return {
+        ...state,
+        sideBasics: {
+          side: side || state.sideBasics.side,
+          language: language || state.sideBasics.language,
+          column: column || state.sideBasics.column,
+          columnModifier: columnModifier || state.sideBasics.columnModifier
+        }
+      };
     });
   }
 
   return (
     <div className="box">
-      <Formik initialValues={initialValues} onSubmit={updateTransliteration}>
-        {({submitForm}) =>
-          <Form>
-            <div className="field">
-              <div className="field-body">
-                <Field as="select" name="sideBasics.side" label={t('manuscriptSide')} component={BulmaSelect}>
-                  {manuscriptSides.map((ms) =>
-                    <option key={ms} value={ms}>{getNameForManuscriptSide(ms, t)}</option>
-                  )}
-                </Field>
 
-                <Field name="sideBasics.language" label={t('defaultLanguage')} component={BulmaSelect}>
-                  {allManuscriptLanguages.map((l) =>
-                    <option key={l} value={l}>{getNameForManuscriptLanguage(l, t)}</option>
-                  )}
-                </Field>
+      <div className="field">
+        <div className="field-body">
+          <BulmaObjectSelect
+            label={t('manuscriptSide')} id={'manuscriptSide'} currentValue={state.sideBasics.side}
+            options={manuscriptSideOptions} onUpdate={(side) => updateSideBasics({side})}/>
 
-                <Field name="sideBasics.column" label={t('manuscriptColumn')} component={BulmaSelect}>
-                  {manuscriptColumns.map((mc) => <option key={mc} value={mc}>{mc}</option>)}
-                </Field>
+          <BulmaObjectSelect
+            label={t('defaultLanguage')} id={'language'} currentValue={state.sideBasics.language}
+            options={languageOptions} onUpdate={(language) => updateSideBasics({language})}/>
 
-                <Field name="sideBasics.columnModifier" label={t('manuscriptColumnModifier')}
-                       component={BulmaSelect}>
-                  {manuscriptColumnModifiers.map((mcm) => <option key={mcm} value={mcm}>{mcm}</option>)}
-                </Field>
-              </div>
-            </div>
+          <BulmaObjectSelect
+            label={t('manuscriptColumn')} id={'manuscriptColumn'} currentValue={state.sideBasics.column}
+            options={columnOptions} onUpdate={(column) => updateSideBasics({column})}/>
 
-            <div className="columns">
-              <div className="column">
-                <label className="label">{t('transliteration')}:</label>
-                <Field as="textarea" className="textarea" name="transliteration" placeholder={t('transliteration')}
-                       rows={20} onKeyUp={() => submitForm()}/>
-              </div>
-              <div className="column">
-                <label className="label">{t('parseResult')}:</label>
+          <BulmaObjectSelect
+            label={t('manuscriptColumnModifier')} id={'manuscriptColumnModifier'}
+            currentValue={state.sideBasics.columnModifier} options={columnModifierOptions}
+            onUpdate={(columnModifier) => updateSideBasics({columnModifier})}/>
+        </div>
+      </div>
 
-                {state.sideParseResult
-                  ? <>
-                    <div className="tabs is-centered">
-                      <ul>
-                        <li><a onClick={() => toggleTab('rendered')}>{t('rendered')}</a></li>
-                        <li><a onClick={() => toggleTab('asXml')}>{t('asXml')}</a></li>
-                      </ul>
-                    </div>
-                    {state.activeTab === 'rendered' &&
-                    <Transliteration lines={state.sideParseResult.lineResults}/>}
-                    {state.activeTab === 'asXml' &&
-                    <div className="box">
-                      {exportAsXml(state.sideParseResult).map((line, index) => <p key={index}>{line}</p>)}
-                    </div>}
-                  </>
-                  : <div className="notification is-info has-text-centered">{t('no_result_yet')}</div>}
-              </div>
-            </div>
-          </Form>
-        }
-      </Formik>
+      <div className="columns">
+        <div className="column">
+          <label className="label">{t('transliteration')}:</label>
+          <textarea className="textarea" name="transliteration" placeholder={t('transliteration')}
+                    rows={20} onChange={(event) => updateTransliteration(event.target.value)}/>
+        </div>
+
+        <div className="column">
+          <label className="label">{t('parseResult')}:</label>
+
+          {state.sideParseResult
+            ? <SideParseResultComponent mainIdentifier={mainIdentifier} sideParseResult={state.sideParseResult}/>
+            : <div className="notification is-info has-text-centered">{t('no_result_yet')}</div>}
+        </div>
+      </div>
     </div>
   );
 }

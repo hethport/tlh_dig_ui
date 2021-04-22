@@ -26,18 +26,14 @@ export function ManuscriptBase(): JSX.Element {
   const mainIdentifier = decodeURIComponent(params.mainIdentifier);
   const manuscriptQuery = useManuscriptQuery({variables: {mainIdentifier}});
 
-  function render({manuscript: m}: ManuscriptQuery): JSX.Element {
-    if (!m) {
-      return <Redirect to={homeUrl}/>;
-    }
-
-    return <Switch>
-      <Route path={`${url}/data`} render={() => <ManuscriptData manuscript={m}/>}/>
-      <Route path={`${url}/${uploadPicturesUrl}`} render={() => <UploadPicturesForm manuscript={m}/>}/>
-      <Route path={`${url}/${createTransliterationUrl}`} render={() => <TransliterationInput manuscript={m}/>}/>
-      <Route component={NotFound}/>
-    </Switch>;
-  }
-
-  return <WithQuery query={manuscriptQuery} children={render}/>;
+  return <WithQuery query={manuscriptQuery} children={({manuscript: m}: ManuscriptQuery): JSX.Element => {
+    return !m
+      ? <Redirect to={homeUrl}/>
+      : <Switch>
+        <Route path={`${url}/data`} render={() => <ManuscriptData manuscript={m}/>}/>
+        <Route path={`${url}/${uploadPicturesUrl}`} render={() => <UploadPicturesForm manuscript={m}/>}/>
+        <Route path={`${url}/${createTransliterationUrl}`} render={() => <TransliterationInput manuscript={m}/>}/>
+        <Route component={NotFound}/>
+      </Switch>
+  }}/>;
 }

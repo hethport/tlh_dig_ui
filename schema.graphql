@@ -55,6 +55,7 @@ type Transliteration {
   version: Int!
   input: String!
   resultXml: String!
+  resultJson: String!
 }
 
 enum ManuscriptSide {
@@ -120,5 +121,6 @@ type ManuscriptMutations {
 input TransliterationInput {
   side: ManuscriptSide!
   input: String!
-  result: String!
+  resultXml: String!
+  resultJson: String!
 }

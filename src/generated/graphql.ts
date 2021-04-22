@@ -80,6 +80,7 @@ export type Transliteration = {
   version: Scalars['Int'];
   input: Scalars['String'];
   resultXml: Scalars['String'];
+  resultJson: Scalars['String'];
 };
 
 export enum ManuscriptSide {
@@ -175,7 +176,8 @@ export type ManuscriptMutationsUpdateTransliterationArgs = {
 export type TransliterationInput = {
   side: ManuscriptSide;
   input: Scalars['String'];
-  result: Scalars['String'];
+  resultXml: Scalars['String'];
+  resultJson: Scalars['String'];
 };
 
 export type ManuscriptIdentifierFragment = (
@@ -256,7 +258,7 @@ export type ManuscriptMetaDataFragment = (
     & ManuscriptIdentifierFragment
   )>, transliterations?: Maybe<Array<(
     { __typename?: 'Transliteration' }
-    & Pick<Transliteration, 'side' | 'version' | 'input' | 'resultXml'>
+    & Pick<Transliteration, 'side' | 'version' | 'input' | 'resultXml' | 'resultJson'>
   )>> }
 );
 
@@ -371,6 +373,7 @@ export const ManuscriptMetaDataFragmentDoc = gql`
     version
     input
     resultXml
+    resultJson
   }
 }
     ${ManuscriptIdentifierFragmentDoc}`;
