@@ -17,11 +17,6 @@ export const defaultSideBasics: SideBasics = {
   columnModifier: ManuscriptColumnModifier.None
 };
 
-export interface RawSideInput {
-  sideBasics: SideBasics;
-  transliteration: string;
-}
-
 export interface SideParseResult {
   sideBasics: SideBasics;
   lineResults: TransliterationLine[];

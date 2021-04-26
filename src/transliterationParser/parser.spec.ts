@@ -1,9 +1,12 @@
 import {parseTransliterationLine} from './parser';
-import {lineParseResult, LineParseResult, numeralContent as nc, word as w} from "../model/oldTransliteration";
-import {de, dpe, ds, el, illegibleContent, le, ls, pe, r, sc, supE, supS, uc, ue, us} from './testHelpers';
-import {determinativ as dt, materLectionis as ml} from '../model/stringContent';
-import {markContent as mc, MarkType} from "../model/markContent";
-import {akkadogramm as ag, sumerogramm as sg} from "../model/multiStringContent";
+import {AOIllegibleContent, lineParseResult, LineParseResult, parsedWord as w} from "../model/oldTransliteration";
+import {determinativ as dt, materLectionis as ml, numeralContent as nc} from "../model/wordContent/determinativ";
+import {de, ds, le, ls, rs, sc, supE, supS, uc, ue, us} from './testHelpers';
+import {Ellipsis as el} from "../model/wordContent/ellipsis";
+import {aoKolonMark, aoNote} from "../model/wordContent/sign";
+import {akkadogramm as ag, sumerogramm as sg} from "../model/wordContent/multiStringContent";
+import {aoGap} from "../editor/documentBody";
+import {ParseP as pe, ParsePDouble as dpe} from "../model/paragraphEnds";
 
 describe('The transliteration parser', () => {
 
@@ -22,13 +25,13 @@ describe('The transliteration parser', () => {
           // <w><sGr>AN</sGr><aGr>-E</aGr></w>
           w('AN-E', sg('AN'), ag('-', 'E')),
           // x
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           // <w><sGr>GUₓ.MAḪ</sGr></w>
           w('GUx.MAḪ', sg('GU', 'ₓ', '.', 'MAḪ')),
           // <w>pa-a-i</w>
           w('pa-a-i', 'pa-a-i'),
           // <w><SP___AO_3a_-KolonMark>K:34</SP___AO_3a_-KolonMark></w>
-          w('{K:34}', mc(MarkType.Colon, '34'))
+          w('{K:34}', aoKolonMark('34'))
         ])
       );
 
@@ -77,9 +80,9 @@ describe('The transliteration parser', () => {
           // <w>wa-ar-pa</w>
           w('wa-ar-pa', 'wa-ar-pa'),
           // <w>da-a<del_fin/>-iš<ras_in/></w>
-          w('da-a]-iš*', 'da-a', de, '-iš', r),
+          w('da-a]-iš*', 'da-a', de, '-iš', rs),
           //  <w><ras_fin/>na-aš-kán</w>
-          w('*na-aš-kán', r, 'na-aš-kán'),
+          w('*na-aš-kán', rs, 'na-aš-kán'),
           // <w>a-pé-e-ez</w>
           w('a-pé-e-ez', 'a-pé-e-ez')
         ])
@@ -141,7 +144,7 @@ describe('The transliteration parser', () => {
           // <w><del_fin/></w>
           w(']', de),
           // x
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           // <w><d>m</d>mur-ši-<sGr>DINGIR</sGr><aGr>-LIM</aGr></w>
           w('°m°mur-ši--DINGIR-LIM', dt('m'), 'mur-ši', sg('DINGIR'), ag('-', 'LIM')),
           // <w><d>MUNUS</d><sGr>ŠU.GI</sGr></w>
@@ -165,7 +168,7 @@ describe('The transliteration parser', () => {
           // <w>ù</w>
           w('ù', 'ù'),
           // <w><SP___AO_3a_MaterLect>m.D</SP___AO_3a_MaterLect><num>30</num>-<sGr>SUM</sGr><note  n='1'  c="   &lt;P_f_Footnote&gt;Problem mit den Punkten in Determinativen.&lt;/P_f_Footnote&gt;"  /></w>
-          w('°m.D°30--SUM{F: Problem mit den Punkten in Determinativen.}', dt('m.D'), nc('30'), '-', sg('SUM'), mc(MarkType.FootNote, 'Problem mit den Punkten in Determinativen.'))
+          w('°m.D°30--SUM{F: Problem mit den Punkten in Determinativen.}', dt('m.D'), nc('30'), '-', sg('SUM'), aoNote('Problem mit den Punkten in Determinativen.', '-1'))
         ])
       );
 
@@ -175,7 +178,7 @@ describe('The transliteration parser', () => {
           // <w><d>URU</d><corr c='?'/>ša-mu-ḫa</w>
           w('°URU°?ša-mu-ḫa', dt('URU'), uc, 'ša-mu-ḫa'),
           // <w><d>URU</d><corr c='!'/>ša-<ras_in/>mu-ḫa<ras_fin/></w>
-          w('°URU°!ša-*mu-ḫa*', dt('URU'), sc, 'ša-', r, 'mu-ḫa', r),
+          w('°URU°!ša-*mu-ḫa*', dt('URU'), sc, 'ša-', rs, 'mu-ḫa', rs),
           // <w><SP___AO_3a_MaterLect>URU?</SP___AO_3a_MaterLect>ša<corr c='?'/>-mu-ḫa</w>
           w('°URU?°ša?-mu-ḫa'/*, TODO: ml('URU?'), ('ša'), uc, ('-mu-ḫa')*/),
           // <w><SP___AO_3a_MaterLect>URU!</SP___AO_3a_MaterLect>ša-mu<corr c='!'/>-ḫa</w>
@@ -201,7 +204,7 @@ describe('The transliteration parser', () => {
           //  <w><d>MUNUS.MEŠ</d>kat<SP___AO_3a_MaterLect>at</SP___AO_3a_MaterLect>-re-eš</w>
           w('°MUNUS.MEŠ°kat°at°-re-eš', dt('MUNUS.MEŠ'), 'kat', ml('at'), '-re-eš'),
           //  <gap c="fünf Zeichen abgebr."/>
-          w('{G: fünf Zeichen abgebr.}', mc(MarkType.TextGap, 'fünf Zeichen abgebr.')),
+          w('{G: fünf Zeichen abgebr.}', aoGap('fünf Zeichen abgebr.')),
           // <w>kar-<SP___AO_3a_MaterLect>di</SP___AO_3a_MaterLect>dim-mi-ia-az</w>
           w('kar-°di°dim-mi-ia-az', 'kar-', ml('di'), 'dim-mi-ia-az'),
           // </s></p><parsep_dbl/><p><s>
@@ -263,9 +266,9 @@ describe('The transliteration parser', () => {
       .toEqual<LineParseResult>(
         lineParseResult(1, false, [
           w('[(x)]', ds, us, 'x', ue, de),
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           w('⸢zi⸣', ls, 'zi', le),
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           w('[', ds)
         ])
       );
@@ -299,7 +302,7 @@ describe('The transliteration parser', () => {
       .toEqual<LineParseResult>(
         lineParseResult(5, false, [
           w('[k]u-it-ma-an-aš-ma', ds, 'k', de, 'u-it-ma-an-aš-ma'),
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           w('[', ds)
         ])
       );
@@ -326,7 +329,7 @@ describe('The transliteration parser', () => {
         lineParseResult(8, false, [
           w('[da?]-⸢a?⸣', ds, 'da', uc, de, '-', ls, 'a', uc, le),
           w('nu-uš-ši', 'nu-uš-ši'),
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           w('[', ds)
         ])
       );
@@ -361,7 +364,7 @@ describe('The transliteration parser', () => {
         lineParseResult(12, false, [
           w('[x', ds, 'x'),
           w('x]', 'x', de),
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           w('[', ds)
         ])
       );
@@ -372,7 +375,7 @@ describe('The transliteration parser', () => {
           w('[', ds),
           w('…', el),
           w(']', de),
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
           w('¬¬¬', pe)
         ])
       );
@@ -508,8 +511,8 @@ describe('The transliteration parser', () => {
         lineParseResult(1, false, [
           w('[x', ds, 'x'),
           w('x]', 'x', de),
-          w('x', illegibleContent),
-          w('x', illegibleContent),
+          w('x', AOIllegibleContent),
+          w('x', AOIllegibleContent),
           w('[', ds),
           w('¬¬¬', pe)
         ])

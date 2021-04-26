@@ -1,43 +1,56 @@
 import React from "react";
-import {cssClassForStringContent, isStringContent} from "../model/stringContent";
-import {isNumeralContent, TransliterationLine, Word, WordContent} from "../model/oldTransliteration";
-import {isMarkContent} from "../model/markContent";
+import {isDeterminativ} from "../model/wordContent/determinativ";
+import {TransliterationLine} from "../model/oldTransliteration";
+import {isAoSign} from "../model/wordContent/sign";
 import {getSymbolForDamageType, isDamageContent} from "../model/damages";
-import {isCorrectionContent, symbolForCorrection} from "../model/corrections";
-import {cssClassForMultiStringContent, isMultiStringContent} from "../model/multiStringContent";
+import {isCorrectionContent} from "../model/corrections";
+import {isAkkadogramm, isSumerogramm} from "../model/wordContent/multiStringContent";
+import {AOWord, AOWordContent} from "../editor/documentWord";
+import {isMaterLectionis} from "../model/wordContent/materLectionis";
+import {isNumeralContent} from "../model/wordContent/numeralContent";
+import {isAoNote} from "../model/wordContent/footNote";
+import {isAoKolonMark} from "../model/wordContent/kolonMark";
 
-function renderWordContent(content: WordContent): JSX.Element {
-  if (isMultiStringContent(content)) {
-    return <span className={cssClassForMultiStringContent(content)}>
+function renderWordContent(content: AOWordContent): JSX.Element {
+  if (typeof content === 'string') {
+    return <span>{content}</span>;
+  } else if (isAkkadogramm(content)) {
+    return <span className="akkadogramm">
       {content.contents.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
     </span>;
+  } else if (isSumerogramm(content)) {
+    return <span className="sumerogramm">
+      {content.contents.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
+    </span>;
+  } else if (isDamageContent(content)) {
+    return <span>{getSymbolForDamageType(content.damageType)}</span>;
+  } else if (isCorrectionContent(content)) {
+    return <sup className="correction">{content.c}</sup>;
+  } else if (isDeterminativ(content)) {
+    return <span className="determinativ">{content.content}</span>;
+  } else if (isMaterLectionis(content)) {
+    return <span className="materLectionis">{content.content}</span>;
+  } else if (isNumeralContent(content)) {
+    return <span className="numberal">{content.content}</span>;
+  } else if (isAoSign(content)) {
+    return <span className="has-text-warning">TODO: {content.content}!</span>
+  } else if (isAoNote(content)) {
+    return <span className="has-text-warning">TODO: {content.content}!</span>
+  } else if (isAoKolonMark(content)) {
+    return <span className="has-text-warning">TODO: {content.content}!</span>
   } else {
-    if (typeof content === 'string') {
-      return <span>{content}</span>;
-    } else if (isDamageContent(content)) {
-      return <span>{getSymbolForDamageType(content.damageType)}</span>;
-    } else if (isCorrectionContent(content)) {
-      return <sup className="correction">{symbolForCorrection(content.correctionType)}</sup>;
-    } else if (isStringContent(content)) {
-      return <span className={cssClassForStringContent(content)}>{content.content}</span>;
-    } else if (isMarkContent(content)) {
-      return <span className="has-text-warning">TODO: {content.content}!</span>
-    } else if (isNumeralContent(content)) {
-      return content.isSubscript ? <sub>{content.content}</sub> : <span>{content.content}</span>;
-    } else {
-      // Illegible Content
-      return <span>x</span>;
-    }
+    // Illegible Content
+    return <span>x</span>;
   }
 }
 
 // Single word
 
-export function renderWord({input, content}: Word): JSX.Element {
+export function renderWord({trans, content}: AOWord): JSX.Element {
   return <>
     {content.length > 0
       ? content.map((c, i) => <span className="hittie" key={i}>{renderWordContent(c)}</span>)
-      : <span className="has-text-danger">{input}</span>}
+      : <span className="has-text-danger">{trans}</span>}
   </>
 }
 

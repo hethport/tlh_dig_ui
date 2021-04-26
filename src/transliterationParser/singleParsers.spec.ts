@@ -1,8 +1,9 @@
 import {transliteration} from "./parser";
-import {determinativ, materLectionis} from "../model/stringContent";
-import {akkadogramm, sumerogramm} from "../model/multiStringContent";
-import {markContent as mc, MarkType} from '../model/markContent';
+import {determinativ, materLectionis} from "../model/wordContent/determinativ";
+import {akkadogramm, sumerogramm} from "../model/wordContent/multiStringContent";
+import {aoKolonMark, aoNote, aoSign} from '../model/wordContent/sign';
 import {inscribedLetter} from "../model/inscribedLetter";
+import {aoGap} from "../editor/documentBody";
 
 describe('hittite', () => {
   const parser = transliteration.hittite;
@@ -105,30 +106,19 @@ describe('stringContent', () => {
 
 });
 
-describe('markType', () => {
-  const parser = transliteration.markType;
-
-  it('should parse mark types', () => {
-    expect(parser.tryParse('S')).toEqual(MarkType.Sign);
-    expect(parser.tryParse('G')).toEqual(MarkType.TextGap);
-    expect(parser.tryParse('F')).toEqual(MarkType.FootNote);
-    expect(parser.tryParse('K')).toEqual(MarkType.Colon);
-  });
-});
-
 describe('markContent', () => {
   const parser = transliteration.markContent;
 
   it('should parse mark contents', () => {
-    expect(parser.tryParse('{S:AN}')).toEqual(mc(MarkType.Sign, 'AN'))
-    expect(parser.tryParse('{K:AN}')).toEqual(mc(MarkType.Colon, 'AN'))
-    expect(parser.tryParse('{F:AN}')).toEqual(mc(MarkType.FootNote, 'AN'))
-    expect(parser.tryParse('{G:AN}')).toEqual(mc(MarkType.TextGap, 'AN'))
+    expect(parser.tryParse('{S:AN}')).toEqual(aoSign('AN'))
+    expect(parser.tryParse('{K:AN}')).toEqual(aoKolonMark('AN'))
+    expect(parser.tryParse('{F:AN}')).toEqual(aoNote('AN', '-1'))
+    expect(parser.tryParse('{G:AN}')).toEqual(aoGap('AN'))
 
-    expect(parser.tryParse('{S:Anderer Text}')).toEqual(mc(MarkType.Sign, 'Anderer Text'))
-    expect(parser.tryParse('{K:Anderer Text}')).toEqual(mc(MarkType.Colon, 'Anderer Text'))
-    expect(parser.tryParse('{F:Anderer Text}')).toEqual(mc(MarkType.FootNote, 'Anderer Text'))
-    expect(parser.tryParse('{G:Anderer Text}')).toEqual(mc(MarkType.TextGap, 'Anderer Text'))
+    expect(parser.tryParse('{S:Anderer Text}')).toEqual(aoSign('Anderer Text'))
+    expect(parser.tryParse('{K:Anderer Text}')).toEqual(aoKolonMark('Anderer Text'))
+    expect(parser.tryParse('{F:Anderer Text}')).toEqual(aoNote('Anderer Text', '-1'))
+    expect(parser.tryParse('{G:Anderer Text}')).toEqual(aoGap('Anderer Text'))
   });
 });
 

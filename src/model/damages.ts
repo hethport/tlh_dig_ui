@@ -1,4 +1,5 @@
-import {WordContent} from "./oldTransliteration";
+import {XmlFormat} from "../editor/xmlLoader";
+import {AOWordContent} from "../editor/documentWord";
 
 export interface DamageContent {
   type: 'Damage';
@@ -9,7 +10,7 @@ export function damageContent(damageType: DamageType): DamageContent {
   return {type: 'Damage', damageType};
 }
 
-export function isDamageContent(w: WordContent): w is DamageContent {
+export function isDamageContent(w: AOWordContent): w is DamageContent {
   return typeof w !== 'string' && 'type' in w && w.type === 'Damage';
 }
 
@@ -22,7 +23,9 @@ export enum DamageType {
   DeletionEnd = 'DeletionEnd',
   LesionStart = 'LesionStart',
   LesionEnd = 'LesionEnd',
-  Rasure = 'Rasure',
+  RasureStart = 'RasureStart',
+  RasureEnd = 'RasureEnd',
+  // TODO: not defined in dtd?
   SurplusStart = 'SurplusStart',
   SurplusEnd = 'SurplusEnd',
   SupplementStart = 'SupplementStart',
@@ -30,6 +33,36 @@ export enum DamageType {
   UnknownDamageStart = 'UnknownDamageStart',
   UnknownDamageEnd = 'UnknownDamageEnd'
 }
+
+export const deletionStartFormat: XmlFormat<DamageType.DeletionStart> = {
+  read: () => DamageType.DeletionStart,
+  write: () => '<del_in/>'
+};
+
+export const deletionEndFormat: XmlFormat<DamageType.DeletionEnd> = {
+  read: () => DamageType.DeletionEnd,
+  write: () => '<del_fin/>'
+};
+
+export const rasureStartFormat: XmlFormat<DamageType.RasureStart> = {
+  read: () => DamageType.RasureStart,
+  write: () => '<ras_in/>'
+};
+
+export const rasureEndFormat: XmlFormat<DamageType.RasureEnd> = {
+  read: () => DamageType.RasureEnd,
+  write: () => '<ras_fin/>'
+};
+
+export const lesionStartFormat: XmlFormat<DamageType.LesionStart> = {
+  read: () => DamageType.LesionStart,
+  write: () => '<laes_in/>'
+};
+
+export const lesionEndFormat: XmlFormat<DamageType.LesionEnd> = {
+  read: () => DamageType.LesionEnd,
+  write: () => '<laes_fin/>'
+};
 
 function xmlifyDamage(damageType: DamageType): string {
   switch (damageType) {
@@ -41,9 +74,9 @@ function xmlifyDamage(damageType: DamageType): string {
       return '<laes_fin/>';
     case DamageType.LesionStart:
       return '<laes_in/>';
-    case DamageType.Rasure:
+    case DamageType.RasureEnd:
       return '<ras_fin/>';
-    case DamageType.Rasure:
+    case DamageType.RasureStart:
       return '<ras_in/>';
     case DamageType.SupplementEnd:
       return '<sup_fin/>';
@@ -70,7 +103,8 @@ export function getSymbolForDamageType(damageType: DamageType): string {
       return '⸣';
     case DamageType.LesionStart:
       return '⸢';
-    case DamageType.Rasure:
+    case DamageType.RasureStart:
+    case  DamageType.RasureEnd:
       return '*';
     case DamageType.SupplementEnd:
       return '〉';

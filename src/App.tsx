@@ -1,6 +1,6 @@
 import React, {Dispatch} from 'react';
 import {Link, Route, Switch, useHistory} from 'react-router-dom';
-import {createManuscriptUrl, homeUrl, loginUrl, registerUrl} from './urls';
+import {createManuscriptUrl, editDocumentUrl, homeUrl, loginUrl, registerUrl} from './urls';
 import {Home} from './Home';
 import {RegisterForm} from './forms/RegisterForm';
 import {LoginForm} from './forms/LoginForm';
@@ -8,6 +8,7 @@ import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import {CreateManuscriptForm} from "./CreateManuscriptForm";
 import {NotFound} from './NotFound';
+import {DocumentEditor} from './editor/DocumentEditor';
 import {useDispatch, useSelector} from "react-redux";
 import {activeUserSelector} from "./store/store";
 import {StoreAction, userLoggedOutAction} from "./store/actions";
@@ -37,6 +38,7 @@ export function App(): JSX.Element {
         <div className="navbar-menu">
           <div className="navbar-start">
             {user && <Link className="navbar-item" to={createManuscriptUrl}>{t('createManuscript')}</Link>}
+            <Link className="navbar-item" to={editDocumentUrl}>{t('editDocument')}</Link>
           </div>
 
           <div className="navbar-end">
@@ -68,6 +70,7 @@ export function App(): JSX.Element {
         <Route path={loginUrl} component={LoginForm}/>
         <Route path={createManuscriptUrl} component={CreateManuscriptForm}/>
         <Route path={'/manuscripts/:mainIdentifier'} component={ManuscriptBase}/>
+        <Route path={editDocumentUrl} component={DocumentEditor}/>
         <Route component={NotFound}/>
       </Switch>
     </>

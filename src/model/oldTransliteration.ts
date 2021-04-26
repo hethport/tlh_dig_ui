@@ -1,111 +1,47 @@
-import {isStringContent, StringContent, xmlifyStringContent} from "./stringContent";
-import {isMarkContent, MarkContent} from "./markContent";
-import {CorrectionContent, isCorrectionContent} from "./corrections";
-import {DamageContent, isDamageContent, xmlifyDamageContent} from "./damages";
-import {isMultiStringContent, MultiStringContent, xmlifyMultiStringContent} from "./multiStringContent";
-import {InscribedLetter} from "./inscribedLetter";
+import {determinativFormat, isDeterminativ,} from "./wordContent/determinativ";
+import {aoSignFormat, isAoSign} from "./wordContent/sign";
+import {isCorrectionContent} from "./corrections";
+import {isDamageContent, xmlifyDamageContent} from "./damages";
+import {akkadogrammFormat, isAkkadogramm, isSumerogramm, sumerogrammFormat} from "./wordContent/multiStringContent";
 import {getXmlNameForManuscriptSide} from "./manuscriptProperties/manuscriptProperties";
 import {getAbbreviationForManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
 import {SideBasics} from "./sideParseResult";
+import {AOWord, AOWordContent, aoWordFormat} from "../editor/documentWord";
+import {isNumeralContent, numeralContentFormat} from "./wordContent/numeralContent";
+import {isMaterLectionis, materLectionisFormat} from "./wordContent/materLectionis";
+import {aoNoteFormat, isAoNote} from "./wordContent/footNote";
+import {aoKolonMarkFormat, isAoKolonMark} from "./wordContent/kolonMark";
 
 // Word Content
 
-export type IllegibleContent = {};
-
-export type ContentOfMultiStringContent = string | CorrectionContent | DamageContent | InscribedLetter;
-
-export type SimpleWordContent = StringContent
-  | DamageContent
-  | CorrectionContent
-  | NumeralContent
-  | MarkContent
-  | IllegibleContent
-  | string /* Hittite */;
-
-export type WordContent = MultiStringContent | SimpleWordContent;
-
-// Numeral content
-
-const charCodeZero = '0'.charCodeAt(0);
-const charCodeSubscriptZero = '₀'.charCodeAt(0);
-
-export interface NumeralContent {
-  type: 'Numeral';
-  content: string;
-  isSubscript: boolean
-}
-
-export function numeralContent(content: string, isSubscript: boolean = false): NumeralContent {
-  return {type: 'Numeral', content, isSubscript};
-}
-
-export function isNumeralContent(w: WordContent): w is NumeralContent {
-  return typeof w !== 'string' && 'type' in w && w.type === 'Numeral';
-}
-
-/*
-{
-  private digitToSubscript(): string {
-    return String.fromCharCode(charCodeSubscriptZero + (this.content.charCodeAt(0) - charCodeZero));
-  }
-}
- */
-
-function getContent(c: WordContent): string {
+export function xmlify(c: AOWordContent): string {
   if (typeof c === 'string') {
     return c;
-  } else if (isMultiStringContent(c)) {
-    return c.contents.map(getContent).join('');
-  } else if (isStringContent(c)) {
-    return c.content;
+  } else if (isAkkadogramm(c)) {
+    return akkadogrammFormat.write(c, -1);
+  } else if (isSumerogramm(c)) {
+    return sumerogrammFormat.write(c, -1);
+  } else if (isDeterminativ(c)) {
+    return determinativFormat.write(c, -1);
+  } else if (isMaterLectionis(c)) {
+    return materLectionisFormat.write(c, -1);
+  } else if (isNumeralContent(c)) {
+    return numeralContentFormat.write(c, -1);
+  } else if (isCorrectionContent(c)) {
+    // TODO!
+    return `<todo!/>`; // c.xmlify();
+  } else if (isDamageContent(c)) {
+    return xmlifyDamageContent(c);
+  } else if (isAoSign(c)) {
+    return aoSignFormat.write(c, 0);
+  } else if (isAoNote(c)) {
+    return aoNoteFormat.write(c, 0);
+  } else if (isAoKolonMark(c)) {
+    return aoKolonMarkFormat.write(c, 0);
   } else {
-    // FIXME: implement?!
-    return '';
+    // Illegible c
+    return 'x';
   }
-}
-
-export function xmlify(c: WordContent): string {
-  if (isMultiStringContent(c)) {
-    return xmlifyMultiStringContent(c);
-  } else {
-    if (typeof c === 'string') {
-      return c;
-    } else if (isStringContent(c)) {
-      return xmlifyStringContent(c);
-    } else if (isCorrectionContent(c)) {
-      // TODO!
-      return `<todo!/>`; // c.xmlify();
-    } else if (isDamageContent(c)) {
-      return xmlifyDamageContent(c);
-    } else if (isNumeralContent(c)) {
-      // TODO!
-      return `<nc>${c.content}</nc>`
-    } else if (isMarkContent(c)) {
-      // TODO!
-      return `<mc>${c.content}</mc>`
-    } else {
-      // Illegible c
-      return 'x';
-    }
-  }
-}
-
-// Word
-
-export interface Word {
-  input: string;
-  content: WordContent[]
-}
-
-export function word(input: string, ...content: WordContent[]): Word {
-  return {input, content};
-}
-
-export function xmlifyWord({input, content}: Word): string {
-  const xmlContent = content.map((wc) => xmlify(wc)).join(' ');
-  const transcription = content.map((twc) => getContent(twc)).join('');
-
-  return `<w trans="${transcription}">${xmlContent}</w>`;
 }
 
 // Line
@@ -113,7 +49,7 @@ export function xmlifyWord({input, content}: Word): string {
 export interface LineParseResult {
   lineNumber: number;
   lineNumberIsAbsolute: boolean;
-  words: Word[]
+  words: AOWord[]
 }
 
 export function xmlifyLineParseResult(
@@ -127,10 +63,10 @@ export function xmlifyLineParseResult(
   const lang = getAbbreviationForManuscriptLanguage(language);
 
   const x = `<lb txtid="${textId}" lnr="${sideName} ${paragraphNumber} ${lineNumber}${lineNumberIsAbsolute ? '' : '\''}" lg="${lang}"/>\n\n`
-  return x + words.map(xmlifyWord).join(' ');
+  return x + words.map(aoWordFormat.write).join(' ');
 }
 
-export function lineParseResult(lineNumber: number, lineNumberIsAbsolute: boolean = false, words: Word[]): LineParseResult {
+export function lineParseResult(lineNumber: number, lineNumberIsAbsolute: boolean = false, words: AOWord[]): LineParseResult {
   return {lineNumber, lineNumberIsAbsolute, words};
 }
 
