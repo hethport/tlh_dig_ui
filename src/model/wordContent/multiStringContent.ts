@@ -1,10 +1,7 @@
 import {XmlFormat} from "../../editor/xmlLoader";
-import {AOCorr} from "../corrections";
-import {DamageContent, DamageType} from "../damages";
-import {InscribedLetter} from "../inscribedLetter";
-import {AOWordContent} from "../../editor/documentWord";
+import {DamageType} from "../damages";
+import {AOWordContent, MultiStringContent} from "./wordContent";
 
-export type MultiStringContent = string | AOCorr | DamageContent | InscribedLetter;
 
 function readMultiWordContent(el: ChildNode): MultiStringContent {
   if (el instanceof Text) {

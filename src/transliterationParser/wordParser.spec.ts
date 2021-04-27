@@ -3,7 +3,7 @@ import {determinativ as dt, numeralContent as nc} from '../model/wordContent/det
 import {sumerogramm} from "../model/wordContent/multiStringContent";
 import {inscribedLetter} from "../model/inscribedLetter";
 import {de} from "./testHelpers";
-import {AOWordContent} from "../editor/documentWord";
+import {AOWordContent} from "../model/word";
 
 describe('wordParser', () => {
   const parser = transliteration.wordContents;

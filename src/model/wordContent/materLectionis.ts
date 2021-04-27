@@ -1,5 +1,5 @@
 import {XmlFormat} from "../../editor/xmlLoader";
-import {AOWordContent} from "../../editor/documentWord";
+import {AOWordContent} from "./wordContent";
 
 /**
  * Mater lectionis:

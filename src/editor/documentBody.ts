@@ -1,5 +1,5 @@
 import {attributeReader, childElementReader, XmlFormat} from "./xmlLoader";
-import {AOWord, aoWordFormat} from "./documentWord";
+import {AOWord, aoWordFormat} from "../model/word";
 import {ParseP, parsePDblFormat, ParsePDouble, parsePFormat} from "../model/paragraphEnds";
 
 /*

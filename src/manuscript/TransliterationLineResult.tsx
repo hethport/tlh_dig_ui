@@ -5,11 +5,12 @@ import {isAoSign} from "../model/wordContent/sign";
 import {getSymbolForDamageType, isDamageContent} from "../model/damages";
 import {isCorrectionContent} from "../model/corrections";
 import {isAkkadogramm, isSumerogramm} from "../model/wordContent/multiStringContent";
-import {AOWord, AOWordContent} from "../editor/documentWord";
+import {AOWord} from "../model/word";
 import {isMaterLectionis} from "../model/wordContent/materLectionis";
 import {isNumeralContent} from "../model/wordContent/numeralContent";
 import {isAoNote} from "../model/wordContent/footNote";
 import {isAoKolonMark} from "../model/wordContent/kolonMark";
+import {AOWordContent} from "../model/wordContent/wordContent";
 
 function renderWordContent(content: AOWordContent): JSX.Element {
   if (typeof content === 'string') {

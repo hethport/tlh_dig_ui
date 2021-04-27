@@ -1,5 +1,5 @@
 import {attributeReader, XmlFormat} from "../editor/xmlLoader";
-import {AOWordContent} from "../editor/documentWord";
+import {AOWordContent} from "./wordContent/wordContent";
 
 export type AOCorrType = '(?)' | 'sic' | '!' | '?';
 

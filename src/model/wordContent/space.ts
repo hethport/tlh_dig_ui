@@ -1,4 +1,5 @@
 import {attributeReader, XmlFormat} from "../../editor/xmlLoader";
+import {AOWordContent} from "./wordContent";
 
 export interface AOSpace {
   type: 'AOSpace';
@@ -12,4 +13,8 @@ export const aoSpaceFormat: XmlFormat<AOSpace> = {
 
 export function aoSpace(c: string): AOSpace {
   return {type: 'AOSpace', c};
+}
+
+export function isSpace(c: AOWordContent): c is AOSpace {
+  return typeof c !== 'string' && 'type' in c && c.type === 'AOSpace';
 }

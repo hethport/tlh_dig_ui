@@ -18,22 +18,17 @@ import {damageContent, DamageContent, DamageType} from "../model/damages";
 import {AOCorrType,} from "../model/corrections";
 import {ParseP, ParsePDouble} from '../model/paragraphEnds';
 import {AODeterminativ, determinativ,} from "../model/wordContent/determinativ";
-import {
-  akkadogramm,
-  AOAkkadogramm,
-  AOSumerogramm,
-  MultiStringContent,
-  sumerogramm
-} from "../model/wordContent/multiStringContent";
+import {akkadogramm, AOAkkadogramm, AOSumerogramm, sumerogramm} from "../model/wordContent/multiStringContent";
 import {inscribedLetter, InscribedLetter} from "../model/inscribedLetter";
 import {AOGap, aoGap} from "../editor/documentBody";
 import {Ellipsis} from "../model/wordContent/ellipsis";
-import {AOSimpleWordContent, AOWord, AOWordContent, parsedWord} from "../editor/documentWord";
+import {AOWord, parsedWord} from "../model/word";
 import {AOMaterLectionis, aoMaterLectionis} from "../model/wordContent/materLectionis";
 import {AONumeralContent, aoNumeralContent} from "../model/wordContent/numeralContent";
 import {aoNote, AONote} from "../model/wordContent/footNote";
 import {AOIllegibleContent} from "../model/wordContent/illegible";
 import {aoKolonMark, AOKolonMark} from "../model/wordContent/kolonMark";
+import {AOSimpleWordContent, AOWordContent, MultiStringContent} from "../model/wordContent/wordContent";
 
 // Other
 
@@ -189,9 +184,9 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     .map((result) => result === 'x' ? 'ₓ' : result),
 
   contentOfMultiStringContent: r => alt<MultiStringContent>(
-    r.sign,
-    r.footNote,
-    r.kolonMark,
+    // r.sign,
+    // r.footNote,
+    // r.kolonMark,
     r.damages,
     r.corrections,
     r.inscribedLetter,
