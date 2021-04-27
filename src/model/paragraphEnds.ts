@@ -6,9 +6,7 @@ export const ParseP = {
   type: 'ParseP'
 }
 
-export type ParseP = typeof ParseP;
-
-export const parsePFormat: XmlFormat<ParseP> = {
+export const parsePFormat: XmlFormat<typeof ParseP> = {
   read: () => ParseP,
   write: () => '<parsep/>'
 };
@@ -19,9 +17,7 @@ export const ParsePDouble = {
   type: 'ParsePDouble'
 }
 
-export type ParsePDouble = typeof ParsePDouble;
-
-export const parsePDblFormat: XmlFormat<ParsePDouble> = {
+export const parsePDblFormat: XmlFormat<typeof ParsePDouble> = {
   read: () => ParsePDouble,
   write: () => '<parsep_dbl/>'
 }

@@ -40,7 +40,7 @@ export type AOSimpleWordContent = MultiStringContent
   | AONote
   | AOSign
   | AOKolonMark
-  | AOIllegibleContent
+  | typeof AOIllegibleContent
   | AOCorr
   | AOSpace;
 

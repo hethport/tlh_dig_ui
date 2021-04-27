@@ -2,8 +2,6 @@ export const Ellipsis = {
   type: 'AOEllipsis'
 };
 
-export type Ellipsis = typeof Ellipsis;
-
 /*
 const ellipsisFormat: XmlFormat<typeof Ellipsis> = {
   read: (el) => Ellipsis,

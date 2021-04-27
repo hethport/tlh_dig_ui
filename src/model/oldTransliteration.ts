@@ -11,7 +11,7 @@ export interface LineParseResult {
   words: AOWord[]
 }
 
-export function xmlifyLineParseResult(
+function xmlifyLineParseResult(
   {lineNumber, lineNumberIsAbsolute, words}: LineParseResult,
   textId: string,
   {side, language, column, columnModifier}: SideBasics,
