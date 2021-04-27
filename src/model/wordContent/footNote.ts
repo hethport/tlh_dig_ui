@@ -12,7 +12,7 @@ export const aoNoteFormat: XmlFormat<AONote> = {
     attributeReader(el, 'c', (v) => v || ''),
     attributeReader(el, 'n', (v) => v || '')
   ),
-  write: ({content, number}) => `<note c="${content}" n="${number}"/>`
+  write: ({content, number}) => [`<note c="${content}" n="${number}"/>`]
 }
 
 export function aoNote(content: string, number: string): AONote {

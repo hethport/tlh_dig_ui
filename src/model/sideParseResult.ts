@@ -1,6 +1,6 @@
 import {ManuscriptColumn, ManuscriptColumnModifier} from "./manuscriptProperties/manuscriptProperties";
 import {ManuscriptLanguage} from "./manuscriptProperties/manuscriptLanugage";
-import {TransliterationLine} from "./oldTransliteration";
+import {TransliterationLine} from "./transliterationLine";
 import {ManuscriptSide} from "../generated/graphql";
 
 export interface SideBasics {
@@ -17,7 +17,9 @@ export const defaultSideBasics: SideBasics = {
   columnModifier: ManuscriptColumnModifier.None
 };
 
+/**
+ * @deprecated
+ */
 export interface SideParseResult {
-  sideBasics: SideBasics;
   lineResults: TransliterationLine[];
 }

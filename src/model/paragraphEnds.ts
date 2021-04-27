@@ -1,4 +1,5 @@
 import {XmlFormat} from "../editor/xmlLoader";
+import {AOTextContent} from "../editor/documentBody";
 
 // ParseP
 
@@ -8,8 +9,12 @@ export const ParseP = {
 
 export const parsePFormat: XmlFormat<typeof ParseP> = {
   read: () => ParseP,
-  write: () => '<parsep/>'
+  write: () => ['<parsep/>']
 };
+
+export function isParseP(c: AOTextContent): c is typeof ParseP {
+  return c.type === 'ParseP';
+}
 
 // ParsePDbl
 
@@ -19,5 +24,9 @@ export const ParsePDouble = {
 
 export const parsePDblFormat: XmlFormat<typeof ParsePDouble> = {
   read: () => ParsePDouble,
-  write: () => '<parsep_dbl/>'
+  write: () => ['<parsep_dbl/>']
+}
+
+export function isParsePDouble(c: AOTextContent): c is typeof ParsePDouble {
+  return c.type === 'ParsePDouble';
 }

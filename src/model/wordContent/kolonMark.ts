@@ -8,7 +8,7 @@ export interface AOKolonMark {
 
 export const aoKolonMarkFormat: XmlFormat<AOKolonMark> = {
   read: (el) => aoKolonMark(el.textContent || ''),
-  write: ({content}) => `<AO:KolonMark>${content}</AO:KolonMark>`
+  write: ({content}) => [`<AO:KolonMark>${content}</AO:KolonMark>`]
 }
 
 export function aoKolonMark(content: string): AOKolonMark {

@@ -8,7 +8,7 @@ export interface AOSpace {
 
 export const aoSpaceFormat: XmlFormat<AOSpace> = {
   read: (el) => aoSpace(attributeReader(el, 'c', (v) => v || '')),
-  write: ({c}) => `<space c="${c}"/>`
+  write: ({c}) => [`<space c="${c}"/>`]
 }
 
 export function aoSpace(c: string): AOSpace {

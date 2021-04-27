@@ -1,11 +1,9 @@
 import React, {useState} from "react";
 import {
-  getNameForManuscriptSide,
   ManuscriptColumn,
   ManuscriptColumnModifier,
   manuscriptColumnModifiers,
   manuscriptColumns,
-  manuscriptSides
 } from "../model/manuscriptProperties/manuscriptProperties";
 import {
   allManuscriptLanguages,
@@ -17,9 +15,12 @@ import {parseTransliterationLine} from "../transliterationParser/parser";
 import {defaultSideBasics, SideBasics, SideParseResult} from "../model/sideParseResult";
 import {BulmaObjectSelect, SelectOption, selectOption} from "../forms/BulmaFields";
 import {Transliteration} from "./TransliterationLineResult";
-import {transliterationLine, TransliterationLine, xmlifyTransliterationLine} from "../model/oldTransliteration";
+import {transliterationLine, TransliterationLine, xmlifyTransliterationLine} from "../model/transliterationLine";
 import {ManuscriptSide, TransliterationInput} from "../generated/graphql";
 import {BulmaTabs, TabConfig} from "../BulmaTabs";
+import {getNameForManuscriptSide, manuscriptSides} from "../model/manuscriptProperties/manuscriptSide";
+import {LineParseResult} from "../model/lineParseResult";
+import {aoLineBreak} from "../model/sentenceContent/linebreak";
 
 interface IProps {
   mainIdentifier: string;
@@ -44,8 +45,8 @@ interface SideParseResultComponentIProps {
 }
 
 
-function exportAsXml(mainIdentifier: string, {lineResults, sideBasics}: SideParseResult): string[] {
-  return lineResults.map((lr) => xmlifyTransliterationLine(lr, mainIdentifier, sideBasics));
+function exportAsXml(mainIdentifier: string, {lineResults}: SideParseResult): string[] {
+  return lineResults.map(xmlifyTransliterationLine);
 }
 
 function SideParseResultComponent({mainIdentifier, sideParseResult}: SideParseResultComponentIProps): JSX.Element {
@@ -84,9 +85,21 @@ export function TransliterationSideInput({mainIdentifier, onTransliterationUpdat
     .map((columnModifier) => selectOption(columnModifier, columnModifier));
 
   function updateTransliteration(input: string): void {
+    const language = state.sideBasics.language;
+
     const lineResults: TransliterationLine[] = input
       .split('\n')
-      .map((lineInput) => transliterationLine(lineInput, parseTransliterationLine(lineInput)));
+      .map((lineInput) => {
+        const parseResult: LineParseResult | undefined = parseTransliterationLine(lineInput);
+
+        if (!parseResult) {
+          return transliterationLine(lineInput);
+        }
+
+        const {lineNumber, words} = parseResult;
+
+        return transliterationLine(lineInput, aoLineBreak(mainIdentifier, lineNumber, language, words));
+      });
 
     const sideParseResult = {
       sideBasics: state.sideBasics,

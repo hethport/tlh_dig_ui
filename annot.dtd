@@ -45,12 +45,20 @@
 
   <!ELEMENT AO:TxtPubl (#PCDATA)>
 
+  <!ELEMENT gap EMPTY>
+  <!ATTLIST gap
+    c CDATA #REQUIRED
+    t CDATA #IMPLIED
+    >
+
   <!ELEMENT lb EMPTY>
   <!ATTLIST lb
     lg CDATA #REQUIRED
     lnr CDATA #REQUIRED
     txtid CDATA #REQUIRED
     >
+
+  <!-- Words -->
 
   <!ELEMENT w (del_in | del_fin | ras_in | ras_fin | laes_in | laes_fin | d | sGr | aGr | num | space | corr | SP___AO_3a_MaterLect | SP___AO_3a_-KolonMark | note)+>
   <!ATTLIST w
@@ -87,12 +95,6 @@
   <!ELEMENT d (#PCDATA)>
 
   <!ELEMENT num (#PCDATA)>
-
-  <!ELEMENT gap EMPTY>
-  <!ATTLIST gap
-    c CDATA #REQUIRED
-    t CDATA #IMPLIED
-    >
 
   <!ELEMENT SP___AO_3a_MaterLect (#PCDATA)>
 

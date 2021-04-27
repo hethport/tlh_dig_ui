@@ -2,10 +2,31 @@ import React, {useState} from "react";
 import {FileLoader} from '../forms/FileLoader';
 import {loadXml} from './xmlLoader';
 import {AOXml} from "./document";
+import {AOText, AOTextContent} from "./documentBody";
+import {isAOParagraph} from "../model/paragraph";
+import {ParagraphRender} from "./documentRender/paragraph";
 
 interface IState {
   documentSource: string;
   aoXml: AOXml;
+}
+
+interface DocumentTextIProps {
+  text: AOText;
+}
+
+function DocumentText({text}: DocumentTextIProps): JSX.Element {
+  const contents: AOTextContent[] = text.content;
+
+  return (
+    <div>
+      {contents.map((c) =>
+        isAOParagraph(c)
+          ? <ParagraphRender paragraph={c}/>
+          : <p>{JSON.stringify(c, null, 2)}</p>
+      )}
+    </div>
+  );
 }
 
 export function DocumentEditor(): JSX.Element {
@@ -25,7 +46,7 @@ export function DocumentEditor(): JSX.Element {
       {state
         ? <div className="columns">
           <div className="column">
-            <pre>{JSON.stringify(state.aoXml.body, null, 2)}</pre>
+            <DocumentText text={state.aoXml.body.div1.text}/>
           </div>
           <div className="column">
             <pre>{state.documentSource}</pre>

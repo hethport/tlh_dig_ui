@@ -1,7 +1,7 @@
-import {attributeReader, XmlFormat} from "../editor/xmlLoader";
-import {AOWordContent} from "./wordContent/wordContent";
+import {attributeReader, XmlFormat} from "../../editor/xmlLoader";
+import {AOWordContent} from "./wordContent";
 
-export type AOCorrType = '(?)' | 'sic' | '!' | '?';
+type AOCorrType = '(?)' | 'sic' | '!' | '?' | '!?';
 
 export interface AOCorr {
   type: 'AOCorr',
@@ -10,13 +10,13 @@ export interface AOCorr {
 
 export const aoCorrFormat: XmlFormat<AOCorr> = {
   read: (el) => aoCorr(attributeReader(el, 'c', (v) => {
-    if (v && (v === '(?)' || v === 'sic' || v === '!' || v === '?')) {
+    if (v && (v === '(?)' || v === 'sic' || v === '!' || v === '?' || v === '!?')) {
       return v;
     } else {
-      throw new Error(`Value ${v} is not allowed!`);
+      throw new Error(`Value '${v}' is not allowed!`);
     }
   })),
-  write: ({c}) => `<corr c="${c}"/>`
+  write: ({c}) => [`<corr c="${c}"/>`]
 }
 
 export function aoCorr(c: AOCorrType): AOCorr {

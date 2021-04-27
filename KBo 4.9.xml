@@ -1,26 +1,23 @@
 <?xml-stylesheet href="HPMxml.css" type="text/css"?>
-<AOxml xmlns:hpm="http://hethiter.net/ns/hpm/1.0"
-       xmlns:AO="http://hethiter.net/ns/AO/1.0"
-       xmlns:dc="http://purl.org/dc/elements/1.1/"
-       xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
-       xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
-       xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
-       xmlns:draw="urn:oasis:names:tc:opendocument:xmlns:drawing:1.0"
-       xmlns:xlink="http://www.w3.org/1999/xlink"
-       xml:space="preserve">
+<AOxml
+  xmlns:AO="http://hethiter.net/ns/AO/1.0"
+  xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
+  xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
+  xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
+  xml:space="preserve">
 <AOHeader>
   <docID>KBo 4.9</docID>
-    <meta>
+  <meta>
     <creation-date date='2016-03-01T14:03:01.495000000'/>
-        <kor2 date='2020-10-14T22:01:17'/>
-        <AOxml-creation date='2020-10-14T22:01:17'/>
-        <annotation>
+    <kor2 date='2020-10-14T22:01:17'/>
+    <AOxml-creation date='2020-10-14T22:01:17'/>
+    <annotation>
       <annot editor='auto' date=''/>
-            <annot editor='' date=''/>
+      <annot editor='' date=''/>
   </annotation>
   </meta>
 </AOHeader>
-<body>
+  <body>
   <div1 type='transliteration'>
     <text xml:lang='XXXlang'>
       <p>
@@ -28,87 +25,87 @@
           <AO:Manuscripts>
             <AO:TxtPubl>KBo 4.9</AO:TxtPubl>
           </AO:Manuscripts>
-    <lb txtid="KBo 4.9" lnr="Vs. I 1" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 1" lg="Hit"/>
 
-    <w trans='LUGALuš' mrp0sel='  '
-       mrp1=' LUGAL @ König @
+          <w trans='LUGALuš' mrp0sel='  '
+             mrp1=' LUGAL @ König @
 		{ a → FNL(u).NOM.SG.C}
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
-    ><sGr><del_in/>LUGA<del_fin/>L</sGr>-<laes_in/>uš<laes_fin/></w>
+          ><sGr><del_in/>LUGA<del_fin/>L</sGr>
+            -<laes_in/>uš
+            <laes_fin/></w>
 
-
-    <w trans='eša' mrp0sel='  '
-       mrp1=' eš- @ sitzen @ 3SG.PRS.MP @ III.1.3 @ '
-       mrp2=' eš=(i)- @ Kurtisane(?) @
+          <w trans='eša' mrp0sel='  '
+             mrp1=' eš- @ sitzen @ 3SG.PRS.MP @ III.1.3 @ '
+             mrp2=' eš=(i)- @ Kurtisane(?) @
 		{ a → LUW.NOM/ACC.COLL}
 		{ b → HITT.VOC.SG}
 		{ c → HITT.ALL}
 		{ d → HITT.STF} @ 30.1.1 @ MUNUS'
-    >e-ša</w>
+          >e-ša</w>
+
+          <w trans='wakanna' mrp0sel=' 1 '
+             mrp1=' wak= @ (ab)beißen @ INF @ II.1 @ '
+          >wa-ga-an-n<del_in/>a</w>
 
 
-    <w trans='wakanna' mrp0sel=' 1 '
-       mrp1=' wak= @ (ab)beißen @ INF @ II.1 @ '
-    >wa-ga-an-n<del_in/>a</w>
-
-
-    <w trans='ḫalzia' mrp0sel='  '
-       mrp1=' ḫalz=i- @ Festung @
+          <w trans='ḫalzia' mrp0sel='  '
+             mrp1=' ḫalz=i- @ Festung @
 		{ a → D/L.SG}
 		{ b → ALL} @ 2.1.1 @ '
-       mrp2=' ḫalz=iya- @ rufen @ 2SG.IMP @ I.7 @ '
-       mrp3=' ḫalzi=ya- @ rufen @ 3SG.PRS.MP @ III.5.1 @ '
-    >ḫal-zi-ia<del_fin/></w>
+             mrp2=' ḫalz=iya- @ rufen @ 2SG.IMP @ I.7 @ '
+             mrp3=' ḫalzi=ya- @ rufen @ 3SG.PRS.MP @ III.5.1 @ '
+          >ḫal-zi-ia<del_fin/></w>
 
-    <lb txtid="KBo 4.9" lnr="Vs. I 2" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 2" lg="Hit"/>
 
-    <w trans='Ú-UL' mrp0sel=' 1 '
-       mrp1=' UL @ nicht @ NEG @  @ '
-    ><aGr><laes_in/>Ú<laes_fin/>-UL</aGr></w>
+          <w trans='Ú-UL' mrp0sel=' 1 '
+             mrp1=' UL @ nicht @ NEG @  @ '
+          ><aGr><laes_in/>Ú<laes_fin/>-UL</aGr></w>
 
 
-    <w trans='kuitki' mrp0sel='  '
-       mrp1=' kuiški @ irgendein @
+          <w trans='kuitki' mrp0sel='  '
+             mrp1=' kuiški @ irgendein @
 		{ a → INDFany.NOM.SG.N}
 		{ b → INDFany.ACC.SG.N} @ 24 @ '
-    >ku-it-ki</w>
+          >ku-it-ki</w>
 
 
-    <w trans='šipanti' mrp0sel='  '
-       mrp1=' šipant= @ libieren @
+          <w trans='šipanti' mrp0sel='  '
+             mrp1=' šipant= @ libieren @
 		{ a → 3SG.PRS}
 		{ b → 2SG.IMP} @ II.1.3 @ '
-    >ši-pa-an-t<del_in/>i
-        <del_fin/></w>
+          >ši-pa-an-t<del_in/>i
+            <del_fin/></w>
 
-    <lb txtid="KBo 4.9" lnr="Vs. I 3" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 3" lg="Hit"/>
 
-    <w trans='našta' mrp0sel='  '
-       mrp1=' n=ašta @  @ CONNn=OBPst @  @ '
-       mrp2=' n=at=šta @  @
+          <w trans='našta' mrp0sel='  '
+             mrp1=' n=ašta @  @ CONNn=OBPst @  @ '
+             mrp2=' n=at=šta @  @
 		{ a → CONNn=PPRO.3SG.N.NOM=OBPst}
 		{ b → CONNn=PPRO.3SG.N.ACC=OBPst} @  @ '
-       mrp3=' n=an=šta @  @ CONNn=PPRO.3SG.C.ACC=OBPst @  @ '
-       mrp4=' n=aš=šta @  @
+             mrp3=' n=an=šta @  @ CONNn=PPRO.3SG.C.ACC=OBPst @  @ '
+             mrp4=' n=aš=šta @  @
 		{ a → CONNn=PPRO.3SG.C.NOM=OBPst}
 		{ b → CONNn=PPRO.3PL.C.ACC=OBPst} @  @ '
-    ><del_in/>n<del_fin/>a-aš-ta</w>
+          ><del_in/>n<del_fin/>a-aš-ta</w>
 
 
-    <w trans='LUGALuš' mrp0sel='  '
-       mrp1=' LUGAL @ König @
+          <w trans='LUGALuš' mrp0sel='  '
+             mrp1=' LUGAL @ König @
 		{ a → FNL(u).NOM.SG.C}
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
-    ><sGr>LUGAL</sGr>-uš</w>
+          ><sGr>LUGAL</sGr>-uš</w>
 
 
-    <w trans='IŠ-TU É' mrp0sel=' 1   '
-       mrp1=' É @ Haus @ ABL @ 28.16 @ '><aGr>IŠ-TU</aGr>
-        <sGr>É</sGr></w>
+          <w trans='IŠ-TU É' mrp0sel=' 1   '
+             mrp1=' É @ Haus @ ABL @ 28.16 @ '><aGr>IŠ-TU</aGr>
+            <sGr>É</sGr></w>
 
 
-    <w trans='ZA-BA₄-BA₄' mrp0sel='  '
-       mrp1=' ZABABA @ Zababa @
+          <w trans='ZA-BA₄-BA₄' mrp0sel='  '
+             mrp1=' ZABABA @ Zababa @
 		{ a → DN.NOM.SG.C(UNM)}
 		{ b → DN.ACC.SG.C(UNM)}
 		{ c → DN.GEN.SG(UNM)}
@@ -116,38 +113,39 @@
 		{ e → DN.ABL(UNM)}
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
-    ><aGr>ZA-B<del_in/>A₄-BA₄
-        <del_fin/></aGr></w>
+          ><aGr>ZA-B<del_in/>A₄-BA₄
+            <del_fin/></aGr></w>
 
-    <lb txtid="KBo 4.9" lnr="Vs. I 4" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 4" lg="Hit"/>
 
-    <w trans='para' mrp0sel='  '
-       mrp1=' parā @ außerdem @  @ ADV @ '
-       mrp2=' parā @ aus (zu) @  @ PREV @ '
-       mrp3=' parā @ heraus aus @  @ POSP @ '
-       mrp4=' par=a- @ Luft @
+          <w trans='para' mrp0sel='  '
+             mrp1=' parā @ außerdem @  @ ADV @ '
+             mrp2=' parā @ aus (zu) @  @ PREV @ '
+             mrp3=' parā @ heraus aus @  @ POSP @ '
+             mrp4=' par=a- @ Luft @
 		{ a → VOC.SG}
 		{ b → ALL}
 		{ c → STF} @ 1.1 @ '
-    >pa-ra-a</w>
+          >pa-ra-a</w>
 
 
-    <w trans='wezi' mrp0sel=' 1 '
-       mrp1=' wē-/uwa- @ kommen @ 3SG.PRS @ I.12 @ '
-    >ú-ez-zi</w>
+          <w trans='wezi' mrp0sel=' 1 '
+             mrp1=' wē-/uwa- @ kommen @ 3SG.PRS @ I.12 @ '
+          >ú-ez-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
-<lb txtid="KBo 4.9" lnr="Vs. I 5" lg="Hit"/>
+      <parsep/>
+      <p>
+      <s>
+        <lb txtid="KBo 4.9" lnr="Vs. I 5" lg="Hit"/>
 
-<w trans='2' mrp0sel=' 1 '
-   mrp1='  @ zwei @  @ QUANcar @ '
-><num><laes_in/>2
-    <laes_fin/></num></w>
+        <w trans='2' mrp0sel=' 1 '
+           mrp1='  @ zwei @  @ QUANcar @ '
+        ><num><laes_in/>2
+          <laes_fin/></num></w>
 
 
-<w trans='DUMU.É.GAL' mrp0sel='  '
-   mrp1=' DUMU.É.GAL @ Palastbediensteter @
+        <w trans='DUMU.É.GAL' mrp0sel='  '
+           mrp1=' DUMU.É.GAL @ Palastbediensteter @
 		{ a → NOM.SG.C(UNM)}
 		{ b → ACC.SG.C(UNM)}
 		{ c → NOM.PL.C(UNM)}
@@ -161,16 +159,16 @@
 		{ k → INS(UNM)}
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
-><sGr>DUMU.É.GAL</sGr></w>
+        ><sGr>DUMU.É.GAL</sGr></w>
 
 
-<w trans='1' mrp0sel=' 1 '
-   mrp1='  @ ein @  @ QUANcar @ '
-><num>1</num></w>
+        <w trans='1' mrp0sel=' 1 '
+           mrp1='  @ ein @  @ QUANcar @ '
+        ><num>1</num></w>
 
 
-<w trans='ME-ŠE-DI' mrp0sel='  '
-   mrp1=' MEŠĒDU @ Leibwächter @
+        <w trans='ME-ŠE-DI' mrp0sel='  '
+           mrp1=' MEŠĒDU @ Leibwächter @
 		{ a → NOM.SG.C(UNM)}
 		{ b → ACC.SG.C(UNM)}
 		{ c → NOM.PL.C(UNM)}
@@ -184,161 +182,163 @@
 		{ k → INS(UNM)}
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
-><d>LÚ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+        ><d>LÚ</d>
+          <aGr>ME-ŠE-DI</aGr></w>
 
 
-<w trans='peran' mrp0sel='  '
-   mrp1=' peran @ vor @  @ ADV @ '
-   mrp2=' peran @ vor @  @ POSP @ '
-   mrp3=' peran @ vor @  @ PREV @ '
->pé-<laes_in/>ra<laes_fin/>-an</w>
+        <w trans='peran' mrp0sel='  '
+           mrp1=' peran @ vor @  @ ADV @ '
+           mrp2=' peran @ vor @  @ POSP @ '
+           mrp3=' peran @ vor @  @ PREV @ '
+        >pé-<laes_in/>ra<laes_fin/>-an</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 6" lg="Hit"/>
+        <lb txtid="KBo 4.9" lnr="Vs. I 6" lg="Hit"/>
 
-<w trans='ḫuaianteš' mrp0sel='  '
-   mrp1=' ḫuw=āye/a- @ laufen @
+        <w trans='ḫuaianteš' mrp0sel='  '
+           mrp1=' ḫuw=āye/a- @ laufen @
 		{ a → PTCP.NOM.PL.C}
 		{ b → PTCP.ACC.PL.C} @ I.7.5 @ '
->ḫu-u-wa-ia-an-te-eš</w>
+        >ḫu-u-wa-ia-an-te-eš</w>
 
 
-<w trans='LUGALuš' mrp0sel='  '
-   mrp1=' LUGAL @ König @
+        <w trans='LUGALuš' mrp0sel='  '
+           mrp1=' LUGAL @ König @
 		{ a → FNL(u).NOM.SG.C}
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
-><sGr>LUGAL</sGr>-uš</w>
+        ><sGr>LUGAL</sGr>-uš</w>
 
 
-<w trans='ḫalentuaš' mrp0sel='  '
-   mrp1=' ḫalentuw=a- @ Palast @
+        <w trans='ḫalentuaš' mrp0sel='  '
+           mrp1=' ḫalentuw=a- @ Palast @
 		{ a → GEN.SG}
 		{ b → GEN.PL}
 		{ c → D/L.PL} @ 1.2 @ É'
-   mrp2=' ḫalent=u- @ Palast @
+           mrp2=' ḫalent=u- @ Palast @
 		{ a → GEN.SG}
 		{ b → GEN.PL}
 		{ c → D/L.PL} @ 3.1.2 @ É'
-><d>É</d>ḫa-le-en-tu-wa-aš</w>
+        ><d>É</d>ḫa-le-en-tu-wa-aš</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 7" lg="Hit"/>
+        <lb txtid="KBo 4.9" lnr="Vs. I 7" lg="Hit"/>
 
-<w trans='paizi' mrp0sel=' 1 '
-   mrp1=' pai-/pā- @ gehen @ 3SG.PRS @ I.11 @ '
->pa-iz-zi</w>
-
-
-<w trans='ta' mrp0sel='  '
-   mrp1=' ta @  @ CONNt @  @ '
-   mrp2=' dā-/d- @ nehmen @ 2SG.IMP @ II.2 @ '
->ta</w>
+        <w trans='paizi' mrp0sel=' 1 '
+           mrp1=' pai-/pā- @ gehen @ 3SG.PRS @ I.11 @ '
+        >pa-iz-zi</w>
 
 
-<w trans='mân' mrp0sel=' 1 '
-   mrp1=' mân @ wie @  @ POSP @ '
->ma-a-an</w>
+        <w trans='ta' mrp0sel='  '
+           mrp1=' ta @  @ CONNt @  @ '
+           mrp2=' dā-/d- @ nehmen @ 2SG.IMP @ II.2 @ '
+        >ta</w>
 
 
-<w trans='LUGALi' mrp0sel=' 1 '
-   mrp1=' LUGAL @ König @ D/L.SG @ 28.3.1.1 @ '
-><sGr>LUGAL</sGr>-i</w>
+        <w trans='mân' mrp0sel=' 1 '
+           mrp1=' mân @ wie @  @ POSP @ '
+        >ma-a-an</w>
 
 
-<w trans='ZIanza' mrp0sel=' 1 '
-   mrp1=' ZI @ Seele @ FNL(an).NOM.SG.C @ 28.9.1 @ '
-><sGr>ZI</sGr>-an-za</w>
-
-<lb txtid="KBo 4.9" lnr="Vs. I 8" lg="Hit"/>
-
-<w trans='ta' mrp0sel='  '
-   mrp1=' ta @  @ CONNt @  @ '
-   mrp2=' dā-/d- @ nehmen @ 2SG.IMP @ II.2 @ '
->ta</w>
+        <w trans='LUGALi' mrp0sel=' 1 '
+           mrp1=' LUGAL @ König @ D/L.SG @ 28.3.1.1 @ '
+        ><sGr>LUGAL</sGr>-i</w>
 
 
-<w trans='araḫza' mrp0sel='  '
-   mrp1=' araḫz=a- @ umliegend @
+        <w trans='ZIanza' mrp0sel=' 1 '
+           mrp1=' ZI @ Seele @ FNL(an).NOM.SG.C @ 28.9.1 @ '
+        ><sGr>ZI</sGr>-an-za</w>
+
+        <lb txtid="KBo 4.9" lnr="Vs. I 8" lg="Hit"/>
+
+        <w trans='ta' mrp0sel='  '
+           mrp1=' ta @  @ CONNt @  @ '
+           mrp2=' dā-/d- @ nehmen @ 2SG.IMP @ II.2 @ '
+        >ta</w>
+
+
+        <w trans='araḫza' mrp0sel='  '
+           mrp1=' araḫz=a- @ umliegend @
 		{ a → ALL}
 		{ b → VOC.SG}
 		{ c → NOM.PL.N}
 		{ d → ACC.PL.N}
 		{ e → STF} @ 1.3 @ '
-   mrp2=' araḫza @ (nach) draußen @  @ ADV @ '
->a-ra-aḫ-za</w>
+           mrp2=' araḫza @ (nach) draußen @  @ ADV @ '
+        >a-ra-aḫ-za</w>
 
 
-<w trans='paizi' mrp0sel=' 1 '
-   mrp1=' pai-/pā- @ gehen @ 3SG.PRS @ I.11 @ '
->pa-iz-zi</w>
+        <w trans='paizi' mrp0sel=' 1 '
+           mrp1=' pai-/pā- @ gehen @ 3SG.PRS @ I.11 @ '
+        >pa-iz-zi</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 9" lg="Hit"/>
+        <lb txtid="KBo 4.9" lnr="Vs. I 9" lg="Hit"/>
 
-<w trans='GIMan' mrp0sel=' 1 '
-   mrp1=' GIM-an @ wie @ CNJ @  @ '
-><sGr>GIM</sGr>-an</w>
-
-
-<w trans='LUGALi' mrp0sel=' 1 '
-   mrp1=' LUGAL @ König @ D/L.SG @ 28.3.1.1 @ '
-><sGr>LUGAL</sGr>-i</w>
+        <w trans='GIMan' mrp0sel=' 1 '
+           mrp1=' GIM-an @ wie @ CNJ @  @ '
+        ><sGr>GIM</sGr>-an</w>
 
 
-<w trans='ZIza' mrp0sel=' 1 '
-   mrp1=' ZI @ Seele @ NOM.SG.C @ 28.9.1 @ '
-><ras_in/>
-    <sGr>ZI</sGr>-za
-    <ras_fin/></w>
+        <w trans='LUGALi' mrp0sel=' 1 '
+           mrp1=' LUGAL @ König @ D/L.SG @ 28.3.1.1 @ '
+        ><sGr>LUGAL</sGr>-i</w>
 
 
-<w trans='nu' mrp0sel=' 1 '
-   mrp1=' nu @  @ CONNn @  @ '
->nu</w>
+        <w trans='ZIza' mrp0sel=' 1 '
+           mrp1=' ZI @ Seele @ NOM.SG.C @ 28.9.1 @ '
+        ><ras_in/>
+          <sGr>ZI</sGr>-za
+          <ras_fin/></w>
 
 
-<w trans='QA-TAM-MA' mrp0sel=' 1 '
-   mrp1=' QĀTAMMA @ ebenso @ ADV @  @ '
-><aGr>QA-TAM-MA</aGr></w>
-
-<lb txtid="KBo 4.9" lnr="Vs. I 10" lg="Hit"/>
-
-<w trans='iazi' mrp0sel='  '
-   mrp1='  @ durchbohren @ 3SG.PRS @ I.7 @ '
-   mrp2=' iye/a- @ machen @ 3SG.PRS @ I.7.1 @ '
-><laes_in/>i<laes_fin/>-ia-zi</w>
+        <w trans='nu' mrp0sel=' 1 '
+           mrp1=' nu @  @ CONNn @  @ '
+        >nu</w>
 
 
-<w trans='Ú-UL' mrp0sel=' 1 '
-   mrp1=' UL @ nicht @ NEG @  @ '
-><aGr>Ú-UL</aGr></w>
+        <w trans='QA-TAM-MA' mrp0sel=' 1 '
+           mrp1=' QĀTAMMA @ ebenso @ ADV @  @ '
+        ><aGr>QA-TAM-MA</aGr></w>
+
+        <lb txtid="KBo 4.9" lnr="Vs. I 10" lg="Hit"/>
+
+        <w trans='iazi' mrp0sel='  '
+           mrp1='  @ durchbohren @ 3SG.PRS @ I.7 @ '
+           mrp2=' iye/a- @ machen @ 3SG.PRS @ I.7.1 @ '
+        ><laes_in/>i<laes_fin/>-ia-zi</w>
 
 
-<w trans='kuitki' mrp0sel='  '
-   mrp1=' kuiški @ irgendein @
+        <w trans='Ú-UL' mrp0sel=' 1 '
+           mrp1=' UL @ nicht @ NEG @  @ '
+        ><aGr>Ú-UL</aGr></w>
+
+
+        <w trans='kuitki' mrp0sel='  '
+           mrp1=' kuiški @ irgendein @
 		{ a → INDFany.NOM.SG.N}
 		{ b → INDFany.ACC.SG.N} @ 24 @ '
->ku-it-ki</w>
+        >ku-it-ki</w>
 
 
-<w trans='tukkari' mrp0sel=' 1 '
-   mrp1=' dukk= @ gesehen werden @ 3SG.PRS.MP @ III.1 @ '
->du-uk-ka₄-ri</w>
- </s></p>
-    <parsep/>
-    <p><s>
+        <w trans='tukkari' mrp0sel=' 1 '
+           mrp1=' dukk= @ gesehen werden @ 3SG.PRS.MP @ III.1 @ '
+        >du-uk-ka₄-ri</w>
+       </s>
+      </p>
+      <parsep/>
+      <p>
+        <s>
 <lb txtid="KBo 4.9" lnr="Vs. I 11" lg="Hit"/>
 
-<w trans='EGIRantamakan' mrp0sel='  '
-   mrp1=' EGIR-anda @ danach @
+          <w trans='EGIRantamakan' mrp0sel='  '
+             mrp1=' EGIR-anda @ danach @
 		{a → ADV}
 		{b → POSP}
 		{c → PREV} @
 		   += ma=kkan @ CNJctr=OBPk @  @ '
-><sGr><del_in/>EG<del_fin/>IR</sGr>
-    -an-da-ma-kán</w>
+          ><sGr><del_in/>EG<del_fin/>IR</sGr>
+            -an-da-ma-kán</w>
 
 
-<w trans='É' mrp0sel='  '
-   mrp1=' É @ Haus @
+          <w trans='É' mrp0sel='  '
+             mrp1=' É @ Haus @
 		{ a → NOM.SG.N(UNM)}
 		{ b → ACC.SG.N(UNM)}
 		{ c → NOM.PL.N(UNM)}
@@ -352,11 +352,11 @@
 		{ k → INS(UNM)}
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.16 @ '
-><sGr>É</sGr></w>
+          ><sGr>É</sGr></w>
 
 
-<w trans='ZA-BA₄-BA₄' mrp0sel='  '
-   mrp1=' ZABABA @ Zababa @
+          <w trans='ZA-BA₄-BA₄' mrp0sel='  '
+             mrp1=' ZABABA @ Zababa @
 		{ a → DN.NOM.SG.C(UNM)}
 		{ b → DN.ACC.SG.C(UNM)}
 		{ c → DN.GEN.SG(UNM)}
@@ -364,82 +364,82 @@
 		{ e → DN.ABL(UNM)}
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
-><d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+          ><d>D</d>
+            <aGr>ZA-BA₄-BA₄</aGr></w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 12" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 12" lg="Hit"/>
 
-<w trans='šanḫanzi' mrp0sel=' 1 '
-   mrp1=' šanḫ- @ suchen @ 3PL.PRS @ I.1.8 @ '
-><del_in/>š<del_fin/>a-an-ḫa-an-zi</w>
+          <w trans='šanḫanzi' mrp0sel=' 1 '
+             mrp1=' šanḫ- @ suchen @ 3PL.PRS @ I.1.8 @ '
+          ><del_in/>š<del_fin/>a-an-ḫa-an-zi</w>
 
 
-<w trans='šuppa' mrp0sel='  '
-   mrp1=' šupp= @ schlafen @ 3SG.PRS.MP @ III.1.5 @ '
-   mrp2=' šupp=a- @ schlafen @ 3SG.PRS.MP @ III.2.6 @ '
-   mrp3=' šupp=a- @ kultisch rein @
+          <w trans='šuppa' mrp0sel='  '
+             mrp1=' šupp= @ schlafen @ 3SG.PRS.MP @ III.1.5 @ '
+             mrp2=' šupp=a- @ schlafen @ 3SG.PRS.MP @ III.2.6 @ '
+             mrp3=' šupp=a- @ kultisch rein @
 		{ a → ALL}
 		{ b → VOC.SG}
 		{ c → NOM.PL.N}
 		{ d → ACC.PL.N}
 		{ e → STF} @ 1.3 @ '
-   mrp4=' šupp=a- @ Fleisch @
+             mrp4=' šupp=a- @ Fleisch @
 		{ a → ALL}
 		{ b → VOC.SG}
 		{ c → NOM.PL.N}
 		{ d → ACC.PL.N}
 		{ e → STF} @ 1.2 @ (UZU)'
-   mrp5=' šuppa @ an reiner Stätte @  @ ADV @ '
-   mrp6=' šupp=i- @ geweiht @
+             mrp5=' šuppa @ an reiner Stätte @  @ ADV @ '
+             mrp6=' šupp=i- @ geweiht @
 		{ a → NOM.PL.N}
 		{ b → ACC.PL.N} @ 2.2 @ '
->šu-up-pa</w>
+          >šu-up-pa</w>
 
 
-<w trans='ḫuešu' mrp0sel='  '
-   mrp1=' ḫueš=u- @ lebendig @
+          <w trans='ḫuešu' mrp0sel='  '
+             mrp1=' ḫueš=u- @ lebendig @
 		{ a → NOM.SG.N}
 		{ b → ACC.SG.N}
 		{ c → NOM.PL.N}
 		{ d → ACC.PL.N}
 		{ e → STF} @ 3.2 @ '
->ḫu-u-e-šu</w>
+          >ḫu-u-e-šu</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 13" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 13" lg="Hit"/>
 
-<w trans='ŠA GU₄.MAḪ' mrp0sel='    '
-   mrp1=' GU₄.MAḪ @ Stier @
+          <w trans='ŠA GU₄.MAḪ' mrp0sel='    '
+             mrp1=' GU₄.MAḪ @ Stier @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1.1 @ '><aGr>ŠA</aGr>
-    <sGr>GU₄.MAḪ</sGr></w>
+            <sGr>GU₄.MAḪ</sGr></w>
 
 
-<w trans='ŠA ÁB' mrp0sel='    '
-   mrp1=' ÁB @ Kuh @
+          <w trans='ŠA ÁB' mrp0sel='    '
+             mrp1=' ÁB @ Kuh @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1 @ GU₄'
-   mrp2=' ÁB @ Kuh @
+             mrp2=' ÁB @ Kuh @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1.1 @ GU₄'><aGr>ŠA</aGr>
-    <ras_in/>
-    <d>GU₄<ras_fin/></d>
-    <sGr>ÁB</sGr>
-    <d>ḪI.A</d></w>
+            <ras_in/>
+            <d>GU₄<ras_fin/></d>
+            <sGr>ÁB</sGr>
+            <d>ḪI.A</d></w>
 
 
-<w trans='ŠA UDU' mrp0sel='    '
-   mrp1=' UDU @ Schaf @
+          <w trans='ŠA UDU' mrp0sel='    '
+             mrp1=' UDU @ Schaf @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 28.3.1.1.2 @ '><aGr>ŠA</aGr>
-    <sGr>UDU</sGr>
-    <d>ḪI.A</d></w>
+            <sGr>UDU</sGr>
+            <d>ḪI.A</d></w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 14" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 14" lg="Hit"/>
 
-<w trans='Ù' mrp0sel='  '
-   mrp1=' U @ und, auch @ CNJadd @  @ '
-   mrp2=' Ù @ schlafen @  @  @ '
-   mrp3=' Ù @ Schlaf @
+          <w trans='Ù' mrp0sel='  '
+             mrp1=' U @ und, auch @ CNJadd @  @ '
+             mrp2=' Ù @ schlafen @  @  @ '
+             mrp3=' Ù @ Schlaf @
 		{ a → NOM.SG.C(UNM)}
 		{ b → ACC.SG.C(UNM)}
 		{ c → NOM.PL.C(UNM)}
@@ -453,85 +453,87 @@
 		{ k → INS(UNM)}
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
-><aGr>Ù</aGr></w>
+          ><aGr>Ù</aGr></w>
 
 
-<w trans='ŠA MÁŠ.GAL' mrp0sel='    '
-   mrp1=' MÁŠ.GAL @ Ziegenbock @
+          <w trans='ŠA MÁŠ.GAL' mrp0sel='    '
+             mrp1=' MÁŠ.GAL @ Ziegenbock @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 28.1.5 @ '><aGr>ŠA</aGr>
-    <sGr>MÁŠ.GAL</sGr>
-    <d>ḪI.A</d></w>
+            <sGr>MÁŠ.GAL</sGr>
+            <d>ḪI.A</d></w>
 
 
-<w trans='ištanani' mrp0sel=' 1 '
-   mrp1=' ištanan=a- @ Altar @ D/L.SG @ 1.1 @ '
->iš-ta-na-ni</w>
+          <w trans='ištanani' mrp0sel=' 1 '
+             mrp1=' ištanan=a- @ Altar @ D/L.SG @ 1.1 @ '
+          >iš-ta-na-ni</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 14" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 14" lg="Hit"/>
 
-<w trans='peran' mrp0sel='  '
-   mrp1=' peran @ vor @  @ ADV @ '
-   mrp2=' peran @ vor @  @ POSP @ '
-   mrp3=' peran @ vor @  @ PREV @ '
->pé-ra-an</w>
+          <w trans='peran' mrp0sel='  '
+             mrp1=' peran @ vor @  @ ADV @ '
+             mrp2=' peran @ vor @  @ POSP @ '
+             mrp3=' peran @ vor @  @ PREV @ '
+          >pé-ra-an</w>
 
 
-<w trans='PA-NI DINGIR-LIM' mrp0sel='    '
-   mrp1=' DINGIR-LIM @ Gott @
+          <w trans='PA-NI DINGIR-LIM' mrp0sel='    '
+             mrp1=' DINGIR-LIM @ Gott @
 		{ a → D/L.SG_vor:POSP}
 		{ b → D/L.PL_vor:POSP} @  @ '
-   mrp2=' DINGIR-LIM @ Gottheit @
+             mrp2=' DINGIR-LIM @ Gottheit @
 		{ a → D/L.SG_vor:POSP}
 		{ b → D/L.PL_vor:POSP} @  @ '
-   mrp3=' DINGIR-LIM @ Gott @
+             mrp3=' DINGIR-LIM @ Gott @
 		{ a → D/L.SG_vor:POSP}
 		{ b → D/L.PL_vor:POSP} @ 28.3.1.1.1 @ '><aGr>PA-NI</aGr>
-    <sGr>DINGIR</sGr>
-    <aGr>-LIM</aGr></w>
+            <sGr>DINGIR</sGr>
+            <aGr>-LIM</aGr></w>
 
 
-<w trans='šani' mrp0sel='  '
-   mrp1=' šan=a- @ Ortsansässiger(?) @ D/L.SG @ 1.1 @ LÚ'
-   mrp2=' šan=i- @ selb- @
+          <w trans='šani' mrp0sel='  '
+             mrp1=' šan=a- @ Ortsansässiger(?) @ D/L.SG @ 1.1 @ LÚ'
+             mrp2=' šan=i- @ selb- @
 		{ a → NOM.SG.N}
 		{ b → ACC.SG.N}
 		{ c → D/L.SG}
 		{ d → STF} @ 2.2.1 @ '
-   mrp3=' š=atar @ Reizung(?) @ D/L.SG @ 14.2 @ '
->ša-ni-i</w>
+             mrp3=' š=atar @ Reizung(?) @ D/L.SG @ 14.2 @ '
+          >ša-ni-i</w>
 
 
-<w trans='peti' mrp0sel='  '
-   mrp1=' ped=a- @ Platz @ D/L.SG @ 1.2 @ '
-   mrp2=' ped=a- @ hinschaffen @ 2SG.IMP @ II.3 @ '
->pé-di</w>
+          <w trans='peti' mrp0sel='  '
+             mrp1=' ped=a- @ Platz @ D/L.SG @ 1.2 @ '
+             mrp2=' ped=a- @ hinschaffen @ 2SG.IMP @ II.3 @ '
+          >pé-di</w>
 
 
-<w trans='tianzi' mrp0sel='  '
-   mrp1=' dai-/te-/ti(ya)- @ setzen @ 3PL.PRS @ II.6.1 @ '
-   mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
->ti-an-zi</w>
- </s></p>
-    <parsep/>
-    <p><s>
+          <w trans='tianzi' mrp0sel='  '
+             mrp1=' dai-/te-/ti(ya)- @ setzen @ 3PL.PRS @ II.6.1 @ '
+             mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
+          >ti-an-zi</w>
+ </s>
+      </p>
+      <parsep/>
+      <p>
+        <s>
 <lb txtid="KBo 4.9" lnr="Vs. I 16" lg="Hit"/>
 
-<w trans='2' mrp0sel=' 1 '
-   mrp1='  @ zwei @  @ QUANcar @ '
-><num>2</num></w>
+          <w trans='2' mrp0sel=' 1 '
+             mrp1='  @ zwei @  @ QUANcar @ '
+          ><num>2</num></w>
 
 
-<w trans='ḫuppar' mrp0sel='  '
-   mrp1=' ḫuppa=r- @ Schale @
+          <w trans='ḫuppar' mrp0sel='  '
+             mrp1=' ḫuppa=r- @ Schale @
 		{ a → NOM.SG.N}
 		{ b → ACC.SG.N}
 		{ c → STF} @ 10.1.2 @ (GIŠ/DUG)'
->ḫu-up-pár</w>
+          >ḫu-up-pár</w>
 
 
-<w trans='KÙ.BABBAR' mrp0sel='  '
-   mrp1=' KÙ.BABBAR @ Ḫattuša @
+          <w trans='KÙ.BABBAR' mrp0sel='  '
+             mrp1=' KÙ.BABBAR @ Ḫattuša @
 		{ a → GN.NOM.SG.C(UNM)}
 		{ b → GN.ACC.SG.C(UNM)}
 		{ c → GN.NOM.PL.C(UNM)}
@@ -545,7 +547,7 @@
 		{ k → GN.INS(UNM)}
 		{ l → GN.VOC.SG(UNM)}
 		{ m → GN.VOC.PL(UNM)} @ 39.8 @ URU'
-   mrp2=' KÙ.BABBAR @ Silber @
+             mrp2=' KÙ.BABBAR @ Silber @
 		{ a → NOM.SG.C(UNM)}
 		{ b → ACC.SG.C(UNM)}
 		{ c → NOM.PL.C(UNM)}
@@ -559,110 +561,110 @@
 		{ k → INS(UNM)}
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
-><sGr>KÙ.BABBAR</sGr></w>
+          ><sGr>KÙ.BABBAR</sGr></w>
 
 
-<w trans='išpantuziaš' mrp0sel='  '
-   mrp1=' išpanduzz=i- @ Libation @
+          <w trans='išpantuziaš' mrp0sel='  '
+             mrp1=' išpanduzz=i- @ Libation @
 		{ a → GEN.SG}
 		{ b → GEN.PL}
 		{ c → D/L.PL} @ 2.1.2 @ '
->iš-pa-an-tu-uz-zi-aš</w>
+          >iš-pa-an-tu-uz-zi-aš</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 17" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 17" lg="Hit"/>
 
-<w trans='GEŠTINit' mrp0sel=' 1 '
-   mrp1=' GEŠTIN @ Wein @ INS @ 28.1.1 @ (GIŠ)'
-><sGr>GEŠTIN</sGr>-it</w>
+          <w trans='GEŠTINit' mrp0sel=' 1 '
+             mrp1=' GEŠTIN @ Wein @ INS @ 28.1.1 @ (GIŠ)'
+          ><sGr>GEŠTIN</sGr>-it</w>
 
 
-<w trans='šuanteš' mrp0sel='  '
-   mrp1=' šuwa= @ füllen @
+          <w trans='šuanteš' mrp0sel='  '
+             mrp1=' šuwa= @ füllen @
 		{ a → PTCP.NOM.PL.C}
 		{ b → PTCP.ACC.PL.C} @ I.1.1 @ '
->šu-u-wa-an-te-eš</w>
+          >šu-u-wa-an-te-eš</w>
 
 
-<w trans='šuppaš' mrp0sel='  '
-   mrp1=' šupp=a- @ kultisch rein @
+          <w trans='šuppaš' mrp0sel='  '
+             mrp1=' šupp=a- @ kultisch rein @
 		{ a → NOM.SG.C}
 		{ b → GEN.SG}
 		{ c → D/L.PL}
 		{ d → GEN.PL} @ 1.3 @ '
-   mrp2=' šupp=a- @ Fleisch @
+             mrp2=' šupp=a- @ Fleisch @
 		{ a → GEN.SG}
 		{ b → GEN.PL}
 		{ c → D/L.PL} @ 1.2 @ (UZU)'
->šu-up-pa-aš</w>
+          >šu-up-pa-aš</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 18" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 18" lg="Hit"/>
 
-<w trans='ZAGnaz' mrp0sel='  '
-   mrp1=' ZAG @ rechts @ FNL(n).ABL @ 28.1.1.1.1 @ '
-   mrp2=' ZAG-naz @ rechts @ ADV @  @ '
-><sGr>ZAG</sGr>-na-az</w>
+          <w trans='ZAGnaz' mrp0sel='  '
+             mrp1=' ZAG @ rechts @ FNL(n).ABL @ 28.1.1.1.1 @ '
+             mrp2=' ZAG-naz @ rechts @ ADV @  @ '
+          ><sGr>ZAG</sGr>-na-az</w>
 
 
-<w trans='GÙBlazia' mrp0sel='  '
-   mrp1=' GÙB-laz @ links @ ADV @
+          <w trans='GÙBlazia' mrp0sel='  '
+             mrp1=' GÙB-laz @ links @ ADV @
 		   += ya @ CNJadd @  @ '
-   mrp2=' GÙB @ linker @ FNL(l).ABL @ 28.1.3.1
+             mrp2=' GÙB @ linker @ FNL(l).ABL @ 28.1.3.1
 		   += ya @ CNJadd @  @ '
-><sGr>GÙB</sGr>-la-az-zi-ia</w>
+          ><sGr>GÙB</sGr>-la-az-zi-ia</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 19" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 19" lg="Hit"/>
 
-<w trans='tianzi' mrp0sel='  '
-   mrp1=' dai-/te-/ti(ya)- @ setzen @ 3PL.PRS @ II.6.1 @ '
-   mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
->ti-an-zi</w>
- </s></p>
-    <parsep/>
-    <p><s>
+          <w trans='tianzi' mrp0sel='  '
+             mrp1=' dai-/te-/ti(ya)- @ setzen @ 3PL.PRS @ II.6.1 @ '
+             mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
+          >ti-an-zi</w>
+        </s>
+      </p>
+      <parsep/>
+      <p>
+        <s>
 <lb txtid="KBo 4.9" lnr="Vs. I 20" lg="Hit"/>
 
-<w trans='nu' mrp0sel=' 1 '
-   mrp1=' nu @  @ CONNn @  @ '
->nu</w>
+          <w trans='nu' mrp0sel=' 1 '
+             mrp1=' nu @  @ CONNn @  @ '
+          >nu</w>
 
+          <w trans='tališa' mrp0sel='  '
+             mrp1=' da-li-ša @ (u.B.) @ HATT @ 30.11 @ '
+             mrp2=' ta-li-ša @ (u.B.) @ HATT @ 30.11 @ '
+             mrp3=' ta-li-i-ša @ (u.B.) @ HATT @ 30.11 @ '
+             lg='Hat'>ta-li-i-ša</w>
 
-<w trans='tališa' mrp0sel='  '
-   mrp1=' da-li-ša @ (u.B.) @ HATT @ 30.11 @ '
-   mrp2=' ta-li-ša @ (u.B.) @ HATT @ 30.11 @ '
-   mrp3=' ta-li-i-ša @ (u.B.) @ HATT @ 30.11 @ '
-   lg='Hat'>ta-li-i-ša</w>
+          <w trans='taranzi' mrp0sel=' 1 '
+             mrp1=' te-/tar- @ sprechen @ 3PL.PRS @ I.14 @ '
+          >da-ra-an-zi</w>
 
+          <lb txtid="KBo 4.9" lnr="Vs. I 21" lg="Hit"/>
 
-<w trans='taranzi' mrp0sel=' 1 '
-   mrp1=' te-/tar- @ sprechen @ 3PL.PRS @ I.14 @ '
->da-ra-an-zi</w>
-
-<lb txtid="KBo 4.9" lnr="Vs. I 21" lg="Hit"/>
-
-<w trans='ḫaliamieš' mrp0sel='  '
-   mrp1=' ḫaliyam=i- @ (Tempelfunktionär) @
+          <w trans='ḫaliamieš' mrp0sel='  '
+             mrp1=' ḫaliyam=i- @ (Tempelfunktionär) @
 		{ a → NOM.PL.C}
 		{ b → ACC.PL.C}
 		{ c → NOM.SG.C} @ 2.1.1 @ LÚ'
-><d>LÚ.MEŠ</d>ḫa-li-ia-mi-e-eš</w>
+          ><d>LÚ.MEŠ</d>ḫa-li-ia-mi-e-eš</w>
 
-<lb txtid="KBo 4.9" lnr="Vs. I 22" lg="Hit"/>
+          <lb txtid="KBo 4.9" lnr="Vs. I 22" lg="Hit"/>
 
-<w trans='šaramma' mrp0sel='  '
-   mrp1=' šaramma- @ Brotverteilung(?) @
+          <w trans='šaramma' mrp0sel='  '
+             mrp1=' šaramma- @ Brotverteilung(?) @
 		{ a → NOM.PL.N}
 		{ b → ACC.PL.N}
 		{ c → STF} @ 9.5.1 @ NINDA'
-><d>NINDA</d>ša-ra-am-ma</w>
+          ><d>NINDA</d>ša-ra-am-ma</w>
 
 
-<w trans='iškaranzi' mrp0sel='  '
-   mrp1=' iškar= @ stechen @ 3PL.PRS @ II.1 @ '
-   mrp2=' iškar=ā(e)- @ stechen @ 3PL.PRS @ I.9 @ '
->iš-ga-ra-an-zi</w>
+          <w trans='iškaranzi' mrp0sel='  '
+             mrp1=' iškar= @ stechen @ 3PL.PRS @ II.1 @ '
+             mrp2=' iškar=ā(e)- @ stechen @ 3PL.PRS @ I.9 @ '
+          >iš-ga-ra-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. I 23" lg="Hit"/>
 
 <w trans='MUḪALDIMmaššan' mrp0sel='  '
@@ -714,7 +716,7 @@
 		{ R → CNJctr=PPRO.3SG.C.NOM=OBPs}
 		{ S → CNJctr=PPRO.3PL.C.ACC=OBPs} @  @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>MUḪALDIM</sGr>-ma-aš-ša-an</w>
+  <sGr>MUḪALDIM</sGr>-ma-aš-ša-an</w>
 
 
 <w trans='Ì' mrp0sel='  '
@@ -733,7 +735,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.9.2 @ (UZU)'
 ><d>UZU</d>
-    <sGr>Ì</sGr></w>
+  <sGr>Ì</sGr></w>
 
 
 <w trans='zeanta' mrp0sel='  '
@@ -774,8 +776,8 @@
    mrp2=' iškar=ā(e)- @ stechen @ 3PL.PRS @ I.9 @ '
 >iš-ga-ra-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. I 25" lg="Hit"/>
 
 <w trans='nu' mrp0sel=' 1 '
@@ -799,9 +801,9 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='GU.ZA.GÍD.DA' mrp0sel='  '
@@ -820,8 +822,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>GU.ZA.GÍD.DA</sGr>
-    <d>ḪI.A</d></w>
+  <sGr>GU.ZA.GÍD.DA</sGr>
+  <d>ḪI.A</d></w>
 
 
 <w trans='tianzi' mrp0sel='  '
@@ -883,8 +885,8 @@
 		{ a → GEN.SG}
 		{ b → GEN.PL} @
 		   += ma @ CNJctr @  @ LÚ(.MEŠ)'><aGr>ŠA</aGr>
-    <d>LÚ.MEŠ</d>
-    <aGr>ME-ŠE-DI</aGr>-ma</w>
+  <d>LÚ.MEŠ</d>
+  <aGr>ME-ŠE-DI</aGr>-ma</w>
 
 <lb txtid="KBo 4.9" lnr="Vs. I 28" lg="Hit"/>
 
@@ -946,7 +948,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ (LÚ)'
 ><aGr>BE-LU</aGr>
-    <d>ḪI.A</d></w>
+  <d>ḪI.A</d></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. I 30" lg="Hit"/>
 
@@ -966,8 +968,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='Ù' mrp0sel='  '
@@ -1006,7 +1008,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><d>LÚ.MEŠ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+  <aGr>ME-ŠE-DI</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. I 31" lg="Hit"/>
 
@@ -1029,8 +1031,8 @@
    mrp2=' ar=ae- @ anhalten (transitiv) @ 3PL.PRS.MP @ III.4.3 @ '
 ><laes_in/>a<laes_fin/>-ra-an-ta-ri</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. I 33" lg="Hit"/>
 
 <w trans='tašta' mrp0sel='  '
@@ -1114,7 +1116,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><ras_in/>
-    <sGr>DUMU<ras_fin/>.É.GAL</sGr></w>
+  <sGr>DUMU<ras_fin/>.É.GAL</sGr></w>
 
 
 <w trans='1' mrp0sel=' 1 '
@@ -1138,14 +1140,14 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><d>LÚ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+  <aGr>ME-ŠE-DI</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. I 36" lg="Hit"/>
 
 <w trans='LUGALi' mrp0sel=' 1 '
    mrp1=' LUGAL @ König @ D/L.SG @ 28.3.1.1 @ '
 ><sGr><del_in/>L<del_fin/>UGAL</sGr>
-    -i</w>
+  -i</w>
 
 
 <w trans='peran' mrp0sel='  '
@@ -1161,8 +1163,8 @@
 		{ b → PTCP.ACC.PL.C} @ I.7.5 @ '
 >ḫu-u-wa-ia-an-te-eš</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. I 37" lg="Hit"/>
 
 <w trans='BE-LUma' mrp0sel='  '
@@ -1197,7 +1199,7 @@
 		{ m → VOC.PL(UNM)} @
 		   += ma @ CNJctr @  @ (LÚ)'
 ><aGr><laes_in/>BE<laes_fin/>-LU</aGr>
-    <d>ḪI.A</d>-ma</w>
+  <d>ḪI.A</d>-ma</w>
 
 
 <w trans='DUMU.É.GAL' mrp0sel='  '
@@ -1216,8 +1218,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='Ù' mrp0sel='  '
@@ -1256,14 +1258,14 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><d>LÚ.MEŠ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+  <aGr>ME-ŠE-DI</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. I 38" lg="Hit"/>
 
 <w trans='LUGALi' mrp0sel=' 1 '
    mrp1=' LUGAL @ König @ D/L.SG @ 28.3.1.1 @ '
 ><sGr><del_in/>LU<del_fin/>GAL</sGr>
-    -i</w>
+  -i</w>
 
 
 <w trans='EGIRan' mrp0sel='  '
@@ -1278,8 +1280,8 @@
    mrp1=' iya- @ gehen @ 3PL.PRS.MP @ III.2.2 @ '
 >i-ia-an-ta-ri</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. I 39" lg="Hit"/>
 
 <w trans='ALAM.ZU₉ma' mrp0sel='  '
@@ -1314,7 +1316,7 @@
 		{ m → VOC.PL(UNM)} @ 28.1.1
 		   += ma @ CNJctr @  @ LÚ'
 ><d>LÚ.MEŠ</d>
-    <sGr>ALAM.ZU₉</sGr>-ma</w>
+  <sGr>ALAM.ZU₉</sGr>-ma</w>
 
 
 <w trans='arkammi' mrp0sel='  '
@@ -1372,8 +1374,8 @@
    mrp1=' ḫazzi=k- @ (Musikinstrument) spielen @ 3PL.PRS.IMPF @ I.8.1 @ '
 >ḫa-az-zi-kán-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. I 42" lg="Hit"/>
 
 <w trans='LÚ' mrp0sel='  '
@@ -1415,7 +1417,7 @@
 		{ g → PNm.INS}
 		{ h → PNm.VOC.SG} @ 38.1 @ M'
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d></w>
+  <d>MEŠ</d></w>
 
 
 <w trans='ZI-IT-TI' mrp0sel='  '
@@ -1482,15 +1484,15 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>TIBULA</sGr></w>
+  <sGr>TIBULA</sGr></w>
 
 
 <w trans='ḫazikanzi' mrp0sel=' 1 '
    mrp1=' ḫazzi=k- @ (Musikinstrument) spielen @ 3PL.PRS.IMPF @ I.8.1 @ '
 >ḫa-az-zi-kán-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. I 45" lg="Hit"/>
 
 <w trans='ALAM.ZU₉' mrp0sel='  '
@@ -1509,7 +1511,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ LÚ'
 ><d>LÚ.MEŠ</d>
-    <sGr>ALAM.ZU₉</sGr></w>
+  <sGr>ALAM.ZU₉</sGr></w>
 
 
 <w trans='tamaiš' mrp0sel='  '
@@ -1649,7 +1651,7 @@
 <w trans='ŠUuš' mrp0sel=' 1 '
    mrp1=' ŠU @ Hand @ ACC.PL.C @ 28.10.2 @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>-uš</w>
+  <d>MEŠ</d>-uš</w>
 
 
 <w trans='šara' mrp0sel='  '
@@ -1694,8 +1696,8 @@
 		   += a @ CNJctr @  @ '
 >pal-ú-iš-kán-zi-ia</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <gap t='line' c='c="Ende Vs. I"/> '/>
 <lb txtid="KBo 4.9" lnr="Vs. II 1" lg="Hit"/>
 
@@ -1751,7 +1753,7 @@
    mrp1=' É @ Haus @
 		{ a → D/L}
 		{ b → ABL} @ 28.16 @ '><aGr>I-NA</aGr>
-    <sGr>É</sGr></w>
+  <sGr>É</sGr></w>
 
 
 <w trans='ZA-BA₄-BA₄' mrp0sel='  '
@@ -1764,7 +1766,7 @@
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
 ><d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 2" lg="Hit"/>
 
@@ -1818,7 +1820,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ LÚ'
 ><d>LÚ.MEŠ</d>
-    <sGr>ALAM.ZU₉</sGr></w>
+  <sGr>ALAM.ZU₉</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 4" lg="Hit"/>
 
@@ -1890,8 +1892,8 @@
    mrp3=' ēp(p)-/ap(p)- @ fassen @ 3PL.PRS @ I.2.1 @ '
 ><laes_in/>ap<laes_fin/>-pa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 7" lg="Hit"/>
 
 <w trans='ta' mrp0sel='  '
@@ -1940,7 +1942,7 @@
    mrp1=' É @ Haus @
 		{ a → D/L}
 		{ b → ABL} @ 28.16 @ '><aGr>I-NA</aGr>
-    <sGr>É</sGr></w>
+  <sGr>É</sGr></w>
 
 
 <w trans='ZA-BA₄-BA₄' mrp0sel='  '
@@ -1953,7 +1955,7 @@
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
 ><d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 8" lg="Hit"/>
 
@@ -2023,14 +2025,14 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ LÚ'
 ><d>LÚ</d>
-    <sGr>ḪUB.BI</sGr></w>
+  <sGr>ḪUB.BI</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 10" lg="Hit"/>
 
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='nea' mrp0sel='  '
@@ -2038,8 +2040,8 @@
    mrp2=' n=ai- @ drehen (trans./intrans.) @ 2SG.IMP @ II.6.3 @ '
 >ne-i-ia</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 11" lg="Hit"/>
 
 <w trans='nu' mrp0sel=' 1 '
@@ -2087,7 +2089,7 @@
    mrp1=' É @ Haus @
 		{ a → D/L}
 		{ b → ABL} @ 28.16 @ '><aGr>I-NA</aGr>
-    <sGr>É</sGr></w>
+  <sGr>É</sGr></w>
 
 
 <w trans='ZA-BA₄-BA₄' mrp0sel='  '
@@ -2100,7 +2102,7 @@
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
 ><d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 12" lg="Hit"/>
 
@@ -2117,8 +2119,8 @@
    mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
 >ti-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 13" lg="Hit"/>
 
 <w trans='GAL' mrp0sel='  '
@@ -2219,8 +2221,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ (LÚ)'
 ><aGr><laes_in/></aGr>
-    <d>LÚ<laes_fin/></d>
-    <sGr>SANGA</sGr></w>
+  <d>LÚ<laes_fin/></d>
+  <sGr>SANGA</sGr></w>
 
 
 <w trans='KAL' mrp0sel='  '
@@ -2238,7 +2240,7 @@
 		{ k → DN.VOC.SG(UNM)}
 		{ l → DN.VOC.PL(UNM)} @ 36.6 @ D'
 ><d>D</d>
-    <sGr>KAL</sGr></w>
+  <sGr>KAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 14" lg="Hit"/>
 
@@ -2268,7 +2270,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ (LÚ)'
 ><d>LÚ</d>
-    <sGr>SANGA</sGr></w>
+  <sGr>SANGA</sGr></w>
 
 
 <w trans='KALma' mrp0sel='  '
@@ -2301,7 +2303,7 @@
 		{ l → DN.VOC.PL(UNM)} @ 36.6
 		   += ma @ CNJctr @  @ D'
 ><d>D</d>
-    <sGr>KAL</sGr>-ma</w>
+  <sGr>KAL</sGr>-ma</w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 15" lg="Hit"/>
 
@@ -2354,7 +2356,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.3.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>LUGAL</sGr></w>
+  <sGr>LUGAL</sGr></w>
 
 
 <w trans='MUNUS.LUGAL' mrp0sel='  '
@@ -2493,9 +2495,9 @@
 		{j → ABL_DEM2/3.GEN.PL}
 		{k → INS_DEM2/3.GEN.PL} @  @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>
-    <aGr>-<ras_in/>ŠU-NU
-        <ras_fin/></aGr></w>
+  <d>MEŠ</d>
+  <aGr>-<ras_in/>ŠU-NU
+    <ras_fin/></aGr></w>
 
 
 <w trans='arranzi' mrp0sel=' 1 '
@@ -2584,9 +2586,9 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GA<del_in/>L
-        <del_fin/></sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GA<del_in/>L
+    <del_fin/></sGr></w>
 
 
 <w trans='GADAan' mrp0sel='  '
@@ -2642,8 +2644,8 @@
 		{j → ABL_DEM2/3.GEN.PL}
 		{k → INS_DEM2/3.GEN.PL} @  @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>
-    <aGr>-ŠU-NU</aGr></w>
+  <d>MEŠ</d>
+  <aGr>-ŠU-NU</aGr></w>
 
 
 <w trans='anšanzi' mrp0sel='  '
@@ -2651,8 +2653,8 @@
    mrp2=' anš= @ abwischen @ 3PL.PRS @ I.1.2 @ '
 >a-an-ša-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 20" lg="Hit"/>
 
 <w trans='SANGA' mrp0sel='  '
@@ -2671,7 +2673,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ (LÚ)'
 ><d>LÚ</d>
-    <sGr>SANGA</sGr></w>
+  <sGr>SANGA</sGr></w>
 
 
 <w trans='KAL' mrp0sel='  '
@@ -2689,7 +2691,7 @@
 		{ k → DN.VOC.SG(UNM)}
 		{ l → DN.VOC.PL(UNM)} @ 36.6 @ D'
 ><d>D</d>
-    <sGr>K<del_in/>A<del_fin/>L</sGr></w>
+  <sGr>K<del_in/>A<del_fin/>L</sGr></w>
 
 
 <w trans='tuḫḫueššar' mrp0sel='  '
@@ -2700,9 +2702,9 @@
 		{ d → ACC.PL.N}
 		{ e → STF} @ 14.3 @ '
 ><del_in/>túḫ-ḫu<del_fin/>-<laes_in/>e
-    <corr c='?'/>
-    <laes_fin/>-<del_in/>eš-šar
-    <del_fin/></w>
+  <corr c='?'/>
+  <laes_fin/>-<del_in/>eš-šar
+  <del_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 21" lg="Hit"/>
 
@@ -2720,7 +2722,7 @@
 		{ b → ALL}
 		{ c → STF} @ 1.1 @ '
 >p<del_in/>a-ra-a
-    <del_fin/></w>
+  <del_fin/></w>
 
 
 <w trans='epzi' mrp0sel=' 1 '
@@ -2771,8 +2773,8 @@
    mrp1=' tuḫš= @ abschneiden @ 3SG.PRS.MP @ III.1.6 @ '
 >túḫ<SP___AO_3a_MaterLect>uḫ</SP___AO_3a_MaterLect>-ša</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 23" lg="Hit"/>
 
 <w trans='GAL' mrp0sel='  '
@@ -2855,16 +2857,16 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.G<del_in/>A<del_fin/>L</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.G<del_in/>A<del_fin/>L</sGr></w>
 
 
 <w trans='ŠA ŠUKUR' mrp0sel='    '
    mrp1=' ŠUKUR @ Speer @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1.1 @ (GIŠ/URUDU)'><aGr>ŠA</aGr>
-    <d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <d>GIŠ</d>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -2959,8 +2961,8 @@
 		{j → ABL_DEM2/3.GEN.SG}
 		{k → INS_DEM2/3.GEN.SG} @  @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>
-    <aGr>-ŠU</aGr></w>
+  <d>MEŠ</d>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='anši' mrp0sel='  '
@@ -2971,8 +2973,8 @@
    mrp3=' anš=iye/a- @ abwischen @ 2SG.IMP @ I.7 @ '
 >a-an-ši</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 26" lg="Hit"/>
 
 <w trans='nu' mrp0sel=' 1 '
@@ -3003,8 +3005,8 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.1.1 @ (LÚ)'><aGr>A-NA</aGr>
-    <d>LÚ</d>
-    <sGr>SANGA</sGr></w>
+  <d>LÚ</d>
+  <sGr>SANGA</sGr></w>
 
 
 <w trans='KAL' mrp0sel='  '
@@ -3022,8 +3024,8 @@
 		{ k → DN.VOC.SG(UNM)}
 		{ l → DN.VOC.PL(UNM)} @ 36.6 @ D'
 ><d><laes_in/>D
-    <laes_fin/></d>
-    <sGr>KAL</sGr></w>
+  <laes_fin/></d>
+  <sGr>KAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 27" lg="Hit"/>
 
@@ -3076,7 +3078,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ (LÚ)'
 ><d>LÚ</d>
-    <sGr>SANGA</sGr></w>
+  <sGr>SANGA</sGr></w>
 
 
 <w trans='KAL' mrp0sel='  '
@@ -3094,7 +3096,7 @@
 		{ k → DN.VOC.SG(UNM)}
 		{ l → DN.VOC.PL(UNM)} @ 36.6 @ D'
 ><d>D</d>
-    <sGr><del_in/>K<del_fin/>AL</sGr></w>
+  <sGr><del_in/>K<del_fin/>AL</sGr></w>
 
 
 <w trans='LUGALi' mrp0sel=' 1 '
@@ -3106,8 +3108,8 @@
    mrp1=' ŠUKÊNU @ sich niederwerfen, sich verneigen @ 3SG.PRS @  @ '
 ><aGr>UŠ-KE-EN</aGr></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 29" lg="Hit"/>
 
 <w trans='DUMU.É.GALma' mrp0sel='  '
@@ -3157,8 +3159,8 @@
 <w trans='MUNUS.LUGALri' mrp0sel=' 1 '
    mrp1=' MUNUS.LUGAL @ Königin @ FNL(r).D/L.SG @ 28.1.1.7 @ '
 ><laes_in/>
-    <sGr>MUNUS<laes_fin/>.LUGAL</sGr>
-    -ri</w>
+  <sGr>MUNUS<laes_fin/>.LUGAL</sGr>
+  -ri</w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 30" lg="Hit"/>
 
@@ -3176,7 +3178,7 @@
 <w trans='epzi' mrp0sel=' 1 '
    mrp1=' ēp(p)-/ap(p)- @ fassen @ 3SG.PRS @ I.2.1 @ '
 ><laes_in/>e-ep-zi
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 31" lg="Hit"/>
 
@@ -3197,16 +3199,16 @@
 		{ m → VOC.PL(UNM)} @ 28.1.1.7
 		   += kkan @ OBPk @  @ '
 ><laes_in/>
-    <sGr>MUNUS<laes_fin/>.LUGAL</sGr>
-    -ká<del_in/>n</w>
+  <sGr>MUNUS<laes_fin/>.LUGAL</sGr>
+  -ká<del_in/>n</w>
 
 
 <w trans='tuḫša' mrp0sel=' 1 '
    mrp1=' tuḫš= @ abschneiden @ 3SG.PRS.MP @ III.1.6 @ '
 >t<del_fin/>úḫ<SP___AO_3a_MaterLect>uḫ</SP___AO_3a_MaterLect>-ša</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 32" lg="Hit"/>
 
 <w trans='ta' mrp0sel='  '
@@ -3257,8 +3259,8 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.1.1 @ (LÚ)'><aGr><laes_in/>A<laes_fin/>-<del_in/>N<del_fin/>A</aGr>
-    <d>LÚ</d>
-    <sGr>SANGA</sGr></w>
+  <d>LÚ</d>
+  <sGr>SANGA</sGr></w>
 
 
 <w trans='KAL' mrp0sel='  '
@@ -3276,7 +3278,7 @@
 		{ k → DN.VOC.SG(UNM)}
 		{ l → DN.VOC.PL(UNM)} @ 36.6 @ D'
 ><d>D</d>
-    <sGr>KAL</sGr></w>
+  <sGr>KAL</sGr></w>
 
 
 <w trans='pai' mrp0sel='  '
@@ -3383,17 +3385,17 @@
 		{ m → VOC.PL(UNM)} @ 28.2.1.1
 		   += ma @ CNJctr @  @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.<laes_in/>É<laes_fin/>.GAL</sGr>
-    -ma</w>
+  <d>MEŠ</d>
+  <sGr>.<laes_in/>É<laes_fin/>.GAL</sGr>
+  -ma</w>
 
 
 <w trans='ŠA ŠUKUR' mrp0sel='    '
    mrp1=' ŠUKUR @ Speer @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1.1 @ (GIŠ/URUDU)'><aGr>ŠA</aGr>
-    <d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <d>GIŠ</d>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -3427,8 +3429,8 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.1.1.7 @ '><aGr>A-NA</aGr>
-    <sGr>MUNUS.L<del_in/>UGAL
-        <del_fin/></sGr></w>
+  <sGr>MUNUS.L<del_in/>UGAL
+    <del_fin/></sGr></w>
 
 
 <w trans='pai' mrp0sel='  '
@@ -3483,8 +3485,8 @@
 		{j → ABL_DEM2/3.GEN.SG}
 		{k → INS_DEM2/3.GEN.SG} @  @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>
-    <aGr>-ŠU</aGr></w>
+  <d>MEŠ</d>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='anši' mrp0sel='  '
@@ -3495,8 +3497,8 @@
    mrp3=' anš=iye/a- @ abwischen @ 2SG.IMP @ I.7 @ '
 >a-an-ši</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 37" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -3551,7 +3553,7 @@
    mrp1=' É @ Haus @
 		{ a → D/L}
 		{ b → ABL} @ 28.16 @ '><aGr>I-NA</aGr>
-    <sGr>É</sGr></w>
+  <sGr>É</sGr></w>
 
 
 <w trans='ZA-BA₄-BA₄' mrp0sel='  '
@@ -3564,7 +3566,7 @@
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
 ><d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 38" lg="Hit"/>
 
@@ -3590,7 +3592,7 @@
 <w trans='DINGIR-LIMni' mrp0sel=' 1 '
    mrp1=' DINGIR-LIM @ Gott @ FNL(n).D/L.SG @ 28.3.1.1.1 @ '
 ><sGr>DINGIR</sGr>
-    <aGr>-LIM</aGr>-ni</w>
+  <aGr>-LIM</aGr>-ni</w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 39" lg="Hit"/>
 
@@ -3605,8 +3607,8 @@
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr>
-    <corr c="!?"/></w>
+  <aGr>-ŠU</aGr>
+  <corr c="!?"/></w>
 
 
 <w trans='aruanzi' mrp0sel='  '
@@ -3634,7 +3636,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ LÚ'
 ><d>LÚ</d>
-    <sGr>ALAM.ZU₉</sGr></w>
+  <sGr>ALAM.ZU₉</sGr></w>
 
 
 <w trans='memai' mrp0sel=' 1 '
@@ -3658,8 +3660,8 @@
 		{ b → 2SG.IMP} @ II.6 @ '
 >ḫal-za-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 42" lg="Hit"/>
 
 <w trans='nuššan' mrp0sel='  '
@@ -3673,7 +3675,7 @@
 		{ a → FNL(u).NOM.SG.C}
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
 ><sGr>LUGAL</sGr>-<laes_in/>uš
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='DAGti' mrp0sel='  '
@@ -3688,9 +3690,9 @@
    mrp2=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.4.1 @ D'
    mrp3=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.3.1 @ D'
 ><d><laes_in/>D</d>
-    <corr c='?'/>
-    <sGr>DAG<laes_fin/></sGr>
-    -ti</w>
+  <corr c='?'/>
+  <sGr>DAG<laes_fin/></sGr>
+  -ti</w>
 
 
 <w trans='tiazi' mrp0sel='  '
@@ -3732,7 +3734,7 @@
 		{ m → VOC.PL(UNM)} @ 28.1.1.7
 		   += ma @ CNJctr @  @ '
 ><sGr>MUNUS.LUGAL</sGr>-<laes_in/>ma
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='É.ŠÀna' mrp0sel=' 1 '
@@ -3744,8 +3746,8 @@
    mrp1=' pai-/pā- @ gehen @ 3SG.PRS @ I.11 @ '
 >pa-iz-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 44" lg="Hit"/>
 
 <w trans='nu' mrp0sel=' 1 '
@@ -3787,8 +3789,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>MUḪALDIM</sGr>
-    <corr c='!'/></w>
+  <sGr>MUḪALDIM</sGr>
+  <corr c='!'/></w>
 
 
 <w trans='kattapalan' mrp0sel=' 1 '
@@ -3801,7 +3803,7 @@
    mrp1=' ud=a- @ (her)bringen @ 3SG.PRS @ II.3 @ '
    mrp2=' ut=a- @ Uda @ GN.D/L.SG @ 39.2 @ URU'
 >ú-da-<laes_in/>i
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='nu' mrp0sel=' 1 '
@@ -3819,8 +3821,8 @@
    mrp3=' DAG @ Throngottheit @
 		{ a → D/L.SG_vor:POSP}
 		{ b → D/L.PL_vor:POSP} @ 36.3.1 @ D'><aGr>PA-NI</aGr>
-    <d>D</d>
-    <sGr>DAG</sGr>-ti</w>
+  <d>D</d>
+  <sGr>DAG</sGr>-ti</w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 46" lg="Hit"/>
 
@@ -3848,15 +3850,15 @@
    mrp1=' ZABABA @ Zababa @
 		{ a → D/L.SG_vor:POSP}
 		{ b → D/L.PL_vor:POSP} @  @ D'><aGr>PA-NI</aGr>
-    <d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <d>D</d>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
 
 
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><laes_in/>
-    <num>1<laes_fin/></num>
-    <aGr>-ŠU</aGr></w>
+  <num>1<laes_fin/></num>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='tai' mrp0sel='  '
@@ -3893,8 +3895,8 @@
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><laes_in/>
-    <num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <num>1</num>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='DAGti' mrp0sel='  '
@@ -3909,25 +3911,25 @@
    mrp2=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.4.1 @ D'
    mrp3=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.3.1 @ D'
 ><d>D</d>
-    <sGr>DAG<laes_fin/></sGr>
-    -ti</w>
+  <sGr>DAG<laes_fin/></sGr>
+  -ti</w>
 
 
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. II 48" lg="Hit"/>
 
 <w trans='ABia' mrp0sel='???'><d>GIŠ</d>
-    <sGr>AB</sGr>-ia</w>
+  <sGr>AB</sGr>-ia</w>
 
 
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-<laes_in/>ŠU</aGr></w>
+  <aGr>-<laes_in/>ŠU</aGr></w>
 
 
 <w trans='ḫattaluaš' mrp0sel='  '
@@ -3955,7 +3957,7 @@
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='namma' mrp0sel='  '
@@ -3994,7 +3996,7 @@
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='tai' mrp0sel='  '
@@ -4007,8 +4009,8 @@
    mrp5='  @ () @  @ HURR @ '
 >da-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. II 51" lg="Hit"/>
 
 <w trans='UGULA' mrp0sel='  '
@@ -4045,7 +4047,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>MUḪALDIM</sGr></w>
+  <sGr>MUḪALDIM</sGr></w>
 
 
 <w trans='išpantuzišar' mrp0sel='  '
@@ -4167,8 +4169,8 @@
    mrp5='  @ () @  @ HURR @ '
 >da-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <gap t='line' c='c="Ende Vs. II"/> '/>
 <lb txtid="KBo 4.9" lnr="Vs. III 1" lg="Hit"/>
 
@@ -4206,7 +4208,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>MUḪALDIM</sGr></w>
+  <sGr>MUḪALDIM</sGr></w>
 
 
 <w trans='DAGti' mrp0sel='  '
@@ -4221,7 +4223,7 @@
    mrp2=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.4.1 @ D'
    mrp3=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.3.1 @ D'
 ><d>D</d>
-    <sGr>DAG</sGr>-ti</w>
+  <sGr>DAG</sGr>-ti</w>
 
 
 <w trans='peran' mrp0sel='  '
@@ -4235,7 +4237,7 @@
 <w trans='3-ŠU' mrp0sel=' 1 '
    mrp1=' 3-ŠU @ dreimal @  @ QUANmul @ '
 ><num>3</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='Ù' mrp0sel='  '
@@ -4263,15 +4265,15 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @  @ D'><aGr>A-NA</aGr>
-    <d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <d>D</d>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 3" lg="Hit"/>
 
 <w trans='3-ŠU' mrp0sel=' 1 '
    mrp1=' 3-ŠU @ dreimal @  @ QUANmul @ '
 ><num>3</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='šipanti' mrp0sel='  '
@@ -4280,8 +4282,8 @@
 		{ b → 2SG.IMP} @ II.1.3 @ '
 >ši-pa-an-ti</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 4" lg="Hit"/>
 
 <w trans='UGULA' mrp0sel='  '
@@ -4318,7 +4320,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>MUḪALDIM</sGr></w>
+  <sGr>MUḪALDIM</sGr></w>
 
 
 <w trans='UGULA' mrp0sel='  '
@@ -4356,9 +4358,9 @@
 		{ m → VOC.PL(UNM)} @ 29.1
 		   += ya @ CNJadd @  @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr>-ia</w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr>-ia</w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 5" lg="Hit"/>
 
@@ -4374,8 +4376,8 @@
    mrp1=' šuppiy=aḫḫ- @ heilig machen @ 3PL.PRS @ II.9 @ '
 >šu-up-pí-ia-aḫ-ḫa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 6" lg="Hit"/>
 
 <w trans='UGULA' mrp0sel='  '
@@ -4412,7 +4414,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>MUḪALDIM</sGr></w>
+  <sGr>MUḪALDIM</sGr></w>
 
 
 <w trans='ḫašši' mrp0sel='  '
@@ -4437,7 +4439,7 @@
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='šipanti' mrp0sel='  '
@@ -4460,23 +4462,23 @@
    mrp2=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.4.1 @ D'
    mrp3=' DAG @ Throngottheit @ DN.FNL(t).D/L.SG @ 36.3.1 @ D'
 ><d>D</d>
-    <sGr>DAG</sGr>-ti</w>
+  <sGr>DAG</sGr>-ti</w>
 
 
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='AB' mrp0sel='???'><d>GIŠ</d>
-    <sGr>AB</sGr></w>
+  <sGr>AB</sGr></w>
 
 
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 8" lg="Hit"/>
 
@@ -4504,7 +4506,7 @@
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 9" lg="Hit"/>
 
@@ -4544,7 +4546,7 @@
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='šipanti' mrp0sel='  '
@@ -4553,8 +4555,8 @@
 		{ b → 2SG.IMP} @ II.1.3 @ '
 >ši-pa-an-ti</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 11" lg="Hit"/>
 
 <w trans='Ù' mrp0sel='  '
@@ -4582,7 +4584,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.2.1.2.1 @ '><aGr>A-NA</aGr>
-    <sGr>ALAM</sGr></w>
+  <sGr>ALAM</sGr></w>
 
 
 <w trans='ḫattuši-DINGIR-LIM' mrp0sel='  '
@@ -4595,15 +4597,15 @@
 		{ f → PNm.INS(UNM)}
 		{ g → PNm.VOC.SG(UNM)} @ 38.3 @ M'
 ><d>m</d>ḫa-at-tu-ši
-    <sGr>-DINGIR</sGr>
-    <aGr>-LIM</aGr></w>
+  <sGr>-DINGIR</sGr>
+  <aGr>-LIM</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 12" lg="Hit"/>
 
 <w trans='1-ŠU' mrp0sel=' 1 '
    mrp1=' 1-ŠU @ einmal @  @ QUANmul @ '
 ><num>1</num>
-    <aGr>-ŠU</aGr></w>
+  <aGr>-ŠU</aGr></w>
 
 
 <w trans='šipanti' mrp0sel='  '
@@ -4612,8 +4614,8 @@
 		{ b → 2SG.IMP} @ II.1.3 @ '
 >ši-pa-an-ti</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 13" lg="Hit"/>
 
 <w trans='LUGALuš' mrp0sel='  '
@@ -4647,7 +4649,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ LÚ'
 ><d>LÚ</d>
-    <sGr>ALAM.ZU₉</sGr></w>
+  <sGr>ALAM.ZU₉</sGr></w>
 
 
 <w trans='memai' mrp0sel=' 1 '
@@ -4671,8 +4673,8 @@
 		{ b → 2SG.IMP} @ II.6 @ '
 >ḫal-za-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 16" lg="Hit"/>
 
 <w trans='LUGALuš' mrp0sel='  '
@@ -4720,7 +4722,7 @@
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
 ><d>D</d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 18" lg="Hit"/>
 
@@ -4729,8 +4731,8 @@
 		{ a → FNL(u).NOM.SG.C}
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
 ><laes_in/>
-    <sGr>LUGAL<laes_fin/></sGr>
-    -uš</w>
+  <sGr>LUGAL<laes_fin/></sGr>
+  -uš</w>
 
 
 <w trans='ḫuppar' mrp0sel='  '
@@ -4779,8 +4781,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr><laes_in/>GIŠ.</sGr>
-    <d>D</d>
-    <sGr>INANNA</sGr></w>
+  <d>D</d>
+  <sGr>INANNA</sGr></w>
 
 
 <w trans='TUR' mrp0sel='  '
@@ -4816,7 +4818,7 @@
    mrp1=' SÌR-RU @ singen @ 3PL.PRS @  @ '
    mrp2=' SÌR-RU @ singen @ NOM.SG @  @ '
 ><sGr>SÌR</sGr>
-    <aGr>-RU</aGr></w>
+  <aGr>-RU</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 20" lg="Hit"/>
 
@@ -4836,8 +4838,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ LÚ'
 ><d>LÚ</d>
-    <sGr>ALAM.<laes_in/>ZU₉
-        <laes_fin/></sGr></w>
+  <sGr>ALAM.<laes_in/>ZU₉
+    <laes_fin/></sGr></w>
 
 
 <w trans='memai' mrp0sel=' 1 '
@@ -4881,8 +4883,8 @@
 		{ b → 2SG.IMP} @ II.6 @ '
 >ḫal-za-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 23" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -4913,7 +4915,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ LÚ'
 ><d>LÚ.MEŠ</d>
-    <sGr>ALAM.ZU₉</sGr></w>
+  <sGr>ALAM.ZU₉</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 24" lg="Hit"/>
 
@@ -4964,8 +4966,8 @@
    mrp1=' parḫ= @ jagen @ 3PL.PRS @ I.1.2 @ '
 >pár-ḫa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 26" lg="Hit"/>
 
 <w trans='LUGAL' mrp0sel='  '
@@ -5010,7 +5012,7 @@
 		{ b → FNL(t).NOM.KOLL}
 		{ c → FNL(t).ACC.KOLL} @ 28.12.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>DAG</sGr>-ti</w>
+  <sGr>DAG</sGr>-ti</w>
 
 
 <w trans='ašanta' mrp0sel='  '
@@ -5071,8 +5073,8 @@
    mrp1=' ŠUKUR @ Speer @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1.1 @ (GIŠ/URUDU)'><aGr>ŠA</aGr>
-    <d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <d>GIŠ</d>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -5091,7 +5093,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.2 @ '
 ><sGr>KÙ.<laes_in/>SI₂₂
-    <laes_fin/></sGr></w>
+  <laes_fin/></sGr></w>
 
 
 <w trans='GADA' mrp0sel='  '
@@ -5134,7 +5136,7 @@
    mrp1=' ped=a- @ hinschaffen @ 3SG.PRS @ II.3 @ '
    mrp2=' ped=ae- @ hinschaffen @ 2SG.IMP @ I.9 @ '
 >pé-e-da-<laes_in/>i
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 29" lg="Hit"/>
 
@@ -5166,8 +5168,8 @@
    mrp1=' ŠUKUR @ Speer @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1.1 @ (GIŠ/URUDU)'><aGr>ŠA</aGr>
-    <d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <d>GIŠ</d>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -5229,7 +5231,7 @@
 		{ b → FNL(t).NOM.KOLL}
 		{ c → FNL(t).ACC.KOLL} @ 28.12.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>DAG</sGr>-ti</w>
+  <sGr>DAG</sGr>-ti</w>
 
 
 <w trans='LUGALi' mrp0sel=' 1 '
@@ -5253,8 +5255,8 @@
    mrp5='  @ () @  @ HURR @ '
 >da-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 32" lg="Hit"/>
 
 <w trans='apašša' mrp0sel=' 1 '
@@ -5319,7 +5321,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂ia' mrp0sel='  '
@@ -5363,8 +5365,8 @@
 		{ b → 2SG.IMP} @ II.6 @ '
 >ḫal-za-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 36" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -5496,7 +5498,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -5549,7 +5551,7 @@
 		{ a → ACC.SG.C}
 		{ b → GEN.PL} @ 29.1.1 @ GIŠ/URUDU'
 ><d>GIŠ</d>
-    <sGr>GIDRU</sGr>-an</w>
+  <sGr>GIDRU</sGr>-an</w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 39" lg="Hit"/>
 
@@ -5582,8 +5584,8 @@
    mrp2=' tiye/a- @ treten @ 3SG.PRS @ I.7.2 @ '
 >ti-ia-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 41" lg="Hit"/>
 
 <w trans='2' mrp0sel=' 1 '
@@ -5607,8 +5609,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='A-NA LUGAL' mrp0sel='    '
@@ -5616,7 +5618,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.3.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>LUGAL</sGr></w>
+  <sGr>LUGAL</sGr></w>
 
 
 <w trans='MUNUS.LUGAL' mrp0sel='  '
@@ -5683,7 +5685,7 @@
 
 <w trans='IŠ-TU ḫuppar' mrp0sel=' 1   '
    mrp1=' ḫuppa=r- @ Schale @ ABL @ 10.1.2 @ (GIŠ/DUG)'><aGr>IŠ-TU</aGr>
-    ḫu-up-p<del_in/>ár</w>
+  ḫu-up-p<del_in/>ár</w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -5702,7 +5704,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.2 @ '
 ><sGr>KÙ.SI₂₂</sGr>
-    <del_fin/></w>
+  <del_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 43" lg="Hit"/>
 
@@ -5792,8 +5794,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>D<del_in/>UMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='GADAan' mrp0sel='  '
@@ -5801,7 +5803,7 @@
 		{ a → ACC.SG.C}
 		{ b → GEN.PL} @ 29.1.1 @ (TÚG)'
 ><sGr>GADA</sGr>-an
-    <del_fin/></w>
+  <del_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 44" lg="Hit"/>
 
@@ -5825,16 +5827,16 @@
 
 <w><del_fin/></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Vs. III 45" lg="Hit"/>
 
 <w trans='ŠA ŠUKUR' mrp0sel='    '
    mrp1=' ŠUKUR @ Speer @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1.1 @ (GIŠ/URUDU)'><aGr>ŠA</aGr>
-    <d>GIŠ</d>
-    <sGr>ŠU<del_in/>KUR</sGr></w>
+  <d>GIŠ</d>
+  <sGr>ŠU<del_in/>KUR</sGr></w>
 
 
 <w><space c="48"/></w>
@@ -5867,15 +5869,15 @@
 
 <w trans='~šaḫ' mrp0sel="DEL"
 >-š<del_fin/>a-a<del_in/>ḫ
-    <corr c='?'/></w>
+  <corr c='?'/></w>
 
 
 <w><space c="7"/></w>
 
 
 <w><del_fin/>
-    <note n='1'
-          c="&lt;P_f_Footnote&gt;Für die Zuordnung der wenige Zeichen zur Vs. III, vgl. die Autographie von KBo 4.9.&lt;/P_f_Footnote&gt;"/></w>
+  <note n='1'
+        c="&lt;P_f_Footnote&gt;Für die Zuordnung der wenige Zeichen zur Vs. III, vgl. die Autographie von KBo 4.9.&lt;/P_f_Footnote&gt;"/></w>
 
 <lb txtid="KBo 4.9" lnr="Vs. III 48" lg="Hit"/>
 
@@ -5937,8 +5939,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.<laes_in/>GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.<laes_in/>GAL</sGr></w>
 
 
 <w trans='A-NA LUGAL' mrp0sel='    '
@@ -5946,7 +5948,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.3.1.1 @ '><aGr>A<laes_fin/>-N<del_in/>A</aGr>
-    <sGr>LUGAL</sGr></w>
+  <sGr>LUGAL</sGr></w>
 
 
 <w trans='MUNUS.LUGAL' mrp0sel='  '
@@ -6002,7 +6004,7 @@
 		{ m → VOC.PL(UNM)} @  @ '
    mrp2=' QATÛ @ zu Ende gehen @ 3SG.PRS @  @ '
 ><aGr>QA-TI</aGr>
-    <del_fin/></w>
+  <del_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 2" lg="Hit"/>
 
@@ -6085,8 +6087,8 @@
 		{j → ABL_DEM2/3.GEN.PL}
 		{k → INS_DEM2/3.GEN.PL} @  @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>
-    <aGr>-ŠU-NU<del_fin/></aGr></w>
+  <d>MEŠ</d>
+  <aGr>-ŠU-NU<del_fin/></aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 3" lg="Hit"/>
 
@@ -6175,8 +6177,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>M<del_in/>EŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>M<del_in/>EŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='GADAan' mrp0sel='  '
@@ -6184,7 +6186,7 @@
 		{ a → ACC.SG.C}
 		{ b → GEN.PL} @ 29.1.1 @ (TÚG)'
 ><sGr>GADA</sGr>-an
-    <del_fin/></w>
+  <del_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 4" lg="Hit"/>
 
@@ -6269,8 +6271,8 @@
 		{j → ABL_DEM2/3.GEN.PL}
 		{k → INS_DEM2/3.GEN.PL} @  @ '
 ><sGr>ŠU</sGr>
-    <d>ME<del_in/>Š</d>
-    <aGr>-ŠU-NU</aGr></w>
+  <d>ME<del_in/>Š</d>
+  <aGr>-ŠU-NU</aGr></w>
 
 
 <w trans='anšanzi' mrp0sel='  '
@@ -6278,8 +6280,8 @@
    mrp2=' anš= @ abwischen @ 3PL.PRS @ I.1.2 @ '
 >a-an-ša-an-zi<del_fin/></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 5" lg="Hit"/>
 
 <w trans='natkan' mrp0sel='  '
@@ -6306,7 +6308,7 @@
 <w trans='panzi' mrp0sel=' 1 '
    mrp1=' pai-/pā- @ gehen @ 3PL.PRS @ I.11 @ '
 >pa-a-an-z<del_in/>i
-    <del_fin/></w>
+  <del_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 6" lg="Hit"/>
 
@@ -6407,10 +6409,10 @@
 <w trans='paizi' mrp0sel=' 1 '
    mrp1=' pai-/pā- @ gehen @ 3SG.PRS @ I.11 @ '
 >pa-i<del_in/>z-zi
-    <del_fin/></w>
+  <del_fin/></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 7" lg="Hit"/>
 
 <w trans='nu' mrp0sel=' 1 '
@@ -6452,7 +6454,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -6513,7 +6515,7 @@
 		{ b → FNL(t).NOM.KOLL}
 		{ c → FNL(t).ACC.KOLL} @ 28.12.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>DAG</sGr>-ti</w>
+  <sGr>DAG</sGr>-ti</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 10" lg="Hit"/>
 
@@ -6586,9 +6588,9 @@
    mrp1=' DUMU.É.GAL @ Palastbediensteter @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 28.2.1.1 @ '><aGr>ŠA</aGr>
-    <sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <sGr>DUMU</sGr>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 13" lg="Hit"/>
 
@@ -6609,8 +6611,8 @@
    mrp2=' tiye/a- @ treten @ 3SG.PRS @ I.7.2 @ '
 >ti-ia-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 14" lg="Hit"/>
 
 <w trans='nu' mrp0sel=' 1 '
@@ -6740,7 +6742,7 @@
    mrp1=' dai-/te-/ti(ya)- @ setzen @ 3SG.PRS @ II.6.1 @ '
    mrp2=' tiye/a- @ treten @ 3SG.PRS @ I.7.2 @ '
 >ti-ia-<laes_in/>zi
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 16" lg="Hit"/>
 
@@ -6772,7 +6774,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.3.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>LUGAL</sGr></w>
+  <sGr>LUGAL</sGr></w>
 
 
 <w trans='MUNUS.LUGAL' mrp0sel='  '
@@ -6822,7 +6824,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (TÚG)'
 ><sGr>GADA</sGr>
-    <d>ḪI.A</d></w>
+  <d>ḪI.A</d></w>
 
 
 <w trans='tianzi' mrp0sel='  '
@@ -6830,8 +6832,8 @@
    mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
 >ti-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 18" lg="Hit"/>
 
 <w trans='ta' mrp0sel='  '
@@ -6856,8 +6858,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='EGIRpa' mrp0sel='  '
@@ -6890,9 +6892,9 @@
    mrp1=' DUMU.É.GAL @ Palastbediensteter @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 28.2.1.1 @ '><aGr>ŠA</aGr>
-    <sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <sGr>DUMU</sGr>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 20" lg="Hit"/>
 
@@ -6913,8 +6915,8 @@
    mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
 >ti-ia-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 21" lg="Hit"/>
 
 <w trans='GAL' mrp0sel='  '
@@ -7002,7 +7004,7 @@
 <w trans='ŠUKURit' mrp0sel=' 1 '
    mrp1=' ŠUKUR @ Speer @ INS @ 29.1.1 @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr>-it</w>
+  <sGr>ŠUKUR</sGr>-it</w>
 
 
 <w trans='iazi' mrp0sel='  '
@@ -7057,7 +7059,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='petai' mrp0sel='  '
@@ -7107,8 +7109,8 @@
    mrp5='  @ () @  @ HURR @ '
 >da-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 26" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -7157,9 +7159,9 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr></w>
 
 
 <w trans='šuppi' mrp0sel='  '
@@ -7199,7 +7201,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <sGr>BANŠUR</sGr></w>
 
 
 <w trans='anta' mrp0sel='  '
@@ -7238,20 +7240,20 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><d>LÚ.MEŠ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+  <aGr>ME-ŠE-DI</aGr></w>
 
 
 <w trans='BANŠURi' mrp0sel=' 1 '
    mrp1=' BANŠUR @ Tisch @ D/L.SG @ 29.1.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>BANŠUR</sGr>-i</w>
+  <sGr>BANŠUR</sGr>-i</w>
 
 
 <w trans='ZAGnaz' mrp0sel='  '
    mrp1=' ZAG @ rechts @ FNL(n).ABL @ 28.1.1.1.1 @ '
    mrp2=' ZAG-naz @ rechts @ ADV @  @ '
 ><sGr>ZAG</sGr>-na-a<del_in/>z
-    <del_fin/></w>
+  <del_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 29" lg="Hit"/>
 
@@ -7276,7 +7278,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -7316,7 +7318,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><ras_in/>
-    <aGr>Ù<ras_fin/></aGr></w>
+  <aGr>Ù<ras_fin/></aGr></w>
 
 
 <w trans='3' mrp0sel=' 1 '
@@ -7354,7 +7356,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ GIŠ/URUDU'
 ><d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='šuruḫḫaš' mrp0sel='  '
@@ -7370,10 +7372,10 @@
    mrp1=' ḫar(k)- @ haben @ 3PL.PRS @ I.1.11 @ '
    mrp2=' ḫark= @ umkommen @ 3PL.PRS @ I.1.2 @ '
 >ḫar-<laes_in/>kán-zi
-    <laes_fin/></w>
+  <laes_fin/></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 31" lg="Hit"/>
 
 <w trans='GAL' mrp0sel='  '
@@ -7461,7 +7463,7 @@
 <w trans='BANŠURi' mrp0sel=' 1 '
    mrp1=' BANŠUR @ Tisch @ D/L.SG @ 29.1.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>BANŠUR</sGr>-i</w>
+  <sGr>BANŠUR</sGr>-i</w>
 
 
 <w trans='menaḫḫanta' mrp0sel='  '
@@ -7486,7 +7488,7 @@
 		{ a → CONNn=PPRO.3SG.C.NOM=OBPst}
 		{ b → CONNn=PPRO.3PL.C.ACC=OBPst} @  @ '
 ><laes_in/>na-aš-ta
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='UGULA' mrp0sel='  '
@@ -7523,9 +7525,9 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr></w>
 
 
 <w trans='EGIRan' mrp0sel='  '
@@ -7595,7 +7597,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <sGr>BANŠUR</sGr></w>
 
 
 <w trans='katterraz' mrp0sel=' 1 '
@@ -7654,12 +7656,12 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 36" lg="Hit"/>
 
 <w trans='GAL' mrp0sel='  '
@@ -7758,8 +7760,8 @@
 		{ m → VOC.PL(UNM)} @ 28.2.1.1
 		   += ma @ CNJctr @  @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr>-ma</w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr>-ma</w>
 
 
 <w trans='DUMU.É.GALia' mrp0sel='  '
@@ -7767,8 +7769,8 @@
 		{ a → D/L.SG}
 		{ b → FNL(i).ALL} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr>-ia</w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr>-ia</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 37" lg="Hit"/>
 
@@ -7782,7 +7784,7 @@
 <w trans='BANŠURi' mrp0sel=' 1 '
    mrp1=' BANŠUR @ Tisch @ D/L.SG @ 29.1.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>BANŠUR</sGr>-i</w>
+  <sGr>BANŠUR</sGr>-i</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 38" lg="Hit"/>
 
@@ -7845,9 +7847,9 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr></w>
 
 
 <w trans='LUGALi' mrp0sel=' 1 '
@@ -7860,7 +7862,7 @@
    mrp1=' BANŠUR-u @ Tisch @ FNL(u).ACC.SG.C @ 28.3.1.1 @ GIŠ'
    mrp2=' BANŠUR-u @ Tisch @ ACC.SG.C @ 28.3.1.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>BANŠUR</sGr>-un</w>
+  <sGr>BANŠUR</sGr>-un</w>
 
 
 <w trans='tai' mrp0sel='  '
@@ -7971,8 +7973,8 @@
 		{ m → VOC.PL(UNM)} @ 28.2.1.1
 		   += ma @ CNJctr @  @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr>-ma</w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr>-ma</w>
 
 
 <w trans='paizi' mrp0sel=' 1 '
@@ -7994,7 +7996,7 @@
 <w trans='šaramnaš' mrp0sel=' 1 '
    mrp1=' šaramma- @ Brotverteilung(?) @ GEN.SG @ 9.5.1 @ NINDA'
 ><d>NINDA</d>ša<corr c='!'/>-ra-am-na-aš
-    <note n='2' c="&lt;P_f_Footnote&gt;Text: AM.&lt;/P_f_Footnote&gt;"/></w>
+  <note n='2' c="&lt;P_f_Footnote&gt;Text: AM.&lt;/P_f_Footnote&gt;"/></w>
 
 
 <w trans='šer' mrp0sel='  '
@@ -8043,8 +8045,8 @@
 		{ m → VOC.PL(UNM)} @ 28.2.1.1
 		   += ma @ CNJctr @  @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr>-ma</w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr>-ma</w>
 
 
 <w trans='ḫumanteš' mrp0sel='  '
@@ -8059,8 +8061,8 @@
    mrp1=' paršn=ā(e)- @ sich niederhocken @ 3PL.PRS @ I.9 @ '
 >pár-aš-na-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 45" lg="Hit"/>
 
 <w trans='GAL' mrp0sel='  '
@@ -8214,8 +8216,8 @@
 		{ a → D/L.SG}
 		{ b → FNL(i).ALL} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr>-ia</w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr>-ia</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 46" lg="Hit"/>
 
@@ -8399,7 +8401,7 @@
    mrp4=' GAL @ groß @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 28.2.3 @ '><aGr>ŠA</aGr>
-    <sGr>GAL</sGr></w>
+  <sGr>GAL</sGr></w>
 
 
 <w trans='ME-ŠE-DI' mrp0sel='  '
@@ -8474,9 +8476,9 @@
 		{ m → VOC.PL(UNM)} @ 29.1
 		   += ma=kkan @ CNJctr=OBPk @  @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr>-ma-kán</w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr>-ma-kán</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. IV 50" lg="Hit"/>
 
@@ -8495,8 +8497,8 @@
    mrp1=' pai-/pā- @ gehen @ 3SG.PRS @ I.11 @ '
 >pa-iz-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. IV 51" lg="Hit"/>
 
 <w trans='3' mrp0sel=' 1 '
@@ -8536,7 +8538,7 @@
 		{ m → VOC.PL(UNM)} @
 		   += ma @ CNJctr @  @ LÚ(.MEŠ)'
 ><d>LÚ.MEŠ</d>
-    <aGr>ME-ŠE-DI</aGr>-ma</w>
+  <aGr>ME-ŠE-DI</aGr>-ma</w>
 
 
 <w trans='kuieš' mrp0sel='  '
@@ -8553,7 +8555,7 @@
 <w trans='BANŠURi' mrp0sel=' 1 '
    mrp1=' BANŠUR @ Tisch @ D/L.SG @ 29.1.1 @ GIŠ'
 ><d>GIŠ</d>
-    <sGr>BANŠUR</sGr>-i</w>
+  <sGr>BANŠUR</sGr>-i</w>
 
 
 <w trans='ZAGnaz' mrp0sel='  '
@@ -8592,8 +8594,8 @@
    mrp3=' wē-/uwa- @ kommen @ 3PL.PRS @ I.12 @ '
 >ú-wa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <gap t='line' c='c="Ende Rs. IV"/> '/>
 <lb txtid="KBo 4.9" lnr="Rs. V 1" lg="Hit"/>
 
@@ -8629,8 +8631,8 @@
    mrp1=' paršn=ā(e)- @ sich niederhocken @ 3PL.PRS @ I.9 @ '
 >pár-aš-<laes_in/>na<laes_fin/>-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 3" lg="Hit"/>
 
 <w trans='ŠUKURma' mrp0sel='  '
@@ -8665,8 +8667,8 @@
 		{ m → VOC.PL(UNM)} @ 29.1.1
 		   += ma @ CNJctr @  @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr>
-    <d>ḪI.A</d>-ma</w>
+  <sGr>ŠUKUR</sGr>
+  <d>ḪI.A</d>-ma</w>
 
 
 <w trans='Ù' mrp0sel='  '
@@ -8719,8 +8721,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ GIŠ/URUDU'
 ><d>GIŠ</d>
-    <sGr>GIDRU</sGr>
-    <d>ḪI.A</d></w>
+  <sGr>GIDRU</sGr>
+  <d>ḪI.A</d></w>
 
 
 <w trans='kue' mrp0sel='  '
@@ -8792,7 +8794,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><d>LÚ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+  <aGr>ME-ŠE-DI</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. V 5" lg="Hit"/>
 
@@ -8826,7 +8828,7 @@
 		{ d → CONNn=PPRO.3PL.N.ACC}
 		{ e → CONNn=PPRO.3PL.C.NOM} @  @ '
 >na-<laes_in/>at
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='paizi' mrp0sel=' 1 '
@@ -8847,7 +8849,7 @@
    mrp4=' GAL @ groß @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 28.2.3 @ '><aGr>ŠA</aGr>
-    <sGr>GAL</sGr></w>
+  <sGr>GAL</sGr></w>
 
 
 <w trans='ME-ŠE-DI' mrp0sel='  '
@@ -8885,7 +8887,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (GIŠ/URUDU)'
 ><d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -8904,7 +8906,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.2 @ '
 ><sGr>KÙ.<laes_in/>SI₂₂
-    <laes_fin/></sGr></w>
+  <laes_fin/></sGr></w>
 
 
 <w trans='kattan' mrp0sel='  '
@@ -8973,8 +8975,8 @@
    mrp1=' paršn=ā(e)- @ sich niederhocken @ 3SG.PRS @ I.9 @ '
 >pár-aš-na-ez-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 9" lg="Hit"/>
 
 <w trans='LÚ˽GIDRU' mrp0sel='  '
@@ -8993,8 +8995,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ '
 ><sGr>LÚ</sGr>˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='peran' mrp0sel='  '
@@ -9002,7 +9004,7 @@
    mrp2=' peran @ vor @  @ POSP @ '
    mrp3=' peran @ vor @  @ PREV @ '
 >pé-ra-<laes_in/>an
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='ḫuai' mrp0sel='  '
@@ -9032,9 +9034,9 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr></w>
 
 
 <w trans='ḫantezi' mrp0sel='  '
@@ -9053,8 +9055,8 @@
    mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
 >ti-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 11" lg="Hit"/>
 
 <w trans='ŠU.I' mrp0sel='  '
@@ -9073,7 +9075,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ LÚ'
 ><d>LÚ</d>
-    <sGr>ŠU.I</sGr></w>
+  <sGr>ŠU.I</sGr></w>
 
 
 <w trans='1' mrp0sel=' 1 '
@@ -9121,7 +9123,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.2.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>DUM<del_in/>U<del_fin/>.<laes_in/>É<laes_fin/>.GAL</sGr></w>
+  <sGr>DUM<del_in/>U<del_fin/>.<laes_in/>É<laes_fin/>.GAL</sGr></w>
 
 
 <w trans='pai' mrp0sel='  '
@@ -9183,7 +9185,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.2.3 @ '><aGr>A-NA</aGr>
-    <sGr>GAL</sGr></w>
+  <sGr>GAL</sGr></w>
 
 
 <w trans='DUMU.É.GAL' mrp0sel='  '
@@ -9202,8 +9204,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.<laes_in/>É<laes_fin/>.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.<laes_in/>É<laes_fin/>.GAL</sGr></w>
 
 
 <w trans='pai' mrp0sel='  '
@@ -9310,8 +9312,8 @@
 		{ m → VOC.PL(UNM)} @ 28.2.1.1
 		   += man @ =IRR @  @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr>-ma-an</w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr>-ma-an</w>
 
 
 <w trans='A-NA ŠUKUR' mrp0sel='    '
@@ -9319,8 +9321,8 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 29.1.1 @ (GIŠ/URUDU)'><aGr>A-NA</aGr>
-    <d>GIŠ</d>
-    <sGr>ŠUKUR</sGr></w>
+  <d>GIŠ</d>
+  <sGr>ŠUKUR</sGr></w>
 
 
 <w trans='KAL' mrp0sel='  '
@@ -9338,7 +9340,7 @@
 		{ k → DN.VOC.SG(UNM)}
 		{ l → DN.VOC.PL(UNM)} @ 36.6 @ D'
 ><d>D</d>
-    <sGr>KAL</sGr></w>
+  <sGr>KAL</sGr></w>
 
 
 <w trans='paršia' mrp0sel='  '
@@ -9346,8 +9348,8 @@
    mrp2=' parš=iye/a- @ zerbrechen @ 2SG.IMP @ I.7 @ '
 >pár-ši-ia</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 15" lg="Hit"/>
 
 <w trans='nan' mrp0sel=' 1 '
@@ -9435,8 +9437,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.<laes_in/>É<laes_fin/>.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.<laes_in/>É<laes_fin/>.GAL</sGr></w>
 
 
 <w trans='EGIRpa' mrp0sel='  '
@@ -9452,7 +9454,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.2.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>DUMU.É.GAL</sGr></w>
+  <sGr>DUMU.É.GAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. V 16" lg="Hit"/>
 
@@ -9511,9 +9513,9 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 29.1 @ LÚ'><aGr><laes_in/>A-NA</aGr>
-    <laes_fin/>
-    <d>LÚ</d>
-    <sGr>ŠU.I</sGr></w>
+  <laes_fin/>
+  <d>LÚ</d>
+  <sGr>ŠU.I</sGr></w>
 
 
 <w trans='pai' mrp0sel='  '
@@ -9522,8 +9524,8 @@
 		{ b → 2SG.IMP} @ II.6.2 @ '
 >pa-a-i</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 18" lg="Hit"/>
 
 <w trans='ḫilimakan' mrp0sel='  '
@@ -9580,8 +9582,8 @@
 		{ c → STF} @ 1.1 @ '
 >ar-ta</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 20" lg="Hit"/>
 
 <w trans='LÚ˽GIDRU' mrp0sel='  '
@@ -9600,8 +9602,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ '
 ><sGr>LÚ</sGr>˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='peran' mrp0sel='  '
@@ -9642,16 +9644,16 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.LUGAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.LUGAL</sGr></w>
 
 
 <w trans='ašaši' mrp0sel=' 1 '
    mrp1=' ašaš-/ašeš- @ (hin)setzen @ 3SG.PRS @ II.1.1.1 @ '
 >a-ša-a-ši</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 21" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -9682,8 +9684,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ '
 ><sGr>LÚ</sGr>˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='para' mrp0sel='  '
@@ -9713,9 +9715,9 @@
    mrp1=' MUḪALDIM @ Koch @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.1 @ (LÚ)'><aGr>ŠA</aGr>
-    <d>LÚ.MEŠ</d>
-    <sGr><laes_in/>MUḪALDIM
-        <laes_fin/></sGr></w>
+  <d>LÚ.MEŠ</d>
+  <sGr><laes_in/>MUḪALDIM
+    <laes_fin/></sGr></w>
 
 
 <w trans='ḫanteziaš' mrp0sel='  '
@@ -9761,7 +9763,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>MUḪALDIM</sGr></w>
+  <sGr>MUḪALDIM</sGr></w>
 
 
 <w trans='ḫantezi' mrp0sel='  '
@@ -9780,8 +9782,8 @@
    mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
 >ti-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 24" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -9812,8 +9814,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ '
 ><sGr>LÚ</sGr>˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='namma' mrp0sel='  '
@@ -9843,7 +9845,7 @@
    mrp1=' n=aš @  @ CONNn=PPRO.3SG.C.NOM @  @ '
    mrp2=' n=aš @  @ CONNn=PPRO.3PL.C.ACC @  @ '
 ><del_in/>na-aš
-    <del_fin/></w>
+  <del_fin/></w>
 
 
 <w trans='A-NA SANGA' mrp0sel='    '
@@ -9851,11 +9853,11 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.1.1 @ (LÚ)'><aGr><laes_in/>A-NA
-    <laes_fin/></aGr>
-    <del_in/>
-    <d>LÚ<del_fin/>
-        <laes_in/></d>
-    <sGr>SANGA<laes_fin/></sGr></w>
+  <laes_fin/></aGr>
+  <del_in/>
+  <d>LÚ<del_fin/>
+    <laes_in/></d>
+  <sGr>SANGA<laes_fin/></sGr></w>
 
 
 <w trans='KÙ.GA' mrp0sel='  '
@@ -9905,7 +9907,7 @@
 		{ g → GN.INS(UNM)}
 		{ h → VOC.SG(UNM)} @  @ URU'
 ><d>URU</d>
-    <aGr>ḪA-AT-TI</aGr></w>
+  <aGr>ḪA-AT-TI</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. V 26" lg="Hit"/>
 
@@ -9925,15 +9927,15 @@
 		{l → VOC.SG}
 		{m → VOC.PL} @  @ (MUNUS)'
 ><del_in/>
-    <d>MUNUS</d>
-    <sGr>AMA.DINGIR</sGr>
-    <aGr>-LIM</aGr></w>
+  <d>MUNUS</d>
+  <sGr>AMA.DINGIR</sGr>
+  <aGr>-LIM</aGr></w>
 
 
 <w trans='ḫalkiaš' mrp0sel=' 1 '
    mrp1=' ḫalk=i- @ Ḫalki @ DN.GEN.SG @ 35.2.1 @ D'
 ><d>D</d>ḫal-k<del_fin/>i-<laes_in/>aš
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='peran' mrp0sel='  '
@@ -9958,15 +9960,15 @@
    mrp1=' t=uš @  @ CONNt=PPRO.3PL.C.ACC @  @ '
    mrp2=' t=u- @ Tu @ PNm.NOM.SG.C @ 38.4 @ M'
 ><del_in/>tu-uš
-    <del_fin/></w>
+  <del_fin/></w>
 
 
 <w trans='ašaši' mrp0sel=' 1 '
    mrp1=' ašaš-/ašeš- @ (hin)setzen @ 3SG.PRS @ II.1.1.1 @ '
 ><laes_in/>a-ša<laes_fin/>-a-ši</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 28" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -10069,7 +10071,7 @@
    mrp3=' anda @ darin @  @ ADV @ '
    mrp4='  @ (Brot oder Gebäck) @ STF @ 13.1 @ NINDA'
 >an-<laes_in/>da
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 
 <w trans='paizi' mrp0sel=' 1 '
@@ -10126,9 +10128,9 @@
 		{ m → VOC.PL(UNM)} @ 29.1
 		   += wa @ QUOT @  @ '
 ><sGr>GIŠ.<laes_in/></sGr>
-    <d>D<laes_fin/></d>
-    <sGr>INANNA</sGr>
-    <d>ḪI.A</d>-wa</w>
+  <d>D<laes_fin/></d>
+  <sGr>INANNA</sGr>
+  <d>ḪI.A</d>-wa</w>
 
 
 <w trans='para' mrp0sel='  '
@@ -10185,8 +10187,8 @@
    mrp1=' karp= @ heben @ 3PL.IMP @ I.1.2 @ '
 >kar-pa-an-du</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 32" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -10281,7 +10283,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><aGr>ME-<laes_in/>ŠE-DI
-    <laes_fin/></aGr></w>
+  <laes_fin/></aGr></w>
 
 
 <w trans='ḫili' mrp0sel='  '
@@ -10319,11 +10321,11 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 29.1.1 @ '><aGr>A-NA</aGr>
-    <sGr><laes_in/>LÚ
-        <laes_fin/></sGr>
-    ˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <sGr><laes_in/>LÚ
+    <laes_fin/></sGr>
+  ˽
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='tezi' mrp0sel=' 1 '
@@ -10347,10 +10349,10 @@
 		{ c → STF} @ 10.1.2.1 @ '
    mrp2=' zi-na-ar @ Inanna-Instrument @ HATT @ 30.11 @ '
 >zi-nà<del_in/>r
-    <del_fin/></w>
+  <del_fin/></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 34" lg="Hit"/>
 
 <w trans='LÚ˽GIDRUmakan' mrp0sel='  '
@@ -10370,8 +10372,8 @@
 		{ m → VOC.PL(UNM)} @ 29.1.1
 		   += ma=kkan @ CNJctr=OBPk @  @ '
 ><sGr>LÚ</sGr>˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr>-ma-kán</w>
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr>-ma-kán</w>
 
 
 <w trans='para' mrp0sel='  '
@@ -10415,9 +10417,9 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 29.1.1 @ (LÚ)'><aGr>A-NA</aGr>
-    <d>LÚ.MEŠ</d>
-    <sGr><laes_in/>NAR
-        <laes_fin/></sGr></w>
+  <d>LÚ.MEŠ</d>
+  <sGr><laes_in/>NAR
+    <laes_fin/></sGr></w>
 
 
 <w trans='tezi' mrp0sel=' 1 '
@@ -10466,7 +10468,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>NAR</sGr></w>
+  <sGr>NAR</sGr></w>
 
 
 <w trans='GIŠ.INANNA' mrp0sel='  '
@@ -10499,19 +10501,19 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>GIŠ</sGr>
-    <corr c='sic'/>
-    <sGr>.</sGr>
-    <d>D</d>
-    <sGr>INANNA</sGr>
-    <d>ḪI.A</d></w>
+  <corr c='sic'/>
+  <sGr>.</sGr>
+  <d>D</d>
+  <sGr>INANNA</sGr>
+  <d>ḪI.A</d></w>
 
 
 <w trans='karpanzi' mrp0sel=' 1 '
    mrp1=' karp= @ heben @ 3PL.PRS @ I.1.2 @ '
 >kar-pa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 37" lg="Hit"/>
 
 <w trans='LÚ˽GIDRU' mrp0sel='  '
@@ -10530,8 +10532,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ '
 ><sGr>LÚ</sGr>˽
-    <d>GIŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <d>GIŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='peran' mrp0sel='  '
@@ -10580,7 +10582,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>NAR</sGr></w>
+  <sGr>NAR</sGr></w>
 
 
 <w trans='GIŠ.INANNA' mrp0sel='  '
@@ -10613,9 +10615,9 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>GIŠ.</sGr>
-    <d>D</d>
-    <sGr>INANNA</sGr>
-    <d>ḪI.A</d></w>
+  <d>D</d>
+  <sGr>INANNA</sGr>
+  <d>ḪI.A</d></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. V 39" lg="Hit"/>
 
@@ -10632,8 +10634,8 @@
    mrp2=' ped=ae- @ hinschaffen @ 3PL.PRS @ I.9 @ '
 >pé-e-da-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 40" lg="Hit"/>
 
 <w trans='nuza' mrp0sel=' 1 '
@@ -10679,8 +10681,8 @@
    mrp3=' ēp(p)-/ap(p)- @ fassen @ 3PL.PRS @ I.2.1 @ '
 >ap-pa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 42" lg="Hit"/>
 
 <w trans='nu' mrp0sel=' 1 '
@@ -10715,7 +10717,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ LÚ'
 ><d>LÚ.MEŠ</d>
-    <sGr>ALAM.ZU₉</sGr></w>
+  <sGr>ALAM.ZU₉</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. V 43" lg="Hit"/>
 
@@ -10741,8 +10743,8 @@
 		{ d → D/L.PL} @ 1.1  @ LÚ
 		   += ya @ CNJadd @ '
 ><d>LÚ</d>ki-i-ta-aš-ša
-    <corr c='!'/>
-    <note n='3' c="&lt;P_f_Footnote&gt;Text: TA. &lt;/P_f_Footnote&gt;"/></w>
+  <corr c='!'/>
+  <note n='3' c="&lt;P_f_Footnote&gt;Text: TA. &lt;/P_f_Footnote&gt;"/></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. V 44" lg="Hit"/>
 
@@ -10755,10 +10757,10 @@
 		{ a → ABL}
 		{ b → INS} @ 29.1
 		   += pat @ FOC @  @ '><aGr>IT-TI</aGr>
-    <sGr>GIŠ.</sGr>
-    <d>D</d>
-    <sGr>INANNA</sGr>
-    <d>ḪI.A</d>-pát</w>
+  <sGr>GIŠ.</sGr>
+  <d>D</d>
+  <sGr>INANNA</sGr>
+  <d>ḪI.A</d>-pát</w>
 
 
 <w trans='iantari' mrp0sel=' 1 '
@@ -10801,8 +10803,8 @@
    mrp3=' ēp(p)-/ap(p)- @ fassen @ 3PL.PRS @ I.2.1 @ '
 >ap-pa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 46" lg="Hit"/>
 
 <w trans='MUḪALDIM' mrp0sel='  '
@@ -10821,7 +10823,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr><del_in/>MUḪ<del_fin/>ALDIM</sGr></w>
+  <sGr><del_in/>MUḪ<del_fin/>ALDIM</sGr></w>
 
 
 <w trans='TU₇˽ME-E˽UZU' mrp0sel='  '
@@ -10854,7 +10856,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>TU₇</sGr>˽<aGr>ME-E</aGr>˽
-    <sGr>UZU</sGr></w>
+  <sGr>UZU</sGr></w>
 
 
 <w trans='tianzi' mrp0sel='  '
@@ -10897,15 +10899,15 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.9.2 @ (UZU)'
 ><d>UZU</d>
-    <sGr>Ì</sGr></w>
+  <sGr>Ì</sGr></w>
 
 
 <w trans='šarranzi' mrp0sel=' 1 '
    mrp1=' šarr=a- @ teilen @ 3PL.PRS @ II.3 @ '
 >šar-ra-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. V 48" lg="Hit"/>
 
 <w trans='LÚ' mrp0sel='  '
@@ -10979,8 +10981,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ GIŠ/URUDU'
 ><sGr><del_in/></sGr>
-    <d>G<del_fin/>IŠ</d>
-    <sGr>GIDRU</sGr></w>
+  <d>G<del_fin/>IŠ</d>
+  <sGr>GIDRU</sGr></w>
 
 
 <w trans='A-NA Ú-BA-RUM' mrp0sel='    '
@@ -10988,8 +10990,8 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @  @ LÚ(.MEŠ)'><aGr>A-NA</aGr>
-    <d>LÚ.MEŠ</d>
-    <aGr>Ú-BA-RUM</aGr></w>
+  <d>LÚ.MEŠ</d>
+  <aGr>Ú-BA-RUM</aGr></w>
 
 
 <w trans='EN' mrp0sel='  '
@@ -11045,7 +11047,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ (LÚ)'
 ><d>LÚ.MEŠ</d>
-    <sGr>DUGUD</sGr></w>
+  <sGr>DUGUD</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. V 50" lg="Hit"/>
 
@@ -11076,8 +11078,8 @@
    mrp1=' ašaš-/ašeš- @ (hin)setzen @ 3SG.PRS @ II.1.1.1 @ '
 >a-ša-a-ši</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <gap t='line' c='c="Ende Rs. V"/> '/>
 <lb txtid="KBo 4.9" lnr="Rs. VI 1" lg="Hit"/>
 
@@ -11119,7 +11121,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.1 @ UZU'
 ><sGr>TU₇</sGr>
-    <d>ḪI.A</d></w>
+  <d>ḪI.A</d></w>
 
 
 <w trans='takšan' mrp0sel='  '
@@ -11301,8 +11303,8 @@
    mrp2=' tiye/a- @ treten @ 3PL.PRS @ I.7.2 @ '
 >ti-ia-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI 5" lg="Hit"/>
 
 <w trans='LUGALuš' mrp0sel='  '
@@ -11363,8 +11365,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='kuezi' mrp0sel=' 1 '
@@ -11436,8 +11438,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 9" lg="Hit"/>
 
@@ -11470,7 +11472,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><d>LÚ.MEŠ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+  <aGr>ME-ŠE-DI</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 10" lg="Hit"/>
 
@@ -11543,7 +11545,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
 ><d>LÚ.MEŠ</d>
-    <aGr>ME-ŠE-DI</aGr></w>
+  <aGr>ME-ŠE-DI</aGr></w>
 
 
 <w trans='tanzi' mrp0sel=' 1 '
@@ -11567,18 +11569,18 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 29.1 @ '><aGr>A-NA</aGr>
-    <sGr>LÚ</sGr>
-    <d>MEŠ</d>˽
-    <d>GIŠ</d>
-    <sGr>BANŠUR</sGr></w>
+  <sGr>LÚ</sGr>
+  <d>MEŠ</d>˽
+  <d>GIŠ</d>
+  <sGr>BANŠUR</sGr></w>
 
 
 <w trans='pianzi' mrp0sel=' 1 '
    mrp1=' pai-/pe-/piya- @ geben @ 3PL.PRS @ II.6.2 @ '
 >pí-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI 14" lg="Hit"/>
 
 <w trans='LUGALuš' mrp0sel='  '
@@ -11592,7 +11594,7 @@
    mrp1=' IGI @ Auge @ INS @ 28.1.2.1 @ '
    mrp2=' IGI @ Auge @ INS @ 28.2.1.1 @ '
 ><sGr>IGI</sGr>
-    <d>ḪI.A</d>-it</w>
+  <d>ḪI.A</d>-it</w>
 
 
 <w trans='iazi' mrp0sel='  '
@@ -11618,7 +11620,7 @@
 		{ m → VOC.PL(UNM)} @ 29.1
 		   += kkan @ OBPk @  @ LÚ'
 ><d>LÚ.MEŠ</d>
-    <sGr>ŠU.I</sGr>-kán</w>
+  <sGr>ŠU.I</sGr>-kán</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 15" lg="Hit"/>
 
@@ -11636,8 +11638,8 @@
    mrp1=' šanḫ- @ suchen @ 3PL.PRS @ I.1.8 @ '
 >ša-an-ḫa-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI 16" lg="Hit"/>
 
 <w trans='GAL' mrp0sel='  '
@@ -11702,7 +11704,7 @@
 		{ p → VOC.SG(UNM)}
 		{ q → VOC.PL(UNM)} @ 28.2.3 @ '
 ><laes_in/>
-    <sGr>GAL<laes_fin/></sGr></w>
+  <sGr>GAL<laes_fin/></sGr></w>
 
 
 <w trans='ME-ŠE-DI' mrp0sel='  '
@@ -11728,9 +11730,9 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.2.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <sGr>DUMU</sGr>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 17" lg="Hit"/>
 
@@ -11774,8 +11776,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 18" lg="Hit"/>
 
@@ -11784,7 +11786,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.3.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>LUGAL</sGr></w>
+  <sGr>LUGAL</sGr></w>
 
 
 <w trans='MUNUS.LUGAL' mrp0sel='  '
@@ -11845,7 +11847,7 @@
 
 <w trans='IŠ-TU ḫuppar' mrp0sel=' 1   '
    mrp1=' ḫuppa=r- @ Schale @ ABL @ 10.1.2 @ (GIŠ/DUG)'><aGr>IŠ-TU</aGr>
-    ḫu-up-pár</w>
+  ḫu-up-pár</w>
 
 
 <w trans='KÙ.SI₂₂' mrp0sel='  '
@@ -11953,8 +11955,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr></w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr></w>
 
 
 <w trans='GADAan' mrp0sel='  '
@@ -12054,8 +12056,8 @@
 		{j → ABL_DEM2/3.GEN.PL}
 		{k → INS_DEM2/3.GEN.PL} @  @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>
-    <aGr>-ŠU-NU</aGr></w>
+  <d>MEŠ</d>
+  <aGr>-ŠU-NU</aGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 22" lg="Hit"/>
 
@@ -12160,8 +12162,8 @@
 		{ m → VOC.PL(UNM)} @ 28.2.1.1
 		   += ma @ CNJctr @  @ '
 ><sGr>DUMU</sGr>
-    <d>MEŠ</d>
-    <sGr>.É.GAL</sGr>-ma</w>
+  <d>MEŠ</d>
+  <sGr>.É.GAL</sGr>-ma</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 23" lg="Hit"/>
 
@@ -12217,8 +12219,8 @@
 		{j → ABL_DEM2/3.GEN.PL}
 		{k → INS_DEM2/3.GEN.PL} @  @ '
 ><sGr>ŠU</sGr>
-    <d>MEŠ</d>
-    <aGr>-ŠU-NU</aGr></w>
+  <d>MEŠ</d>
+  <aGr>-ŠU-NU</aGr></w>
 
 
 <w trans='anšanzi' mrp0sel='  '
@@ -12253,8 +12255,8 @@
    mrp1=' pai-/pā- @ gehen @ 3PL.PRS @ I.11 @ '
 >pa-a-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI 25" lg="Hit"/>
 
 <w trans='našta' mrp0sel='  '
@@ -12281,7 +12283,7 @@
 		{ c → GEN.PL}
 		{ d → D/L.PL} @ 28.1.1 @ (LÚ)'
 ><d>LÚ</d>
-    <sGr>SAGI.A</sGr>-aš</w>
+  <sGr>SAGI.A</sGr>-aš</w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 26" lg="Hit"/>
 
@@ -12375,7 +12377,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ (LÚ)'
 ><d>LÚ</d>
-    <sGr>SAGI.A</sGr></w>
+  <sGr>SAGI.A</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 27" lg="Hit"/>
 
@@ -12433,7 +12435,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.1.1 @ (LÚ)'
 ><d>LÚ</d>
-    <sGr>SAGI.A</sGr></w>
+  <sGr>SAGI.A</sGr></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 28" lg="Hit"/>
 
@@ -12442,7 +12444,7 @@
 		{ a → D/L.SG}
 		{ b → D/L.PL}
 		{ c → ALL} @ 28.3.1.1 @ '><aGr>A-NA</aGr>
-    <sGr>LUGAL</sGr></w>
+  <sGr>LUGAL</sGr></w>
 
 
 <w trans='MUNUS.LUGAL' mrp0sel='  '
@@ -12484,8 +12486,8 @@
    mrp1=' pai-/pe-/piya- @ geben @ 3PL.PRS @ II.6.2 @ '
 >pí-an-zi</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI 30" lg="Hit"/>
 
 <w trans='LUGAL' mrp0sel='  '
@@ -12527,8 +12529,8 @@
 <w trans='TUŠaš' mrp0sel=' 1 '
    mrp1=' TUŠ-aš @ im Sitzen @ ADV @  @ '
 ><sGr><laes_in/>TUŠ
-    <laes_fin/></sGr>
-    -aš</w>
+  <laes_fin/></sGr>
+  -aš</w>
 
 
 <w trans='tauri' mrp0sel='  '
@@ -12547,7 +12549,7 @@
 <w trans='akuanzi' mrp0sel=' 1 '
    mrp1=' eku-/aku- @ trinken @ 3PL.PRS @ I.2.2 @ '
 >a-ku-wa-an-<laes_in/>zi
-    <laes_fin/></w>
+  <laes_fin/></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 31" lg="Hit"/>
 
@@ -12581,8 +12583,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1 @ '
 ><sGr>GIŠ.</sGr>
-    <d>D</d>
-    <sGr>INANNA</sGr></w>
+  <d>D</d>
+  <sGr>INANNA</sGr></w>
 
 
 <w trans='GAL' mrp0sel='  '
@@ -12647,8 +12649,8 @@
 		{ p → VOC.SG(UNM)}
 		{ q → VOC.PL(UNM)} @ 28.2.3 @ '
 ><sGr><laes_in/>GAL
-    <laes_fin/></sGr>
-    <corr c='?'/></w>
+  <laes_fin/></sGr>
+  <corr c='?'/></w>
 
 
 <w trans='ḫazikanzi' mrp0sel=' 1 '
@@ -12666,7 +12668,7 @@
    mrp1=' SÌR-RU @ singen @ 3PL.PRS @  @ '
    mrp2=' SÌR-RU @ singen @ NOM.SG @  @ '
 ><sGr><del_in/>SÌR</sGr>
-    <aGr>-R<del_fin/>U</aGr></w>
+  <aGr>-R<del_fin/>U</aGr></w>
 
 
 <w trans='NINDA.GUR₄.RA' mrp0sel='  '
@@ -12692,8 +12694,8 @@
    mrp1=' NU.GÁL @ (ist) nicht (vorhanden) @ NEG @  @ '
 ><sGr>NU.GÁL</sGr></w>
  </s></p>
-    <parsep_dbl/>
-    <p><s>
+      <parsep_dbl/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI" lg="Hit"/><gap c="unbeschriebene Zeile"/>
 <lb txtid="KBo 4.9" lnr="Rs. VI 33" lg="Hit"/>
 
@@ -12716,8 +12718,8 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ '
 ><aGr>T<del_in/>UP</aGr>
-    <corr c='?'/>
-    <aGr><del_fin/>-PU</aGr></w>
+  <corr c='?'/>
+  <aGr><del_fin/>-PU</aGr></w>
 
 
 <w trans='Ú-UL' mrp0sel=' 1 '
@@ -12752,8 +12754,8 @@
    mrp1=' EZEN₄ @ kultisches Fest @
 		{ a → GEN.SG}
 		{ b → GEN.PL} @ 29.3.1 @ '><aGr><laes_in/>ŠA
-    <laes_fin/></aGr>
-    <sGr>EZEN₄</sGr></w>
+  <laes_fin/></aGr>
+  <sGr>EZEN₄</sGr></w>
 
 
 <w trans='AN.DAḪ.ŠUM' mrp0sel='  '
@@ -12786,7 +12788,7 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 29.1.2 @ '
 ><sGr>AN.DAḪ.ŠUM</sGr>
-    <d>SAR</d></w>
+  <d>SAR</d></w>
 
 <lb txtid="KBo 4.9" lnr="Rs. VI 35" lg="Hit"/>
 
@@ -12803,11 +12805,11 @@
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
 ><d><laes_in/>D
-    <laes_fin/></d>
-    <aGr>ZA-BA₄-BA₄</aGr></w>
+  <laes_fin/></d>
+  <aGr>ZA-BA₄-BA₄</aGr></w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI 36" lg="Hit"/>
 
 <w><space c="3"/></w>
@@ -12819,9 +12821,9 @@
 		{ b → D/L.PL}
 		{ c → ALL} @ 29.1
 		   += kkan @ OBPk @  @ '><aGr><del_in/>A-NA</aGr>
-    <sGr>GIŠ.ḪU<del_fin/>R</sGr>
-    -<laes_in/>kán
-    <laes_fin/></w>
+  <sGr>GIŠ.ḪU<del_fin/>R</sGr>
+  -<laes_in/>kán
+  <laes_fin/></w>
 
 
 <w trans='ḫantan' mrp0sel='  '
@@ -12838,8 +12840,8 @@
    mrp5=' dakdakuw=ā(e)- @ einschließen @ PTCP.ACC.SG.C @ I.9 @ '
 >ḫa-an-da-a-an</w>
  </s></p>
-    <parsep/>
-    <p><s>
+      <parsep/>
+      <p><s>
 <lb txtid="KBo 4.9" lnr="Rs. VI" lg="Hit"/><gap c="ca. 12 unbeschriebene Zeilen"/>
 <gap t='line' c='c="Ende Rs. VI"/> '/>
 

@@ -1,6 +1,7 @@
-import {attributeReader, XmlFormat} from "../editor/xmlLoader";
-import {AOWordContent, aoWordContentFormat, getContent} from "./wordContent/wordContent";
-import {morphologicalAnalysis, MorphologicalAnalysis} from "./morphologicalAnalysis";
+import {attributeReader, XmlFormat} from "../../editor/xmlLoader";
+import {AOWordContent, aoWordContentFormat, getContent} from "../wordContent/wordContent";
+import {morphologicalAnalysis, MorphologicalAnalysis} from "../morphologicalAnalysis";
+import {AOSentenceContent} from "../sentence";
 
 // AOWord
 
@@ -53,13 +54,17 @@ export const aoWordFormat: XmlFormat<AOWord> = {
     }
   },
   write: ({content}) => {
-    const xmlContent = content.map((wc) => aoWordContentFormat.write(wc, -1)).join(' ');
-    const transcription = content.map((twc) => getContent(twc)).join('');
+    const xmlContent = content.map(aoWordContentFormat.write).join(' ');
+    const transcription = content.map(getContent).join('');
 
-    return `<w trans="${transcription}">${xmlContent}</w>`;
+    return [`<w trans="${transcription}">${xmlContent}</w>`];
   }
 }
 
 export function parsedWord(trans: string, ...content: AOWordContent[]): AOWord {
   return {type: 'AOWord', trans, content};
+}
+
+export function isAOWord(c: AOSentenceContent): c is AOWord {
+  return c.type === 'AOWord';
 }

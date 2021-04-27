@@ -13,11 +13,7 @@ export const aoHeaderFormat: XmlFormat<AOHeader> = {
     childElementReader(el, 'docID', aoDocIdFormat),
     childElementReader(el, 'meta', aoMetaFormat)
   ),
-  write: ({docId, meta}, level) =>
-    `<AOHeader>
-${aoDocIdFormat.write(docId, level + 1)}
-${aoMetaFormat.write(meta, level + 1)}
-</AOHeader>`
+  write: ({docId, meta}) => ['<AOHeader>', ...aoDocIdFormat.write(docId), ...aoMetaFormat.write(meta), '</AOHeader>']
 };
 
 function aoHeader(docId: AODocID, meta: AOMeta): AOHeader {
@@ -33,7 +29,7 @@ export interface AODocID {
 
 const aoDocIdFormat: XmlFormat<AODocID> = {
   read: (el) => aoDocId(el.textContent || ''),
-  write: ({content}) => `<docId>${content}</docId>`
+  write: ({content}) => [`<docId>${content}</docId>`]
 };
 
 function aoDocId(content: string): AODocID {
@@ -58,7 +54,7 @@ const aoMetaFormat: XmlFormat<AOMeta> = {
     childElementReader(el, 'annotation', aoAnnotationFormat),
 //    Array.from(el.getElementsByTagName('annot')).map(readAnnot),
   ),
-  write: ({}) => ''
+  write: ({}) => []
 }
 
 function aoMeta(creationDate: DatedAttributeElement, kor2: DatedAttributeElement, aoXmlCreation: DatedAttributeElement, annotation: AOAnnotation): AOMeta {
@@ -76,7 +72,7 @@ const aoAnnotationFormat: XmlFormat<AOAnnotation> = {
   read: (el) => aoAnnotation(
     [] /* FIXME! */
   ),
-  write: ({}) => ''
+  write: ({content}) => []
 };
 
 function aoAnnotation(content: AOAnnot[]): AOAnnotation {
@@ -95,7 +91,7 @@ const aoAnnotFormat: XmlFormat<AOAnnot> = {
     attributeReader(el, 'date', (v) => v || ''),
     attributeReader(el, 'editor', (v) => v || '')
   ),
-  write: ({date, editor}) => ''
+  write: ({date, editor}) => []
 };
 
 function aoAnnot(date: string, editor: string): AOAnnot {
@@ -114,5 +110,5 @@ function datedAttributeElement(date: string): DatedAttributeElement {
 
 const datedStringElementFormat: XmlFormat<DatedAttributeElement> = {
   read: (el) => datedAttributeElement(attributeReader(el, 'date', (v) => v || '')),
-  write: ({}) => ''
+  write: ({}) => []
 }

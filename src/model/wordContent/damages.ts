@@ -1,5 +1,5 @@
-import {XmlFormat} from "../editor/xmlLoader";
-import {AOWordContent} from "./wordContent/wordContent";
+import {XmlFormat} from "../../editor/xmlLoader";
+import {AOWordContent} from "./wordContent";
 
 export interface DamageContent {
   type: 'Damage';
@@ -14,8 +14,8 @@ export function isDamageContent(w: AOWordContent): w is DamageContent {
   return typeof w !== 'string' && 'type' in w && w.type === 'Damage';
 }
 
-export function xmlifyDamageContent({damageType}: DamageContent): string {
-  return xmlifyDamage(damageType);
+export function xmlifyDamageContent({damageType}: DamageContent): string[] {
+  return [xmlifyDamage(damageType)];
 }
 
 export enum DamageType {
@@ -36,32 +36,32 @@ export enum DamageType {
 
 export const deletionStartFormat: XmlFormat<DamageType.DeletionStart> = {
   read: () => DamageType.DeletionStart,
-  write: () => '<del_in/>'
+  write: () => ['<del_in/>']
 };
 
 export const deletionEndFormat: XmlFormat<DamageType.DeletionEnd> = {
   read: () => DamageType.DeletionEnd,
-  write: () => '<del_fin/>'
+  write: () => ['<del_fin/>']
 };
 
 export const rasureStartFormat: XmlFormat<DamageType.RasureStart> = {
   read: () => DamageType.RasureStart,
-  write: () => '<ras_in/>'
+  write: () => ['<ras_in/>']
 };
 
 export const rasureEndFormat: XmlFormat<DamageType.RasureEnd> = {
   read: () => DamageType.RasureEnd,
-  write: () => '<ras_fin/>'
+  write: () => ['<ras_fin/>']
 };
 
 export const lesionStartFormat: XmlFormat<DamageType.LesionStart> = {
   read: () => DamageType.LesionStart,
-  write: () => '<laes_in/>'
+  write: () => ['<laes_in/>']
 };
 
 export const lesionEndFormat: XmlFormat<DamageType.LesionEnd> = {
   read: () => DamageType.LesionEnd,
-  write: () => '<laes_fin/>'
+  write: () => ['<laes_fin/>']
 };
 
 function xmlifyDamage(damageType: DamageType): string {

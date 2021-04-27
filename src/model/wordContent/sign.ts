@@ -1,8 +1,6 @@
 import {XmlFormat} from "../../editor/xmlLoader";
 import {AOWordContent} from "./wordContent";
 
-// AOSign
-
 export interface AOSign {
   type: 'AOSign'
   content: string;
@@ -10,7 +8,7 @@ export interface AOSign {
 
 export const aoSignFormat: XmlFormat<AOSign> = {
   read: (el) => aoSign(el.textContent || ''),
-  write: ({content}) => `<AO:Sign>${content}</AO:Sign>`
+  write: ({content}) => [`<AO:Sign>${content}</AO:Sign>`]
 }
 
 export function aoSign(content: string): AOSign {

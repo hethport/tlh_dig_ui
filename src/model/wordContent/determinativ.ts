@@ -17,7 +17,7 @@ export function determinativ(content: string): AODeterminativ {
 
 export const determinativFormat: XmlFormat<AODeterminativ> = {
   read: (el) => determinativ(el.textContent || ''),
-  write: ({content}) => `<d>${content}</d>`
+  write: ({content}) => [`<d>${content}</d>`]
 };
 
 export function isDeterminativ(c: AOWordContent): c is AODeterminativ {

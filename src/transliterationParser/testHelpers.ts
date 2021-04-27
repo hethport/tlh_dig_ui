@@ -1,5 +1,5 @@
-import {damageContent, DamageContent, DamageType} from "../model/damages";
-import {AOCorr, aoCorr} from "../model/corrections";
+import {damageContent, DamageContent, DamageType} from "../model/wordContent/damages";
+import {AOCorr, aoCorr} from "../model/wordContent/corrections";
 
 export const de: DamageContent = damageContent(DamageType.DeletionEnd);
 export const ds: DamageContent = damageContent(DamageType.DeletionStart);

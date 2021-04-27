@@ -9,13 +9,13 @@ export interface AONumeralContent {
   content: string;
 }
 
-export function aoNumeralContent(content: string): AONumeralContent {
+export function numeralContent(content: string): AONumeralContent {
   return {type: 'AONumeralContent', content};
 }
 
 export const numeralContentFormat: XmlFormat<AONumeralContent> = {
-  read: (el) => aoNumeralContent(el.textContent || ''),
-  write: ({content}) => `<num>${content}</num>`
+  read: (el) => numeralContent(el.textContent || ''),
+  write: ({content}) => [`<num>${content}</num>`]
 }
 
 export function isNumeralContent(c: AOWordContent): c is AONumeralContent {

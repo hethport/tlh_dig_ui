@@ -9,7 +9,7 @@ import {
 import {AONumeralContent, isNumeralContent, numeralContentFormat} from "./numeralContent";
 import {AODeterminativ, determinativFormat, isDeterminativ} from "./determinativ";
 import {AOMaterLectionis, isMaterLectionis, materLectionisFormat} from "./materLectionis";
-import {AOCorr, aoCorrFormat, isCorrectionContent} from "../corrections";
+import {AOCorr, aoCorrFormat, isCorrectionContent} from "./corrections";
 import {
   DamageContent,
   deletionEndFormat,
@@ -20,14 +20,14 @@ import {
   rasureEndFormat,
   rasureStartFormat,
   xmlifyDamageContent
-} from "../damages";
+} from "./damages";
 import {AOSign, aoSignFormat, isAoSign} from "./sign";
 import {AONote, aoNoteFormat, isAoNote} from "./footNote";
 import {AOKolonMark, aoKolonMarkFormat, isAoKolonMark} from "./kolonMark";
 import {AOIllegibleContent} from "./illegible";
 import {AOSpace, aoSpaceFormat, isSpace} from "./space";
 import {XmlFormat} from "../../editor/xmlLoader";
-import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "../inscribedLetter";
+import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "./inscribedLetter";
 
 // Word content
 
@@ -87,35 +87,35 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
   },
   write: (c) => {
     if (typeof c === 'string') {
-      return c;
+      return [c];
     } else if (isAkkadogramm(c)) {
-      return akkadogrammFormat.write(c, -1);
+      return akkadogrammFormat.write(c);
     } else if (isSumerogramm(c)) {
-      return sumerogrammFormat.write(c, -1);
+      return sumerogrammFormat.write(c);
     } else if (isDeterminativ(c)) {
-      return determinativFormat.write(c, -1);
+      return determinativFormat.write(c);
     } else if (isMaterLectionis(c)) {
-      return materLectionisFormat.write(c, -1);
+      return materLectionisFormat.write(c);
     } else if (isNumeralContent(c)) {
-      return numeralContentFormat.write(c, -1);
+      return numeralContentFormat.write(c);
     } else if (isCorrectionContent(c)) {
-      return aoCorrFormat.write(c, -1);
+      return aoCorrFormat.write(c);
     } else if (isDamageContent(c)) {
       return xmlifyDamageContent(c);
     } else if (isAoSign(c)) {
-      return aoSignFormat.write(c, -1);
+      return aoSignFormat.write(c);
     } else if (isAoNote(c)) {
-      return aoNoteFormat.write(c, -1);
+      return aoNoteFormat.write(c);
     } else if (isAoKolonMark(c)) {
-      return aoKolonMarkFormat.write(c, -1);
+      return aoKolonMarkFormat.write(c);
     } else if (isSpace(c)) {
-      return aoSpaceFormat.write(c, -1);
+      return aoSpaceFormat.write(c);
     } else if (isInscribedLetter(c)) {
-      return inscribedLetterFormat.write(c, -1);
+      return inscribedLetterFormat.write(c);
     } else {
       // Illegible content
       let y = c;
-      return 'x';
+      return ['x'];
     }
   }
 };

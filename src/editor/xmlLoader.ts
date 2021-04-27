@@ -6,7 +6,7 @@ export interface XmlReader<T> {
 }
 
 export interface XmlWriter<T> {
-  write: (t: T, indentLevel: number) => string;
+  write: (t: T) => string[];
 }
 
 export interface XmlFormat<T> extends XmlReader<T>, XmlWriter<T> {

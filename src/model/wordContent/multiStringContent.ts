@@ -1,5 +1,5 @@
 import {XmlFormat} from "../../editor/xmlLoader";
-import {DamageType} from "../damages";
+import {DamageType} from "./damages";
 import {AOWordContent, MultiStringContent} from "./wordContent";
 
 
@@ -42,7 +42,7 @@ export function akkadogramm(...contents: MultiStringContent[]): AOAkkadogramm {
 
 export const akkadogrammFormat: XmlFormat<AOAkkadogramm> = {
   read: (el) => akkadogramm(...Array.from(el.childNodes).map(readMultiWordContent)),
-  write: ({contents}) => `<aGr>${contents}</aGr>`
+  write: ({contents}) => [`<aGr>${contents}</aGr>`]
 }
 
 export function isAkkadogramm(c: AOWordContent): c is AOAkkadogramm {
@@ -64,7 +64,7 @@ export function sumerogramm(...contents: MultiStringContent[]): AOSumerogramm {
 
 export const sumerogrammFormat: XmlFormat<AOSumerogramm> = {
   read: (el) => sumerogramm(...Array.from(el.childNodes).map(readMultiWordContent)),
-  write: ({contents}) => `<sGr>${contents}</sGr>`
+  write: ({contents}) => [`<sGr>${contents}</sGr>`]
 }
 
 export function isSumerogramm(c: AOWordContent): c is AOSumerogramm {

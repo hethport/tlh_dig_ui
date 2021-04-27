@@ -1,9 +1,10 @@
 import {transliteration} from "./parser";
-import {determinativ as dt, numeralContent as nc} from '../model/wordContent/determinativ';
+import {determinativ as dt} from '../model/wordContent/determinativ';
+import {numeralContent as nc} from '../model/wordContent/numeralContent';
 import {sumerogramm} from "../model/wordContent/multiStringContent";
-import {inscribedLetter} from "../model/inscribedLetter";
+import {inscribedLetter} from "../model/wordContent/inscribedLetter";
 import {de} from "./testHelpers";
-import {AOWordContent} from "../model/word";
+import {AOWordContent} from "../model/wordContent/wordContent";
 
 describe('wordParser', () => {
   const parser = transliteration.wordContents;

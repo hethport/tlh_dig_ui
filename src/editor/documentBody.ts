@@ -1,6 +1,6 @@
 import {attributeReader, childElementReader, XmlFormat} from "./xmlLoader";
-import {AOWord, aoWordFormat} from "../model/word";
 import {ParseP, parsePDblFormat, ParsePDouble, parsePFormat} from "../model/paragraphEnds";
+import {Paragraph, paragraphFormat} from "../model/paragraph";
 
 /*
 interface SplitResult {
@@ -43,9 +43,7 @@ export const aoBodyFormat: XmlFormat<AOBody> = {
   read: (el) => aoBody(
     childElementReader(el, 'div1', aoDiv1Format)
   ),
-  write: ({div1}, level) => `<body>
-${aoDiv1Format.write(div1, level + 1)}
-</body>`
+  write: ({div1}) => ['<body>', ...aoDiv1Format.write(div1), '</body>']
 };
 
 function aoBody(div1: AODiv1): AOBody {
@@ -55,8 +53,8 @@ function aoBody(div1: AODiv1): AOBody {
 // AODiv1
 
 export interface AODiv1 {
-  text: AOText;
   type: string;
+  text: AOText;
 }
 
 const aoDiv1Format: XmlFormat<AODiv1> = {
@@ -64,7 +62,7 @@ const aoDiv1Format: XmlFormat<AODiv1> = {
     childElementReader(el, 'text', aoTextFormat),
     attributeReader(el, 'type', (v) => v || '')
   ),
-  write: ({text, type}) => ''
+  write: ({text, type}) => []
 }
 
 function aoDiv1(text: AOText, type: string): AODiv1 {
@@ -75,10 +73,10 @@ function aoDiv1(text: AOText, type: string): AODiv1 {
 
 export interface AOText {
   type: 'AOText';
-  content: AOTextType[];
+  content: AOTextContent[];
 }
 
-export type AOTextType = typeof ParseP | typeof ParsePDouble | Paragraph;
+export type AOTextContent = typeof ParseP | typeof ParsePDouble | Paragraph;
 
 const aoTextFormat: XmlFormat<AOText> = {
   read: (el) => aoText(
@@ -96,143 +94,9 @@ const aoTextFormat: XmlFormat<AOText> = {
         }
       })
   ),
-  write: ({content}) => ''
+  write: ({content}) => []
 }
 
-function aoText(content: AOTextType[]): AOText {
+function aoText(content: AOTextContent[]): AOText {
   return {type: 'AOText', content};
-}
-
-// AOParagraph
-
-export interface Paragraph {
-  // FIXME: split by lb?
-  type: 'AOParagraph';
-  s: AOS;
-}
-
-const paragraphFormat: XmlFormat<Paragraph> = {
-  read: (el) => aoParagraph(childElementReader(el, 's', aoSentenceFormat)),
-  write: ({s}) => ''
-}
-
-function aoParagraph(s: AOS): Paragraph {
-  return {type: 'AOParagraph', s};
-}
-
-// AOSentence
-
-export interface AOS {
-  type: 'AOS';
-  content: AOSContent[];
-}
-
-const aoSentenceFormat: XmlFormat<AOS> = {
-  read: (el) => aoS(
-    Array.from(el.children).map((cel) => {
-      switch (cel.tagName) {
-        case 'AO:Manuscripts' :
-          return aoManuscriptsFormat.read(cel);
-        case 'gap':
-          return aoGapFormat.read(cel);
-        case 'lb':
-          return aoLineBreakFormat.read(cel);
-        case 'w':
-          return aoWordFormat.read(cel);
-        default:
-          throw new Error(`Found illegal tag name ${cel.tagName}`);
-      }
-    })
-  ),
-  write: ({content}, level) => `<s>
-TODO!
-</s>`
-}
-
-function aoS(content: AOSContent[]): AOS {
-  return {type: 'AOS', content};
-}
-
-export type AOSContent = AOManuscripts | AOGap | AOLineBreak | AOWord;
-
-// AoTxtPubl
-
-export interface AOTxtPubl {
-  type: 'AO:TxtPubl';
-  content: string;
-}
-
-const aoTxtPublFormat: XmlFormat<AOTxtPubl> = {
-  read: (el) => aoTxtPubl(el.textContent || ''),
-  write: ({content}) => `<AO:TxtPubl>${content}</AO:TxtPubl>`
-}
-
-function aoTxtPubl(content: string): AOTxtPubl {
-  return {type: 'AO:TxtPubl', content};
-}
-
-// AOManuscripts
-
-export interface AOManuscripts {
-  type: 'AO:Manuscripts';
-  aoTxtPubl: AOTxtPubl;
-}
-
-const aoManuscriptsFormat: XmlFormat<AOManuscripts> = {
-  read: (el) => aoManuscripts(childElementReader(el, 'AO:TxtPubl', aoTxtPublFormat)),
-  write: ({aoTxtPubl}, level) => `<AO:Manuscripts>\n${aoTxtPublFormat.write(aoTxtPubl, level + 1)}\n</AO:Manuscripts>`
-}
-
-function aoManuscripts(aoTxtPubl: AOTxtPubl): AOManuscripts {
-  return {type: 'AO:Manuscripts', aoTxtPubl};
-}
-
-// AOGap
-
-export interface AOGap {
-  type: 'gap';
-  c: string;
-  t?: string;
-}
-
-const aoGapFormat: XmlFormat<AOGap> = {
-  read: (el) => aoGap(
-    attributeReader(el, 'c', (v) => v || ''),
-    attributeReader(el, 't', (v) => v || undefined)
-  ),
-  write: ({c, t}) => t ? `<gap c="${c}" t="${t}"/>` : `<gap c="${c}"/>`
-}
-
-export function aoGap(c: string, t?: string): AOGap {
-  return {type: 'gap', c, t};
-}
-
-// AOLineBreak
-
-export interface AOLineBreak {
-  type: 'lb';
-  content: string | null;
-  lg: string;
-  lnr: string;
-  txtid: string;
-}
-
-const aoLineBreakFormat: XmlFormat<AOLineBreak> = {
-  read: (el) => aoLineBreak(
-    el.textContent,
-    attributeReader(el, 'lg', (v) => v || ''),
-    attributeReader(el, 'lnr', (v) => v || ''),
-    attributeReader(el, 'txtid', (v) => v || '')
-  ),
-  write: ({content, lg, lnr, txtid}) => {
-    const attrs = [`lg="${lg}" lnr="${lnr}" txt="${txtid}"`]
-
-    return content
-      ? `<lb ${attrs}>${content}</lb>`
-      : `<lb ${attrs}/>`
-  }
-}
-
-function aoLineBreak(content: string | null, lg: string, lnr: string, txtid: string): AOLineBreak {
-  return {type: 'lb', content, lg, lnr, txtid};
 }

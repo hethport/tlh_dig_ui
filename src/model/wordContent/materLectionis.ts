@@ -10,13 +10,13 @@ export interface AOMaterLectionis {
   content: string;
 }
 
-export function aoMaterLectionis(content: string): AOMaterLectionis {
+export function materLectionis(content: string): AOMaterLectionis {
   return {type: 'AOMaterLectionis', content};
 }
 
 export const materLectionisFormat: XmlFormat<AOMaterLectionis> = {
-  read: (el) => aoMaterLectionis(el.textContent || ''),
-  write: ({content}) => `<SP___AO_3a_MaterLect>${content}</SP___AO_3a_MaterLect>`
+  read: (el) => materLectionis(el.textContent || ''),
+  write: ({content}) => [`<SP___AO_3a_MaterLect>${content}</SP___AO_3a_MaterLect>`]
 };
 
 export function isMaterLectionis(c: AOWordContent): c is AOMaterLectionis {

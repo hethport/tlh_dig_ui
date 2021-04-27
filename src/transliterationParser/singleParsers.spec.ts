@@ -1,9 +1,8 @@
 import {transliteration} from "./parser";
-import {determinativ, materLectionis} from "../model/wordContent/determinativ";
+import {determinativ} from "../model/wordContent/determinativ";
 import {akkadogramm, sumerogramm} from "../model/wordContent/multiStringContent";
-import {aoKolonMark, aoNote, aoSign} from '../model/wordContent/sign';
-import {inscribedLetter} from "../model/inscribedLetter";
-import {aoGap} from "../editor/documentBody";
+import {inscribedLetter} from "../model/wordContent/inscribedLetter";
+import {materLectionis} from "../model/wordContent/materLectionis";
 
 describe('hittite', () => {
   const parser = transliteration.hittite;
@@ -106,6 +105,7 @@ describe('stringContent', () => {
 
 });
 
+/*
 describe('markContent', () => {
   const parser = transliteration.markContent;
 
@@ -121,6 +121,7 @@ describe('markContent', () => {
     expect(parser.tryParse('{G:Anderer Text}')).toEqual(aoGap('Anderer Text'))
   });
 });
+ */
 
 describe('wordContent', () => {
   const parser = transliteration.wordContent;

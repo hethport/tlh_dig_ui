@@ -1,11 +1,11 @@
 import React from "react";
 import {isDeterminativ} from "../model/wordContent/determinativ";
-import {TransliterationLine} from "../model/oldTransliteration";
+import {TransliterationLine} from "../model/transliterationLine";
 import {isAoSign} from "../model/wordContent/sign";
-import {getSymbolForDamageType, isDamageContent} from "../model/damages";
-import {isCorrectionContent} from "../model/corrections";
+import {getSymbolForDamageType, isDamageContent} from "../model/wordContent/damages";
+import {isCorrectionContent} from "../model/wordContent/corrections";
 import {isAkkadogramm, isSumerogramm} from "../model/wordContent/multiStringContent";
-import {AOWord} from "../model/word";
+import {AOWord} from "../model/sentenceContent/word";
 import {isMaterLectionis} from "../model/wordContent/materLectionis";
 import {isNumeralContent} from "../model/wordContent/numeralContent";
 import {isAoNote} from "../model/wordContent/footNote";
@@ -57,14 +57,12 @@ export function renderWord({trans, content}: AOWord): JSX.Element {
 
 // Single line
 
-export function renderLine({lineInput, result}: TransliterationLine, maxLength: number): JSX.Element {
+export function renderLine({lineInput, result}: TransliterationLine): JSX.Element {
   if (result) {
-    const {lineNumber, lineNumberIsAbsolute, words} = result;
-
-    const ln = lineNumber.toString().padStart(maxLength, ' ') + (lineNumberIsAbsolute ? '' : '\'');
+    const {lineNumber, words} = result;
 
     return <>
-      <sup>{ln}</sup>
+      <sup>{lineNumber}</sup>
       &nbsp;
       {words.map((wordInput, index) => <span key={index}>{renderWord(wordInput)}&nbsp;</span>)}
     </>;
@@ -84,17 +82,10 @@ interface IProps {
 }
 
 export function Transliteration({lines}: IProps): JSX.Element {
-
-  const maxLineNumber: number = lines
-    .flatMap((tlr) => tlr.result ? [tlr.result.lineNumber] : [])
-    .reduce((a, b) => a > b ? a : b, 0);
-
-  const maxLength = Math.ceil(Math.log10(maxLineNumber));
-
   return (
     <div className="box">
       {lines.map((lineParseResult, lineIndex) =>
-        <p key={lineIndex} className="hittite">{renderLine(lineParseResult, maxLength)}</p>
+        <p key={lineIndex} className="hittite">{renderLine(lineParseResult)}</p>
       )}
     </div>
   );
