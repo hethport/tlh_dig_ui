@@ -1,6 +1,6 @@
 import {
   alt,
-  createLanguage,
+  createLanguage, end,
   oneOf,
   optWhitespace,
   Parser,
@@ -24,7 +24,7 @@ import {Ellipsis} from "../model/wordContent/ellipsis";
 import {AOWord, parsedWord} from "../model/sentenceContent/word";
 import {AOMaterLectionis, materLectionis} from "../model/wordContent/materLectionis";
 import {AONumeralContent, numeralContent} from "../model/wordContent/numeralContent";
-import {aoNote, AONote} from "../model/wordContent/footNote";
+import {AOFootNote, aoNote} from "../model/wordContent/footNote";
 import {AOIllegibleContent} from "../model/wordContent/illegible";
 import {aoKolonMark, AOKolonMark} from "../model/wordContent/kolonMark";
 import {AOSimpleWordContent, AOWordContent, MultiStringContent} from "../model/wordContent/wordContent";
@@ -35,41 +35,36 @@ const lowerTextRegex: RegExp = /\p{Ll}+/u;
 const upperTextRegex: RegExp = /\p{Lu}+/u;
 
 type LanguageSpec = {
-  // String contents
+  indexDigit: string;
+
+  // Multi string content
   damages: DamageContent;
   corrections: AOCorr;
-
-  parseP: typeof ParseP,
-  parsePDouble: typeof ParsePDouble,
-
-  ellipsis: typeof Ellipsis,
-
-  hittite: string;
-
-  defaultDeterminativ: AODeterminativ;
-  specialDeterminativ: AODeterminativ;
-  determinativ: AODeterminativ;
-
-  materLectionis: AOMaterLectionis | AODeterminativ;
-
-  numeralContent: AONumeralContent;
-  subscriptNumeralContent: AONumeralContent;
-
-  illegible: typeof AOIllegibleContent;
-
-  sign: AOSign;
-  kolonMark: AOKolonMark;
-  footNote: AONote;
-  gap: AOGap;
-
   inscribedLetter: InscribedLetter;
-
-  indexDigit: string;
+  hittite: string;
 
   contentOfMultiStringContent: MultiStringContent;
 
+  // Other content
+  parseP: typeof ParseP,
+  parsePDouble: typeof ParsePDouble,
+  ellipsis: typeof Ellipsis,
+
+  gap: AOGap;
+
+  // Simple word content
+  specialDeterminativContent: string;
+  determinativ: AODeterminativ;
+  materLectionis: AOMaterLectionis | AODeterminativ;
+  numeralContent: AONumeralContent;
+  footNote: AOFootNote;
+  sign: AOSign;
+  kolonMark: AOKolonMark;
+  illegible: typeof AOIllegibleContent;
+
   simpleWordContent: AOSimpleWordContent;
 
+  // Word content
   multiMultiStringContent: MultiStringContent[];
 
   akkadogramm: AOAkkadogramm;
@@ -116,8 +111,9 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   corrections: () => alt(
     string('?'),
     string('(?)'),
+    string('!?'),
     string('!'),
-    string('sic')
+    string('sic'),
   ).map(x => aoCorr(x)),
 
   parseP: () => alt(string('§'), string('¬¬¬')).result(ParseP),
@@ -131,22 +127,19 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     oneOf('×ₓ')
   ).atLeast(1).tie(),
 
-  defaultDeterminativ: () => alt(regexp(upperTextRegex), string('.'))
-    .atLeast(1)
-    .tie()
-    .map((content) => determinativ(content)),
-
-  specialDeterminativ: () => seq(
-    alt(string('m'), string('f')),
-    string('.'),
-    regexp(upperTextRegex),
-  ).map(([genus, dot, rest]) => determinativ(genus + dot + rest)),
+  specialDeterminativContent: () => seq(
+    oneOf('mf'),
+    seq(string('.'), regexp(upperTextRegex)).tie().times(0, 1)
+  ).map(([genus, rest]) => rest ? (genus + rest) : genus),
 
   determinativ: r => seq(
     string('°'),
-    alt<AODeterminativ>(r.defaultDeterminativ, r.specialDeterminativ),
+    alt<string>(
+      alt(regexp(upperTextRegex), string('.')).atLeast(1).tie(),
+      r.specialDeterminativContent
+    ),
     string('°')
-  ).map(([_deg1, content, _deg2]) => content),
+  ).map(([_deg1, content, _deg2]) => determinativ(content)),
 
   materLectionis: () => seq(
     string('°'),
@@ -157,49 +150,45 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
     string('°')
   ).map(([_degSym1, result, _degSym2]) => result === 'm' || result === 'f' ? determinativ(result) : materLectionis(result)),
 
+  numeralContent: () => regexp(/[[\d₀₁₂₃₄₅₆₇₈₉]+/).map((result) => numeralContent(result)),
+
   illegible: () => string('x').result<typeof AOIllegibleContent>(AOIllegibleContent),
 
   sign: () => seq(string('{S:'), optWhitespace, regexp(/[^}]*/), string('}'))
     .map(([_opening, _ws, content, _closing]) => aoSign(content)),
 
-  gap: () => seq(string('{G:'), optWhitespace, regexp(/[^}]*/), string('}'))
-    .map(([_opening, _ws, content, _closing]) => aoGap(content)),
-
-  footNote: () => seq(string('{F:'), optWhitespace, regexp(/[^}]*/), string('}'))
-    .map(([_opening, _ws, content, _closing]) => aoNote(content, '-1000')),
-
   kolonMark: () => seq(string('{K:'), optWhitespace, regexp(/[^}]*/), string('}'))
     .map(([_opening, _ws, content, _closing_]) => aoKolonMark(content)),
 
-  numeralContent: () => regexp(/\d+/).map((result) => numeralContent(result)),
+  footNote: () => seq(string('{F:'), optWhitespace, regexp(/[^}]*/), string('}'))
+    .map(([_opening, _ws, content, _closing]) => aoNote(content)),
 
-  subscriptNumeralContent: () => regexp(/[₀₁₂₃₄₅₆₇₈₉]+/).map((result) => numeralContent(result)),
+  gap: () => seq(string('{G:'), optWhitespace, regexp(/[^}]*/), string('}'))
+    .map(([_opening, _ws, content, _closing]) => aoGap(content)),
+
 
   inscribedLetter: () => seq(string('x'), regexp(upperTextRegex)).map(([_x, result]) => inscribedLetter(result)),
 
-  indexDigit: () => oneOf('1234567890x').notFollowedBy(regexp(upperTextRegex))
+  indexDigit: () => oneOf('1234567890x').lookahead(end)
     .map((result) => result === 'x' ? 'ₓ' : result),
 
+
   contentOfMultiStringContent: r => alt<MultiStringContent>(
-    // r.sign,
-    // r.footNote,
-    // r.kolonMark,
-    r.damages,
     r.corrections,
+    r.damages,
     r.inscribedLetter,
-    r.indexDigit
+    // TODO: r.indexDigit,
+    r.hittite,
   ),
 
   simpleWordContent: r => alt<AOSimpleWordContent>(
+    r.contentOfMultiStringContent,
     r.ellipsis,
     r.sign,
     r.footNote,
     r.kolonMark,
-    r.damages,
-    r.corrections,
     // Do not change order of parsers!
-    alt(r.determinativ, r.materLectionis, r.subscriptNumeralContent, r.numeralContent),
-    r.hittite
+    alt(r.determinativ, r.materLectionis,/* r.subscriptNumeralContent,*/ r.numeralContent),
   ),
 
   multiMultiStringContent: r => seq(

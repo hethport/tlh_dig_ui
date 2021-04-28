@@ -1,167 +1,261 @@
 import {transliteration} from "./parser";
 import {determinativ} from "../model/wordContent/determinativ";
-import {akkadogramm, sumerogramm} from "../model/wordContent/multiStringContent";
-import {inscribedLetter} from "../model/wordContent/inscribedLetter";
 import {materLectionis} from "../model/wordContent/materLectionis";
+import {damageContent, DamageType} from "../model/wordContent/damages";
+import {aoCorr, AOCorrType} from "../model/wordContent/corrections";
+import {ParseP, ParsePDouble} from "../model/paragraphEnds";
+import {Ellipsis} from "../model/wordContent/ellipsis";
+import {aoSign} from "../model/wordContent/sign";
+import {aoKolonMark} from "../model/wordContent/kolonMark";
+import {aoNote} from "../model/wordContent/footNote";
+import {aoGap} from "../model/sentenceContent/gap";
+import {AOIllegibleContent} from "../model/wordContent/illegible";
+import {Parser} from "parsimmon";
+import {AOWordContent} from "../model/wordContent/wordContent";
+import {numeralContent} from "../model/wordContent/numeralContent";
 
-describe('hittite', () => {
-  const parser = transliteration.hittite;
+const determinativSpecialGenusCases: [string][] = [['m'], ['f']];
+const determinativSpecialDeityCases: [string][] = [['m.D'], ['f.D']];
 
-  it('should parser hittite', () => {
-    expect(parser.tryParse('abc')).toEqual('abc');
-    expect(parser.tryParse('xyz')).toEqual('xyz');
+const materLectionisCases: [string][] = [['abc'], ['xyz']];
+
+const curlyBraceCases: [string][] = [['AN'], ['Anderer Text!'], ['Text : mit : Doppel:punkten']];
+
+export function testParseDamages(parser: Parser<AOWordContent>): void {
+  const cases: [string, DamageType][] = [
+    ['[', DamageType.DeletionStart],
+    [']', DamageType.DeletionEnd],
+    ['⸢', DamageType.LesionStart],
+    ['⸣', DamageType.LesionEnd],
+    ['<<', DamageType.SurplusStart],
+    ['>>', DamageType.SurplusEnd],
+    ['〈〈', DamageType.SurplusStart],
+    ['〉〉', DamageType.SurplusEnd],
+    ['<', DamageType.SupplementStart],
+    ['>', DamageType.SupplementEnd],
+    ['〈', DamageType.SupplementStart],
+    ['〉', DamageType.SupplementEnd],
+    ['(', DamageType.UnknownDamageStart],
+    [')', DamageType.UnknownDamageEnd]
+  ];
+
+  test.each(cases)(
+    'should parse damage type %p as Damage Content with Damage Type %p',
+    (toParse, expected) => expect(parser.tryParse(toParse)).toEqual(damageContent(expected))
+  );
+}
+
+describe('damageParser', () => {
+  testParseDamages(transliteration.damages);
+
+  it.skip('should parse rasures', () => {
+    fail('TODO: update...');
   });
 });
 
-describe('akkadogramm', () => {
-  const parser = transliteration.akkadogramm;
+// Corrections
 
-  it('should parse akkadogramms starting with _', () => {
-    expect(parser.tryParse('_ABC')).toEqual(akkadogramm('_', 'ABC'));
-    expect(parser.tryParse('_LUGAL')).toEqual(akkadogramm('_', 'LUGAL'));
-    expect(parser.tryParse('_LUGxAL')).toEqual(akkadogramm('_', 'LUG', inscribedLetter('AL')));
-    expect(parser.tryParse('_LUGxALx')).toEqual(akkadogramm('_', 'LUG', inscribedLetter('AL'), 'ₓ'));
-  });
+export function testParseCorrections(parser: Parser<AOWordContent>): void {
+  const cases: [string, AOCorrType][] = [
+    ['?', '?'],
+    ['(?)', '(?)'],
+    ['!', '!'],
+    ['sic', 'sic'],
+    ['!?', '!?'],
+  ];
 
-  it('should parse akkadogramms starting with -', () => {
-    expect(parser.tryParse('-ABC')).toEqual(akkadogramm('-', 'ABC'));
-    expect(parser.tryParse('-LUGAL')).toEqual(akkadogramm('-', 'LUGAL'));
-    expect(parser.tryParse('-LUGxAL')).toEqual(akkadogramm('-', 'LUG', inscribedLetter('AL')));
-    expect(parser.tryParse('-LUGxALx')).toEqual(akkadogramm('-', 'LUG', inscribedLetter('AL'), 'ₓ'));
-  });
-});
+  test.each(cases)(
+    'should parse correction type %p as Correction Content with correction type %p',
+    (toParse, expected) => expect(parser.tryParse(toParse)).toEqual(aoCorr(expected))
+  );
+}
 
-describe('sumerogramm', () => {
-  const parser = transliteration.sumerogramm;
+describe('correctionsParser', () => testParseCorrections(transliteration.corrections));
 
-  it('should parse sumerogramms', () => {
-    expect(parser.tryParse('ABC')).toEqual(sumerogramm('ABC'));
-    expect(parser.tryParse('LUGAL')).toEqual(sumerogramm('LUGAL'));
-    expect(parser.tryParse('GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
-  });
+// ParseP
 
-  it('should parse sumerogramms starting with --', () => {
-    expect(parser.tryParse('--ABC')).toEqual(sumerogramm('ABC'));
-    expect(parser.tryParse('--LUGAL')).toEqual(sumerogramm('LUGAL'));
-    expect(parser.tryParse('--GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
-  });
-});
+export function testParseParseP(parser: Parser<AOWordContent>): void {
+  test.each([['§'], ['¬¬¬']])(
+    'should parse %p as ParseP',
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParseP)
+  );
+}
+
+describe('parseParagraphParser', () => testParseParseP(transliteration.parseP));
+
+// ParsePDouble
+
+export function testParseParsePDouble(parser: Parser<AOWordContent>): void {
+  test.each([['§§'], ['===']])(
+    'should parse %p as ParsePDouble',
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParsePDouble)
+  );
+}
+
+describe('parseParagraphDoubleParser', () => testParseParsePDouble(transliteration.parsePDouble));
+
+// Ellipsis
+
+export function testParseEllipsis(parser: Parser<AOWordContent>): void {
+  test.each([['…'], ['...']])(
+    'should parse %p as Ellipsis',
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(Ellipsis)
+  )
+}
+
+describe('ellipsisParser', () => testParseEllipsis(transliteration.ellipsis));
+
+// Hittite
+
+export function testParseHittite(parser: Parser<AOWordContent>): void {
+  const cases: [string][] = [['abc'], ['def'], ['wyz']];
+
+  test.each(cases)(
+    'should parse %p as hittite',
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(toParse));
+}
+
+describe('hittite', () => testParseHittite(transliteration.hittite));
+
+// Determinativ
+
+function testParseDefaultDeterminativ(parser: Parser<AOWordContent>): void {
+  const defaultCases: [string][] = [['ABC'], ['XYZ']];
+
+  test.each(defaultCases)(
+    'should parse °%p° as a determinativ',
+    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(toParse))
+  );
+}
+
+function testParseSpecialGenusDeterminativ(parser: Parser<AOWordContent>): void {
+  test.each(determinativSpecialGenusCases)(
+    'should parse °%p° as a determinativ [!Special Case!]',
+    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(toParse))
+  )
+}
+
+function testParseSpecialDeityDeterminativ(parser: Parser<AOWordContent>): void {
+  test.each(determinativSpecialDeityCases)(
+    'should parse °%p° as a determinativ [!Special Case!]',
+    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(toParse))
+  )
+}
+
+export function testParseDeterminativ(parser: Parser<AOWordContent>): void {
+  testParseDefaultDeterminativ(parser);
+  testParseSpecialGenusDeterminativ(parser);
+  testParseSpecialDeityDeterminativ(parser);
+}
 
 describe('determinativ', () => {
   const parser = transliteration.determinativ;
 
-  it('should parser a determinativ', () => {
-    expect(parser.tryParse('°ABC°')).toEqual(determinativ('ABC'));
-    expect(parser.tryParse('°XYZ°')).toEqual(determinativ('XYZ'));
-  });
+  testParseDeterminativ(parser);
 
-  it('should parse special determinatives', () => {
-    expect(parser.tryParse('°m.D°')).toEqual(determinativ('m.D'));
-    expect(parser.tryParse('°f.D°')).toEqual(determinativ('f.D'));
-  })
-
-  it('should not parse a mater lectionis', () => {
-    expect(parser.parse('°abc°').status).toBeFalsy();
-    expect(parser.parse('°xyz°').status).toBeFalsy();
-  });
+  test.each(materLectionisCases)(
+    'should not parse °%p° (=> real mater lectionis)',
+    (toParse) => expect(parser.parse(`°${toParse}°`).status).toBeFalsy()
+  );
 });
+
+// Mater Lectionis
+
+export function testParseMaterLectionis(parser: Parser<AOWordContent>): void {
+  test.each(materLectionisCases)(
+    'should parse °%p° as mater lectionis',
+    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(materLectionis(toParse))
+  );
+}
 
 describe('materLectionis', () => {
   const parser = transliteration.materLectionis;
 
-  it('should parse a mater lectionis', () => {
-    expect(parser.tryParse('°abc°')).toEqual(materLectionis('abc'));
-    expect(parser.tryParse('°xyz°')).toEqual(materLectionis('xyz'));
-  });
-
-  it('should parse special content as a determinativ', () => {
-    expect(parser.tryParse('°m°')).toEqual(determinativ('m'));
-    expect(parser.tryParse('°f°')).toEqual(determinativ('f'));
-  })
-
-  it('should not parse a determinativ', () => {
-    expect(parser.parse('°ABC°').status).toBeFalsy();
-    expect(parser.parse('°XYZ°').status).toBeFalsy();
-  });
+  testParseMaterLectionis(parser);
+  testParseSpecialGenusDeterminativ(parser);
 });
 
-describe('stringContent', () => {
-  const parser = transliteration.simpleWordContent;
+// Illegible Content
 
-  it('should parser hittite', () => {
-    expect(parser.tryParse('abc')).toEqual('abc');
-    expect(parser.tryParse('xyz')).toEqual('xyz');
+export function testParseIllegibleContent(parser: Parser<AOWordContent>): void {
+  expect(parser.tryParse('x')).toEqual(AOIllegibleContent);
+}
+
+describe('illegible', () => testParseIllegibleContent(transliteration.illegible));
+
+// Sign content
+
+export function testParseSignContent(parser: Parser<AOWordContent>): void {
+  test.each(curlyBraceCases)(
+    'should parse {S:%p} as a sign',
+    (toParse) => expect(parser.tryParse(`{S:${toParse}}`)).toEqual(aoSign(toParse))
+  );
+}
+
+describe('signParser', () => testParseSignContent(transliteration.sign));
+
+// Gaps
+
+export function testParseGapContent(parser: Parser<AOWordContent>): void {
+  test.each(curlyBraceCases)(
+    'should parse {G:%p} as a gap',
+    (toParse) => expect(parser.tryParse(`{G:${toParse}}`)).toEqual(aoGap(toParse))
+  );
+}
+
+describe('gapParser', () => testParseGapContent(transliteration.gap));
+
+// Foot Note
+
+export function testParseFootNote(parser: Parser<AOWordContent>): void {
+  test.each(curlyBraceCases)(
+    'should parse {F:%p} as a foot note',
+    (toParse) => expect(parser.tryParse(`{F:${toParse}}`)).toEqual(aoNote(toParse))
+  );
+}
+
+describe('footNoteParser', () => testParseFootNote(transliteration.footNote));
+
+// Kolon Mark
+
+export function testParseKolonMark(parser: Parser<AOWordContent>): void {
+  test.each(curlyBraceCases)(
+    'should parse {K:%p} as a kolon mark',
+    (toParse) => expect(parser.tryParse(`{K:${toParse}}`)).toEqual(aoKolonMark(toParse))
+  );
+}
+
+describe('kolonMarkParser', () => testParseKolonMark(transliteration.kolonMark));
+
+// Numeral content
+
+export function testParseNumeralContent(parser: Parser<AOWordContent>): void {
+  const cases: [string][] = [['1'], ['4'], ['₄'], ['₀₁₂₃₄₅₆₇₈₉']];
+
+  test.each(cases)(
+    'should parse %p as numeral content',
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(numeralContent(toParse))
+  );
+}
+
+describe('numeralContentParser', () => testParseNumeralContent(transliteration.numeralContent));
+
+// Inscribed Letter
+
+export function testParseInscribedLetter(parser: Parser<AOWordContent>): void {
+  it.skip('should parse an inscribed letter', () => {
+    fail('TODO: implement!');
   });
+}
 
-  it('should parser a determinativ', () => {
-    expect(parser.tryParse('°ABC°')).toEqual(determinativ('ABC'));
-    expect(parser.tryParse('°XYZ°')).toEqual(determinativ('XYZ'));
+describe('inscribedLetterParser', () => testParseInscribedLetter(transliteration.inscribedLetter));
+
+// Index Digit
+
+export function testParseIndexDigit(parser: Parser<AOWordContent>): void {
+  it.skip('should parse an index digit', () => {
+    fail('TODO: implement!');
   });
+}
 
-  it('should parse a mater lectionis', () => {
-    expect(parser.tryParse('°abc°')).toEqual(materLectionis('abc'));
-    expect(parser.tryParse('°xyz°')).toEqual(materLectionis('xyz'));
-  });
-
-});
-
-/*
-describe('markContent', () => {
-  const parser = transliteration.markContent;
-
-  it('should parse mark contents', () => {
-    expect(parser.tryParse('{S:AN}')).toEqual(aoSign('AN'))
-    expect(parser.tryParse('{K:AN}')).toEqual(aoKolonMark('AN'))
-    expect(parser.tryParse('{F:AN}')).toEqual(aoNote('AN', '-1'))
-    expect(parser.tryParse('{G:AN}')).toEqual(aoGap('AN'))
-
-    expect(parser.tryParse('{S:Anderer Text}')).toEqual(aoSign('Anderer Text'))
-    expect(parser.tryParse('{K:Anderer Text}')).toEqual(aoKolonMark('Anderer Text'))
-    expect(parser.tryParse('{F:Anderer Text}')).toEqual(aoNote('Anderer Text', '-1'))
-    expect(parser.tryParse('{G:Anderer Text}')).toEqual(aoGap('Anderer Text'))
-  });
-});
- */
-
-describe('wordContent', () => {
-  const parser = transliteration.wordContent;
-
-  it('should parser hittite', () => {
-    expect(parser.tryParse('abc')).toEqual('abc');
-    expect(parser.tryParse('xyz')).toEqual('xyz');
-  });
-
-  it('should parser a determinativ', () => {
-    expect(parser.tryParse('°ABC°')).toEqual(determinativ('ABC'));
-    expect(parser.tryParse('°XYZ°')).toEqual(determinativ('XYZ'));
-  });
-
-  it('should parse a mater lectionis', () => {
-    expect(parser.tryParse('°abc°')).toEqual(materLectionis('abc'));
-    expect(parser.tryParse('°xyz°')).toEqual(materLectionis('xyz'));
-  });
-
-  it('should parse sumerogramms', () => {
-    expect(parser.tryParse('ABC')).toEqual(sumerogramm('ABC'));
-    expect(parser.tryParse('LUGAL')).toEqual(sumerogramm('LUGAL'));
-    expect(parser.tryParse('GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
-  });
-
-  it('should parse sumerogramms starting with --', () => {
-    expect(parser.tryParse('--ABC')).toEqual(sumerogramm('ABC'));
-    expect(parser.tryParse('--LUGAL')).toEqual(sumerogramm('LUGAL'));
-    expect(parser.tryParse('--GUx.MAḪ')).toEqual(sumerogramm('GU', 'ₓ', '.', 'MAḪ'))
-  });
-
-  it('should parse akkadogramms starting with _', () => {
-    expect(parser.tryParse('_ABC')).toEqual(akkadogramm('_', 'ABC'));
-    expect(parser.tryParse('_LUGAL')).toEqual(akkadogramm('_', 'LUGAL'));
-    expect(parser.tryParse('_LUGxALx')).toEqual(akkadogramm('_', 'LUG', inscribedLetter('AL'), 'ₓ'));
-  });
-
-  it('should parse akkadogramms starting with -', () => {
-    expect(parser.tryParse('-ABC')).toEqual(akkadogramm('-', 'ABC'));
-    expect(parser.tryParse('-LUGAL')).toEqual(akkadogramm('-', 'LUGAL'));
-    expect(parser.tryParse('-LUGxALx')).toEqual(akkadogramm('-', 'LUG', inscribedLetter('AL'), 'ₓ'));
-  });
-})
+describe('indexDigitParser', () => testParseIndexDigit(transliteration.indexDigit));

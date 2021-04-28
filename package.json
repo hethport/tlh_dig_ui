@@ -45,6 +45,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build && rm -rf ../html/tlh_dig/public/* && touch ../html/tlh_dig/public/.gitkeep && cp -r build/* ../html/tlh_dig/public",
     "test": "react-scripts test",
+    "testVerbose": "react-scripts test --verbose",
     "eject": "react-scripts eject",
     "graphql-generate": "graphql-codegen --config codegen.yml",
     "i18n": "i18next"

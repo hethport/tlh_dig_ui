@@ -1,7 +1,7 @@
 import {attributeReader, XmlFormat} from "../../editor/xmlLoader";
 import {AOWordContent} from "./wordContent";
 
-type AOCorrType = '(?)' | 'sic' | '!' | '?' | '!?';
+export type AOCorrType = '(?)' | 'sic' | '!' | '?' | '!?';
 
 export interface AOCorr {
   type: 'AOCorr',

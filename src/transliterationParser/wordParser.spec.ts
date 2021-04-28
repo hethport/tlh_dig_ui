@@ -6,7 +6,7 @@ import {inscribedLetter} from "../model/wordContent/inscribedLetter";
 import {de} from "./testHelpers";
 import {AOWordContent} from "../model/wordContent/wordContent";
 
-describe('wordParser', () => {
+describe.skip('wordParser', () => {
   const parser = transliteration.wordContents;
 
   it('should parse words...', () => {

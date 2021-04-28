@@ -22,29 +22,29 @@ import {
   xmlifyDamageContent
 } from "./damages";
 import {AOSign, aoSignFormat, isAoSign} from "./sign";
-import {AONote, aoNoteFormat, isAoNote} from "./footNote";
+import {AOFootNote, aoNoteFormat, isAoNote} from "./footNote";
 import {AOKolonMark, aoKolonMarkFormat, isAoKolonMark} from "./kolonMark";
 import {AOIllegibleContent} from "./illegible";
 import {AOSpace, aoSpaceFormat, isSpace} from "./space";
 import {XmlFormat} from "../../editor/xmlLoader";
 import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "./inscribedLetter";
+import {Ellipsis} from "./ellipsis";
 
 // Word content
 
-export type MultiStringContent = string | AOCorr | DamageContent | InscribedLetter;
+export type MultiStringContent = AOCorr | DamageContent | InscribedLetter | string;
 
 export type AOSimpleWordContent = MultiStringContent
   | AODeterminativ
   | AOMaterLectionis
   | AONumeralContent
-  | AONote
+  | AOFootNote
   | AOSign
   | AOKolonMark
-  | typeof AOIllegibleContent
-  | AOCorr
-  | AOSpace;
+  | AOSpace
+  | typeof Ellipsis;
 
-export type AOWordContent = AOAkkadogramm | AOSumerogramm | AOSimpleWordContent; // TODO: more types?!
+export type AOWordContent = AOSimpleWordContent | AOAkkadogramm | AOSumerogramm | typeof AOIllegibleContent;
 
 export const aoWordContentFormat: XmlFormat<AOWordContent> = {
   read: (el) => {
