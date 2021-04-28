@@ -22,7 +22,7 @@ import {
   xmlifyDamageContent
 } from "./damages";
 import {AOSign, aoSignFormat, isAoSign} from "./sign";
-import {AOFootNote, aoNoteFormat, isAoNote} from "./footNote";
+import {AOFootNote, aoNoteFormat, isAoFootNote} from "./footNote";
 import {AOKolonMark, aoKolonMarkFormat, isAoKolonMark} from "./kolonMark";
 import {AOIllegibleContent} from "./illegible";
 import {AOSpace, aoSpaceFormat, isSpace} from "./space";
@@ -42,9 +42,9 @@ export type AOSimpleWordContent = MultiStringContent
   | AOSign
   | AOKolonMark
   | AOSpace
-  | typeof Ellipsis;
+  | Ellipsis;
 
-export type AOWordContent = AOSimpleWordContent | AOAkkadogramm | AOSumerogramm | typeof AOIllegibleContent;
+export type AOWordContent = AOSimpleWordContent | AOAkkadogramm | AOSumerogramm | AOIllegibleContent;
 
 export const aoWordContentFormat: XmlFormat<AOWordContent> = {
   read: (el) => {
@@ -104,7 +104,7 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
       return xmlifyDamageContent(c);
     } else if (isAoSign(c)) {
       return aoSignFormat.write(c);
-    } else if (isAoNote(c)) {
+    } else if (isAoFootNote(c)) {
       return aoNoteFormat.write(c);
     } else if (isAoKolonMark(c)) {
       return aoKolonMarkFormat.write(c);

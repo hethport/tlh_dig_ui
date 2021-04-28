@@ -8,14 +8,50 @@ import {isAkkadogramm, isSumerogramm} from "../model/wordContent/multiStringCont
 import {AOWord} from "../model/sentenceContent/word";
 import {isMaterLectionis} from "../model/wordContent/materLectionis";
 import {isNumeralContent} from "../model/wordContent/numeralContent";
-import {isAoNote} from "../model/wordContent/footNote";
+import {isAoFootNote} from "../model/wordContent/footNote";
 import {isAoKolonMark} from "../model/wordContent/kolonMark";
-import {AOWordContent} from "../model/wordContent/wordContent";
+import {AOSimpleWordContent, AOWordContent, MultiStringContent} from "../model/wordContent/wordContent";
+import {isIllegibleContent} from "../model/wordContent/illegible";
+import {isSpace} from "../model/wordContent/space";
+import {isEllipsis} from "../model/wordContent/ellipsis";
+
+function renderMultiStringContent(content: MultiStringContent): JSX.Element {
+  if (isDamageContent(content)) {
+    return <span>{getSymbolForDamageType(content.damageType)}</span>;
+  } else if (isCorrectionContent(content)) {
+    return <sup className="correction">{content.c}</sup>;
+  } else if (typeof content === 'string') {
+    return <span>{content}</span>;
+  } else {
+    // Inscribed Letter
+    return <span>{content.content}</span>;
+  }
+}
+
+function renderSimpleWordContent(content: AOSimpleWordContent): JSX.Element {
+  if (isDeterminativ(content)) {
+    return <span className="determinativ">{content.content}</span>;
+  } else if (isMaterLectionis(content)) {
+    return <span className="materLectionis">{content.content}</span>;
+  } else if (isNumeralContent(content)) {
+    return <span className="numberal">{content.content}</span>;
+  } else if (isAoFootNote(content)) {
+    return <span className="has-text-warning">TODO: {content.content}!</span>;
+  } else if (isAoSign(content)) {
+    return <span className="has-text-warning">TODO: {content.content}!</span>;
+  } else if (isAoKolonMark(content)) {
+    return <span className="has-text-warning">TODO: {content.content}!</span>;
+  } else if (isSpace(content)) {
+    return <span>TODO: how to render AOSpace?</span>;
+  } else if (isEllipsis(content)) {
+    return <span>…</span>;
+  } else {
+    return renderMultiStringContent(content);
+  }
+}
 
 function renderWordContent(content: AOWordContent): JSX.Element {
-  if (typeof content === 'string') {
-    return <span>{content}</span>;
-  } else if (isAkkadogramm(content)) {
+  if (isAkkadogramm(content)) {
     return <span className="akkadogramm">
       {content.contents.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
     </span>;
@@ -23,25 +59,10 @@ function renderWordContent(content: AOWordContent): JSX.Element {
     return <span className="sumerogramm">
       {content.contents.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
     </span>;
-  } else if (isDamageContent(content)) {
-    return <span>{getSymbolForDamageType(content.damageType)}</span>;
-  } else if (isCorrectionContent(content)) {
-    return <sup className="correction">{content.c}</sup>;
-  } else if (isDeterminativ(content)) {
-    return <span className="determinativ">{content.content}</span>;
-  } else if (isMaterLectionis(content)) {
-    return <span className="materLectionis">{content.content}</span>;
-  } else if (isNumeralContent(content)) {
-    return <span className="numberal">{content.content}</span>;
-  } else if (isAoSign(content)) {
-    return <span className="has-text-warning">TODO: {content.content}!</span>
-  } else if (isAoNote(content)) {
-    return <span className="has-text-warning">TODO: {content.content}!</span>
-  } else if (isAoKolonMark(content)) {
-    return <span className="has-text-warning">TODO: {content.content}!</span>
-  } else {
-    // Illegible Content
+  } else if (isIllegibleContent(content)) {
     return <span>x</span>;
+  } else {
+    return renderSimpleWordContent(content);
   }
 }
 

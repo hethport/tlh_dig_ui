@@ -1,6 +1,7 @@
 import {
   alt,
-  createLanguage, end,
+  createLanguage,
+  end,
   oneOf,
   optWhitespace,
   Parser,
@@ -20,12 +21,12 @@ import {AODeterminativ, determinativ,} from "../model/wordContent/determinativ";
 import {akkadogramm, AOAkkadogramm, AOSumerogramm, sumerogramm} from "../model/wordContent/multiStringContent";
 import {inscribedLetter, InscribedLetter} from "../model/wordContent/inscribedLetter";
 import {AOGap, aoGap} from "../model/sentenceContent/gap";
-import {Ellipsis} from "../model/wordContent/ellipsis";
+import {aoEllipsis, Ellipsis} from "../model/wordContent/ellipsis";
 import {AOWord, parsedWord} from "../model/sentenceContent/word";
 import {AOMaterLectionis, materLectionis} from "../model/wordContent/materLectionis";
 import {AONumeralContent, numeralContent} from "../model/wordContent/numeralContent";
 import {AOFootNote, aoNote} from "../model/wordContent/footNote";
-import {AOIllegibleContent} from "../model/wordContent/illegible";
+import {aoIllegibleContent, AOIllegibleContent} from "../model/wordContent/illegible";
 import {aoKolonMark, AOKolonMark} from "../model/wordContent/kolonMark";
 import {AOSimpleWordContent, AOWordContent, MultiStringContent} from "../model/wordContent/wordContent";
 
@@ -48,7 +49,7 @@ type LanguageSpec = {
   // Other content
   parseP: typeof ParseP,
   parsePDouble: typeof ParsePDouble,
-  ellipsis: typeof Ellipsis,
+  ellipsis: Ellipsis,
 
   gap: AOGap;
 
@@ -60,7 +61,7 @@ type LanguageSpec = {
   footNote: AOFootNote;
   sign: AOSign;
   kolonMark: AOKolonMark;
-  illegible: typeof AOIllegibleContent;
+  illegible: AOIllegibleContent;
 
   simpleWordContent: AOSimpleWordContent;
 
@@ -119,7 +120,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   parseP: () => alt(string('§'), string('¬¬¬')).result(ParseP),
   parsePDouble: () => alt(string('§§'), string('===')).result(ParsePDouble),
 
-  ellipsis: () => alt(string('…'), string('...')).result(Ellipsis),
+  ellipsis: () => alt(string('…'), string('...')).result(aoEllipsis),
 
   hittite: () => alt(
     regexp(lowerTextRegex),
@@ -152,7 +153,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
 
   numeralContent: () => regexp(/[[\d₀₁₂₃₄₅₆₇₈₉]+/).map((result) => numeralContent(result)),
 
-  illegible: () => string('x').result<typeof AOIllegibleContent>(AOIllegibleContent),
+  illegible: () => string('x').result(aoIllegibleContent),
 
   sign: () => seq(string('{S:'), optWhitespace, regexp(/[^}]*/), string('}'))
     .map(([_opening, _ws, content, _closing]) => aoSign(content)),
@@ -211,7 +212,7 @@ export const transliteration: TypedLanguage<LanguageSpec> = createLanguage<Langu
   wordContent: r => alt(r.akkadogramm, r.sumerogramm, r.simpleWordContent, r.parseP, r.parsePDouble),
 
   wordContents: r => alt<AOWordContent[]>(
-    r.illegible.result([AOIllegibleContent]),
+    r.illegible.result([aoIllegibleContent]),
     r.wordContent.atLeast(1)
   )
 });
