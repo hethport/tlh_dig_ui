@@ -1,5 +1,5 @@
 import {AOXml, aoXmlFormat} from './document';
-import {Result, transformResultTo} from "../functional/result";
+import {Result} from "../functional/result";
 
 // Document elements
 
@@ -27,7 +27,7 @@ export async function loadXml(file: File): Promise<[string, AOXml]> {
   console.info(aoXmlResult);
 
   // FIXME: return result!
-  return transformResultTo(aoXmlResult,
+  return aoXmlResult.transformTo(
     r => Promise.resolve([content, r]),
     e => Promise.reject(e)
   );

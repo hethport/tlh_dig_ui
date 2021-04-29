@@ -31,9 +31,7 @@
              mrp1=' LUGAL @ König @
 		{ a → FNL(u).NOM.SG.C}
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
-          ><sGr><del_in/>LUGA<del_fin/>L</sGr>
-            -<laes_in/>uš
-            <laes_fin/></w>
+          ><sGr><del_in/>LUGA<del_fin/>L</sGr>-<laes_in/>uš<laes_fin/></w>
 
           <w trans='eša' mrp0sel='  '
              mrp1=' eš- @ sitzen @ 3SG.PRS.MP @ III.1.3 @ '
@@ -75,8 +73,7 @@
              mrp1=' šipant= @ libieren @
 		{ a → 3SG.PRS}
 		{ b → 2SG.IMP} @ II.1.3 @ '
-          >ši-pa-an-t<del_in/>i
-            <del_fin/></w>
+          >ši-pa-an-t<del_in/>i<del_fin/></w>
 
           <lb txtid="KBo 4.9" lnr="Vs. I 3" lg="Hit"/>
 
@@ -98,11 +95,9 @@
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
           ><sGr>LUGAL</sGr>-uš</w>
 
-
           <w trans='IŠ-TU É' mrp0sel=' 1   '
              mrp1=' É @ Haus @ ABL @ 28.16 @ '><aGr>IŠ-TU</aGr>
             <sGr>É</sGr></w>
-
 
           <w trans='ZA-BA₄-BA₄' mrp0sel='  '
              mrp1=' ZABABA @ Zababa @
@@ -113,8 +108,7 @@
 		{ e → DN.ABL(UNM)}
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
-          ><aGr>ZA-B<del_in/>A₄-BA₄
-            <del_fin/></aGr></w>
+          ><aGr>ZA-B<del_in/>A₄-BA₄<del_fin/></aGr></w>
 
           <lb txtid="KBo 4.9" lnr="Vs. I 4" lg="Hit"/>
 
@@ -140,8 +134,7 @@
 
         <w trans='2' mrp0sel=' 1 '
            mrp1='  @ zwei @  @ QUANcar @ '
-        ><num><laes_in/>2
-          <laes_fin/></num></w>
+        ><num><laes_in/>2<laes_fin/></num></w>
 
 
         <w trans='DUMU.É.GAL' mrp0sel='  '
@@ -182,8 +175,7 @@
 		{ k → INS(UNM)}
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
-        ><d>LÚ</d>
-          <aGr>ME-ŠE-DI</aGr></w>
+        ><d>LÚ</d><aGr>ME-ŠE-DI</aGr></w>
 
 
         <w trans='peran' mrp0sel='  '

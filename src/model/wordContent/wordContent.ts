@@ -30,7 +30,6 @@ import {AOSpace, aoSpaceFormat, isSpace} from "./space";
 import {XmlFormat} from "../../editor/xmlLib";
 import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "./inscribedLetter";
 import {Ellipsis} from "./ellipsis";
-import {mapResult} from "../../functional/result";
 
 // Word content
 
@@ -52,17 +51,17 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
   read: (el) => {
     switch (el.tagName) {
       case 'del_in':
-        return mapResult(deletionStartFormat.read(el), (x) => damageContent(x));
+        return deletionStartFormat.read(el).map(damageContent);
       case 'del_fin':
-        return mapResult(deletionEndFormat.read(el), (x) => damageContent(x));
+        return deletionEndFormat.read(el).map(damageContent);
       case 'ras_in':
-        return mapResult(rasureStartFormat.read(el), (x) => damageContent(x));
+        return rasureStartFormat.read(el).map(damageContent);
       case 'ras_fin':
-        return mapResult(rasureEndFormat.read(el), (x) => damageContent(x));
+        return rasureEndFormat.read(el).map(damageContent);
       case 'laes_in':
-        return mapResult(lesionStartFormat.read(el), (x) => damageContent(x));
+        return lesionStartFormat.read(el).map(damageContent);
       case 'laes_fin':
-        return mapResult(lesionEndFormat.read(el), (x) => damageContent(x));
+        return lesionEndFormat.read(el).map(damageContent);
       case 'sGr':
         return sumerogrammFormat.read(el);
       case 'aGr':

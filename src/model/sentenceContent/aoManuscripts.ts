@@ -1,5 +1,5 @@
 import {childElementReader, XmlFormat} from "../../editor/xmlLib";
-import {mapResult, success} from '../../functional/result';
+import {success} from '../../functional/result';
 import {AOSentenceContent} from "../sentence";
 
 export interface AOTxtPubl {
@@ -24,10 +24,7 @@ export interface AOManuscripts {
 }
 
 export const aoManuscriptsFormat: XmlFormat<AOManuscripts> = {
-  read: (el) => mapResult(
-    childElementReader(el, 'AO:TxtPubl', aoTxtPublFormat),
-    (childParseResult) => aoManuscripts(childParseResult)
-  ),
+  read: (el) => childElementReader(el, 'AO:TxtPubl', aoTxtPublFormat).map(aoManuscripts),
   write: ({aoTxtPubl}) => ['<AO:Manuscripts>', ...aoTxtPublFormat.write(aoTxtPubl), '</AO:Manuscripts>']
 }
 

@@ -15,7 +15,7 @@ export function attributeReader<T>(el: Element, name: string, f: (v: string | nu
   return f(el.getAttribute(name));
 }
 
-export function failableAttributeReader<T, E = string>(el: Element, name: string, f: (v: string | null) => Result<T, E>): Result<T, E> {
+export function failableAttributeReader<T>(el: Element, name: string, f: (v: string | null) => Result<T, string[]>): Result<T, string[]> {
   return f(el.getAttribute(name));
 }
 

@@ -1,5 +1,5 @@
 import {attributeReader, childElementReader, XmlFormat} from "./xmlLib";
-import {failure, flattenResults, mapResult, Result, transformResultContent} from '../functional/result';
+import {failure, flattenResults, Result} from '../functional/result';
 import {ParseP, parsePDblFormat, ParsePDouble, parsePFormat} from "../model/paragraphEnds";
 import {Paragraph, paragraphFormat} from "../model/paragraph";
 
@@ -41,10 +41,7 @@ export interface AOBody {
 }
 
 export const aoBodyFormat: XmlFormat<AOBody> = {
-  read: (el) => mapResult(
-    childElementReader(el, 'div1', aoDiv1Format),
-    (div1) => aoBody(div1)
-  ),
+  read: (el) => childElementReader(el, 'div1', aoDiv1Format).map(aoBody),
   write: ({div1}) => ['<body>', ...aoDiv1Format.write(div1), '</body>']
 };
 
@@ -60,10 +57,7 @@ export interface AODiv1 {
 }
 
 const aoDiv1Format: XmlFormat<AODiv1> = {
-  read: (el) => mapResult(
-    childElementReader(el, 'text', aoTextFormat),
-    (aoText) => aoDiv1(aoText, attributeReader(el, 'type', (v) => v || ''))
-  ),
+  read: (el) => childElementReader(el, 'text', aoTextFormat).map((aoText) => aoDiv1(aoText, attributeReader(el, 'type', (v) => v || ''))),
   write: ({text, type}) => []
 }
 
@@ -96,11 +90,11 @@ const aoTextFormat: XmlFormat<AOText> = {
         }
       });
 
-    return transformResultContent(
-      flattenResults(childResults),
-      (contents) => aoText(contents),
-      (errorMessages) => errorMessages.flat()
-    )
+    return flattenResults(childResults)
+      .transformContent(
+        (contents) => aoText(contents),
+        (errorMessages) => errorMessages.flat()
+      );
   },
   write: ({content}) => []
 }

@@ -1,5 +1,5 @@
 import {attributeReader, childElementReader, XmlFormat,} from "./xmlLib";
-import {flattenResults, success, transformResultContent, zipResult} from "../functional/result";
+import {flattenResults, success, zipResult} from "../functional/result";
 
 // AOHeader
 
@@ -10,11 +10,10 @@ export interface AOHeader {
 }
 
 export const aoHeaderFormat: XmlFormat<AOHeader> = {
-  read: (el) => transformResultContent(
-    zipResult(
-      childElementReader(el, 'docID', aoDocIdFormat),
-      childElementReader(el, 'meta', aoMetaFormat)
-    ),
+  read: (el) => zipResult(
+    childElementReader(el, 'docID', aoDocIdFormat),
+    childElementReader(el, 'meta', aoMetaFormat)
+  ).transformContent(
     ([docId, meta]) => aoHeader(docId, meta),
     (errs) => errs.flat()
   ),
@@ -52,20 +51,20 @@ export interface AOMeta {
 }
 
 const aoMetaFormat: XmlFormat<AOMeta> = {
-  read: (el: Element) => transformResultContent(
+  read: (el: Element) => zipResult(
     zipResult(
-      zipResult(
-        childElementReader(el, 'creation-date', datedStringElementFormat),
-        childElementReader(el, 'kor2', datedStringElementFormat)
-      ),
-      zipResult(
-        childElementReader(el, 'AOxml-creation', datedStringElementFormat),
-        childElementReader(el, 'annotation', aoAnnotationFormat)
-      ),
+      childElementReader(el, 'creation-date', datedStringElementFormat),
+      childElementReader(el, 'kor2', datedStringElementFormat)
     ),
-    ([[cd, kor2], [xmlCreation, annotation]]) => aoMeta(cd, kor2, xmlCreation, annotation),
-    (errs) => errs.flat().flat()
-  ),
+    zipResult(
+      childElementReader(el, 'AOxml-creation', datedStringElementFormat),
+      childElementReader(el, 'annotation', aoAnnotationFormat)
+    ),
+  )
+    .transformContent(
+      ([[cd, kor2], [xmlCreation, annotation]]) => aoMeta(cd, kor2, xmlCreation, annotation),
+      (errs) => errs.flat().flat()
+    ),
   write: ({}) => []
 }
 
@@ -81,11 +80,13 @@ export interface AOAnnotation {
 }
 
 const aoAnnotationFormat: XmlFormat<AOAnnotation> = {
-  read: (el) => transformResultContent(
-    flattenResults(Array.from(el.children).map((el) => aoAnnotFormat.read(el))),
-    (annots) => aoAnnotation(annots),
-    (errs) => errs.flat()
-  ),
+  read: (el) => flattenResults(
+    Array.from(el.children).map((el) => aoAnnotFormat.read(el))
+  )
+    .transformContent(
+      (annots) => aoAnnotation(annots),
+      (errs) => errs.flat()
+    ),
   write: ({content}) => []
 };
 

@@ -1,5 +1,5 @@
 import {XmlFormat} from "../../editor/xmlLib";
-import {failure, flattenResults, mapResult, Result, success} from '../../functional/result';
+import {failure, flattenResults, Result, success} from '../../functional/result';
 import {damageContent, DamageType} from "./damages";
 import {AOWordContent, MultiStringContent} from "./wordContent";
 
@@ -41,12 +41,7 @@ export function akkadogramm(...contents: MultiStringContent[]): AOAkkadogramm {
 }
 
 export const akkadogrammFormat: XmlFormat<AOAkkadogramm> = {
-  read: (el) => mapResult(
-    flattenResults(
-      Array.from(el.childNodes).map(readMultiWordContent)
-    ),
-    (content) => akkadogramm(...content)
-  ),
+  read: (el) => flattenResults(Array.from(el.childNodes).map(readMultiWordContent)).map((content) => akkadogramm(...content)),
   write: ({contents}) => [`<aGr>${contents}</aGr>`]
 }
 
@@ -68,12 +63,7 @@ export function sumerogramm(...contents: MultiStringContent[]): AOSumerogramm {
 }
 
 export const sumerogrammFormat: XmlFormat<AOSumerogramm> = {
-  read: (el) => mapResult(
-    flattenResults(
-      Array.from(el.childNodes).map(readMultiWordContent)
-    ),
-    (content) => sumerogramm(...content)
-  ),
+  read: (el) => flattenResults(Array.from(el.childNodes).map(readMultiWordContent)).map((content) => sumerogramm(...content)),
   write: ({contents}) => [`<sGr>${contents}</sGr>`]
 }
 
