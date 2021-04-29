@@ -1,4 +1,4 @@
-import {XmlFormat} from "../../editor/xmlLoader";
+import {success, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent} from "./wordContent";
 
 /*
@@ -14,7 +14,7 @@ export function numeralContent(content: string): AONumeralContent {
 }
 
 export const numeralContentFormat: XmlFormat<AONumeralContent> = {
-  read: (el) => numeralContent(el.textContent || ''),
+  read: (el) => success(numeralContent(el.textContent || '')),
   write: ({content}) => [`<num>${content}</num>`]
 }
 

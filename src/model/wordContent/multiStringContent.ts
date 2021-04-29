@@ -1,30 +1,29 @@
-import {XmlFormat} from "../../editor/xmlLoader";
-import {DamageType} from "./damages";
+import {failure, flattenResults, mapResult, Result, success, XmlFormat} from "../../editor/xmlLib";
+import {damageContent, DamageType} from "./damages";
 import {AOWordContent, MultiStringContent} from "./wordContent";
 
-
-function readMultiWordContent(el: ChildNode): MultiStringContent {
-  if (el instanceof Text) {
-    return el.textContent || '';
-  } else if (el instanceof Element) {
+function readMultiWordContent(el: ChildNode): Result<MultiStringContent> {
+  if (el instanceof Element) {
     switch (el.tagName) {
       case 'del_in':
-        return DamageType.DeletionStart;
+        return success(damageContent(DamageType.DeletionStart));
       case 'del_fin':
-        return DamageType.DeletionEnd;
+        return success(damageContent(DamageType.DeletionEnd));
       case 'ras_in':
-        return DamageType.RasureStart;
+        return success(damageContent(DamageType.RasureStart));
       case 'ras_fin':
-        return DamageType.RasureEnd;
+        return success(damageContent(DamageType.RasureEnd));
       case 'laes_in':
-        return DamageType.LesionStart;
+        return success(damageContent(DamageType.LesionStart));
       case 'laes_fin':
-        return DamageType.LesionEnd;
+        return success(damageContent(DamageType.LesionEnd));
       default:
-        throw new Error(`Illegal tag name found: ${el.tagName}`);
+        return failure(`Illegal tag name found: ${el.tagName}`);
     }
+  } else if (el instanceof Text) {
+    return success(el.textContent || '');
   } else {
-    throw new Error(`Illegal tag found: ${el.nodeType}`);
+    return failure(`Illegal tag found: ${el.nodeType}`);
   }
 }
 
@@ -41,7 +40,12 @@ export function akkadogramm(...contents: MultiStringContent[]): AOAkkadogramm {
 }
 
 export const akkadogrammFormat: XmlFormat<AOAkkadogramm> = {
-  read: (el) => akkadogramm(...Array.from(el.childNodes).map(readMultiWordContent)),
+  read: (el) => mapResult(
+    flattenResults(
+      Array.from(el.childNodes).map(readMultiWordContent)
+    ),
+    (content) => akkadogramm(...content)
+  ),
   write: ({contents}) => [`<aGr>${contents}</aGr>`]
 }
 
@@ -63,7 +67,12 @@ export function sumerogramm(...contents: MultiStringContent[]): AOSumerogramm {
 }
 
 export const sumerogrammFormat: XmlFormat<AOSumerogramm> = {
-  read: (el) => sumerogramm(...Array.from(el.childNodes).map(readMultiWordContent)),
+  read: (el) => mapResult(
+    flattenResults(
+      Array.from(el.childNodes).map(readMultiWordContent)
+    ),
+    (content) => sumerogramm(...content)
+  ),
   write: ({contents}) => [`<sGr>${contents}</sGr>`]
 }
 

@@ -1,4 +1,4 @@
-import {attributeReader, XmlFormat} from "../../editor/xmlLoader";
+import {failableAttributeReader, failure, mapResult, success, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent} from "./wordContent";
 
 export type AOCorrType = '(?)' | 'sic' | '!' | '?' | '!?';
@@ -8,14 +8,15 @@ export interface AOCorr {
   c: AOCorrType;
 }
 
+function isAoCorrType(v: string | null): v is AOCorrType {
+  return !!v && (v === '(?)' || v === 'sic' || v === '!' || v === '?' || v === '!?');
+}
+
 export const aoCorrFormat: XmlFormat<AOCorr> = {
-  read: (el) => aoCorr(attributeReader(el, 'c', (v) => {
-    if (v && (v === '(?)' || v === 'sic' || v === '!' || v === '?' || v === '!?')) {
-      return v;
-    } else {
-      throw new Error(`Value '${v}' is not allowed!`);
-    }
-  })),
+  read: (el) => mapResult(
+    failableAttributeReader<AOCorrType>(el, 'c', (v) => isAoCorrType(v) ? success(v) : failure(`Value '${v}' is not allowed!`)),
+    (corrType) => aoCorr(corrType)
+  ),
   write: ({c}) => [`<corr c="${c}"/>`]
 }
 

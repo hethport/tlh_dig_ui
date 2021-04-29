@@ -1,5 +1,5 @@
 import {AOSentence, aoSentenceFormat} from "./sentence";
-import {childElementReader, XmlFormat} from "../editor/xmlLoader";
+import {childElementReader, mapResult, XmlFormat} from "../editor/xmlLib";
 import {AOTextContent} from "../editor/documentBody";
 
 export interface Paragraph {
@@ -9,7 +9,10 @@ export interface Paragraph {
 }
 
 export const paragraphFormat: XmlFormat<Paragraph> = {
-  read: (el) => aoParagraph(childElementReader(el, 's', aoSentenceFormat)),
+  read: (el) => mapResult(
+    childElementReader(el, 's', aoSentenceFormat),
+    (aoS) => aoParagraph(aoS)
+  ),
   write: ({s}) => []
 }
 

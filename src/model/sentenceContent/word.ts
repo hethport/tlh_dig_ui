@@ -1,4 +1,4 @@
-import {attributeReader, XmlFormat} from "../../editor/xmlLoader";
+import {attributeReader, failure, flattenResults, mapResult, Result, success, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent, aoWordContentFormat, getContent} from "../wordContent/wordContent";
 import {morphologicalAnalysis, MorphologicalAnalysis} from "../morphologicalAnalysis";
 import {AOSentenceContent} from "../sentence";
@@ -28,30 +28,40 @@ function readMorphAnalysis(value: string | null): MorphologicalAnalysis | undefi
 
 export const aoWordFormat: XmlFormat<AOWord> = {
   read: (el: Element) => {
-    return {
-      type: 'AOWord',
-      content: Array.from(el.childNodes).map((x: ChildNode) => {
+    const readContent: Result<AOWordContent[]> = flattenResults(
+      Array.from(el.childNodes).map((x: ChildNode) => {
         if (x instanceof Text) {
-          return x.textContent || '';
+          return success(x.textContent || '');
         } else if (x instanceof Element) {
           return aoWordContentFormat.read(x);
         } else {
-          throw new Error(`Illegal node type found`)
+          return failure(`Illegal node type found`);
         }
-      }),
-      lg: attributeReader(el, 'lg', (v) => v || undefined),
-      mrp0sel: attributeReader(el, 'mpr0sel', (v) => v || undefined),
-      mrp1: attributeReader(el, 'mrp1', readMorphAnalysis),
-      mpr2: attributeReader(el, 'mrp2', readMorphAnalysis),
-      mpr3: attributeReader(el, 'mrp3', readMorphAnalysis),
-      mpr4: attributeReader(el, 'mrp4', readMorphAnalysis),
-      mpr5: attributeReader(el, 'mrp5', readMorphAnalysis),
-      mpr6: attributeReader(el, 'mrp6', readMorphAnalysis),
-      mpr7: attributeReader(el, 'mrp7', readMorphAnalysis),
-      mpr8: attributeReader(el, 'mrp8', readMorphAnalysis),
-      mpr9: attributeReader(el, 'mrp9', readMorphAnalysis),
-      trans: attributeReader(el, 'trans', (v) => v || undefined)
-    }
+      })
+    );
+
+    return mapResult(
+      readContent,
+      (content) => {
+
+        return {
+          type: 'AOWord',
+          content,
+          lg: attributeReader(el, 'lg', (v) => v || undefined),
+          mrp0sel: attributeReader(el, 'mpr0sel', (v) => v || undefined),
+          mrp1: attributeReader(el, 'mrp1', readMorphAnalysis),
+          mpr2: attributeReader(el, 'mrp2', readMorphAnalysis),
+          mpr3: attributeReader(el, 'mrp3', readMorphAnalysis),
+          mpr4: attributeReader(el, 'mrp4', readMorphAnalysis),
+          mpr5: attributeReader(el, 'mrp5', readMorphAnalysis),
+          mpr6: attributeReader(el, 'mrp6', readMorphAnalysis),
+          mpr7: attributeReader(el, 'mrp7', readMorphAnalysis),
+          mpr8: attributeReader(el, 'mrp8', readMorphAnalysis),
+          mpr9: attributeReader(el, 'mrp9', readMorphAnalysis),
+          trans: attributeReader(el, 'trans', (v) => v || undefined)
+        }
+      }
+    );
   },
   write: ({content}) => {
     const xmlContent = content.map(aoWordContentFormat.write).join(' ');

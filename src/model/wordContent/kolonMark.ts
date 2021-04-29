@@ -1,4 +1,4 @@
-import {XmlFormat} from "../../editor/xmlLoader";
+import {success, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent} from "./wordContent";
 
 export interface AOKolonMark {
@@ -7,7 +7,7 @@ export interface AOKolonMark {
 }
 
 export const aoKolonMarkFormat: XmlFormat<AOKolonMark> = {
-  read: (el) => aoKolonMark(el.textContent || ''),
+  read: (el) => success(aoKolonMark(el.textContent || '')),
   write: ({content}) => [`<AO:KolonMark>${content}</AO:KolonMark>`]
 }
 

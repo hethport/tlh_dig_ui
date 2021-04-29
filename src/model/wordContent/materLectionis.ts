@@ -1,4 +1,4 @@
-import {XmlFormat} from "../../editor/xmlLoader";
+import {success, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent} from "./wordContent";
 
 /**
@@ -15,7 +15,7 @@ export function materLectionis(content: string): AOMaterLectionis {
 }
 
 export const materLectionisFormat: XmlFormat<AOMaterLectionis> = {
-  read: (el) => materLectionis(el.textContent || ''),
+  read: (el) => success(materLectionis(el.textContent || '')),
   write: ({content}) => [`<SP___AO_3a_MaterLect>${content}</SP___AO_3a_MaterLect>`]
 };
 

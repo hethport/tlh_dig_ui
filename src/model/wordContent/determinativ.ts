@@ -1,4 +1,4 @@
-import {XmlFormat} from "../../editor/xmlLoader";
+import {success, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent} from "./wordContent";
 
 /*
@@ -16,7 +16,7 @@ export function determinativ(content: string): AODeterminativ {
 }
 
 export const determinativFormat: XmlFormat<AODeterminativ> = {
-  read: (el) => determinativ(el.textContent || ''),
+  read: (el) => success(determinativ(el.textContent || '')),
   write: ({content}) => [`<d>${content}</d>`]
 };
 

@@ -1,4 +1,4 @@
-import {childElementReader, XmlFormat} from "../../editor/xmlLoader";
+import {childElementReader, mapResult, success, XmlFormat} from "../../editor/xmlLib";
 import {AOSentenceContent} from "../sentence";
 
 export interface AOTxtPubl {
@@ -7,7 +7,7 @@ export interface AOTxtPubl {
 }
 
 const aoTxtPublFormat: XmlFormat<AOTxtPubl> = {
-  read: (el) => aoTxtPubl(el.textContent || ''),
+  read: (el) => success(aoTxtPubl(el.textContent || '')),
   write: ({content}) => [`<AO:TxtPubl>${content}</AO:TxtPubl>`]
 }
 
@@ -23,7 +23,10 @@ export interface AOManuscripts {
 }
 
 export const aoManuscriptsFormat: XmlFormat<AOManuscripts> = {
-  read: (el) => aoManuscripts(childElementReader(el, 'AO:TxtPubl', aoTxtPublFormat)),
+  read: (el) => mapResult(
+    childElementReader(el, 'AO:TxtPubl', aoTxtPublFormat),
+    (childParseResult) => aoManuscripts(childParseResult)
+  ),
   write: ({aoTxtPubl}) => ['<AO:Manuscripts>', ...aoTxtPublFormat.write(aoTxtPubl), '</AO:Manuscripts>']
 }
 

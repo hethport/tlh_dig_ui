@@ -1,8 +1,8 @@
 import React, {Fragment} from "react";
 import {Paragraph} from "../../model/paragraph";
 import {AOSentenceContent} from "../../model/sentence";
-import {WordRender} from "./word";
 import {isAOWord} from "../../model/sentenceContent/word";
+import {renderWord} from "../../manuscript/TransliterationLineResult";
 
 interface IProps {
   paragraph: Paragraph;
@@ -10,7 +10,10 @@ interface IProps {
 
 function renderSentenceContent(sc: AOSentenceContent): JSX.Element {
   if (isAOWord(sc)) {
-    return <WordRender word={sc}/>;
+    return <>
+      <pre>{JSON.stringify(sc.content, null, 2)}</pre>
+      <pre>{renderWord(sc)}</pre>
+    </>;
   } else {
     /*
     if (isAOManuscripts(sc)) {
@@ -18,11 +21,16 @@ function renderSentenceContent(sc: AOSentenceContent): JSX.Element {
     } else if (isAOLineBreak(sc)) {
     }
      */
-    return <div>{JSON.stringify(sc, null, 2)}</div>
+    return <div>{JSON.stringify(sc)}</div>
   }
 }
 
-export function ParagraphRender({paragraph}: IProps): JSX.Element {
+export function ParagraphRender(
+{
+  paragraph
+}
+: IProps): JSX.Element
+{
 
   const contents: AOSentenceContent[] = paragraph.s.content;
 

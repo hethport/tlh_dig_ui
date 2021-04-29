@@ -1,4 +1,4 @@
-import {attributeReader, XmlFormat} from "../../editor/xmlLoader";
+import {attributeReader, success, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent} from "./wordContent";
 
 export interface AOSpace {
@@ -7,7 +7,7 @@ export interface AOSpace {
 }
 
 export const aoSpaceFormat: XmlFormat<AOSpace> = {
-  read: (el) => aoSpace(attributeReader(el, 'c', (v) => v || '')),
+  read: (el) => success(aoSpace(attributeReader(el, 'c', (v) => v || ''))),
   write: ({c}) => [`<space c="${c}"/>`]
 }
 

@@ -11,6 +11,7 @@ import {AODeterminativ, determinativFormat, isDeterminativ} from "./determinativ
 import {AOMaterLectionis, isMaterLectionis, materLectionisFormat} from "./materLectionis";
 import {AOCorr, aoCorrFormat, isCorrectionContent} from "./corrections";
 import {
+  damageContent,
   DamageContent,
   deletionEndFormat,
   deletionStartFormat,
@@ -26,7 +27,7 @@ import {AOFootNote, aoNoteFormat, isAoFootNote} from "./footNote";
 import {AOKolonMark, aoKolonMarkFormat, isAoKolonMark} from "./kolonMark";
 import {AOIllegibleContent} from "./illegible";
 import {AOSpace, aoSpaceFormat, isSpace} from "./space";
-import {XmlFormat} from "../../editor/xmlLoader";
+import {mapResult, XmlFormat} from "../../editor/xmlLib";
 import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "./inscribedLetter";
 import {Ellipsis} from "./ellipsis";
 
@@ -50,17 +51,17 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
   read: (el) => {
     switch (el.tagName) {
       case 'del_in':
-        return deletionStartFormat.read(el);
+        return mapResult(deletionStartFormat.read(el), (x) => damageContent(x));
       case 'del_fin':
-        return deletionEndFormat.read(el);
+        return mapResult(deletionEndFormat.read(el), (x) => damageContent(x));
       case 'ras_in':
-        return rasureStartFormat.read(el);
+        return mapResult(rasureStartFormat.read(el), (x) => damageContent(x));
       case 'ras_fin':
-        return rasureEndFormat.read(el);
+        return mapResult(rasureEndFormat.read(el), (x) => damageContent(x));
       case 'laes_in':
-        return lesionStartFormat.read(el);
+        return mapResult(lesionStartFormat.read(el), (x) => damageContent(x));
       case 'laes_fin':
-        return lesionEndFormat.read(el);
+        return mapResult(lesionEndFormat.read(el), (x) => damageContent(x));
       case 'sGr':
         return sumerogrammFormat.read(el);
       case 'aGr':
@@ -119,7 +120,6 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
     }
   }
 };
-
 
 export function getContent(c: AOWordContent): string {
   if (typeof c === 'string') {
