@@ -1,6 +1,5 @@
 import {AOXml, aoXmlFormat} from './document';
-import {Result, Success} from "./xmlLib";
-
+import {Result, transformResultTo} from "../functional/result";
 
 // Document elements
 
@@ -23,10 +22,13 @@ export async function loadXml(file: File): Promise<[string, AOXml]> {
 
   const aoXmlNode: Element = doc.getElementsByTagName('AOxml')[0];
 
-  const aoXmlResult: Result<AOXml> = aoXmlFormat.read(aoXmlNode);
+  const aoXmlResult: Result<AOXml, string[]> = aoXmlFormat.read(aoXmlNode);
+
+  console.info(aoXmlResult);
 
   // FIXME: return result!
-  const aoXml = (aoXmlResult as Success<AOXml>).value;
-
-  return Promise.resolve([content, aoXml]);
+  return transformResultTo(aoXmlResult,
+    r => Promise.resolve([content, r]),
+    e => Promise.reject(e)
+  );
 }

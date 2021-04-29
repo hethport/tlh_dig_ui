@@ -1,5 +1,6 @@
-import {attributeReader, success, XmlFormat} from "../../editor/xmlLib";
+import {attributeReader, XmlFormat} from "../../editor/xmlLib";
 import {AOSentenceContent} from "../sentence";
+import {success} from "../../functional/result";
 
 export interface AOGap {
   type: 'gap';

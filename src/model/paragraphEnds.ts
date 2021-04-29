@@ -1,5 +1,6 @@
-import {success, XmlFormat} from "../editor/xmlLib";
+import {XmlFormat} from "../editor/xmlLib";
 import {AOTextContent} from "../editor/documentBody";
+import {success} from "../functional/result";
 
 // ParseP
 

@@ -1,5 +1,6 @@
 import {AOWordContent} from "./wordContent";
-import {success, XmlFormat} from "../../editor/xmlLib";
+import {XmlFormat} from "../../editor/xmlLib";
+import {success} from "../../functional/result";
 
 export interface InscribedLetter {
   type: 'InscribedLetter';

@@ -1,4 +1,5 @@
-import {childElementReader, mapResult, success, XmlFormat} from "../../editor/xmlLib";
+import {childElementReader, XmlFormat} from "../../editor/xmlLib";
+import {mapResult, success} from '../../functional/result';
 import {AOSentenceContent} from "../sentence";
 
 export interface AOTxtPubl {

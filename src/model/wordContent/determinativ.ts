@@ -1,4 +1,5 @@
-import {success, XmlFormat} from "../../editor/xmlLib";
+import {XmlFormat} from "../../editor/xmlLib";
+import {success} from '../../functional/result';
 import {AOWordContent} from "./wordContent";
 
 /*

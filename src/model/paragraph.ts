@@ -1,5 +1,6 @@
 import {AOSentence, aoSentenceFormat} from "./sentence";
-import {childElementReader, mapResult, XmlFormat} from "../editor/xmlLib";
+import {childElementReader, XmlFormat} from "../editor/xmlLib";
+import {mapResult} from '../functional/result';
 import {AOTextContent} from "../editor/documentBody";
 
 export interface Paragraph {

@@ -1,6 +1,7 @@
 import {AOBody, aoBodyFormat} from "./documentBody";
 import {AOHeader, aoHeaderFormat} from "./documentHeader";
-import {childElementReader, mapResult, XmlFormat, zipResult} from "./xmlLib";
+import {childElementReader, XmlFormat} from "./xmlLib";
+import {transformResultContent, zipResult} from "../functional/result";
 
 interface GenericAttribute {
   name: string;
@@ -25,13 +26,19 @@ export interface AOXml {
 }
 
 export const aoXmlFormat: XmlFormat<AOXml> = {
-  read: (el) => mapResult(
-    zipResult(
-      childElementReader(el, 'AOHeader', aoHeaderFormat),
-      childElementReader(el, 'body', aoBodyFormat)
-    ),
-    ([header, body]) => aoXml(extractGenericAttributes(el), header, body)
-  ),
+  read: (el) => {
+    const header = childElementReader(el, 'AOHeader', aoHeaderFormat);
+    const body = childElementReader(el, 'body', aoBodyFormat);
+
+    console.info(header);
+    console.info(body);
+
+    return transformResultContent(
+      zipResult(header, body),
+      ([header, body]) => aoXml(extractGenericAttributes(el), header, body),
+      (errs) => errs.flat()
+    )
+  },
   write: ({attributes, aoHeader, body}) => []
 }
 

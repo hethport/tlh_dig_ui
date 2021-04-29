@@ -1,4 +1,5 @@
-import {attributeReader, failableAttributeReader, failure, mapResult, myTry, XmlFormat} from "../../editor/xmlLib";
+import {attributeReader, failableAttributeReader, XmlFormat} from "../../editor/xmlLib";
+import {failure, mapResult, myTry} from '../../functional/result';
 import {AOWordContent} from "./wordContent";
 
 export interface AOFootNote {
@@ -9,7 +10,10 @@ export interface AOFootNote {
 
 export const aoNoteFormat: XmlFormat<AOFootNote> = {
   read: (el) => mapResult(
-    failableAttributeReader(el, 'n', (v) => v ? myTry(() => parseInt(v)) : failure('No value given!')),
+    failableAttributeReader(el, 'n',
+      (v) => v
+        ? myTry(() => parseInt(v), (s) => [s])
+        : failure(['No value given!'])),
     (num) => aoNote(attributeReader(el, 'c', (v) => v || ''), num)
   ),
   write: ({content, number}) => [`<note c="${content}" n="${number}"/>`]

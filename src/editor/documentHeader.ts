@@ -1,4 +1,5 @@
-import {attributeReader, childElementReader, flattenResults, mapResult, success, XmlFormat, zipResult} from "./xmlLib";
+import {attributeReader, childElementReader, XmlFormat,} from "./xmlLib";
+import {flattenResults, success, transformResultContent, zipResult} from "../functional/result";
 
 // AOHeader
 
@@ -9,12 +10,13 @@ export interface AOHeader {
 }
 
 export const aoHeaderFormat: XmlFormat<AOHeader> = {
-  read: (el) => mapResult(
+  read: (el) => transformResultContent(
     zipResult(
       childElementReader(el, 'docID', aoDocIdFormat),
       childElementReader(el, 'meta', aoMetaFormat)
     ),
-    ([docId, meta]) => aoHeader(docId, meta)
+    ([docId, meta]) => aoHeader(docId, meta),
+    (errs) => errs.flat()
   ),
   write: ({docId, meta}) => ['<AOHeader>', ...aoDocIdFormat.write(docId), ...aoMetaFormat.write(meta), '</AOHeader>']
 };
@@ -50,7 +52,7 @@ export interface AOMeta {
 }
 
 const aoMetaFormat: XmlFormat<AOMeta> = {
-  read: (el: Element) => mapResult(
+  read: (el: Element) => transformResultContent(
     zipResult(
       zipResult(
         childElementReader(el, 'creation-date', datedStringElementFormat),
@@ -61,7 +63,8 @@ const aoMetaFormat: XmlFormat<AOMeta> = {
         childElementReader(el, 'annotation', aoAnnotationFormat)
       ),
     ),
-    ([[cd, kor2], [xmlCreation, annotation]]) => aoMeta(cd, kor2, xmlCreation, annotation)
+    ([[cd, kor2], [xmlCreation, annotation]]) => aoMeta(cd, kor2, xmlCreation, annotation),
+    (errs) => errs.flat().flat()
   ),
   write: ({}) => []
 }
@@ -78,9 +81,10 @@ export interface AOAnnotation {
 }
 
 const aoAnnotationFormat: XmlFormat<AOAnnotation> = {
-  read: (el) => mapResult(
+  read: (el) => transformResultContent(
     flattenResults(Array.from(el.children).map((el) => aoAnnotFormat.read(el))),
-    (annots) => aoAnnotation(annots)
+    (annots) => aoAnnotation(annots),
+    (errs) => errs.flat()
   ),
   write: ({content}) => []
 };

@@ -1,4 +1,5 @@
-import {attributeReader, failure, flattenResults, mapResult, Result, success, XmlFormat} from "../../editor/xmlLib";
+import {attributeReader, XmlFormat} from "../../editor/xmlLib";
+import {failure, flattenResults, Result, success, transformResultContent} from '../../functional/result';
 import {AOWordContent, aoWordContentFormat, getContent} from "../wordContent/wordContent";
 import {morphologicalAnalysis, MorphologicalAnalysis} from "../morphologicalAnalysis";
 import {AOSentenceContent} from "../sentence";
@@ -28,22 +29,21 @@ function readMorphAnalysis(value: string | null): MorphologicalAnalysis | undefi
 
 export const aoWordFormat: XmlFormat<AOWord> = {
   read: (el: Element) => {
-    const readContent: Result<AOWordContent[]> = flattenResults(
+    const readContent: Result<AOWordContent[], string[][]> = flattenResults(
       Array.from(el.childNodes).map((x: ChildNode) => {
         if (x instanceof Text) {
           return success(x.textContent || '');
         } else if (x instanceof Element) {
           return aoWordContentFormat.read(x);
         } else {
-          return failure(`Illegal node type found`);
+          return failure([`Illegal node type found`]);
         }
       })
     );
 
-    return mapResult(
+    return transformResultContent(
       readContent,
       (content) => {
-
         return {
           type: 'AOWord',
           content,
@@ -60,7 +60,8 @@ export const aoWordFormat: XmlFormat<AOWord> = {
           mpr9: attributeReader(el, 'mrp9', readMorphAnalysis),
           trans: attributeReader(el, 'trans', (v) => v || undefined)
         }
-      }
+      },
+      (errs) => errs.flat()
     );
   },
   write: ({content}) => {

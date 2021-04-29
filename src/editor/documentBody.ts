@@ -1,4 +1,5 @@
-import {attributeReader, childElementReader, failure, flattenResults, mapResult, XmlFormat} from "./xmlLib";
+import {attributeReader, childElementReader, XmlFormat} from "./xmlLib";
+import {failure, flattenResults, mapResult, Result, transformResultContent} from '../functional/result';
 import {ParseP, parsePDblFormat, ParsePDouble, parsePFormat} from "../model/paragraphEnds";
 import {Paragraph, paragraphFormat} from "../model/paragraph";
 
@@ -80,23 +81,27 @@ export interface AOText {
 export type AOTextContent = typeof ParseP | typeof ParsePDouble | Paragraph;
 
 const aoTextFormat: XmlFormat<AOText> = {
-  read: (el) => mapResult(
-    flattenResults<AOTextContent>(
-      Array.from(el.children)
-        .map((cel) => {
-          switch (cel.tagName) {
-            case 'p':
-              return paragraphFormat.read(cel);
-            case 'parsep':
-              return parsePFormat.read(cel);
-            case 'parsep_dbl':
-              return parsePDblFormat.read(cel);
-            default:
-              return failure(`Found illegal tag name ${cel.tagName}`);
-          }
-        })
-    ),
-    (contents) => aoText(contents)),
+  read: (el) => {
+    const childResults: Result<AOTextContent, string[]>[] = Array.from(el.children)
+      .map((cel) => {
+        switch (cel.tagName) {
+          case 'p':
+            return paragraphFormat.read(cel);
+          case 'parsep':
+            return parsePFormat.read(cel);
+          case 'parsep_dbl':
+            return parsePDblFormat.read(cel);
+          default:
+            return failure([`Found illegal tag name ${cel.tagName}`]);
+        }
+      });
+
+    return transformResultContent(
+      flattenResults(childResults),
+      (contents) => aoText(contents),
+      (errorMessages) => errorMessages.flat()
+    )
+  },
   write: ({content}) => []
 }
 

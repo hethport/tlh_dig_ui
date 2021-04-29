@@ -1,4 +1,5 @@
-import {failure, flattenResults, mapResult, Result, success, XmlFormat} from "../../editor/xmlLib";
+import {XmlFormat} from "../../editor/xmlLib";
+import {failure, flattenResults, mapResult, Result, success} from '../../functional/result';
 import {damageContent, DamageType} from "./damages";
 import {AOWordContent, MultiStringContent} from "./wordContent";
 

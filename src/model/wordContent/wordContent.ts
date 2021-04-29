@@ -27,9 +27,10 @@ import {AOFootNote, aoNoteFormat, isAoFootNote} from "./footNote";
 import {AOKolonMark, aoKolonMarkFormat, isAoKolonMark} from "./kolonMark";
 import {AOIllegibleContent} from "./illegible";
 import {AOSpace, aoSpaceFormat, isSpace} from "./space";
-import {mapResult, XmlFormat} from "../../editor/xmlLib";
+import {XmlFormat} from "../../editor/xmlLib";
 import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "./inscribedLetter";
 import {Ellipsis} from "./ellipsis";
+import {mapResult} from "../../functional/result";
 
 // Word content
 

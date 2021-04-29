@@ -1,5 +1,6 @@
-import {attributeReader, success, XmlFormat} from "../../editor/xmlLib";
+import {attributeReader, XmlFormat} from "../../editor/xmlLib";
 import {AOWordContent} from "./wordContent";
+import {success} from "../../functional/result";
 
 export interface AOSpace {
   type: 'AOSpace';
