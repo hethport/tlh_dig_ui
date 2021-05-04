@@ -1,7 +1,7 @@
-import {attributeReader, XmlFormat} from "../../editor/xmlLib";
+import {attributeReader, indent, XmlFormat} from "../../editor/xmlLib";
 import {failure, flattenResults, Result, success} from '../../functional/result';
 import {AOWordContent, aoWordContentFormat, getContent} from "../wordContent/wordContent";
-import {morphologicalAnalysis, MorphologicalAnalysis} from "../morphologicalAnalysis";
+import {MorphologicalAnalysis, readMorphAnalysis, writeMorphAnalysisAttribute} from "../morphologicalAnalysis";
 import {AOSentenceContent} from "../sentence";
 import {aoBasicText} from "../wordContent/basicText";
 
@@ -20,9 +20,6 @@ export interface AOWord {
   transliteration?: string;
 }
 
-function readMorphAnalysis(number: number, value: string | null): MorphologicalAnalysis | undefined {
-  return value ? morphologicalAnalysis(number, value) : undefined;
-}
 
 export const aoWordFormat: XmlFormat<AOWord> = {
   read: (el: Element) => {
@@ -57,11 +54,14 @@ export const aoWordFormat: XmlFormat<AOWord> = {
         (errs) => errs.flat()
       );
   },
-  write: ({content}) => {
-    const xmlContent = content.map(aoWordContentFormat.write).join(' ');
+  write: ({content, mrp0sel, type, transliteration, morphologies}) => {
     const transcription = content.map(getContent).join('');
 
-    return [`<w trans="${transcription}">${xmlContent}</w>`];
+    return [
+      `<w trans="${transcription}"`,
+      ...(morphologies || []).flatMap(writeMorphAnalysisAttribute).map(indent),
+      `>${content.map(aoWordContentFormat.write).join('')}</w>`
+    ];
   }
 }
 

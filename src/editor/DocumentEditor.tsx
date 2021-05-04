@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {FileLoader} from '../forms/FileLoader';
 import {loadXml} from './xmlLoader';
-import {AOXml} from "./document";
+import {AOXml, aoXmlFormat} from "./document";
 import {AOTextContent} from "./documentBody";
 import {isAOParagraph, Paragraph} from "../model/paragraph";
 import {AOWord, isAOWord} from "../model/sentenceContent/word";
@@ -10,6 +10,7 @@ import {isParagraphSeparator} from "../model/paragraphSeparators";
 import {AOSentenceContent} from "../model/sentence";
 import {WordComponent} from "../manuscript/TransliterationLineResult";
 import {isAOLineBreak} from "../model/sentenceContent/linebreak";
+import {useTranslation} from "react-i18next";
 
 interface AOSentenceContentRenderIProps {
   sc: AOSentenceContent;
@@ -74,8 +75,20 @@ interface DocumentEditorIState {
   editedWord?: EditedWord;
 }
 
+function handleSaveToPC(data: string, filename: string = 'exported.xml'): void {
+  const blob = new Blob([data], {type: "text/plain"});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+
+  link.download = filename;
+  link.href = url;
+  link.click();
+}
+
+
 function DocumentEditor({aoXml: initialAoXml}: DocumentEditorIProps): JSX.Element {
 
+  const {t} = useTranslation('common');
   const [state, setState] = useState<DocumentEditorIState>({aoXml: initialAoXml});
 
   function updateMorphology(morph: string, paragraphId: number, wordId: number): void {
@@ -90,8 +103,16 @@ function DocumentEditor({aoXml: initialAoXml}: DocumentEditorIProps): JSX.Elemen
 
   function setEditedWord(editedWord: EditedWord): void {
     setState(({aoXml, editedWord: oldEditedWord}) => {
-      return {aoXml, editedWord};
+      if (oldEditedWord && editedWord.paragraphIndex === oldEditedWord.paragraphIndex && editedWord.wordIndex === oldEditedWord.wordIndex) {
+        return {aoXml, editedWord: undefined};
+      } else {
+        return {aoXml, editedWord};
+      }
     })
+  }
+
+  function exportDocument(): void {
+    handleSaveToPC(aoXmlFormat.write(state.aoXml).join('\n'));
   }
 
   return (
@@ -100,6 +121,10 @@ function DocumentEditor({aoXml: initialAoXml}: DocumentEditorIProps): JSX.Elemen
         <div className="documentText">
           {state.aoXml.body.div1.text.content.map((c, index) =>
             <TextContentRender key={index} paragraphIndex={index} content={c} onWordClick={setEditedWord} currentEditedWord={state.editedWord}/>)}
+        </div>
+
+        <div className="buttons my-3">
+          <button className="button is-link is-fullwidth" onClick={exportDocument} disabled={!!state.editedWord}>{t('exportDocument')}</button>
         </div>
       </div>
       <div className="column">

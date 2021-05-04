@@ -1,16 +1,15 @@
 import {AOSentence, aoSentenceFormat} from "./sentence";
-import {childElementReader, XmlFormat} from "../editor/xmlLib";
+import {childElementReader, indent, XmlFormat} from "../editor/xmlLib";
 import {AOTextContent} from "../editor/documentBody";
 
 export interface Paragraph {
-  // FIXME: split by lb?
   type: 'AOParagraph';
   s: AOSentence;
 }
 
 export const paragraphFormat: XmlFormat<Paragraph> = {
   read: (el) => childElementReader(el, 's', aoSentenceFormat).map(aoParagraph),
-  write: ({s}) => []
+  write: ({s}) => ['<p>', ...aoSentenceFormat.write(s).map(indent), '</p>']
 }
 
 function aoParagraph(s: AOSentence): Paragraph {

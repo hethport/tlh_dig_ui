@@ -5,7 +5,7 @@
 import {AOWordContent, MultiStringContent} from "./wordContent";
 import {XmlFormat} from "../../editor/xmlLib";
 import {flattenResults} from "../../functional/result";
-import {readMultiWordContent} from "./multiStringContent";
+import {readMultiWordContent, writeMultiWordContent} from "./multiStringContent";
 
 export interface AOSumerogramm {
   type: 'AOSumerogramm';
@@ -19,7 +19,7 @@ export function sumerogramm(...contents: MultiStringContent[]): AOSumerogramm {
 export const sumerogrammFormat: XmlFormat<AOSumerogramm> = {
   read: (el) => flattenResults(Array.from(el.childNodes).map(readMultiWordContent))
     .map((content) => sumerogramm(...content)),
-  write: ({contents}) => [`<sGr>${contents}</sGr>`]
+  write: ({contents}) => [`<sGr>${contents.flatMap(writeMultiWordContent).join('')}</sGr>`]
 }
 
 export function isSumerogramm(c: AOWordContent): c is AOSumerogramm {

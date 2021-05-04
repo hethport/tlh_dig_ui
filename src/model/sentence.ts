@@ -1,6 +1,6 @@
-import {XmlFormat} from "../editor/xmlLib";
-import {AOGap, aoGapFormat} from "./sentenceContent/gap";
-import {AOLineBreak, aoLineBreakFormat} from "./sentenceContent/linebreak";
+import {indent, XmlFormat} from "../editor/xmlLib";
+import {AOGap, aoGapFormat, isAOGap} from "./sentenceContent/gap";
+import {AOLineBreak, aoLineBreakFormat, isAOLineBreak} from "./sentenceContent/linebreak";
 import {AOWord, aoWordFormat} from "./sentenceContent/word";
 import {failure, flattenResults, Result} from '../functional/result';
 
@@ -20,7 +20,7 @@ export const aoSentenceFormat: XmlFormat<AOSentence> = {
         (errs) => errs.flat()
       )
   },
-  write: ({content}) => []
+  write: ({content}) => ['<s>', ...content.flatMap(aoSentenceContentFormat.write).map(indent), '</s>']
 }
 
 function aoSentence(content: AOSentenceContent[]): AOSentence {
@@ -42,5 +42,13 @@ const aoSentenceContentFormat: XmlFormat<AOSentenceContent> = {
         return failure([`Found illegal tag name ${el.tagName}`]);
     }
   },
-  write: (sc) => ['']
+  write: (sc) => {
+    if (isAOGap(sc)) {
+      return aoGapFormat.write(sc);
+    } else if (isAOLineBreak(sc)) {
+      return aoLineBreakFormat.write(sc);
+    } else /* if(isAOWord(sc)) */{
+      return aoWordFormat.write(sc);
+    }
+  }
 }

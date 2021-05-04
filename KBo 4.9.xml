@@ -1,39 +1,39 @@
 <?xml-stylesheet href="HPMxml.css" type="text/css"?>
-<!DOCTYPE AOxml SYSTEM 'annot.dtd'>
+<!DOCTYPE AOxml SYSTEM "annot.dtd">
 <AOxml
   xmlns:AO="http://hethiter.net/ns/AO/1.0"
   xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
   xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0"
   xmlns:table="urn:oasis:names:tc:opendocument:xmlns:table:1.0"
-  xml:space="preserve">
-<AOHeader>
-  <docID>KBo 4.9</docID>
-  <meta>
-    <creation-date date='2016-03-01T14:03:01.495000000'/>
-    <kor2 date='2020-10-14T22:01:17'/>
-    <AOxml-creation date='2020-10-14T22:01:17'/>
-    <annotation>
-      <annot editor='auto' date=''/>
-      <annot editor='' date=''/>
-  </annotation>
-  </meta>
-</AOHeader>
+  xml:space="preserve"
+>
+  <AOHeader>
+    <docID>KBo 4.9</docID>
+    <meta>
+      <creation-date date='2016-03-01T14:03:01.495000000'/>
+      <kor2 date='2020-10-14T22:01:17'/>
+      <AOxml-creation date='2020-10-14T22:01:17'/>
+      <annotation>
+        <annot editor='auto' date=''/>
+        <annot editor='' date=''/>
+      </annotation>
+    </meta>
+  </AOHeader>
   <body>
     <AO:Manuscripts>
       <AO:TxtPubl>KBo 4.9</AO:TxtPubl>
     </AO:Manuscripts>
     <div1 type='transliteration'>
-    <text xml:lang='XXXlang'>
-      <p>
-        <s xml:lang='XXXlang'>
+      <text xml:lang='XXXlang'>
+        <p>
+          <s xml:lang='XXXlang'>
+            <lb txtid="KBo 4.9" lnr="Vs. I 1" lg="Hit"/>
 
-          <lb txtid="KBo 4.9" lnr="Vs. I 1" lg="Hit"/>
-
-          <w trans='LUGALuš' mrp0sel='  '
-             mrp1=' LUGAL @ König @
-		{ a → FNL(u).NOM.SG.C}
-		{ b → ACC.PL.C} @ 28.3.1.1 @ '
-          ><sGr><del_in/>LUGA<del_fin/>L</sGr>-<laes_in/>uš<laes_fin/></w>
+            <w trans='LUGALuš' mrp0sel='  '
+               mrp1=' LUGAL @ König @
+          { a → FNL(u).NOM.SG.C}
+          { b → ACC.PL.C} @ 28.3.1.1 @ '
+            ><sGr><del_in/>LUGA<del_fin/>L</sGr>-<laes_in/>uš<laes_fin/></w>
 
           <w trans='eša' mrp0sel='  '
              mrp1=' eš- @ sitzen @ 3SG.PRS.MP @ III.1.3 @ '
@@ -72,7 +72,8 @@
              mrp1=' šipant= @ libieren @
 		{ a → 3SG.PRS}
 		{ b → 2SG.IMP} @ II.1.3 @ '
-          >ši-pa-an-t<del_in/>i<del_fin/></w>
+          >ši-pa-an-t<del_in/>i
+            <del_fin/></w>
 
           <lb txtid="KBo 4.9" lnr="Vs. I 3" lg="Hit"/>
 
@@ -106,7 +107,8 @@
 		{ e → DN.ABL(UNM)}
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
-          ><aGr>ZA-B<del_in/>A₄-BA₄<del_fin/></aGr></w>
+          ><aGr>ZA-B<del_in/>A₄-BA₄
+            <del_fin/></aGr></w>
 
           <lb txtid="KBo 4.9" lnr="Vs. I 4" lg="Hit"/>
 
@@ -132,7 +134,8 @@
 
         <w trans='2' mrp0sel=' 1 '
            mrp1='  @ zwei @  @ QUANcar @ '
-        ><num><laes_in/>2<laes_fin/></num></w>
+        ><num><laes_in/>2
+          <laes_fin/></num></w>
 
         <w trans='DUMU.É.GAL' mrp0sel='  '
            mrp1=' DUMU.É.GAL @ Palastbediensteter @
@@ -171,7 +174,8 @@
 		{ k → INS(UNM)}
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @  @ LÚ(.MEŠ)'
-        ><d>LÚ</d><aGr>ME-ŠE-DI</aGr></w>
+        ><d>LÚ</d>
+          <aGr>ME-ŠE-DI</aGr></w>
 
 
         <w trans='peran' mrp0sel='  '
@@ -321,7 +325,8 @@
 		{b → POSP}
 		{c → PREV} @
 		   += ma=kkan @ CNJctr=OBPk @  @ '
-          ><sGr><del_in/>EG<del_fin/>IR</sGr>-an-da-ma-kán</w>
+          ><sGr><del_in/>EG<del_fin/>IR</sGr>
+            -an-da-ma-kán</w>
 
           <w trans='É' mrp0sel='  '
              mrp1=' É @ Haus @
@@ -349,7 +354,8 @@
 		{ e → DN.ABL(UNM)}
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
-          ><d>D</d><aGr>ZA-BA₄-BA₄</aGr></w>
+          ><d>D</d>
+            <aGr>ZA-BA₄-BA₄</aGr></w>
 
           <lb txtid="KBo 4.9" lnr="Vs. I 12" lg="Hit"/>
 
@@ -404,7 +410,11 @@
 		{ b → GEN.PL} @ 29.1 @ GU₄'
              mrp2=' ÁB @ Kuh @
 		{ a → GEN.SG}
-		{ b → GEN.PL} @ 29.1.1 @ GU₄'><aGr>ŠA</aGr><ras_in/><d>GU₄<ras_fin/></d><sGr>ÁB</sGr><d>ḪI.A</d></w>
+		{ b → GEN.PL} @ 29.1.1 @ GU₄'><aGr>ŠA</aGr>
+            <ras_in/>
+            <d>GU₄<ras_fin/></d>
+            <sGr>ÁB</sGr>
+            <d>ḪI.A</d></w>
 
 
           <w trans='ŠA UDU' mrp0sel='    '

@@ -27,6 +27,10 @@ export function childElementReader<T>(el: Element, tagName: string, childElement
     : childElementFormat.read(elements[0]);
 }
 
+export function indent(s: string): string {
+  return " ".repeat(2) + s;
+}
+
 /*
 interface UnionElementConfig<T> {
   name: string;

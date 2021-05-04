@@ -3,7 +3,7 @@
 import {AOWordContent, MultiStringContent} from "./wordContent";
 import {XmlFormat} from "../../editor/xmlLib";
 import {flattenResults} from "../../functional/result";
-import {readMultiWordContent} from "./multiStringContent";
+import {readMultiWordContent, writeMultiWordContent} from "./multiStringContent";
 
 export interface AOAkkadogramm {
   type: 'AOAkkadogramm';
@@ -17,7 +17,7 @@ export function akkadogramm(...contents: MultiStringContent[]): AOAkkadogramm {
 export const akkadogrammFormat: XmlFormat<AOAkkadogramm> = {
   read: (el) => flattenResults(Array.from(el.childNodes).map(readMultiWordContent))
     .map((content) => akkadogramm(...content)),
-  write: ({contents}) => [`<aGr>${contents}</aGr>`]
+  write: ({contents}) => [`<aGr>${contents.flatMap(writeMultiWordContent).join('')}</aGr>`]
 }
 
 export function isAkkadogramm(c: AOWordContent): c is AOAkkadogramm {

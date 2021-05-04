@@ -1,7 +1,9 @@
 import {failure, Result, success} from '../../functional/result';
-import {damageContent, DamageType} from "./damages";
+import {damageContent, DamageType, isDamageContent, xmlifyDamageContent} from "./damages";
 import {MultiStringContent} from "./wordContent";
 import {aoBasicText} from "./basicText";
+import {aoCorrFormat, isCorrectionContent} from "./corrections";
+import {inscribedLetterFormat, isInscribedLetter} from "./inscribedLetter";
 
 /**
  * @deprecated
@@ -29,5 +31,21 @@ export function readMultiWordContent(el: ChildNode): Result<MultiStringContent> 
     return success(aoBasicText(el.textContent || ''));
   } else {
     return failure(`Illegal tag found: ${el.nodeType}`);
+  }
+}
+
+/**
+ * @deprecated
+ * @param c
+ */
+export function writeMultiWordContent(c: MultiStringContent): string[] {
+  if (isCorrectionContent(c)) {
+    return aoCorrFormat.write(c);
+  } else if (isDamageContent(c)) {
+    return xmlifyDamageContent(c);
+  } else if (isInscribedLetter(c)) {
+    return inscribedLetterFormat.write(c);
+  } else {
+    return [c.content];
   }
 }

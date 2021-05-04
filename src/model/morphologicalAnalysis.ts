@@ -46,3 +46,17 @@ export function morphologicalAnalysis(number: number, content: string): Morpholo
 
   return {type: 'MorphAnalysis', number, translation, transcription, analyses, other};
 }
+
+export function readMorphAnalysis(number: number, value: string | null): MorphologicalAnalysis | undefined {
+  return value ? morphologicalAnalysis(number, value) : undefined;
+}
+
+export function writeMorphAnalysisAttribute({number, transcription, translation, analyses, other}: MorphologicalAnalysis): string[] {
+  return typeof analyses === 'string'
+    ? [`mrp${number}="${transcription} @ ${translation} @ ${analyses} @ ${other.join(' @ ')}"`]
+    : [
+      `mrp${number}="${transcription} @ ${translation} @ `,
+      ...analyses.map(({letter, analysis}) => `{${letter} → ${analysis}}`),
+      ` @ ${other.join(' @ ')}"`
+    ];
+}
