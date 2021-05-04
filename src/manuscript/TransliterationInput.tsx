@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import {useTranslation} from "react-i18next";
-import './TransliterationInput.sass';
 import {useSelector} from "react-redux";
 import {activeUserSelector} from "../store/store";
 import {homeUrl} from "../urls";

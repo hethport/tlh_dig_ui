@@ -17,5 +17,5 @@ export const inscribedLetterFormat: XmlFormat<InscribedLetter> = {
 };
 
 export function isInscribedLetter(c: AOWordContent): c is InscribedLetter {
-  return typeof c !== 'string' && 'type' in c && c.type === 'InscribedLetter';
+  return c.type === 'InscribedLetter';
 }

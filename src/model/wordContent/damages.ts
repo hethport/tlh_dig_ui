@@ -11,8 +11,8 @@ export function damageContent(damageType: DamageType): DamageContent {
   return {type: 'Damage', damageType};
 }
 
-export function isDamageContent(w: AOWordContent): w is DamageContent {
-  return typeof w !== 'string' && 'type' in w && w.type === 'Damage';
+export function isDamageContent(c: AOWordContent): c is DamageContent {
+  return c.type === 'Damage';
 }
 
 /*

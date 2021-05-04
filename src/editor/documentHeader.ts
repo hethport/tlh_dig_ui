@@ -65,7 +65,7 @@ const aoMetaFormat: XmlFormat<AOMeta> = {
       ([[cd, kor2], [xmlCreation, annotation]]) => aoMeta(cd, kor2, xmlCreation, annotation),
       (errs) => errs.flat().flat()
     ),
-  write: ({}) => []
+  write: ({creationDate, kor2, aoXmlCreation, annotation}) => []
 }
 
 function aoMeta(creationDate: DatedAttributeElement, kor2: DatedAttributeElement, aoXmlCreation: DatedAttributeElement, annotation: AOAnnotation): AOMeta {
@@ -127,5 +127,5 @@ function datedAttributeElement(date: string): DatedAttributeElement {
 
 const datedStringElementFormat: XmlFormat<DatedAttributeElement> = {
   read: (el) => success(datedAttributeElement(attributeReader(el, 'date', (v) => v || ''))),
-  write: ({}) => []
+  write: ({date}) => []
 }

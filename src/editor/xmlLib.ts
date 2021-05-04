@@ -27,12 +27,12 @@ export function childElementReader<T>(el: Element, tagName: string, childElement
     : childElementFormat.read(elements[0]);
 }
 
+/*
 interface UnionElementConfig<T> {
   name: string;
   reader: XmlReader<T>;
 }
 
-/*
 export function unionElementReader<T>(options: UnionElementConfig<T>[]): XmlReader<T> {
   return {
     read: (el) => {

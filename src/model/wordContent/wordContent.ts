@@ -1,11 +1,5 @@
-import {
-  akkadogrammFormat,
-  AOAkkadogramm,
-  AOSumerogramm,
-  isAkkadogramm,
-  isSumerogramm,
-  sumerogrammFormat
-} from "./multiStringContent";
+import {akkadogrammFormat, AOAkkadogramm, isAkkadogramm,} from "./akkadogramm";
+import {AOSumerogramm, isSumerogramm, sumerogrammFormat} from "./sumerogramm";
 import {AONumeralContent, isNumeralContent, numeralContentFormat} from "./numeralContent";
 import {AODeterminativ, determinativFormat, isDeterminativ} from "./determinativ";
 import {AOMaterLectionis, isMaterLectionis, materLectionisFormat} from "./materLectionis";
@@ -29,23 +23,29 @@ import {AOIllegibleContent} from "./illegible";
 import {AOSpace, aoSpaceFormat, isSpace} from "./space";
 import {XmlFormat} from "../../editor/xmlLib";
 import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "./inscribedLetter";
-import {Ellipsis} from "./ellipsis";
+import {Ellipsis, ellipsisFormat, isEllipsis} from "./ellipsis";
+import {BasicText, isBasicText} from "./basicText";
+import {failure} from "../../functional/result";
 
 // Word content
 
-export type MultiStringContent = AOCorr | DamageContent | InscribedLetter | string;
+export type MultiStringContent = AOCorr | DamageContent | InscribedLetter | BasicText;
 
 export type AOSimpleWordContent = MultiStringContent
-  | AODeterminativ
   | AOMaterLectionis
-  | AONumeralContent
   | AOFootNote
   | AOSign
   | AOKolonMark
   | AOSpace
   | Ellipsis;
 
-export type AOWordContent = AOSimpleWordContent | AOAkkadogramm | AOSumerogramm | AOIllegibleContent;
+export type AOWordContent =
+  AOSimpleWordContent
+  | AOAkkadogramm
+  | AOSumerogramm
+  | AODeterminativ
+  | AONumeralContent
+  | AOIllegibleContent;
 
 export const aoWordContentFormat: XmlFormat<AOWordContent> = {
   read: (el) => {
@@ -83,12 +83,12 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
       case 'note':
         return aoNoteFormat.read(el);
       default:
-        throw new Error(`Illegal tag name ${el.tagName} found!`)
+        return failure([`Illegal tag name ${el.tagName} found!`])
     }
   },
   write: (c) => {
-    if (typeof c === 'string') {
-      return [c];
+    if (isBasicText(c)) {
+      return [c.content];
     } else if (isAkkadogramm(c)) {
       return akkadogrammFormat.write(c);
     } else if (isSumerogramm(c)) {
@@ -113,25 +113,27 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
       return aoSpaceFormat.write(c);
     } else if (isInscribedLetter(c)) {
       return inscribedLetterFormat.write(c);
+    } else if(isEllipsis(c)){
+      return ellipsisFormat.write(c);
     } else {
       // Illegible content
-      let y = c;
+      // let y = c;
       return ['x'];
     }
   }
 };
 
 export function getContent(c: AOWordContent): string {
-  if (typeof c === 'string') {
-    return c;
+  if (isBasicText(c)) {
+    return c.content;
   } else if (isAkkadogramm(c)) {
     return c.contents.map(getContent).join('');
   } else if (isSumerogramm(c)) {
     return c.contents.map(getContent).join('');
   } else if (isNumeralContent(c)) {
-    return c.content;
+    return c.content.map(getContent).join('');
   } else if (isDeterminativ(c)) {
-    return c.content;
+    return c.content.map(getContent).join('');
   } else if (isMaterLectionis(c)) {
     return c.content;
   } else {

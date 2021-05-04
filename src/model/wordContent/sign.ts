@@ -17,5 +17,5 @@ export function aoSign(content: string): AOSign {
 }
 
 export function isAoSign(w: AOWordContent): w is AOSign {
-  return typeof w !== 'string' && 'type' in w && w.type === 'AOSign';
+  return w.type === 'AOSign';
 }

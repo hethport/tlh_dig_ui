@@ -21,5 +21,5 @@ export const materLectionisFormat: XmlFormat<AOMaterLectionis> = {
 };
 
 export function isMaterLectionis(c: AOWordContent): c is AOMaterLectionis {
-  return typeof c !== 'string' && 'type' in c && c.type === 'AOMaterLectionis';
+  return c.type === 'AOMaterLectionis';
 }

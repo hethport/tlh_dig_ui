@@ -1,6 +1,7 @@
 import {XmlFormat} from "../../editor/xmlLib";
-import {success} from '../../functional/result';
-import {AOWordContent} from "./wordContent";
+import {flattenResults} from '../../functional/result';
+import {AOWordContent, MultiStringContent} from "./wordContent";
+import {readMultiWordContent} from "./multiStringContent";
 
 /*
  * Determinativ:
@@ -9,18 +10,19 @@ import {AOWordContent} from "./wordContent";
  */
 export interface AODeterminativ {
   type: 'AODeterminativ';
-  content: string;
+  content: MultiStringContent[];
 }
 
-export function determinativ(content: string): AODeterminativ {
+export function determinativ(...content: MultiStringContent[]): AODeterminativ {
   return {type: 'AODeterminativ', content};
 }
 
 export const determinativFormat: XmlFormat<AODeterminativ> = {
-  read: (el) => success(determinativ(el.textContent || '')),
+  read: (el) => flattenResults(Array.from(el.childNodes).map(readMultiWordContent))
+    .map((content) => determinativ(...content)),
   write: ({content}) => [`<d>${content}</d>`]
 };
 
 export function isDeterminativ(c: AOWordContent): c is AODeterminativ {
-  return typeof c !== 'string' && 'type' in c && c.type === 'AODeterminativ';
+  return c.type === 'AODeterminativ';
 }

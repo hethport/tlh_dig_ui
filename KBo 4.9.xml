@@ -1,4 +1,5 @@
 <?xml-stylesheet href="HPMxml.css" type="text/css"?>
+<!DOCTYPE AOxml SYSTEM 'annot.dtd'>
 <AOxml
   xmlns:AO="http://hethiter.net/ns/AO/1.0"
   xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
@@ -18,13 +19,14 @@
   </meta>
 </AOHeader>
   <body>
-  <div1 type='transliteration'>
+    <AO:Manuscripts>
+      <AO:TxtPubl>KBo 4.9</AO:TxtPubl>
+    </AO:Manuscripts>
+    <div1 type='transliteration'>
     <text xml:lang='XXXlang'>
       <p>
         <s xml:lang='XXXlang'>
-          <AO:Manuscripts>
-            <AO:TxtPubl>KBo 4.9</AO:TxtPubl>
-          </AO:Manuscripts>
+
           <lb txtid="KBo 4.9" lnr="Vs. I 1" lg="Hit"/>
 
           <w trans='LUGALuš' mrp0sel='  '
@@ -46,7 +48,6 @@
              mrp1=' wak= @ (ab)beißen @ INF @ II.1 @ '
           >wa-ga-an-n<del_in/>a</w>
 
-
           <w trans='ḫalzia' mrp0sel='  '
              mrp1=' ḫalz=i- @ Festung @
 		{ a → D/L.SG}
@@ -61,13 +62,11 @@
              mrp1=' UL @ nicht @ NEG @  @ '
           ><aGr><laes_in/>Ú<laes_fin/>-UL</aGr></w>
 
-
           <w trans='kuitki' mrp0sel='  '
              mrp1=' kuiški @ irgendein @
 		{ a → INDFany.NOM.SG.N}
 		{ b → INDFany.ACC.SG.N} @ 24 @ '
           >ku-it-ki</w>
-
 
           <w trans='šipanti' mrp0sel='  '
              mrp1=' šipant= @ libieren @
@@ -87,7 +86,6 @@
 		{ a → CONNn=PPRO.3SG.C.NOM=OBPst}
 		{ b → CONNn=PPRO.3PL.C.ACC=OBPst} @  @ '
           ><del_in/>n<del_fin/>a-aš-ta</w>
-
 
           <w trans='LUGALuš' mrp0sel='  '
              mrp1=' LUGAL @ König @
@@ -122,11 +120,11 @@
 		{ c → STF} @ 1.1 @ '
           >pa-ra-a</w>
 
-
           <w trans='wezi' mrp0sel=' 1 '
              mrp1=' wē-/uwa- @ kommen @ 3SG.PRS @ I.12 @ '
           >ú-ez-zi</w>
- </s></p>
+ </s>
+      </p>
       <parsep/>
       <p>
       <s>
@@ -135,7 +133,6 @@
         <w trans='2' mrp0sel=' 1 '
            mrp1='  @ zwei @  @ QUANcar @ '
         ><num><laes_in/>2<laes_fin/></num></w>
-
 
         <w trans='DUMU.É.GAL' mrp0sel='  '
            mrp1=' DUMU.É.GAL @ Palastbediensteter @
@@ -153,7 +150,6 @@
 		{ l → VOC.SG(UNM)}
 		{ m → VOC.PL(UNM)} @ 28.2.1.1 @ '
         ><sGr>DUMU.É.GAL</sGr></w>
-
 
         <w trans='1' mrp0sel=' 1 '
            mrp1='  @ ein @  @ QUANcar @ '
@@ -325,9 +321,7 @@
 		{b → POSP}
 		{c → PREV} @
 		   += ma=kkan @ CNJctr=OBPk @  @ '
-          ><sGr><del_in/>EG<del_fin/>IR</sGr>
-            -an-da-ma-kán</w>
-
+          ><sGr><del_in/>EG<del_fin/>IR</sGr>-an-da-ma-kán</w>
 
           <w trans='É' mrp0sel='  '
              mrp1=' É @ Haus @
@@ -346,7 +340,6 @@
 		{ m → VOC.PL(UNM)} @ 28.16 @ '
           ><sGr>É</sGr></w>
 
-
           <w trans='ZA-BA₄-BA₄' mrp0sel='  '
              mrp1=' ZABABA @ Zababa @
 		{ a → DN.NOM.SG.C(UNM)}
@@ -356,8 +349,7 @@
 		{ e → DN.ABL(UNM)}
 		{ f → DN.INS(UNM)}
 		{ g → DN.VOC.SG(UNM)} @  @ D'
-          ><d>D</d>
-            <aGr>ZA-BA₄-BA₄</aGr></w>
+          ><d>D</d><aGr>ZA-BA₄-BA₄</aGr></w>
 
           <lb txtid="KBo 4.9" lnr="Vs. I 12" lg="Hit"/>
 
@@ -412,11 +404,7 @@
 		{ b → GEN.PL} @ 29.1 @ GU₄'
              mrp2=' ÁB @ Kuh @
 		{ a → GEN.SG}
-		{ b → GEN.PL} @ 29.1.1 @ GU₄'><aGr>ŠA</aGr>
-            <ras_in/>
-            <d>GU₄<ras_fin/></d>
-            <sGr>ÁB</sGr>
-            <d>ḪI.A</d></w>
+		{ b → GEN.PL} @ 29.1.1 @ GU₄'><aGr>ŠA</aGr><ras_in/><d>GU₄<ras_fin/></d><sGr>ÁB</sGr><d>ḪI.A</d></w>
 
 
           <w trans='ŠA UDU' mrp0sel='    '

@@ -7,7 +7,7 @@ import {materLectionis as ml} from "../model/wordContent/materLectionis";
 import {de, ds, le, ls, rs, sc, supE, supS, uc, ue, us} from './testHelpers';
 import {Ellipsis as el} from "../model/wordContent/ellipsis";
 import {akkadogramm as ag, sumerogramm as sg} from "../model/wordContent/multiStringContent";
-import {ParseP as pe, ParsePDouble as dpe} from "../model/paragraphEnds";
+import {ParagraphSeparator as pe, ParagraphSeparatorDouble as dpe} from "../model/paragraphSeparators";
 import {AOIllegibleContent} from "../model/wordContent/illegible";
 import {aoKolonMark} from "../model/wordContent/kolonMark";
 import {aoNote} from "../model/wordContent/footNote";

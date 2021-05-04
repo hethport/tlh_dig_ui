@@ -1,52 +1,29 @@
 import {attributeReader, childElementReader, XmlFormat} from "./xmlLib";
-import {failure, flattenResults, Result} from '../functional/result';
-import {ParseP, parsePDblFormat, ParsePDouble, parsePFormat} from "../model/paragraphEnds";
+import {failure, flattenResults, Result, zipResult} from '../functional/result';
+import {ParagraphSeparator, ParagraphSeparatorDouble, paragraphSeparatorDoubleXmlFormat, paragraphSeparatorXmlFormat} from "../model/paragraphSeparators";
 import {Paragraph, paragraphFormat} from "../model/paragraph";
-
-/*
-interface SplitResult {
-  lineBreakElement: Element;
-  followingElements: Element[];
-}
-
-function splitParagraphChildrenInLines(elements: Element[]): [Element[], SplitResult[]] {
-  let prior: Element[] = [];
-  const result: SplitResult[] = [];
-
-  let currentLb: Element | undefined = undefined;
-  let acc: Element[] = [];
-
-  elements.forEach((el) => {
-    if (el.tagName === 'lb') {
-      if (currentLb === undefined) {
-        prior = acc;
-      } else {
-        result.push({lineBreakElement: currentLb, followingElements: acc});
-      }
-
-      currentLb = el;
-      acc = [];
-    } else {
-      acc.push(el);
-    }
-  });
-
-  return [prior, result];
-}
- */
+import {AOManuscripts, aoManuscriptsFormat} from "../model/sentenceContent/aoManuscripts";
 
 export interface AOBody {
   type: 'AOBody';
+  aoManuscripts: AOManuscripts;
   div1: AODiv1;
 }
 
 export const aoBodyFormat: XmlFormat<AOBody> = {
-  read: (el) => childElementReader(el, 'div1', aoDiv1Format).map(aoBody),
+  read: (el) => zipResult(
+    childElementReader(el, 'AO:Manuscripts', aoManuscriptsFormat),
+    childElementReader(el, 'div1', aoDiv1Format)
+  )
+    .transformContent(
+      ([m, div1]) => aoBody(m, div1),
+      (errs) => errs.flat()
+    ),
   write: ({div1}) => ['<body>', ...aoDiv1Format.write(div1), '</body>']
 };
 
-function aoBody(div1: AODiv1): AOBody {
-  return {type: 'AOBody', div1};
+function aoBody(aoManuscripts: AOManuscripts, div1: AODiv1): AOBody {
+  return {type: 'AOBody', aoManuscripts, div1};
 }
 
 // AODiv1
@@ -72,7 +49,7 @@ export interface AOText {
   content: AOTextContent[];
 }
 
-export type AOTextContent = typeof ParseP | typeof ParsePDouble | Paragraph;
+export type AOTextContent = ParagraphSeparator | ParagraphSeparatorDouble | Paragraph;
 
 const aoTextFormat: XmlFormat<AOText> = {
   read: (el) => {
@@ -82,9 +59,9 @@ const aoTextFormat: XmlFormat<AOText> = {
           case 'p':
             return paragraphFormat.read(cel);
           case 'parsep':
-            return parsePFormat.read(cel);
+            return paragraphSeparatorXmlFormat.read(cel);
           case 'parsep_dbl':
-            return parsePDblFormat.read(cel);
+            return paragraphSeparatorDoubleXmlFormat.read(cel);
           default:
             return failure([`Found illegal tag name ${cel.tagName}`]);
         }

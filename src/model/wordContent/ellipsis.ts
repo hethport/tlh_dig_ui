@@ -1,4 +1,6 @@
 import {AOWordContent} from "./wordContent";
+import {XmlFormat} from "../../editor/xmlLib";
+import {success} from "../../functional/result";
 
 export interface Ellipsis {
   type: 'AOEllipsis'
@@ -7,15 +9,10 @@ export interface Ellipsis {
 export const aoEllipsis: Ellipsis = {type: 'AOEllipsis'};
 
 export function isEllipsis(c: AOWordContent): c is Ellipsis {
-  return typeof c !== 'string' && 'type' in c && c.type === 'AOEllipsis';
+  return c.type === 'AOEllipsis';
 }
 
-/*
-const ellipsisFormat: XmlFormat<typeof Ellipsis> = {
-  read: (el) => Ellipsis,
-  write: () => {
-    throw new Error('Not yet defined!')
-    // return '…';
-  }
+export const ellipsisFormat: XmlFormat<Ellipsis> = {
+  read: () => success(aoEllipsis),
+  write: () => ['…']
 }
- */

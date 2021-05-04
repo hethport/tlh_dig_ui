@@ -8,7 +8,7 @@ export interface AnalysisOption {
 }
 
 function parseAnalysisOption(as: string): AnalysisOption {
-  const [letter, analysis, ..._] = as
+  const [letter, analysis] = as
     // Remove curly braces
     .substr(1, as.length - 2)
     .split('→')
@@ -27,13 +27,14 @@ function parseAnalysis(as: string): string | AnalysisOption[] {
 
 export interface MorphologicalAnalysis {
   type: 'MorphAnalysis';
+  number: number;
   transcription: string;
   translation: string;
   analyses: string | AnalysisOption[];
   other: string[];
 }
 
-export function morphologicalAnalysis(content: string): MorphologicalAnalysis {
+export function morphologicalAnalysis(number: number, content: string): MorphologicalAnalysis {
   const [
     transcription,
     translation,
@@ -43,5 +44,5 @@ export function morphologicalAnalysis(content: string): MorphologicalAnalysis {
 
   const analyses = parseAnalysis(analysesString);
 
-  return {type: 'MorphAnalysis', translation, transcription, analyses, other};
+  return {type: 'MorphAnalysis', number, translation, transcription, analyses, other};
 }

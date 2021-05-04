@@ -3,28 +3,25 @@ import {failure, flattenResults, Result, success} from '../../functional/result'
 import {AOWordContent, aoWordContentFormat, getContent} from "../wordContent/wordContent";
 import {morphologicalAnalysis, MorphologicalAnalysis} from "../morphologicalAnalysis";
 import {AOSentenceContent} from "../sentence";
+import {aoBasicText} from "../wordContent/basicText";
 
 // AOWord
+
+function readSelectedMorphology(value: string | null): string | undefined {
+  return value && value.trim().length > 0 ? value.trim() : undefined;
+}
 
 export interface AOWord {
   type: 'AOWord';
   content: AOWordContent[];
-  lg?: string;
+  language?: string;
   mrp0sel?: string;
-  mrp1?: MorphologicalAnalysis;
-  mpr2?: MorphologicalAnalysis;
-  mpr3?: MorphologicalAnalysis;
-  mpr4?: MorphologicalAnalysis;
-  mpr5?: MorphologicalAnalysis;
-  mpr6?: MorphologicalAnalysis;
-  mpr7?: MorphologicalAnalysis;
-  mpr8?: MorphologicalAnalysis;
-  mpr9?: MorphologicalAnalysis;
-  trans?: string;
+  morphologies?: MorphologicalAnalysis[];
+  transliteration?: string;
 }
 
-function readMorphAnalysis(value: string | null): MorphologicalAnalysis | undefined {
-  return value ? morphologicalAnalysis(value) : undefined;
+function readMorphAnalysis(number: number, value: string | null): MorphologicalAnalysis | undefined {
+  return value ? morphologicalAnalysis(number, value) : undefined;
 }
 
 export const aoWordFormat: XmlFormat<AOWord> = {
@@ -32,7 +29,7 @@ export const aoWordFormat: XmlFormat<AOWord> = {
     const readContent: Result<AOWordContent[], string[][]> = flattenResults(
       Array.from(el.childNodes).map((x: ChildNode) => {
         if (x instanceof Text) {
-          return success(x.textContent || '');
+          return success(aoBasicText(x.textContent || ''));
         } else if (x instanceof Element) {
           return aoWordContentFormat.read(x);
         } else {
@@ -41,24 +38,20 @@ export const aoWordFormat: XmlFormat<AOWord> = {
       })
     );
 
+    const morphologies: MorphologicalAnalysis[] = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+      .map((i) => attributeReader(el, `mrp${i}`, (v) => readMorphAnalysis(i, v)))
+      .flatMap((x) => x ? [x] : []);
+
     return readContent
       .transformContent(
         (content) => {
           return {
             type: 'AOWord',
             content,
-            lg: attributeReader(el, 'lg', (v) => v || undefined),
-            mrp0sel: attributeReader(el, 'mpr0sel', (v) => v || undefined),
-            mrp1: attributeReader(el, 'mrp1', readMorphAnalysis),
-            mpr2: attributeReader(el, 'mrp2', readMorphAnalysis),
-            mpr3: attributeReader(el, 'mrp3', readMorphAnalysis),
-            mpr4: attributeReader(el, 'mrp4', readMorphAnalysis),
-            mpr5: attributeReader(el, 'mrp5', readMorphAnalysis),
-            mpr6: attributeReader(el, 'mrp6', readMorphAnalysis),
-            mpr7: attributeReader(el, 'mrp7', readMorphAnalysis),
-            mpr8: attributeReader(el, 'mrp8', readMorphAnalysis),
-            mpr9: attributeReader(el, 'mrp9', readMorphAnalysis),
-            trans: attributeReader(el, 'trans', (v) => v || undefined)
+            language: attributeReader(el, 'lg', (v) => v || undefined),
+            mrp0sel: attributeReader(el, 'mrp0sel', readSelectedMorphology),
+            morphologies,
+            transliteration: attributeReader(el, 'trans', (v) => v || undefined)
           }
         },
         (errs) => errs.flat()
@@ -73,7 +66,7 @@ export const aoWordFormat: XmlFormat<AOWord> = {
 }
 
 export function parsedWord(trans: string, ...content: AOWordContent[]): AOWord {
-  return {type: 'AOWord', trans, content};
+  return {type: 'AOWord', transliteration: trans, content};
 }
 
 export function isAOWord(c: AOSentenceContent): c is AOWord {

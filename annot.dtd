@@ -26,7 +26,11 @@
     >
 
   <!-- Body -->
-  <!ELEMENT body (div1)>
+  <!ELEMENT body (AO:Manuscripts, div1)>
+
+  <!ELEMENT AO:Manuscripts (AO:TxtPubl)>
+
+  <!ELEMENT AO:TxtPubl (#PCDATA)>
 
   <!ELEMENT div1 (text)>
   <!ATTLIST div1 type CDATA #REQUIRED>
@@ -39,11 +43,8 @@
 
   <!ELEMENT p (s)>
 
-  <!ELEMENT s (AO:Manuscripts | gap | lb | w)+>
+  <!ELEMENT s ( gap | lb | w)+>
 
-  <!ELEMENT AO:Manuscripts (AO:TxtPubl)>
-
-  <!ELEMENT AO:TxtPubl (#PCDATA)>
 
   <!ELEMENT gap EMPTY>
   <!ATTLIST gap
@@ -92,9 +93,9 @@
   <!ELEMENT aGr (del_in | del_fin | ras_in | ras_fin | laes_in  | laes_fin | #PCDATA)+>
 
   <!-- Determinativ -->
-  <!ELEMENT d (#PCDATA)>
+  <!ELEMENT d (del_in | del_fin | ras_in | ras_fin | laes_in  | laes_fin | #PCDATA)+>
 
-  <!ELEMENT num (#PCDATA)>
+  <!ELEMENT num (del_in | del_fin | ras_in | ras_fin | laes_in  | laes_fin | #PCDATA)+>
 
   <!ELEMENT SP___AO_3a_MaterLect (#PCDATA)>
 

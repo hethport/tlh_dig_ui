@@ -1,5 +1,4 @@
 import {AOXml, aoXmlFormat} from './document';
-import {Result} from "../functional/result";
 
 // Document elements
 
@@ -15,20 +14,17 @@ async function readDocumentFile(file: File): Promise<string> {
   });
 }
 
-export async function loadXml(file: File): Promise<[string, AOXml]> {
+export async function loadXml(file: File): Promise<AOXml> {
   const content = await readDocumentFile(file);
 
   const doc = new DOMParser().parseFromString(content, 'text/xml');
 
   const aoXmlNode: Element = doc.getElementsByTagName('AOxml')[0];
 
-  const aoXmlResult: Result<AOXml, string[]> = aoXmlFormat.read(aoXmlNode);
-
-  console.info(aoXmlResult);
-
-  // FIXME: return result!
-  return aoXmlResult.transformTo(
-    r => Promise.resolve([content, r]),
-    e => Promise.reject(e)
-  );
+  return aoXmlFormat
+    .read(aoXmlNode)
+    .transformTo(
+      r => Promise.resolve(r),
+      e => Promise.reject(e)
+    );
 }

@@ -8,7 +8,7 @@ import {useTranslation} from "react-i18next";
 import i18next from "i18next";
 import {CreateManuscriptForm} from "./CreateManuscriptForm";
 import {NotFound} from './NotFound';
-import {DocumentEditor} from './editor/DocumentEditor';
+import {DocumentEditorContainer} from './editor/DocumentEditor';
 import {useDispatch, useSelector} from "react-redux";
 import {activeUserSelector} from "./store/store";
 import {StoreAction, userLoggedOutAction} from "./store/actions";
@@ -70,7 +70,7 @@ export function App(): JSX.Element {
         <Route path={loginUrl} component={LoginForm}/>
         <Route path={createManuscriptUrl} component={CreateManuscriptForm}/>
         <Route path={'/manuscripts/:mainIdentifier'} component={ManuscriptBase}/>
-        <Route path={editDocumentUrl} component={DocumentEditor}/>
+        <Route path={editDocumentUrl} component={DocumentEditorContainer}/>
         <Route component={NotFound}/>
       </Switch>
     </>

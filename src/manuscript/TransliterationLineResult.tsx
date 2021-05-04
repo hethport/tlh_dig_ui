@@ -4,7 +4,8 @@ import {TransliterationLine} from "../model/transliterationLine";
 import {isAoSign} from "../model/wordContent/sign";
 import {getSymbolForDamageType, isDamageContent} from "../model/wordContent/damages";
 import {isCorrectionContent} from "../model/wordContent/corrections";
-import {isAkkadogramm, isSumerogramm} from "../model/wordContent/multiStringContent";
+import {isAkkadogramm} from "../model/wordContent/akkadogramm";
+import {isSumerogramm} from "../model/wordContent/sumerogramm";
 import {AOWord} from "../model/sentenceContent/word";
 import {isMaterLectionis} from "../model/wordContent/materLectionis";
 import {isNumeralContent} from "../model/wordContent/numeralContent";
@@ -14,14 +15,16 @@ import {AOSimpleWordContent, AOWordContent, MultiStringContent} from "../model/w
 import {isIllegibleContent} from "../model/wordContent/illegible";
 import {isSpace} from "../model/wordContent/space";
 import {isEllipsis} from "../model/wordContent/ellipsis";
+import {isBasicText} from "../model/wordContent/basicText";
+import classNames from "classnames";
 
 function renderMultiStringContent(content: MultiStringContent): JSX.Element {
   if (isDamageContent(content)) {
     return <span>{getSymbolForDamageType(content.damageType)}</span>;
   } else if (isCorrectionContent(content)) {
     return <sup className="correction">{content.c}</sup>;
-  } else if (typeof content === 'string') {
-    return <span>{content}</span>;
+  } else if (isBasicText(content)) {
+    return <span>{content.content}</span>;
   } else {
     // Inscribed Letter
     return <span>{content.content}</span>;
@@ -29,12 +32,8 @@ function renderMultiStringContent(content: MultiStringContent): JSX.Element {
 }
 
 function renderSimpleWordContent(content: AOSimpleWordContent): JSX.Element {
-  if (isDeterminativ(content)) {
-    return <span className="determinativ">{content.content}</span>;
-  } else if (isMaterLectionis(content)) {
+  if (isMaterLectionis(content)) {
     return <span className="materLectionis">{content.content}</span>;
-  } else if (isNumeralContent(content)) {
-    return <span className="numberal">{content.content}</span>;
   } else if (isAoFootNote(content)) {
     return <span className="has-text-warning">TODO: {content.content}!</span>;
   } else if (isAoSign(content)) {
@@ -59,6 +58,14 @@ function renderWordContent(content: AOWordContent): JSX.Element {
     return <span className="sumerogramm">
       {content.contents.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
     </span>;
+  } else if (isDeterminativ(content)) {
+    return <span className="determinativ">
+      {content.content.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
+    </span>;
+  } else if (isNumeralContent(content)) {
+    return <span className="numberal">
+      {content.content.map((c, index) => <span key={index}>{renderWordContent(c)}</span>)}
+    </span>;
   } else if (isIllegibleContent(content)) {
     return <span>x</span>;
   } else {
@@ -68,12 +75,20 @@ function renderWordContent(content: AOWordContent): JSX.Element {
 
 // Single word
 
-export function renderWord({trans, content}: AOWord): JSX.Element {
-  return <>
+interface WordComponentIProps {
+  word: AOWord;
+  onClick?: () => void;
+  otherStyles?: { [key: string]: any };
+}
+
+export function WordComponent(
+  {word: {transliteration, content}, onClick, otherStyles}: WordComponentIProps
+): JSX.Element {
+  return <span onClick={onClick} className={classNames(otherStyles)}>
     {content.length > 0
-      ? content.map((c, i) => <span className="hittie" key={i}>{renderWordContent(c)}</span>)
-      : <span className="has-text-danger">{trans}</span>}
-  </>
+      ? content.map((c, i) => <span className="hittite" key={i}>{renderWordContent(c)}</span>)
+      : <span className="has-text-danger">{transliteration}</span>}
+  </span>
 }
 
 // Single line
@@ -85,7 +100,7 @@ export function renderLine({lineInput, result}: TransliterationLine): JSX.Elemen
     return <>
       <sup>{lineNumber}</sup>
       &nbsp;
-      {words.map((wordInput, index) => <span key={index}>{renderWord(wordInput)}&nbsp;</span>)}
+      {words.map((wordInput, index) => <span key={index}><WordComponent word={wordInput}/>&nbsp;</span>)}
     </>;
   } else {
     return (

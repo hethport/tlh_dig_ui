@@ -23,6 +23,6 @@ export function aoNote(content: string, number: number = -1): AOFootNote {
   return {type: 'AONote', content, number};
 }
 
-export function isAoFootNote(w: AOWordContent): w is AOFootNote {
-  return typeof w !== 'string' && 'type' in w && w.type === 'AONote';
+export function isAoFootNote(c: AOWordContent): c is AOFootNote {
+  return c.type === 'AONote';
 }

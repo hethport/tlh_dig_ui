@@ -17,5 +17,5 @@ export function aoSpace(c: string): AOSpace {
 }
 
 export function isSpace(c: AOWordContent): c is AOSpace {
-  return typeof c !== 'string' && 'type' in c && c.type === 'AOSpace';
+  return c.type === 'AOSpace';
 }

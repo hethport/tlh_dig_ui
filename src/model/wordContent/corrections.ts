@@ -24,6 +24,6 @@ export function aoCorr(c: AOCorrType): AOCorr {
   return {type: 'AOCorr', c};
 }
 
-export function isCorrectionContent(w: AOWordContent): w is AOCorr {
-  return typeof w !== 'string' && 'type' in w && w.type === 'AOCorr';
+export function isCorrectionContent(c: AOWordContent): c is AOCorr {
+  return c.type === 'AOCorr';
 }

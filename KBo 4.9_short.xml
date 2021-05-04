@@ -1,4 +1,5 @@
 <?xml-stylesheet href="HPMxml.css" type="text/css"?>
+<!DOCTYPE AOxml SYSTEM 'annot.dtd'>
 <AOxml
   xmlns:AO="http://hethiter.net/ns/AO/1.0"
   xmlns:meta="urn:oasis:names:tc:opendocument:xmlns:meta:1.0"
@@ -18,16 +19,17 @@
   </meta>
 </AOHeader>
   <body>
-  <div1 type='transliteration'>
+    <AO:Manuscripts>
+      <AO:TxtPubl>KBo 4.9</AO:TxtPubl>
+    </AO:Manuscripts>
+    <div1 type='transliteration'>
     <text xml:lang='XXXlang'>
       <p>
         <s xml:lang='XXXlang'>
-          <AO:Manuscripts>
-            <AO:TxtPubl>KBo 4.9</AO:TxtPubl>
-          </AO:Manuscripts>
+
           <lb txtid="KBo 4.9" lnr="Vs. I 1" lg="Hit"/>
 
-          <w trans='LUGALuš' mrp0sel='  '
+          <w trans='LUGALuš' mrp0sel=' 1a '
              mrp1=' LUGAL @ König @
 		{ a → FNL(u).NOM.SG.C}
 		{ b → ACC.PL.C} @ 28.3.1.1 @ '
@@ -74,7 +76,7 @@
 
           <lb txtid="KBo 4.9" lnr="Vs. I 3" lg="Hit"/>
 
-          <w trans='našta' mrp0sel='  '
+          <w trans='našta' mrp0sel=' 2a '
              mrp1=' n=ašta @  @ CONNn=OBPst @  @ '
              mrp2=' n=at=šta @  @
 		{ a → CONNn=PPRO.3SG.N.NOM=OBPst}

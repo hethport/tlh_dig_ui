@@ -1,24 +1,26 @@
 import {XmlFormat} from "../../editor/xmlLib";
-import {AOWordContent} from "./wordContent";
-import {success} from "../../functional/result";
+import {AOWordContent, MultiStringContent} from "./wordContent";
+import {flattenResults} from "../../functional/result";
+import {readMultiWordContent} from "./multiStringContent";
 
 /*
  * Zahl
  */
 export interface AONumeralContent {
   type: 'AONumeralContent';
-  content: string;
+  content: MultiStringContent[];
 }
 
-export function numeralContent(content: string): AONumeralContent {
+export function numeralContent(...content: MultiStringContent[]): AONumeralContent {
   return {type: 'AONumeralContent', content};
 }
 
 export const numeralContentFormat: XmlFormat<AONumeralContent> = {
-  read: (el) => success(numeralContent(el.textContent || '')),
+  read: (el) => flattenResults(Array.from(el.childNodes).map(readMultiWordContent))
+    .map((content) => numeralContent(...content)),
   write: ({content}) => [`<num>${content}</num>`]
 }
 
 export function isNumeralContent(c: AOWordContent): c is AONumeralContent {
-  return typeof c !== 'string' && 'type' in c && c.type === 'AONumeralContent';
+  return c.type === 'AONumeralContent';
 }

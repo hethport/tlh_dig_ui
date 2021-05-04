@@ -1,6 +1,5 @@
 import {childElementReader, XmlFormat} from "../../editor/xmlLib";
 import {success} from '../../functional/result';
-import {AOSentenceContent} from "../sentence";
 
 export interface AOTxtPubl {
   type: 'AO:TxtPubl';
@@ -30,8 +29,4 @@ export const aoManuscriptsFormat: XmlFormat<AOManuscripts> = {
 
 function aoManuscripts(aoTxtPubl: AOTxtPubl): AOManuscripts {
   return {type: 'AO:Manuscripts', aoTxtPubl};
-}
-
-export function isAOManuscripts(c: AOSentenceContent): c is AOManuscripts {
-  return c.type === 'AO:Manuscripts';
 }

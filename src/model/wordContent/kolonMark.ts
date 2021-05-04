@@ -17,5 +17,5 @@ export function aoKolonMark(content: string): AOKolonMark {
 }
 
 export function isAoKolonMark(w: AOWordContent): w is AOKolonMark {
-  return typeof w !== 'string' && 'type' in w && w.type === 'AOKolonMark';
+  return w.type === 'AOKolonMark';
 }

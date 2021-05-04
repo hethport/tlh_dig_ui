@@ -3,7 +3,7 @@ import {determinativ} from "../model/wordContent/determinativ";
 import {materLectionis} from "../model/wordContent/materLectionis";
 import {damageContent, DamageType} from "../model/wordContent/damages";
 import {aoCorr, AOCorrType} from "../model/wordContent/corrections";
-import {ParseP, ParsePDouble} from "../model/paragraphEnds";
+import {ParagraphSeparator, ParagraphSeparatorDouble} from "../model/paragraphSeparators";
 import {Ellipsis} from "../model/wordContent/ellipsis";
 import {aoSign} from "../model/wordContent/sign";
 import {aoKolonMark} from "../model/wordContent/kolonMark";
@@ -77,22 +77,22 @@ describe('correctionsParser', () => testParseCorrections(transliteration.correct
 export function testParseParseP(parser: Parser<AOWordContent>): void {
   test.each([['§'], ['¬¬¬']])(
     'should parse %p as ParseP',
-    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParseP)
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParagraphSeparator)
   );
 }
 
-describe('parseParagraphParser', () => testParseParseP(transliteration.parseP));
+describe('parseParagraphParser', () => testParseParseP(transliteration.paragraphSeparator));
 
 // ParsePDouble
 
 export function testParseParsePDouble(parser: Parser<AOWordContent>): void {
   test.each([['§§'], ['===']])(
     'should parse %p as ParsePDouble',
-    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParsePDouble)
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParagraphSeparatorDouble)
   );
 }
 
-describe('parseParagraphDoubleParser', () => testParseParsePDouble(transliteration.parsePDouble));
+describe('parseParagraphDoubleParser', () => testParseParsePDouble(transliteration.paragraphSeparatorDouble));
 
 // Ellipsis
 
@@ -115,7 +115,7 @@ export function testParseHittite(parser: Parser<AOWordContent>): void {
     (toParse) => expect(parser.tryParse(toParse)).toEqual(toParse));
 }
 
-describe('hittite', () => testParseHittite(transliteration.hittite));
+describe('hittite', () => testParseHittite(transliteration.basicText));
 
 // Determinativ
 
