@@ -1,6 +1,6 @@
 import {attributeReader, indent, XmlFormat} from "../../editor/xmlLib";
 import {failure, flattenResults, Result, success} from '../../functional/result';
-import {AOWordContent, aoWordContentFormat, getContent} from "../wordContent/wordContent";
+import {AOWordContent, aoWordContentFormat} from "../wordContent/wordContent";
 import {MorphologicalAnalysis, readMorphAnalysis, writeMorphAnalysisAttribute} from "../morphologicalAnalysis";
 import {AOSentenceContent} from "../sentence";
 import {aoBasicText} from "../wordContent/basicText";
@@ -54,15 +54,14 @@ export const aoWordFormat: XmlFormat<AOWord> = {
         (errs) => errs.flat()
       );
   },
-  write: ({content, mrp0sel, type, transliteration, morphologies}) => {
-    const transcription = content.map(getContent).join('');
-
-    return [
-      `<w trans="${transcription}"`,
+  write: ({content, mrp0sel, type, transliteration, morphologies, language}) =>
+    [
+      `<w trans="${transliteration}"`,
+      indent(`mrp0sel="${mrp0sel || ''}"`),
+      ...(language ? [indent(`lg="${language}"`)] : []),
       ...(morphologies || []).flatMap(writeMorphAnalysisAttribute).map(indent),
       `>${content.map(aoWordContentFormat.write).join('')}</w>`
-    ];
-  }
+    ]
 }
 
 export function parsedWord(trans: string, ...content: AOWordContent[]): AOWord {
