@@ -3,16 +3,19 @@ import {determinativ} from "../model/wordContent/determinativ";
 import {materLectionis} from "../model/wordContent/materLectionis";
 import {damageContent, DamageType} from "../model/wordContent/damages";
 import {aoCorr, AOCorrType} from "../model/wordContent/corrections";
-import {ParagraphSeparator, ParagraphSeparatorDouble} from "../model/paragraphSeparators";
-import {Ellipsis} from "../model/wordContent/ellipsis";
+import {paragraphSeparator, paragraphSeparatorDouble} from "../model/paragraphSeparators";
+import {aoEllipsis} from "../model/wordContent/ellipsis";
 import {aoSign} from "../model/wordContent/sign";
 import {aoKolonMark} from "../model/wordContent/kolonMark";
 import {aoNote} from "../model/wordContent/footNote";
 import {aoGap} from "../model/sentenceContent/gap";
-import {AOIllegibleContent} from "../model/wordContent/illegible";
+import {aoIllegibleContent} from "../model/wordContent/illegible";
 import {Parser} from "parsimmon";
 import {AOWordContent} from "../model/wordContent/wordContent";
 import {numeralContent} from "../model/wordContent/numeralContent";
+import {AOTextContent} from "../editor/documentBody";
+import {aoBasicText} from "../model/wordContent/basicText";
+import {AOSentenceContent} from "../model/sentence";
 
 const determinativSpecialGenusCases: [string][] = [['m'], ['f']];
 const determinativSpecialDeityCases: [string][] = [['m.D'], ['f.D']];
@@ -22,26 +25,24 @@ const materLectionisCases: [string][] = [['abc'], ['xyz']];
 const curlyBraceCases: [string][] = [['AN'], ['Anderer Text!'], ['Text : mit : Doppel:punkten']];
 
 export function testParseDamages(parser: Parser<AOWordContent>): void {
-  const cases: [string, DamageType][] = [
-    ['[', DamageType.DeletionStart],
-    [']', DamageType.DeletionEnd],
-    ['⸢', DamageType.LesionStart],
-    ['⸣', DamageType.LesionEnd],
-    ['<<', DamageType.SurplusStart],
-    ['>>', DamageType.SurplusEnd],
-    ['〈〈', DamageType.SurplusStart],
-    ['〉〉', DamageType.SurplusEnd],
-    ['<', DamageType.SupplementStart],
-    ['>', DamageType.SupplementEnd],
-    ['〈', DamageType.SupplementStart],
-    ['〉', DamageType.SupplementEnd],
-    ['(', DamageType.UnknownDamageStart],
-    [')', DamageType.UnknownDamageEnd]
-  ];
-
-  test.each(cases)(
-    'should parse damage type %p as Damage Content with Damage Type %p',
-    (toParse, expected) => expect(parser.tryParse(toParse)).toEqual(damageContent(expected))
+  test.each`
+  toParse | expected
+  ${'['}  | ${DamageType.DeletionStart}
+  ${']'}  |  ${DamageType.DeletionEnd}
+  ${'⸢'}  | ${DamageType.LesionStart}
+  ${'⸣'}  | ${DamageType.LesionEnd}
+  ${'<<'} | ${DamageType.SurplusStart}
+  ${'>>'} | ${DamageType.SurplusEnd}
+  ${'〈〈'} | ${DamageType.SurplusStart}
+  ${'〉〉'} | ${DamageType.SurplusEnd}
+  ${'<'}  | ${DamageType.SupplementStart}
+  ${'>'}  | ${DamageType.SupplementEnd}
+  ${'〈'}  | ${DamageType.SupplementStart}
+  ${'〉'}  | ${DamageType.SupplementEnd}
+  ${'('}  | ${DamageType.UnknownDamageStart}
+  ${')'}  | ${DamageType.UnknownDamageEnd}`(
+    'should parse $toParse as Damage Content with Damage Type $expected',
+    ({toParse, expected}) => expect(parser.tryParse(toParse)).toEqual(damageContent(expected))
   );
 }
 
@@ -56,17 +57,11 @@ describe('damageParser', () => {
 // Corrections
 
 export function testParseCorrections(parser: Parser<AOWordContent>): void {
-  const cases: [string, AOCorrType][] = [
-    ['?', '?'],
-    ['(?)', '(?)'],
-    ['!', '!'],
-    ['sic', 'sic'],
-    ['!?', '!?'],
-  ];
+  const cases: AOCorrType[] = ['?', '(?)', '!', 'sic', '!?'];
 
   test.each(cases)(
     'should parse correction type %p as Correction Content with correction type %p',
-    (toParse, expected) => expect(parser.tryParse(toParse)).toEqual(aoCorr(expected))
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(aoCorr(toParse))
   );
 }
 
@@ -74,32 +69,32 @@ describe('correctionsParser', () => testParseCorrections(transliteration.correct
 
 // ParseP
 
-export function testParseParseP(parser: Parser<AOWordContent>): void {
+export function testParseParagraphSeparator(parser: Parser<AOTextContent>): void {
   test.each([['§'], ['¬¬¬']])(
     'should parse %p as ParseP',
-    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParagraphSeparator)
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(paragraphSeparator)
   );
 }
 
-describe('parseParagraphParser', () => testParseParseP(transliteration.paragraphSeparator));
+describe('parseParagraphParser', () => testParseParagraphSeparator(transliteration.paragraphSeparator));
 
 // ParsePDouble
 
-export function testParseParsePDouble(parser: Parser<AOWordContent>): void {
+export function testParseParagraphSeparatorDouble(parser: Parser<AOTextContent>): void {
   test.each([['§§'], ['===']])(
     'should parse %p as ParsePDouble',
-    (toParse) => expect(parser.tryParse(toParse)).toEqual(ParagraphSeparatorDouble)
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(paragraphSeparatorDouble)
   );
 }
 
-describe('parseParagraphDoubleParser', () => testParseParsePDouble(transliteration.paragraphSeparatorDouble));
+describe('parseParagraphDoubleParser', () => testParseParagraphSeparatorDouble(transliteration.paragraphSeparatorDouble));
 
 // Ellipsis
 
 export function testParseEllipsis(parser: Parser<AOWordContent>): void {
   test.each([['…'], ['...']])(
     'should parse %p as Ellipsis',
-    (toParse) => expect(parser.tryParse(toParse)).toEqual(Ellipsis)
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(aoEllipsis)
   )
 }
 
@@ -108,11 +103,11 @@ describe('ellipsisParser', () => testParseEllipsis(transliteration.ellipsis));
 // Hittite
 
 export function testParseHittite(parser: Parser<AOWordContent>): void {
-  const cases: [string][] = [['abc'], ['def'], ['wyz']];
+  const cases: string[] = ['abc', 'def', 'wyz'];
 
   test.each(cases)(
     'should parse %p as hittite',
-    (toParse) => expect(parser.tryParse(toParse)).toEqual(toParse));
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(aoBasicText(toParse)));
 }
 
 describe('hittite', () => testParseHittite(transliteration.basicText));
@@ -124,21 +119,21 @@ function testParseDefaultDeterminativ(parser: Parser<AOWordContent>): void {
 
   test.each(defaultCases)(
     'should parse °%p° as a determinativ',
-    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(toParse))
+    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(aoBasicText(toParse)))
   );
 }
 
 function testParseSpecialGenusDeterminativ(parser: Parser<AOWordContent>): void {
   test.each(determinativSpecialGenusCases)(
     'should parse °%p° as a determinativ [!Special Case!]',
-    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(toParse))
+    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(aoBasicText(toParse)))
   )
 }
 
 function testParseSpecialDeityDeterminativ(parser: Parser<AOWordContent>): void {
   test.each(determinativSpecialDeityCases)(
     'should parse °%p° as a determinativ [!Special Case!]',
-    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(toParse))
+    (toParse) => expect(parser.tryParse(`°${toParse}°`)).toEqual(determinativ(aoBasicText(toParse)))
   )
 }
 
@@ -178,7 +173,7 @@ describe('materLectionis', () => {
 // Illegible Content
 
 export function testParseIllegibleContent(parser: Parser<AOWordContent>): void {
-  expect(parser.tryParse('x')).toEqual(AOIllegibleContent);
+  expect(parser.tryParse('x')).toEqual(aoIllegibleContent);
 }
 
 describe('illegible', () => testParseIllegibleContent(transliteration.illegible));
@@ -196,7 +191,7 @@ describe('signParser', () => testParseSignContent(transliteration.sign));
 
 // Gaps
 
-export function testParseGapContent(parser: Parser<AOWordContent>): void {
+export function testParseGapContent(parser: Parser<AOSentenceContent>): void {
   test.each(curlyBraceCases)(
     'should parse {G:%p} as a gap',
     (toParse) => expect(parser.tryParse(`{G:${toParse}}`)).toEqual(aoGap(toParse))
@@ -230,11 +225,9 @@ describe('kolonMarkParser', () => testParseKolonMark(transliteration.kolonMark))
 // Numeral content
 
 export function testParseNumeralContent(parser: Parser<AOWordContent>): void {
-  const cases: [string][] = [['1'], ['4'], ['₄'], ['₀₁₂₃₄₅₆₇₈₉']];
-
-  test.each(cases)(
+  test.each(['1', '3', '4', '77'])(
     'should parse %p as numeral content',
-    (toParse) => expect(parser.tryParse(toParse)).toEqual(numeralContent(toParse))
+    (toParse) => expect(parser.tryParse(toParse)).toEqual(numeralContent(aoBasicText(toParse)))
   );
 }
 
@@ -252,7 +245,7 @@ describe('inscribedLetterParser', () => testParseInscribedLetter(transliteration
 
 // Index Digit
 
-export function testParseIndexDigit(parser: Parser<AOWordContent>): void {
+export function testParseIndexDigit(parser: Parser<any>): void {
   it.skip('should parse an index digit', () => {
     fail('TODO: implement!');
   });

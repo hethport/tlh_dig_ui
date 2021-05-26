@@ -2,18 +2,18 @@
 // - automatisch für Versalien
 // - im Wortinnern durch vorausgehendes `--` markiert
 
-import {AOWordContent, MultiStringContent} from "./wordContent";
+import {AOWordContent} from "./wordContent";
 import {XmlFormat} from "../../editor/xmlLib";
 import {flattenResults} from "../../functional/result";
-import {readMultiWordContent, writeMultiWordContent} from "./multiStringContent";
+import {clearUpperMultiStringContent, readMultiWordContent, UpperMultiStringContent, writeMultiWordContent} from "./multiStringContent";
 
 export interface AOSumerogramm {
   type: 'AOSumerogramm';
-  contents: MultiStringContent[];
+  contents: UpperMultiStringContent[];
 }
 
-export function sumerogramm(...contents: MultiStringContent[]): AOSumerogramm {
-  return {type: 'AOSumerogramm', contents};
+export function sumerogramm(...contents: (UpperMultiStringContent | string)[]): AOSumerogramm {
+  return {type: 'AOSumerogramm', contents: contents.map(clearUpperMultiStringContent)};
 }
 
 export const sumerogrammFormat: XmlFormat<AOSumerogramm> = {

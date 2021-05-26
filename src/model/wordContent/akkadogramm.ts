@@ -1,17 +1,17 @@
 // Akadogramm: automatisch für Zeichen in VERSALIEN, denen ein `-` oder `_` vorausgeht
 
-import {AOWordContent, MultiStringContent} from "./wordContent";
+import {AOWordContent} from "./wordContent";
 import {XmlFormat} from "../../editor/xmlLib";
 import {flattenResults} from "../../functional/result";
-import {readMultiWordContent, writeMultiWordContent} from "./multiStringContent";
+import {clearUpperMultiStringContent, readMultiWordContent, UpperMultiStringContent, writeMultiWordContent} from "./multiStringContent";
 
 export interface AOAkkadogramm {
   type: 'AOAkkadogramm';
-  contents: MultiStringContent[];
+  contents: UpperMultiStringContent[];
 }
 
-export function akkadogramm(...contents: MultiStringContent[]): AOAkkadogramm {
-  return {type: 'AOAkkadogramm', contents};
+export function akkadogramm(...contents: (UpperMultiStringContent | string)[]): AOAkkadogramm {
+  return {type: 'AOAkkadogramm', contents: contents.map(clearUpperMultiStringContent)};
 }
 
 export const akkadogrammFormat: XmlFormat<AOAkkadogramm> = {

@@ -10,6 +10,7 @@ export const supS: DamageContent = damageContent(DamageType.SupplementStart);
 export const ue: DamageContent = damageContent(DamageType.UnknownDamageEnd);
 export const us: DamageContent = damageContent(DamageType.UnknownDamageStart);
 export const rs: DamageContent = damageContent(DamageType.RasureStart);
+export const re: DamageContent = damageContent(DamageType.RasureEnd);
 
 export const uc: AOCorr = aoCorr('?');
 export const sc: AOCorr = aoCorr('!');

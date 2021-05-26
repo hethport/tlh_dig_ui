@@ -11,25 +11,12 @@ import {isMaterLectionis} from "../model/wordContent/materLectionis";
 import {isNumeralContent} from "../model/wordContent/numeralContent";
 import {isAoFootNote} from "../model/wordContent/footNote";
 import {isAoKolonMark} from "../model/wordContent/kolonMark";
-import {AOSimpleWordContent, AOWordContent, MultiStringContent} from "../model/wordContent/wordContent";
+import {AOSimpleWordContent, AOWordContent} from "../model/wordContent/wordContent";
 import {isIllegibleContent} from "../model/wordContent/illegible";
 import {isSpace} from "../model/wordContent/space";
 import {isEllipsis} from "../model/wordContent/ellipsis";
 import {isBasicText} from "../model/wordContent/basicText";
 import classNames from "classnames";
-
-function renderMultiStringContent(content: MultiStringContent): JSX.Element {
-  if (isDamageContent(content)) {
-    return <span>{getSymbolForDamageType(content.damageType)}</span>;
-  } else if (isCorrectionContent(content)) {
-    return <sup className="correction">{content.c}</sup>;
-  } else if (isBasicText(content)) {
-    return <span>{content.content}</span>;
-  } else {
-    // Inscribed Letter
-    return <span>{content.content}</span>;
-  }
-}
 
 function renderSimpleWordContent(content: AOSimpleWordContent): JSX.Element {
   if (isMaterLectionis(content)) {
@@ -44,8 +31,14 @@ function renderSimpleWordContent(content: AOSimpleWordContent): JSX.Element {
     return <span>TODO: how to render AOSpace?</span>;
   } else if (isEllipsis(content)) {
     return <span>…</span>;
-  } else {
-    return renderMultiStringContent(content);
+  } else if (isDamageContent(content)) {
+    return <span>{getSymbolForDamageType(content.damageType)}</span>;
+  } else if (isCorrectionContent(content)) {
+    return <sup className="correction">{content.c}</sup>;
+  } else if (isBasicText(content)) {
+    return <span>{content.content}</span>;
+  } else /* if(isInscribedLetter(c)) */ {
+    return <span>{content.content}</span>;
   }
 }
 

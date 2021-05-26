@@ -1,18 +1,18 @@
 import {XmlFormat} from "../../editor/xmlLib";
-import {AOWordContent, MultiStringContent} from "./wordContent";
+import {AOWordContent} from "./wordContent";
 import {flattenResults} from "../../functional/result";
-import {readMultiWordContent, writeMultiWordContent} from "./multiStringContent";
+import {clearUpperMultiStringContent, readMultiWordContent, UpperMultiStringContent, writeMultiWordContent} from "./multiStringContent";
 
 /*
  * Zahl
  */
 export interface AONumeralContent {
   type: 'AONumeralContent';
-  content: MultiStringContent[];
+  content: UpperMultiStringContent[];
 }
 
-export function numeralContent(...content: MultiStringContent[]): AONumeralContent {
-  return {type: 'AONumeralContent', content};
+export function numeralContent(...content: (UpperMultiStringContent | string)[]): AONumeralContent {
+  return {type: 'AONumeralContent', content: content.map(clearUpperMultiStringContent)};
 }
 
 export const numeralContentFormat: XmlFormat<AONumeralContent> = {

@@ -26,18 +26,22 @@ import {InscribedLetter, inscribedLetterFormat, isInscribedLetter} from "./inscr
 import {Ellipsis, ellipsisFormat, isEllipsis} from "./ellipsis";
 import {BasicText, isBasicText} from "./basicText";
 import {failure} from "../../functional/result";
+import {IndexDigit} from "./indexDigit";
 
 // Word content
 
-export type MultiStringContent = AOCorr | DamageContent | InscribedLetter | BasicText;
-
-export type AOSimpleWordContent = MultiStringContent
+export type AOSimpleWordContent =
+  AOCorr
+  | DamageContent
+  | InscribedLetter
+  | BasicText
   | AOMaterLectionis
   | AOFootNote
   | AOSign
   | AOKolonMark
   | AOSpace
-  | Ellipsis;
+  | Ellipsis
+  | IndexDigit;
 
 export type AOWordContent =
   AOSimpleWordContent
@@ -113,7 +117,7 @@ export const aoWordContentFormat: XmlFormat<AOWordContent> = {
       return aoSpaceFormat.write(c);
     } else if (isInscribedLetter(c)) {
       return inscribedLetterFormat.write(c);
-    } else if(isEllipsis(c)){
+    } else if (isEllipsis(c)) {
       return ellipsisFormat.write(c);
     } else {
       // Illegible content

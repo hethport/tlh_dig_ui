@@ -4,801 +4,431 @@ import {parsedWord as w} from "../model/sentenceContent/word";
 import {determinativ as dt} from "../model/wordContent/determinativ";
 import {numeralContent as nc} from "../model/wordContent/numeralContent";
 import {materLectionis as ml} from "../model/wordContent/materLectionis";
-import {de, ds, le, ls, rs, sc, supE, supS, uc, ue, us} from './testHelpers';
-import {Ellipsis as el} from "../model/wordContent/ellipsis";
-import {akkadogramm as ag, sumerogramm as sg} from "../model/wordContent/multiStringContent";
-import {ParagraphSeparator as pe, ParagraphSeparatorDouble as dpe} from "../model/paragraphSeparators";
-import {AOIllegibleContent} from "../model/wordContent/illegible";
+import {de, ds, le, ls, re, rs, sc, supE, supS, uc, ue, us} from './testHelpers';
+import {aoEllipsis} from "../model/wordContent/ellipsis";
+import {akkadogramm as ag} from "../model/wordContent/akkadogramm";
+import {sumerogramm as sg} from "../model/wordContent/sumerogramm";
+import {paragraphSeparator, paragraphSeparatorDouble} from "../model/paragraphSeparators";
+import {aoIllegibleContent} from "../model/wordContent/illegible";
 import {aoKolonMark} from "../model/wordContent/kolonMark";
 import {aoNote} from "../model/wordContent/footNote";
 import {aoGap} from "../model/sentenceContent/gap";
+import {indexDigit as id} from "../model/wordContent/indexDigit";
+import {inscribedLetter} from "../model/wordContent/inscribedLetter";
 
 describe.skip('The transliteration parser', () => {
 
-  it('should do what simtex does', () => {
-    expect(parseTransliterationLine("1# ta LUGAL-uš A-NA DUTU AN-E x GUx.MAḪ pa-a-i {K:34}"))
-      .toEqual<LineParseResult>(
-        lineParseResult("1",  [
-          // <w>ta</w>
-          w('ta', 'ta'),
-          // <w><sGr>LUGAL</sGr>-uš</w>
-          w('LUGAL-uš', sg('LUGAL'), '-uš'),
-          // <w><sGr>A</sGr><aGr>-NA</aGr></w>
-          w('A-NA', sg('A'), ag('-', 'NA')),
-          // <w><sGr>DUTU</sGr></w>
-          w('DUTU', sg('DUTU')),
-          // <w><sGr>AN</sGr><aGr>-E</aGr></w>
-          w('AN-E', sg('AN'), ag('-', 'E')),
-          // x
-          w('x', AOIllegibleContent),
-          // <w><sGr>GUₓ.MAḪ</sGr></w>
-          w('GUx.MAḪ', sg('GU', 'ₓ', '.', 'MAḪ')),
-          // <w>pa-a-i</w>
-          w('pa-a-i', 'pa-a-i'),
-          // <w><SP___AO_3a_-KolonMark>K:34</SP___AO_3a_-KolonMark></w>
-          w('{K:34}', aoKolonMark('34'))
-        ])
-      );
-
-    expect(parseTransliterationLine("1'# [ ... ] ⸢ú?-e?-te-na-an-za⸣"))
-      .toEqual<LineParseResult>(
-        lineParseResult("1'", [
-          // <w><del_in/></w>
-          w('[', ds),
-          // <w><sGr>...</sGr></w>
-          w('...', el),
-          // <w><del_fin/></w>
-          w(']', de),
-          // <w><laes_in/>ú<corr c='?'/>-e<corr c='?'/>-te-na-an-za<laes_fin/></w>
-          w('⸢ú?-e?-te-na-an-za⸣', ls, 'ú', uc, '-e', uc, '-te-na-an-za', le)
-        ])
-      );
-
-    expect(parseTransliterationLine("2'# [ ... ] ⸢nu⸣ LÚKÚR ku-e-da-ni pé-di"))
-      .toEqual<LineParseResult>(
-        lineParseResult(
-          "2'", [
-            // <w><del_in/></w>
-            w('[', ds),
-            // <w><sGr>...</sGr></w>
-            w('...', el),
-            // <w><del_fin/></w>
-            w(']', de),
-            // <w><laes_in/>nu<laes_fin/></w>
-            w('⸢nu⸣', ls, 'nu', le),
-            // <w><sGr>LÚKÚR</sGr></w>
-            w('LÚKÚR', sg('LÚKÚR')),
-            // <w>ku-e-da-ni</w>
-            w('ku-e-da-ni', 'ku-e-da-ni'),
-            // <w>pé-di</w>
-            w('pé-di', 'pé-di')
-          ])
-      );
-
-    expect(parseTransliterationLine("3'# [ ... wa-ar-pa da-a]-iš* *na-aš-kán a-pé-e-ez"))
-      .toEqual<LineParseResult>(
-        lineParseResult("3'", [
-          // <w><del_in/></w>
-          w('[', ds),
-          // <w><sGr>...</sGr></w>
-          w('...', el),
-          // <w>wa-ar-pa</w>
-          w('wa-ar-pa', 'wa-ar-pa'),
-          // <w>da-a<del_fin/>-iš<ras_in/></w>
-          w('da-a]-iš*', 'da-a', de, '-iš', rs),
-          //  <w><ras_fin/>na-aš-kán</w>
-          w('*na-aš-kán', rs, 'na-aš-kán'),
-          // <w>a-pé-e-ez</w>
-          w('a-pé-e-ez', 'a-pé-e-ez')
-        ])
-      );
-
-    expect(parseTransliterationLine("4'# [ ... mdu-ut-ḫa-l]i-ia-aš GAL ME-ŠE-DI"))
-      .toEqual<LineParseResult>(
-        lineParseResult("4'", [
-          // <w><del_in/></w>
-          w('[', ds),
-          // <w><sGr>...</sGr></w>
-          w('...', el),
-          // <w>mdu-ut-ḫa-l<del_fin/>i-ia-aš</w>
-          w('mdu-ut-ḫa-l]i-ia-aš', 'mdu-ut-ḫa-l', de, 'i-ia-aš'),
-          // <w><sGr>GAL</sGr></w>
-          w('GAL', sg('GAL')),
-          // <w><sGr>ME</sGr><aGr>-ŠE-DI</aGr></w>
-          w('ME-ŠE-DI', sg('ME'), ag('-', 'ŠE', '-', 'DI'))
-        ])
-      );
-
-    expect(parseTransliterationLine("5'# [ ... -uš-m]a-⸢aš-ši⸣ ku-i-e-eš"))
-      .toEqual<LineParseResult>(
-        lineParseResult("5'", [
-          // <w><del_in/></w>
-          w('[', ds),
-          // <w><sGr>...</sGr></w>
-          w('...', el),
-          // <w>-uš-m<del_fin/>a-<laes_in/>aš-ši<laes_fin/></w>
-          w('-uš-m]a-⸢aš-ši⸣', '-uš-m', de, 'a-', ls, 'aš-ši', le),
-          // <w>ku-i-e-eš</w>
-          w('ku-i-e-eš', 'ku-i-e-eš')
-        ])
-      );
-
-    expect(parseTransliterationLine("6'# [ ... pa-ra-a] da-a-aš ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("6'", [
-          // <w><del_in/></w>
-          w('[', ds),
-          // <w><sGr>...</sGr></w>
-          w('...', el),
-          // <w>pa-ra-a<del_fin/></w>
-          w('pa-ra-a]', 'pa-ra-a', de),
-          // <w>da-a-aš</w>
-          w('da-a-aš', 'da-a-aš'),
-          // </s></p><parsep/><p><s>
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("7'# [ ... ] x  °m°mur-ši--DINGIR-LIM °MUNUS°ŠU.GI LÚ°MEŠ° DINGIR°MEŠ°-aš"))
-      .toEqual<LineParseResult>(
-        lineParseResult("7'", [
-          // <w><del_in/></w>
-          w('[', ds),
-          // <w><sGr>...</sGr></w>
-          w('...', el),
-          // <w><del_fin/></w>
-          w(']', de),
-          // x
-          w('x', AOIllegibleContent),
-          // <w><d>m</d>mur-ši-<sGr>DINGIR</sGr><aGr>-LIM</aGr></w>
-          w('°m°mur-ši--DINGIR-LIM', dt('m'), 'mur-ši', sg('DINGIR'), ag('-', 'LIM')),
-          // <w><d>MUNUS</d><sGr>ŠU.GI</sGr></w>
-          w('°MUNUS°ŠU.GI', dt('MUNUS'), sg('ŠU', '.', 'GI')),
-          // <w><sGr>LÚ</sGr><d>MEŠ</d></w>
-          w('LÚ°MEŠ°', sg('LÚ'), dt('MEŠ')),
-          // <w><sGr>DINGIR</sGr><d>MEŠ</d>-aš</w>
-          w('DINGIR°MEŠ°-aš', sg('DINGIR'), dt('MEŠ'), '-aš')
-        ])
-      );
-
-    expect(parseTransliterationLine("8'# [ ] °m.D°30--SUM  ù °m.D°30--SUM{F: Problem mit den Punkten in Determinativen.}"))
-      .toEqual<LineParseResult>(
-        lineParseResult("8'", [
-          // <w><del_in/></w>
-          w('[', ds),
-          // <w><del_fin/></w>
-          w(']', de),
-          // <w><d>m.D</d><sGr>30</sGr>-<sGr>SUM</sGr></w>
-          w('°m.D°30--SUM', dt('m.D'), sg('30'), '-', sg('SUM')),
-          // <w>ù</w>
-          w('ù', 'ù'),
-          // <w><SP___AO_3a_MaterLect>m.D</SP___AO_3a_MaterLect><num>30</num>-<sGr>SUM</sGr><note  n='1'  c="   &lt;P_f_Footnote&gt;Problem mit den Punkten in Determinativen.&lt;/P_f_Footnote&gt;"  /></w>
-          w('°m.D°30--SUM{F: Problem mit den Punkten in Determinativen.}', dt('m.D'), nc('30'), '-', sg('SUM'), aoNote('Problem mit den Punkten in Determinativen.'))
-        ])
-      );
-
-    expect(parseTransliterationLine("9' # °URU°?ša-mu-ḫa °URU°!ša-*mu-ḫa*   °URU?°ša?-mu-ḫa °URU!°ša-mu!-ḫa"))
-      .toEqual<LineParseResult>(
-        lineParseResult("9'", [
-          // <w><d>URU</d><corr c='?'/>ša-mu-ḫa</w>
-          w('°URU°?ša-mu-ḫa', dt('URU'), uc, 'ša-mu-ḫa'),
-          // <w><d>URU</d><corr c='!'/>ša-<ras_in/>mu-ḫa<ras_fin/></w>
-          w('°URU°!ša-*mu-ḫa*', dt('URU'), sc, 'ša-', rs, 'mu-ḫa', rs),
-          // <w><SP___AO_3a_MaterLect>URU?</SP___AO_3a_MaterLect>ša<corr c='?'/>-mu-ḫa</w>
-          w('°URU?°ša?-mu-ḫa'/*, TODO: ml('URU?'), ('ša'), uc, ('-mu-ḫa')*/),
-          // <w><SP___AO_3a_MaterLect>URU!</SP___AO_3a_MaterLect>ša-mu<corr c='!'/>-ḫa</w>
-          w('°URU!°ša-mu!-ḫa' /* TODO:, ml('URU!'), ('ša-mu'), sc, ('-ḫa'))*/)
-        ])
-      );
-
-    expect(parseTransliterationLine("10# BLABLA-ṢU _ŠI-PÁT"))
-      .toEqual<LineParseResult>(
-        lineParseResult("10", [
-          // <w><sGr>BLABLA</sGr><aGr>-ṢU</aGr></w>
-          w('BLABLA-ṢU', sg('BLABLA'), ag('-ṢU')),
-          // <w><aGr>ŠI-PÁT</aGr></w>
-          w('_ŠI-PÁT', ag('ŠI-PÁT'))
-        ])
-      );
-
-    expect(parseTransliterationLine("11 # šaṭ-rat°at° °MUNUS.MEŠ°kat°at°-re-eš {G: fünf Zeichen abgebr.} kar-°di°dim-mi-ia-az §§"))
-      .toEqual<LineParseResult>(
-        lineParseResult("11", [
-          // <w>šaṭ-rat<SP___AO_3a_MaterLect>at</SP___AO_3a_MaterLect></w>
-          w('šaṭ-rat°at°', 'šaṭ-rat', ml('at')),
-          //  <w><d>MUNUS.MEŠ</d>kat<SP___AO_3a_MaterLect>at</SP___AO_3a_MaterLect>-re-eš</w>
-          w('°MUNUS.MEŠ°kat°at°-re-eš', dt('MUNUS.MEŠ'), 'kat', ml('at'), '-re-eš'),
-          //  <gap c="fünf Zeichen abgebr."/>
-          w('{G: fünf Zeichen abgebr.}', aoGap('fünf Zeichen abgebr.')),
-          // <w>kar-<SP___AO_3a_MaterLect>di</SP___AO_3a_MaterLect>dim-mi-ia-az</w>
-          w('kar-°di°dim-mi-ia-az', 'kar-', ml('di'), 'dim-mi-ia-az'),
-          // </s></p><parsep_dbl/><p><s>
-          w('§§', dpe)
-        ])
-      );
-
-    expect(parseTransliterationLine("12 # GU4 ka4 ubx ub[x K]AxU §"))
-      .toEqual<LineParseResult>(
-        lineParseResult("12", [
-          // <w><sGr>GU₄</sGr></w>
-          w('GU4', sg('GU₄')),
-          // <w>ka₄</w>
-          w('ka4', 'ka₄'),
-          // <w>ubₓ</w>
-          w('ubx', 'ubₓ'),
-          // <w>ub<del_in/>ₓ</w>
-          w('ub[x', 'ub', ds, 'ₓ'),
-          // <w><sGr>K<del_fin/>A×U</sGr></w>
-          w('K]AxU', sg('K', ds, 'A×U')),
-          // </s></p><parsep/><p><s>
-          w('§')
-        ])
-      );
-
-    expect(parseTransliterationLine("13 # 4 GU4"))
-      .toEqual<LineParseResult>(
-        lineParseResult("13", [
-          // <w><num>4</num></w>
-          w('4', nc('4')),
-          // <w><sGr>GU₄</sGr></w>
-          w('GU4', sg('GU₄'))
-        ])
-      );
-
-    expect(parseTransliterationLine("14 # 4 GU4"))
-      .toEqual<LineParseResult>(
-        lineParseResult("14", [
-          // <w><num>4</num></w>
-          w('4', nc('4')),
-          // <w><sGr>GU₄</sGr></w>
-          w('GU4', sg('GU₄'))
-        ])
-      );
-
-    expect(parseTransliterationLine("15 # DUB 2°KAM°"))
-      .toEqual<LineParseResult>(
-        lineParseResult("15", [
-          // <w><sGr>DUB</sGr></w>
-          w('DUB', sg('DUB')),
-          // <w><num>2</num><d>KAM</d></w>
-          w('2°KAM°', nc('2'), dt('KAM'))
-        ])
-      );
-  });
-
-  it('should parse complete document', () => {
-    expect(parseTransliterationLine("1' # [(x)] x ⸢zi⸣ x [",))
-      .toEqual<LineParseResult>(
-        lineParseResult("1'", [
-          w('[(x)]', ds, us, 'x', ue, de),
-          w('x', AOIllegibleContent),
-          w('⸢zi⸣', ls, 'zi', le),
-          w('x', AOIllegibleContent),
-          w('[', ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri"))
-      .toEqual<LineParseResult>(
-        lineParseResult("2'", [
-          w('[DUMU?].MUNUS?-ma', ds, sg('DUMU'), uc, de, sg('.MUNUS'), uc, '-ma'),
-          w('e-ša-⸢a⸣-[ri', 'e-ša-', ls, 'a', le, '-', ds, 'ri')
-        ])
-      );
-
-    expect(parseTransliterationLine("3' # az-zi-ik-ki-it-[tén"))
-      .toEqual<LineParseResult>(
-        lineParseResult("3'", [
-          w('az-zi-ik-ki-it-[tén', 'az-zi-ik-ki-it-', ds, 'tén')
-        ])
-      );
-
-    expect(parseTransliterationLine("4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("4'", [
-          w('nu', 'nu'),
-          w('ḫu-u-ma-an', 'ḫu-u-ma-an'),
-          w('az-[zi-ik-ki-', 'az-', ds, 'zi-ik-ki-'),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("5' # [k]u-it-ma-an-aš-ma x ["))
-      .toEqual<LineParseResult>(
-        lineParseResult("5'", [
-          w('[k]u-it-ma-an-aš-ma', ds, 'k', de, 'u-it-ma-an-aš-ma'),
-          w('x', AOIllegibleContent),
-          w('[', ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("6' # [n]a-aš-kán GIŠ.NÁ ["))
-      .toEqual<LineParseResult>(
-        lineParseResult("6'", [
-          w('[n]a-aš-kán', ds, 'n', de, 'a-aš-kán'),
-          w('GIŠ.NÁ', sg('GIŠ.NÁ')),
-          w('[', ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("7' # [nu-u]š-ši ša-aš-t[a-"))
-      .toEqual<LineParseResult>(
-        lineParseResult("7'", [
-          w('[nu-u]š-ši', ds, 'nu-u', de, 'š-ši'),
-          w('ša-aš-t[a-', 'ša-aš-t', ds, 'a-')
-        ])
-      );
-
-    expect(parseTransliterationLine("8' # [da?]-⸢a?⸣ nu-uš-ši x ["))
-      .toEqual<LineParseResult>(
-        lineParseResult("8'", [
-          w('[da?]-⸢a?⸣', ds, 'da', uc, de, '-', ls, 'a', uc, le),
-          w('nu-uš-ši', 'nu-uš-ši'),
-          w('x', AOIllegibleContent),
-          w('[', ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("9' # [nu-u]š-ši im-ma(-)["))
-      .toEqual<LineParseResult>(
-        lineParseResult("9'", [
-          w('[nu-u]š-ši', ds, 'nu-u', de, 'š-ši'),
-          w('im-ma(-)[', 'im-ma', us, '-', ue, ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("10' # [x-x]-TE°MEŠ° ⸢e⸣-["))
-      .toEqual<LineParseResult>(
-        lineParseResult("10'", [
-          w('[x-x]-TE°MEŠ°', ds, 'x-x', de, ag('-TE'), dt('MEŠ')),
-          w('⸢e⸣-[', ls, 'e', le, '-', ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("11' # [x (x)]-ri-⸢ia⸣-[ ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("11'", [
-          w('[x', ds, 'x'),
-          w('(x)]-ri-⸢ia⸣-[', us, 'x', ue, de, '-ri-', ls, 'ia', le, '-', ds),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("12' # [x x] x ["))
-      .toEqual<LineParseResult>(
-        lineParseResult("12'", [
-          w('[x', ds, 'x'),
-          w('x]', 'x', de),
-          w('x', AOIllegibleContent),
-          w('[', ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("1' # [ … ] x ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("1'", [
-          w('[', ds),
-          w('…', el),
-          w(']', de),
-          w('x', AOIllegibleContent),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("2' # [ … °MUNUS.MEŠ°zi-i]n-tu-ḫi-e-eš"))
-      .toEqual<LineParseResult>(
-        lineParseResult("2'", [
-          w('[', ds),
-          w('…', el),
-          w('°MUNUS.MEŠ°zi-i]n-tu-ḫi-e-eš', dt('MUNUS.MEŠ'), 'zi-i', de, 'n-tu-ḫi-e-eš')
-        ])
-      );
-
-    expect(parseTransliterationLine("3' # [ … -i]a-u-an-zi tar-kum-mi-ia-iz-zi ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("3'", [
-          w('[', ds),
-          w('…', el),
-          w('-i]a-u-an-zi', '-i', de, 'a-u-an-zi'),
-          w('tar-kum-mi-ia-iz-zi', 'tar-kum-mi-ia-iz-zi'),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("4' # [ … °G]IŠ°BANŠUR °GIŠ°BANŠUR an-da"))
-      .toEqual<LineParseResult>(
-        lineParseResult("4'", [
-          w('[', ds),
-          w('…', el),
-          w('°G]IŠ°BANŠUR'),
-          w('°GIŠ°BANŠUR', dt('GIŠ'), sg('BANŠUR')),
-          w('an-da', 'an-da')
-        ])
-      );
-
-    expect(parseTransliterationLine("5' # [ … ] ⸢6⸣ NINDA.GUR₄.RA°ḪI.A° ki-an-da"))
-      .toEqual<LineParseResult>(
-        lineParseResult("5'", [
-          w('[', ds),
-          w('…', el),
-          w(']', de),
-          w('⸢6⸣', ls, nc('6'), le),
-          w('NINDA.GUR₄.RA°ḪI.A°', sg('NINDA.GUR'), nc('₄'), sg('.RA'), dt('ḪI.A')),
-          w('ki-an-da', 'ki-an-da')
-        ])
-      );
-
-    expect(parseTransliterationLine("6' # [ … -t]i-ia še-er pé-ra-an da-a-i ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("6'", [
-          w('[', ds),
-          w('…', el),
-          w('-t]i-ia', '-t', de, 'i-ia'),
-          w('še-er', 'še-er'),
-          w('pé-ra-an', 'pé-ra-an'),
-          w('da-a-i', 'da-a-i'),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("7' # [ … pé-r]a-an ḫu-u-wa-a-i"))
-      .toEqual<LineParseResult>(
-        lineParseResult("7'", [
-          w('[', ds),
-          w('…', el),
-          w('pé-r]a-an', 'pé-r', de, 'a-an'),
-          w('ḫu-u-wa-a-i', 'ḫu-u-wa-a-i')
-        ])
-      );
-
-    expect(parseTransliterationLine("8' # [ … °MUNUS.MEŠ°zi]-⸢in-tu-ḫi⸣-e-eš an-da {Rasur}"))
-      .toEqual<LineParseResult>(
-        lineParseResult("8'", [
-          w('[', ds),
-          w('…', el),
-          w('°MUNUS.MEŠ°zi]-⸢in-tu-ḫi⸣-e-eš', dt('MUNUS.MEŠ'), 'zi', de, '-', ls, 'in-tu-ḫi', le, '-e-eš'),
-          w('an-da', 'an-da'),
-          w('{Rasur}')
-        ])
-      );
-
-    expect(parseTransliterationLine("9' # [ú-wa-an-zi … k]i?-an-ta ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("9'", [
-          w('[ú-wa-an-zi', ds, 'ú-wa-an-zi'),
-          w('…', el),
-          w('k]i?-an-ta', 'k', de, 'i', uc, '-an-ta'),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("10' # [ … ] x-zi ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("10'", [
-          w('[', ds),
-          w('…', el),
-          w(']', de),
-          w('x-zi', 'x-zi'),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("11' # [ … ]-da"))
-      .toEqual<LineParseResult>(
-        lineParseResult("11'", [
-          w('[', ds),
-          w('…', el),
-          w(']-da', de, '-da')
-        ])
-      );
-
-    expect(parseTransliterationLine("12' # [ … °LÚ°ALAM.Z]U₉"))
-      .toEqual<LineParseResult>(
-        lineParseResult("12'", [
-          w('[', ds),
-          w('…', el),
-          w('°LÚ°ALAM.Z]U₉', dt('LÚ'), sg('ALAM.Z'), de, sg('U'), nc('₉'))
-        ])
-      );
-
-    expect(parseTransliterationLine("13' # [ … -z]i ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("13'", [
-          w('[', ds),
-          w('…', el),
-          w('-z]i', '-z', de, 'i'),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("1' # [x x] x x [ ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("1'", [
-          w('[x', ds, 'x'),
-          w('x]', 'x', de),
-          w('x', AOIllegibleContent),
-          w('x', AOIllegibleContent),
-          w('[', ds),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("2' # LUGAL-uš GUB-[aš"))
-      .toEqual<LineParseResult>(
-        lineParseResult("2'", [
-          w('LUGAL-uš', sg('LUGAL'), '-uš'),
-          w('GUB-[aš', sg('GUB'), '-', ds, 'aš')
-        ])
-      );
-
-    expect(parseTransliterationLine("3' # °D°UTU °D°U ⸢°D°⸣["))
-      .toEqual<LineParseResult>(
-        lineParseResult("3'", [
-          w('°D°UTU', dt('D'), sg('UTU')),
-          w('°D°U', dt('D'), sg('U')),
-          w('⸢°D°⸣[', ls, dt('D'), le, ds)
-        ])
-      );
-
-    expect(parseTransliterationLine("4' # °D°zi-in-t[u-ḫi ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("4'", [
-          w('°D°zi-in-t[u-ḫi', dt('D'), 'zi-in-t', ds, 'u-ḫi'),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("5' # °LÚ°SAGI.A 1 NINDA.G[UR₄.RA _EM-ṢA]"))
-      .toEqual<LineParseResult>(
-        lineParseResult("5'", [
-          w('°LÚ°SAGI.A', dt('LÚ'), sg('SAGI.A')),
-          w('1', nc('1')),
-          w('NINDA.G[UR₄.RA', sg('NINDA.G'), ds, sg('UR'), nc('₄'), sg('.RA')),
-          w('_EM-ṢA]', ag('EM-ṢA'), de)
-        ])
-      );
-
-    expect(parseTransliterationLine("6' # LUGAL-i pa-a-i LUGAL-u[š pár-ši-ia] ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("6'", [
-          w('LUGAL-i', sg('LUGAL'), '-i'),
-          w('pa-a-i', 'pa-a-i'),
-          w('LUGAL-u[š', sg('LUGAL'), '-u', ds, 'š'),
-          w('pár-ši-ia]', 'pár-ši-ia', de),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("7' # ta-aš-ta °MUNUS.MEŠ°zi-[in-tu-ḫi-e-eš"))
-      .toEqual<LineParseResult>(
-        lineParseResult("7'", [
-          w('ta-aš-ta', 'ta-aš-ta'),
-          w('°MUNUS.MEŠ°zi-[in-tu-ḫi-e-eš', dt('MUNUS.MEŠ'), 'zi-', ds, 'in-tu-ḫi-e-eš')
-        ])
-      );
-
-    expect(parseTransliterationLine("8' # pa-ra-a [ ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("8'", [
-          w('pa-ra-a', 'pa-ra-a'),
-          w('[', ds),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("9' # pár-aš-na-a-u-<aš>-kán °LÚ°SAG[I.A ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("9'", [
-          w('pár-aš-na-a-u-<aš>-kán', 'pár-aš-na-a-u-', supS, 'aš', supE, '-kán'),
-          w('°LÚ°SAG[I.A', dt('LÚ'), sg('SAG'), ds, sg('I.A')),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("10' # LUGAL-uš TUŠ-aš <°D°>iz-zi-i[š?-ta?-nu?"))
-      .toEqual<LineParseResult>(
-        lineParseResult("10'", [
-          w('LUGAL-uš', sg('LUGAL'), '-uš'),
-          w('TUŠ-aš', sg('TUŠ'), '-aš'),
-          w('<°D°>iz-zi-i[š?-ta?-nu?', supS, dt('D'), supE, 'iz-zi-i', ds, 'š', uc, '-ta', uc, '-nu', uc)
-        ])
-      );
-
-    expect(parseTransliterationLine("11' # e-ku-zi GIŠ ⸢°D°⸣[INANNA ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("11'", [
-          w('e-ku-zi', 'e-ku-zi'),
-          w('GIŠ', sg('GIŠ')),
-          w('⸢°D°⸣[INANNA', ls, dt('D'), le, ds, sg('INANNA')),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("12' # °LÚ°SAGI.A [1 NINDA.GUR₄.RA EM-ṢA]"))
-      .toEqual<LineParseResult>(
-        lineParseResult("12'", [
-          w('°LÚ°SAGI.A', dt('LÚ'), sg('SAGI.A')),
-          w('[1', ds, nc('1')),
-          w('NINDA.GUR₄.RA', sg('NINDA.GUR'), nc('₄'), sg('.RA')),
-          w('EM-ṢA]', sg('EM'), ag('-ṢA'), de)
-        ])
-      );
-
-    expect(parseTransliterationLine("13' # LUGAL-i pa-a-i [LUGAL-uš pár-ši-ia] ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("13'", [
-          w('LUGAL-i', sg('LUGAL'), '-i'),
-          w('pa-a-i', 'pa-a-i'),
-          w('[LUGAL-uš', ds, sg('LUGAL'), '-uš'),
-          w('pár-ši-ia]', 'pár-ši-ia', de),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("14' # GAL DUMU.MEŠ ⸢É⸣.[GAL"))
-      .toEqual<LineParseResult>(
-        lineParseResult("14'", [
-          w('GAL', sg('GAL')),
-          w('DUMU.MEŠ', sg('DUMU.MEŠ')),
-          w('⸢É⸣.[GAL', ls, sg('É'), le, sg('.'), ds, sg('GAL'))
-        ])
-      );
-
-    expect(parseTransliterationLine("15' # °LÚ.MEŠ°GA[LA ¬¬¬"))
-      .toEqual<LineParseResult>(
-        lineParseResult("15'", [
-          w('°LÚ.MEŠ°GA[LA', dt('LÚ.MEŠ'), sg('GA'), ds, sg('LA')),
-          w('¬¬¬', pe)
-        ])
-      );
-
-    expect(parseTransliterationLine("16' # ⸢na-aš⸣-k[án"))
-      .toEqual<LineParseResult>(
-        lineParseResult("16'", [
-          w('⸢na-aš⸣-k[án', ls, 'na-aš', le, '-k', ds, 'án')
-        ])
-      );
-
-    expect(parseTransliterationLine("1 # a-na ša ki-ma | i-a-tí | ù! ku-li"))
-      .toEqual<LineParseResult>(
-        lineParseResult("1", [
-          w('a-na', 'a-na'),
-          w('ša', 'ša'),
-          w('ki-ma', 'ki-ma'),
-          w('|'),
-          w('i-a-tí', 'i-a-tí'),
-          w('|'),
-          w('ù!', 'ù', sc),
-          w('ku-li', 'ku-li')
-        ])
-      );
-
-    expect(parseTransliterationLine("2 # a-na ku-li | qí-bi₄-ma | um-ma"))
-      .toEqual<LineParseResult>(
-        lineParseResult("2", [
-          w('a-na', 'a-na'),
-          w('ku-li', 'ku-li'),
-          w('|'),
-          w('qí-bi₄-ma', 'qí-bi', nc('₄'), '-ma'),
-          w('|'),
-          w('um-ma', 'um-ma')
-        ])
-      );
-
-    expect(parseTransliterationLine("3 # a-šùr-e-na-ma 2 MA.NA 2 ⅔ GÍN"))
-      .toEqual<LineParseResult>(
-        lineParseResult("3", [
-          w('a-šùr-e-na-ma', 'a-šùr-e-na-ma'),
-          w('2', nc('2')),
-          w('MA.NA', sg('MA.NA')),
-          w('2', nc('2')),
-          w('⅔'),
-          w('GÍN', sg('GÍN'))
-        ])
-      );
-
-    expect(parseTransliterationLine("4 # KÙ.BABBAR | ša li-bi₄-kà | ša a-na MU 1.[ŠÈ]"))
-      .toEqual<LineParseResult>(
-        lineParseResult("4", [
-          w('KÙ.BABBAR', sg('KÙ.BABBAR')),
-          w('|'),
-          w('ša', 'ša'),
-          w('li-bi₄-kà', 'li-bi', nc('₄'), '-kà'),
-          w('|'),
-          w('ša', 'ša'),
-          w('a-na', 'a-na'),
-          w('MU', sg('MU')),
-          w('1.[ŠÈ]', nc('1'), sg('.'), ds, sg('ŠÈ'), de)
-        ])
-      );
-
-    expect(parseTransliterationLine("5 # ša-qá-lìm | qá-bi₄-a-tí-ni"))
-      .toEqual<LineParseResult>(
-        lineParseResult("5", [
-          w('ša-qá-lìm', 'ša-qá-lìm'),
-          w('|'),
-          w('qá-bi₄-a-tí-ni', 'qá-bi', nc('₄'), '-a-tí-ni')
-        ])
-      );
-
-    expect(parseTransliterationLine("6 # ITI 1°KAM° | ku-zal-li | li-mu-um"))
-      .toEqual<LineParseResult>(
-        lineParseResult("6", [
-          w('ITI', sg('ITI')),
-          w('1°KAM°', nc('1'), dt('KAM')),
-          w('|'),
-          w('ku-zal-li', 'ku-zal-li'),
-          w('|'),
-          w('li-mu-um', 'li-mu-um')
-        ])
-      );
-
-    expect(parseTransliterationLine("7 # am-ri-iš₈-tár DUMU ma-num-ba-lúm-a-šùr"))
-      .toEqual<LineParseResult>(
-        lineParseResult("7", [
-          w('am-ri-iš₈-tár', 'am-ri-iš', nc('₈'), '-tár'),
-          w('DUMU', sg('DUMU')),
-          w('ma-num-ba-lúm-a-šùr', 'ma-num-ba-lúm-a-šùr')
-        ])
-      );
-
-    expect(parseTransliterationLine("8 # i-na ṭup-pì-kà | a-šùr-mu-da-mì-i[q]"))
-      .toEqual<LineParseResult>(
-        lineParseResult("8", [
-          w('i-na', 'i-na'),
-          w('ṭup-pì-kà', 'ṭup-pì-kà'),
-          w('|'),
-          w('a-šùr-mu-da-mì-i[q]', 'a-šùr-mu-da-mì-i', ds, 'q', de)
-        ])
-      );
-
-    expect(parseTransliterationLine("9 # DUMU sá-ak-lá-nim | ⸢ú e⸣-dí-na-a"))
-      .toEqual<LineParseResult>(
-        lineParseResult("9", [
-          w('DUMU', sg('DUMU')),
-          w('sá-ak-lá-nim', 'sá-ak-lá-nim'),
-          w('|'),
-          w('⸢ú', ls, 'ú'),
-          w('e⸣-dí-na-a', 'e', le, '-dí-na-a')
-        ])
-      );
-
-    expect(parseTransliterationLine("10 # [DU]MU a-a-a | kà-an-ku-ni 1 GÍN KÙ.BABBAR"))
-      .toEqual<LineParseResult>(
-        lineParseResult("10", [
-          w('[DU]MU', ds, sg('DU'), de, sg('MU')),
-          w('a-a-a', 'a-a-a'),
-          w('|'),
-          w('kà-an-ku-ni', 'kà-an-ku-ni'),
-          w('1', nc('1')),
-          w('GÍN', sg('GÍN')),
-          w('KÙ.BABBAR', sg('KÙ.BABBAR'))
-        ])
-      );
-
-    expect(parseTransliterationLine("11 # lá tù-qá-ri-ba-am"))
-      .toEqual<LineParseResult>(
-        lineParseResult("11", [
-          w('lá', 'lá'),
-          w('tù-qá-ri-ba-am', 'tù-qá-ri-ba-am')
-        ])
-      );
-
-    expect(parseTransliterationLine("12 # i-na °d°UTU-ši na-áš-pì-ir-⸢tí⸣"))
-      .toEqual<LineParseResult>(
-        lineParseResult("12", [
-          w('i-na', 'i-na'),
-          w('°d°UTU-ši', ml('d'), sg('UTU'), '-ši'),
-          w('na-áš-pì-ir-⸢tí⸣', 'na-áš-pì-ir-', ls, 'tí', le)
-        ])
-      );
-
-    expect(parseTransliterationLine("13 # ta-ša-me-{Rasur}⸢ú⸣"))
-      .toEqual<LineParseResult>(
-        lineParseResult("13", [
-          w('ta-ša-me-{Rasur}⸢ú⸣')
-        ])
-      );
-
-  });
+  const line01 = "1# ta LUGAL-uš A-NA DUTU AN-E x GUx.MAḪ pa-a-i {K:34}";
+  const result01 = lineParseResult("1", [
+    // <w>ta</w> <w><sGr>LUGAL</sGr>-uš</w> <w><sGr>A</sGr><aGr>-NA</aGr></w> <w><sGr>DUTU</sGr></w> <w><sGr>AN</sGr><aGr>-E</aGr></w>
+    w('ta'), w(sg('LUGAL'), '-uš'), w(sg('A'), ag('-', 'NA')), w(sg('DUTU')), w(sg('AN'), ag('-', 'E')),
+    // x <w><sGr>GUₓ.MAḪ</sGr></w> <w>pa-a-i</w> <w><SP___AO_3a_-KolonMark>K:34</SP___AO_3a_-KolonMark></w>
+    w(aoIllegibleContent), w(sg('GU', id('x'), '.', 'MAḪ')), w('pa-a-i'), w(aoKolonMark('34'))
+  ]);
+
+  const line02 = "1'# [ ... ] ⸢ú?-e?-te-na-an-za⸣";
+  const result02 = lineParseResult("1'", [
+    // <w><del_in/></w> <w><sGr>...</sGr></w> <w><del_fin/></w> <w><laes_in/>ú<corr c='?'/>-e<corr c='?'/>-te-na-an-za<laes_fin/></w>
+    w(ds), w(aoEllipsis), w(de), w(ls, 'ú', uc, '-e', uc, '-te-na-an-za', le)
+  ]);
+
+  const line03 = "2'# [ ... ] ⸢nu⸣ LÚKÚR ku-e-da-ni pé-di";
+  const result03 = lineParseResult(
+    "2'", [
+      // <w><del_in/></w> <w><sGr>...</sGr></w> <w><del_fin/></w> <w><laes_in/>nu<laes_fin/></w> <w><sGr>LÚKÚR</sGr></w> <w>ku-e-da-ni</w> <w>pé-di</w>
+      w(ds), w(aoEllipsis), w(de), w(ls, 'nu', le), w(sg('LÚKÚR')), w('ku-e-da-ni'), w('pé-di')
+    ]);
+
+  const line04 = "3'# [ ... wa-ar-pa da-a]-iš* *na-aš-kán a-pé-e-ez";
+  const result04 = lineParseResult("3'", [
+    // <w><del_in/></w> <w><sGr>...</sGr></w> <w>wa-ar-pa</w> <w>da-a<del_fin/>-iš<ras_in/></w> <w><ras_fin/>na-aš-kán</w> <w>a-pé-e-ez</w>
+    w(ds), w(aoEllipsis), w('wa-ar-pa'), w('da-a', de, '-iš', rs), w('*na-aš-kán', re, 'na-aš-kán'), w('a-pé-e-ez', 'a-pé-e-ez')
+  ]);
+
+  const line05 = "4'# [ ... mdu-ut-ḫa-l]i-ia-aš GAL ME-ŠE-DI";
+  const result05 = lineParseResult("4'", [
+    // <w><del_in/></w> <w><sGr>...</sGr></w> <w>mdu-ut-ḫa-l<del_fin/>i-ia-aš</w> <w><sGr>GAL</sGr></w> <w><sGr>ME</sGr><aGr>-ŠE-DI</aGr></w>
+    w(ds), w(aoEllipsis), w('mdu-ut-ḫa-l', de, 'i-ia-aš'), w(sg('GAL')), w(sg('ME'), ag('-', 'ŠE', '-', 'DI'))
+  ]);
+
+  const line06 = "5'# [ ... -uš-m]a-⸢aš-ši⸣ ku-i-e-eš";
+  const result06 = lineParseResult("5'", [
+    // <w><del_in/></w> <w><sGr>...</sGr></w> <w>-uš-m<del_fin/>a-<laes_in/>aš-ši<laes_fin/></w> <w>ku-i-e-eš</w>
+    w(ds), w(aoEllipsis), w('-uš-m', de, 'a-', ls, 'aš-ši', le), w('ku-i-e-eš')
+  ]);
+
+  const line07 = "6'# [ ... pa-ra-a] da-a-aš ¬¬¬";
+  const result07 = lineParseResult("6'", [
+    // <w><del_in/></w> <w><sGr>...</sGr></w> <w>pa-ra-a<del_fin/></w> <w>da-a-aš</w> </s></p><parsep/><p><s>
+    w(ds), w(aoEllipsis), w('pa-ra-a', de), w('da-a-aš'), w(paragraphSeparator)
+  ]);
+
+  const line08 = "7'# [ ... ] x  °m°mur-ši--DINGIR-LIM °MUNUS°ŠU.GI LÚ°MEŠ° DINGIR°MEŠ°-aš";
+  const result08 = lineParseResult("7'", [
+    // <w><del_in/></w> <w><sGr>...</sGr></w> <w><del_fin/></w> x <w><d>m</d>mur-ši-<sGr>DINGIR</sGr><aGr>-LIM</aGr></w>
+    w(ds), w(aoEllipsis), w(de), w(aoIllegibleContent), w(dt('m'), 'mur-ši', sg('DINGIR'), ag('-', 'LIM')),
+    // <w><d>MUNUS</d><sGr>ŠU.GI</sGr></w> <w><sGr>LÚ</sGr><d>MEŠ</d></w> <w><sGr>DINGIR</sGr><d>MEŠ</d>-aš</w>
+    w(dt('MUNUS'), sg('ŠU', '.', 'GI')), w(sg('LÚ'), dt('MEŠ')), w(sg('DINGIR'), dt('MEŠ'), '-aš')
+  ]);
+
+  const line09 = "8'# [ ] °m.D°30--SUM  ù °m.D°30--SUM{F: Problem mit den Punkten in Determinativen.}";
+  const result09 = lineParseResult("8'", [
+    // <w><del_in/></w> <w><del_fin/></w> <w><d>m.D</d><sGr>30</sGr>-<sGr>SUM</sGr></w> <w>ù</w>
+    w(ds), w(de), w(dt('m.D'), sg('30'), '-', sg('SUM')), w('ù'),
+    // <w><SP___AO_3a_MaterLect>m.D</SP___AO_3a_MaterLect><num>30</num>-<sGr>SUM</sGr><note  n='1'  c="   &lt;P_f_Footnote&gt;Problem mit den Punkten in Determinativen.&lt;/P_f_Footnote&gt;"  /></w>
+    w(dt('m.D'), nc('30'), '-', sg('SUM'), aoNote('Problem mit den Punkten in Determinativen.'))
+  ]);
+
+  const line10 = "9' # °URU°?ša-mu-ḫa °URU°!ša-*mu-ḫa*   °URU?°ša?-mu-ḫa °URU!°ša-mu!-ḫa";
+  const result10 = lineParseResult("9'", [
+    // <w><d>URU</d><corr c='?'/>ša-mu-ḫa</w> <w><d>URU</d><corr c='!'/>ša-<ras_in/>mu-ḫa<ras_fin/></w>
+    w(dt('URU'), uc, 'ša-mu-ḫa'), w(dt('URU'), sc, 'ša-', rs, 'mu-ḫa', rs),
+    // <w><SP___AO_3a_MaterLect>URU?</SP___AO_3a_MaterLect>ša<corr c='?'/>-mu-ḫa</w> <w><SP___AO_3a_MaterLect>URU!</SP___AO_3a_MaterLect>ša-mu<corr c='!'/>-ḫa</w>
+    w(/*, TODO: ml('URU?'), ('ša'), uc, ('-mu-ḫa')*/), w( /* TODO:, ml('URU!'), ('ša-mu'), sc, ('-ḫa'))*/)
+  ]);
+
+  const line11 = "10 # BLABLA-ṢU _ŠI-PÁT";
+  const result11 = lineParseResult("10", [
+    // <w><sGr>BLABLA</sGr><aGr>-ṢU</aGr></w> <w><aGr>ŠI-PÁT</aGr></w>
+    w(sg('BLABLA'), ag('-', 'ṢU')), w(ag('ŠI', '-', 'PÁT'))
+  ]);
+
+  const line12 = "11 # šaṭ-rat°at° °MUNUS.MEŠ°kat°at°-re-eš {G: fünf Zeichen abgebr.} kar-°di°dim-mi-ia-az §§";
+  const result12 = lineParseResult("11", [
+    // <w>šaṭ-rat<SP___AO_3a_MaterLect>at</SP___AO_3a_MaterLect></w> <w><d>MUNUS.MEŠ</d>kat<SP___AO_3a_MaterLect>at</SP___AO_3a_MaterLect>-re-eš</w> <gap c="fünf Zeichen abgebr."/>
+    w('šaṭ-rat', ml('at')), w(dt('MUNUS.MEŠ'), 'kat', ml('at'), '-re-eš'), w(aoGap('fünf Zeichen abgebr.')),
+    // <w>kar-<SP___AO_3a_MaterLect>di</SP___AO_3a_MaterLect>dim-mi-ia-az</w> </s></p><parsep_dbl/><p><s>
+    w('kar-', ml('di'), 'dim-mi-ia-az'), w(paragraphSeparatorDouble)
+  ]);
+
+  const line13 = "12 # GU4 ka4 ubx ub[x K]AxU §";
+  const result13 = lineParseResult("12", [
+    // <w><sGr>GU₄</sGr></w> <w>ka₄</w> <w>ubₓ</w> <w>ub<del_in/>ₓ</w> <w><sGr>K<del_fin/>A×U</sGr></w> </s></p><parsep/><p><s>
+    w(sg('GU', id(4))), w('ka', id(4)), w('ub', id('x')), w('ub', ds, id('x')), w(sg('K', de, 'A', inscribedLetter('U'))), w(paragraphSeparator)
+  ]);
+
+  const line14 = "13 # 4 GU4";
+  const result14 = lineParseResult("13", [
+    // <w><num>4</num></w> <w><sGr>GU₄</sGr></w>
+    w(nc('4')), w(sg('GU', id(4)))
+  ]);
+
+  const line15 = "14 # 4 GU4";
+  const result15 = lineParseResult("14", [
+    // <w><num>4</num></w> <w><sGr>GU₄</sGr></w>
+    w('4', nc('4')), w('GU4', sg('GU', id(4)))
+  ]);
+
+  const line16 = "15 # DUB 2°KAM°";
+  const result16 = lineParseResult("15", [
+    // <w><sGr>DUB</sGr></w> <w><num>2</num><d>KAM</d></w>
+    w('DUB', sg('DUB')), w('2°KAM°', nc('2'), dt('KAM'))
+  ]);
+
+  test.skip.each([
+    [line01, result01], [line02, result02], [line03, result03], [line04, result04],
+    [line05, result05], [line06, result06], [line07, result07], [line08, result08],
+    [line09, result09], [line10, result10], [line11, result11], [line12, result12],
+    [line13, result13], [line14, result14], [line15, result15], [line16, result16]
+  ])(
+    'should parse %p like SimTex as LineParseResult %s',
+    (toParse, expectedResult) => expect(parseTransliterationLine(toParse)).toEqual(expectedResult)
+  )
+
+  const ownLine01 = "1' # [(x)] x ⸢zi⸣ x [";
+  const ownResult01 = lineParseResult("1'", [
+    w('[(x)]', ds, us, aoIllegibleContent, ue, de), w(aoIllegibleContent), w(ls, 'zi', le), w(aoIllegibleContent), w(ds)
+  ]);
+
+  const ownLine02 = "2' # [DUMU?].MUNUS?-ma e-ša-⸢a⸣-[ri";
+  const ownResult02 = lineParseResult("2'", [
+    w('[DUMU?].MUNUS?-ma', ds, sg('DUMU', uc, de, '.', 'MUNUS', uc), '-ma'),
+    w('e-ša-⸢a⸣-[ri', 'e-ša-', ls, 'a', le, '-', ds, 'ri')
+  ]);
+
+  const ownLine03 = "3' # az-zi-ik-ki-it-[tén";
+  const ownResult03 = lineParseResult("3'", [
+    w('az-zi-ik-ki-it-[tén', 'az-zi-ik-ki-it-', ds, 'tén')
+  ]);
+
+  const ownLine04 = "4' # nu ḫu-u-ma-an az-[zi-ik-ki- ¬¬¬";
+  const ownResult04 = lineParseResult("4'", [
+    w('nu'), w('ḫu-u-ma-an'), w('az-', ds, 'zi-ik-ki-'), w(paragraphSeparator)
+  ]);
+
+  const ownLine05 = "5' # [k]u-it-ma-an-aš-ma x [";
+  const ownResult05 = lineParseResult("5'", [
+    w(ds, 'k', de, 'u-it-ma-an-aš-ma'), w(aoIllegibleContent), w(ds)
+  ]);
+
+  const ownLine06 = "6' # [n]a-aš-kán GIŠ.NÁ [";
+  const ownResult06 = lineParseResult("6'", [
+    w(ds, 'n', de, 'a-aš-kán'), w(sg('GIŠ.NÁ')), w(ds)
+  ]);
+
+  const ownLine07 = "7' # [nu-u]š-ši ša-aš-t[a-";
+  const ownResult07 = lineParseResult("7'", [
+    w(ds, 'nu-u', de, 'š-ši'), w('ša-aš-t', ds, 'a-')
+  ]);
+
+  const ownLine08 = "8' # [da?]-⸢a?⸣ nu-uš-ši x [";
+  const ownResult08 = lineParseResult("8'", [
+    w(ds, 'da', uc, de, '-', ls, 'a', uc, le), w('nu-uš-ši'), w(aoIllegibleContent), w(ds)
+  ]);
+
+  const ownLine09 = "9' # [nu-u]š-ši im-ma(-)[";
+  const ownResult09 = lineParseResult("9'", [
+    w(ds, 'nu-u', de, 'š-ši'), w('im-ma', us, '-', ue, ds)
+  ]);
+
+  const ownLine10 = "10' # [x-x]-TE°MEŠ° ⸢e⸣-[";
+  const ownResult10 = lineParseResult("10'", [
+    w(ds, 'x-x', de, ag('-', 'TE'), dt('MEŠ')), w(ls, 'e', le, '-', ds)
+  ]);
+
+  const ownLine11 = "11' # [x (x)]-ri-⸢ia⸣-[ ¬¬¬";
+  const ownResult11 = lineParseResult("11'", [
+    w(ds, aoIllegibleContent), w(us, aoIllegibleContent, ue, de, '-ri-', ls, 'ia', le, '-', ds), w(paragraphSeparator)
+  ]);
+
+  const ownLine12 = "12' # [x x] x [";
+  const ownResult12 = lineParseResult("12'", [
+    w(ds, 'x'), w('x', de), w(aoIllegibleContent), w(ds)
+  ]);
+
+  const ownLine13 = "1' # [ … ] x ¬¬¬";
+  const ownResult13 = lineParseResult("1'", [
+    w(ds), w(aoEllipsis), w(de), w(aoIllegibleContent), w(paragraphSeparator)
+  ]);
+
+  const ownLine14 = "2' # [ … °MUNUS.MEŠ°zi-i]n-tu-ḫi-e-eš";
+  const ownResult14 = lineParseResult("2'", [
+    w(ds), w(aoEllipsis), w(dt('MUNUS.MEŠ'), 'zi-i', de, 'n-tu-ḫi-e-eš')
+  ]);
+
+  const ownLine15 = "3' # [ … -i]a-u-an-zi tar-kum-mi-ia-iz-zi ¬¬¬";
+  const ownResult15 = lineParseResult("3'", [
+    w(ds), w(aoEllipsis), w('-i', de, 'a-u-an-zi'), w('tar-kum-mi-ia-iz-zi'), w(paragraphSeparator)
+  ]);
+
+  const ownLine16 = "4' # [ … °G]IŠ°BANŠUR °GIŠ°BANŠUR an-da";
+  const ownResult16 = lineParseResult("4'", [
+    w(ds), w(aoEllipsis), w(dt('G', de, 'IŠ'), ag('BANŠUR')), w(dt('GIŠ'), sg('BANŠUR')), w('an-da')
+  ]);
+
+  const ownLine17 = "5' # [ … ] ⸢6⸣ NINDA.GUR₄.RA°ḪI.A° ki-an-da";
+  const ownResult17 = lineParseResult("5'", [
+    w(ds), w(aoEllipsis), w(de), w(ls, nc('6'), le), w(sg('NINDA', '.', 'GUR', id(4), '.', 'RA'), dt('ḪI.A')), w('ki-an-da')
+  ]);
+
+  const ownLine18 = "6' # [ … -t]i-ia še-er pé-ra-an da-a-i ¬¬¬";
+  const ownResult18 = lineParseResult("6'", [
+    w(ds), w(aoEllipsis), w('-t', de, 'i-ia'), w('še-er'), w('pé-ra-an'), w('da-a-i'), w(paragraphSeparator)
+  ]);
+
+  const ownLine19 = "7' # [ … pé-r]a-an ḫu-u-wa-a-i";
+  const ownResult19 = lineParseResult("7'", [
+    w(ds), w(aoEllipsis), w('pé-r', de, 'a-an'), w('ḫu-u-wa-a-i')
+  ]);
+
+  const ownLine20 = "8' # [ … °MUNUS.MEŠ°zi]-⸢in-tu-ḫi⸣-e-eš an-da {Rasur}";
+  const ownResult20 = lineParseResult("8'", [
+    w(ds), w(aoEllipsis), w(dt('MUNUS.MEŠ'), 'zi', de, '-', ls, 'in-tu-ḫi', le, '-e-eš'), w('an-da'), w('{Rasur}')
+  ]);
+
+  const ownLine21 = "9' # [ú-wa-an-zi … k]i?-an-ta ¬¬¬";
+  const ownResult21 = lineParseResult("9'", [
+    w(ds, 'ú-wa-an-zi'), w(aoEllipsis), w('k', de, 'i', uc, '-an-ta'), w(paragraphSeparator)
+  ]);
+
+  const ownLine22 = "10' # [ … ] x-zi ¬¬¬";
+  const ownResult22 = lineParseResult("10'", [
+    w(ds), w(aoEllipsis), w(de), w('x-zi'), w(paragraphSeparator)
+  ]);
+
+  const ownLine23 = "11' # [ … ]-da";
+  const ownResult23 = lineParseResult("11'", [
+    w(ds), w(aoEllipsis), w(de, '-da')
+  ]);
+
+  const ownLine24 = "12' # [ … °LÚ°ALAM.Z]U₉";
+  const ownResult24 = lineParseResult("12'", [
+    w(ds), w(aoEllipsis), w(dt('LÚ'), sg('ALAM', '.', 'Z', de, 'U', id(9)))
+  ]);
+
+  const ownLine25 = "13' # [ … -z]i ¬¬¬";
+  const ownResult25 = lineParseResult("13'", [
+    w(ds), w(aoEllipsis), w('-z', de, 'i'), w(paragraphSeparator)
+  ]);
+
+  const ownLine26 = "1' # [x x] x x [ ¬¬¬";
+  const ownResult26 = lineParseResult("1'", [
+    w(ds, aoIllegibleContent), w(aoIllegibleContent, de), w(aoIllegibleContent), w(aoIllegibleContent), w(ds), w(paragraphSeparator)
+  ]);
+
+  const ownLine27 = "2' # LUGAL-uš GUB-[aš";
+  const ownResult27 = lineParseResult("2'", [
+    w(sg('LUGAL'), '-uš'), w(sg('GUB'), '-', ds, 'aš')
+  ]);
+
+  const ownLine28 = "3' # °D°UTU °D°U ⸢°D°⸣[";
+  const ownResult28 = lineParseResult("3'", [
+    w(dt('D'), sg('UTU')), w(dt('D'), sg('U')), w(ls, dt('D'), le, ds)
+  ]);
+
+  const ownLine29 = "4' # °D°zi-in-t[u-ḫi ¬¬¬";
+  const ownResult29 = lineParseResult("4'", [
+    w(dt('D'), 'zi-in-t', ds, 'u-ḫi'), w(paragraphSeparator)
+  ]);
+
+  const ownLine30 = "5' # °LÚ°SAGI.A 1 NINDA.G[UR₄.RA _EM-ṢA]";
+  const ownResult30 = lineParseResult("5'", [
+    w(dt('LÚ'), sg('SAGI', '.', 'A')), w(nc('1')), w(sg('NINDA', '.', 'G', ds, 'UR', id(4), '.', 'RA')), w(ag('EM', '-', 'ṢA'), de)
+  ]);
+
+  const ownLine31 = "6' # LUGAL-i pa-a-i LUGAL-u[š pár-ši-ia] ¬¬¬";
+  const ownResult31 = lineParseResult("6'", [
+    w(sg('LUGAL'), '-i'), w('pa-a-i'), w(sg('LUGAL'), '-u', ds, 'š'), w('pár-ši-ia', de), w(paragraphSeparator)
+  ]);
+
+  const ownLine32 = "7' # ta-aš-ta °MUNUS.MEŠ°zi-[in-tu-ḫi-e-eš";
+  const ownResult32 = lineParseResult("7'", [
+    w('ta-aš-ta'), w(dt('MUNUS.MEŠ'), 'zi-', ds, 'in-tu-ḫi-e-eš')
+  ]);
+
+  const ownLine33 = "8' # pa-ra-a [ ¬¬¬";
+  const ownResult33 = lineParseResult("8'", [
+    w('pa-ra-a'), w(ds), w(paragraphSeparator)
+  ]);
+
+  const ownLine34 = "9' # pár-aš-na-a-u-<aš>-kán °LÚ°SAG[I.A ¬¬¬";
+  const ownResult34 = lineParseResult("9'", [
+    w('pár-aš-na-a-u-', supS, 'aš', supE, '-kán'), w(dt('LÚ'), sg('SAG'), ds, sg('I', '.', 'A')), w(paragraphSeparator)
+  ]);
+
+  const ownLine35 = "10' # LUGAL-uš TUŠ-aš <°D°>iz-zi-i[š?-ta?-nu?";
+  const ownResult35 = lineParseResult("10'", [
+    w(sg('LUGAL'), '-uš'), w(sg('TUŠ'), '-aš'), w(supS, dt('D'), supE, 'iz-zi-i', ds, 'š', uc, '-ta', uc, '-nu', uc)
+  ]);
+
+  const ownLine36 = "11' # e-ku-zi GIŠ ⸢°D°⸣[INANNA ¬¬¬";
+  const ownResult36 = lineParseResult("11'", [
+    w('e-ku-zi'), w(sg('GIŠ')), w(ls, dt('D'), le, ds, sg('INANNA')), w(paragraphSeparator)
+  ]);
+
+  const ownLine37 = "12' # °LÚ°SAGI.A [1 NINDA.GUR₄.RA EM-ṢA]";
+  const ownResult37 = lineParseResult("12'", [
+    w(dt('LÚ'), sg('SAGI', '.', 'A')), w(ds, nc('1')), w(sg('NINDA.GUR'), nc('₄'), sg('.RA')), w(sg('EM'), ag('-ṢA'), de)
+  ]);
+
+  const ownLine38 = "13' # LUGAL-i pa-a-i [LUGAL-uš pár-ši-ia] ¬¬¬";
+  const ownResult38 = lineParseResult("13'", [
+    w(sg('LUGAL'), '-i'), w('pa-a-i'), w(ds, sg('LUGAL'), '-uš'), w('pár-ši-ia', de), w(paragraphSeparator)
+  ]);
+
+  const ownLine39 = "14' # GAL DUMU.MEŠ ⸢É⸣.[GAL";
+  const ownResult39 = lineParseResult("14'", [
+    w(sg('GAL')), w(sg('DUMU.MEŠ')), w(ls, sg('É'), le, sg('.'), ds, sg('GAL'))
+  ]);
+
+  const ownLine40 = "15' # °LÚ.MEŠ°GA[LA ¬¬¬";
+  const ownResult40 = lineParseResult("15'", [
+    w(dt('LÚ', '.', 'MEŠ'), sg('GA', ds, 'LA')), w(paragraphSeparator)
+  ]);
+
+  const ownLine41 = "16' # ⸢na-aš⸣-k[án";
+  const ownResult41 = lineParseResult("16'", [
+    w(ls, 'na-aš', le, '-k', ds, 'án')
+  ]);
+
+  const ownLine42 = "1 # a-na ša ki-ma | i-a-tí | ù! ku-li";
+  const ownResult42 = lineParseResult("1", [
+    w('a-na'), w('ša'), w('ki-ma'), w('|'), w('i-a-tí'), w('|'), w('ù', sc), w('ku-li')
+  ]);
+
+  const ownLine43 = "2 # a-na ku-li | qí-bi₄-ma | um-ma";
+  const ownResult43 = lineParseResult("2", [
+    w('a-na', 'a-na'),
+    w('ku-li', 'ku-li'),
+    w('|'),
+    w('qí-bi₄-ma', 'qí-bi', nc('₄'), '-ma'),
+    w('|'),
+    w('um-ma', 'um-ma')
+  ]);
+
+  const ownLine44 = "3 # a-šùr-e-na-ma 2 MA.NA 2 ⅔ GÍN";
+  const ownResult44 = lineParseResult("3", [
+    w('a-šùr-e-na-ma'), w(nc('2')), w(sg('MA', '.', 'NA')), w(nc('2')), w('⅔'), w(sg('GÍN'))
+  ]);
+
+  const ownLine45 = "4 # KÙ.BABBAR | ša li-bi₄-kà | ša a-na MU 1.[ŠÈ]";
+  const ownResult45 = lineParseResult("4", [
+    w(sg('KÙ', '.', 'BABBAR')), w('|'), w('ša'), w('li-bi', nc('₄'), '-kà'), w('|'), w('ša'),
+    w('a-na'), w(sg('MU')), w(/* TODO:, nc('1'), sg('.'), ds, sg('ŠÈ'), de*/)
+  ]);
+
+  const ownLine46 = "5 # ša-qá-lìm | qá-bi₄-a-tí-ni";
+  const ownResult46 = lineParseResult("5", [
+    w('ša-qá-lìm'), w('|'), w('qá-bi', nc('₄'), '-a-tí-ni')
+  ]);
+
+  const ownLine47 = "6 # ITI 1°KAM° | ku-zal-li | li-mu-um";
+  const ownResult47 = lineParseResult("6", [
+    w(sg('ITI')), w(nc('1'), dt('KAM')), w('|'), w('ku-zal-li'), w('|'), w('li-mu-um')
+  ]);
+
+  const ownLine48 = "7 # am-ri-iš₈-tár DUMU ma-num-ba-lúm-a-šùr";
+  const ownResult48 = lineParseResult("7", [
+    w('am-ri-iš', nc('₈'), '-tár'), w(sg('DUMU')), w('ma-num-ba-lúm-a-šùr')
+  ]);
+
+  const ownLine49 = "8 # i-na ṭup-pì-kà | a-šùr-mu-da-mì-i[q]";
+  const ownResult49 = lineParseResult("8", [
+    w('i-na'), w('ṭup-pì-kà'), w('|'), w('a-šùr-mu-da-mì-i', ds, 'q', de)
+  ]);
+
+  const ownLine50 = "9 # DUMU sá-ak-lá-nim | ⸢ú e⸣-dí-na-a";
+  const ownResult50 = lineParseResult("9", [
+    w(sg('DUMU')), w('sá-ak-lá-nim'), w('|'), w(ls, 'ú'), w('e', le, '-dí-na-a')
+  ]);
+
+  const ownLine51 = "10 # [DU]MU a-a-a | kà-an-ku-ni 1 GÍN KÙ.BABBAR";
+  const ownResult51 = lineParseResult("10", [
+    w(ds, sg('DU', de, 'MU')), w('a-a-a'), w('|'), w('kà-an-ku-ni'), w(nc('1')), w(sg('GÍN')), w(sg('KÙ', '.', 'BABBAR'))
+  ]);
+
+  const ownLine52 = "11 # lá tù-qá-ri-ba-am";
+  const ownResult52 = lineParseResult("11", [w('lá'), w('tù-qá-ri-ba-am')
+  ]);
+
+  const ownLine53 = "12 # i-na °d°UTU-ši na-áš-pì-ir-⸢tí⸣";
+  const ownResult53 = lineParseResult("12", [
+    w('i-na'), w(ml('d'), sg('UTU'), '-ši'), w('na-áš-pì-ir-', ls, 'tí', le)
+  ]);
+
+  const ownLine54 = "13 # ta-ša-me-{Rasur}⸢ú⸣";
+  const ownResult54 = lineParseResult("13", [
+    w('ta-ša-me-{Rasur}⸢ú⸣')
+  ]);
+
+  // FIXME: lines with unknown features are commented out!
+  test.each<[string, LineParseResult]>([
+    [ownLine01, ownResult01], [ownLine02, ownResult02], [ownLine03, ownResult03], [ownLine04, ownResult04],
+    [ownLine05, ownResult05], [ownLine06, ownResult06], [ownLine07, ownResult07], [ownLine08, ownResult08],
+    [ownLine09, ownResult09], [ownLine10, ownResult10], [ownLine11, ownResult11], [ownLine12, ownResult12],
+    [ownLine13, ownResult13], [ownLine14, ownResult14], [ownLine15, ownResult15], [ownLine16, ownResult16],
+    [ownLine17, ownResult17], [ownLine18, ownResult18], [ownLine19, ownResult19], [ownLine20, ownResult20],
+    [ownLine21, ownResult21], [ownLine22, ownResult22], [ownLine23, ownResult23], [ownLine24, ownResult24],
+    [ownLine25, ownResult25], [ownLine26, ownResult26], [ownLine27, ownResult27], [ownLine28, ownResult28],
+    [ownLine29, ownResult29], [ownLine30, ownResult30], [ownLine31, ownResult31], [ownLine32, ownResult32],
+    [ownLine33, ownResult33], [ownLine34, ownResult34], [ownLine35, ownResult35], [ownLine36, ownResult36],
+    /* [ownLine37, ownResult37],*/ [ownLine38, ownResult38], /*[ownLine39, ownResult39], [ownLine40, ownResult40],*/
+    [ownLine41, ownResult41]/*, [ownLine42, ownResult42], [ownLine43, ownResult43], */ /*[ownLine44, ownResult44]*/,
+    /* [ownLine45, ownResult45], [ownLine46, ownResult46], [ownLine47, ownResult47], */[ownLine48, ownResult48],
+    /* [ownLine49, ownResult49], [ownLine50, ownResult50], [ownLine51, ownResult51], */[ownLine52, ownResult52],
+    [ownLine53, ownResult53]/*, [ownLine54, ownResult54]*/
+  ])(
+    'should parse %p as LineParseResult %s',
+    (toParse, expectedResult) => expect(parseTransliterationLine(toParse)).toEqual(expectedResult)
+  );
 });

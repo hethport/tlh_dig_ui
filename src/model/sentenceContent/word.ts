@@ -64,8 +64,8 @@ export const aoWordFormat: XmlFormat<AOWord> = {
     ]
 }
 
-export function parsedWord(trans: string, ...content: AOWordContent[]): AOWord {
-  return {type: 'AOWord', transliteration: trans, content};
+export function parsedWord(...content: (AOWordContent | string)[]): AOWord {
+  return {type: 'AOWord', content: content.map((c) => typeof c === 'string' ? aoBasicText(c) : c)};
 }
 
 export function isAOWord(c: AOSentenceContent): c is AOWord {
